@@ -9,18 +9,18 @@ $per_page = 10;
 
 $t_sql = "SELECT COUNT(1) FROM `memberBooks`";
 
-$totalRows = $pdo ->query($t_sql)->fetch(PDO::FETCH_NUM)[0]; //共多少比
-$totalPage = ceil($totalRows/$per_page); //有多少頁
+$totalRows = $pdo->query($t_sql)->fetch(PDO::FETCH_NUM)[0]; //共多少筆資料
+$totalPage = ceil($totalRows / $per_page); //有多少頁
 // printf("$totalRows<br>");
 // echo "$totalPage<br>";
 // exit;
 
-if($page < 1){
+if ($page < 1) {
     header('Location: dataList.php');
     exit;
 }
-if($page > $totalPage){
-    header('Location: deatList.php?page='.$totalPage );
+if ($page > $totalPage) {
+    header('Location: deatList.php?page=' . $totalPage);
     exit;
 }
 
@@ -28,9 +28,9 @@ $sql = sprintf(
     "SELECT * FROM `memberBooks` ORDER BY `sid` ASC LIMIT %s, %s",
     ($page - 1) * $per_page,
     $per_page
-  );
+);
 
-  $stmt = $pdo->query($sql);
+$stmt = $pdo->query($sql);
 
 
 ?>
@@ -43,25 +43,28 @@ $sql = sprintf(
         <nav aria-label="Page navigation example">
             <ul class="pagination">
                 <li class="page-item">
-                    <a class="page-link" href="?page=<?= $page-1 ?> " > 
-                    <i class="fas fa-chevron-left"></i>
+                    <a class="page-link" href="?page=<?= $page - 1 ?> ">
+                        <i class="fas fa-chevron-left"></i>
                     </a>
                 </li>
-                <?php 
-                    $p_start = $page-5;
-                    $p_end = $page+5;
-                    for($i=$p_start; $i<= $p_end; $i++):
-                        if($i<1 or $i>$totalPage) continue;
-                ?>
+                <?php
+                $p_start = $page - 5;
+                $p_end = $page + 5;
+                for ($i = $p_start; $i <= $p_end; $i++) :
+                    if ($i < 1 or $i > $totalPage) continue;
+                    ?>
                 <li class="page-item"><a class="page-link" href="?page=<?= $i ?>"><?= $i ?></a></li>
                 <?php endfor; ?>
                 <li class="page-item">
-                    <a class="page-link" href="?page=<?=$page+1 ?>">
+                    <a class="page-link" href="?page=<?= $page + 1 ?>">
                         <i class="fas fa-chevron-right"></i>
                     </a>
                 </li>
             </ul>
         </nav>
+        <div class="alert alert-success" role="alert">
+            目前的資料筆數: <?php echo $totalRows; ?> 筆
+        </div>
         <table class="table table-striped table-bordered">
             <thead class="thead-dark">
                 <tr>
