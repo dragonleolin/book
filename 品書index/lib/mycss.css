@@ -1,0 +1,267 @@
+/* ------------------------------以下為統一色票+logo+字體-------------------------------------- */
+/* 字型:googlefonts-Noto Sans TC */
+body{
+    font-family: 'Noto Sans TC', sans-serif !important;
+}
+/* 品書logo */
+.book_logo{
+    margin-top: -10px;
+    height: 35px;
+}
+/* bg-品書色票 */
+/* 黑茶 */
+.my_bg_blacktea{
+    background: #2d3a3a !important; 
+}
+.my_bg_blacktea_fifty{
+    background: rgba(45, 58, 58, 0.5) !important;
+}
+/* 四季春青綠 */
+.my_bg_seasongreen{
+    background: #9cc5a1 !important;
+}
+.my_bg_seasongreen_fifty{
+    background: rgba(156, 197, 161, 0.5) !important;
+}
+/* 超級黑 */
+.my_bg_superblack{
+    background: #171719 !important;
+}
+.my_bg_superblack_fifty{
+    background: rgba(23, 23, 25, 0.5) !important;
+}
+/* 萱草黃 */
+.my_bg_yellow{
+    background: #ffc408 !important;
+}
+.my_bg_yellow_fifty{
+    background: rgba(255, 196, 8, 0.5) !important;
+}
+/* text-品書色票 */
+/* 黑茶 */
+.my_text_blacktea{
+    color: #2d3a3a !important; 
+}
+.my_text_blacktea_fifty{
+    color: rgba(45, 58, 58, 0.5) !important;
+}
+/* 四季春青綠 */
+.my_text_seasongreen{
+    color: #9cc5a1 !important;
+}
+.my_text_seasongreen_fifty{
+    color: rgba(156, 197, 161, 0.5) !important;
+}
+/* 超級黑 */
+.my_text_superblack{
+    color: #171719 !important;
+}
+.my_text_superblack_fifty{
+    color: rgba(23, 23, 25, 0.5) !important;
+}
+/* 萱草黃 */
+.my_text_yellow{
+    color: #ffc408 !important;
+}
+.my_text_yellow_fifty{
+    color: rgba(255, 196, 8, 0.5) !important;
+}
+/* 紛飛白 */
+.my_text_white{
+    color: #ffffff !important;
+}
+.my_text_white_fifty{
+    color: rgba(255, 255, 255, 0.5) !important;
+}
+
+/* ------------------------------以下為首頁最上方navbar-------------------------------------- */
+/* 固定navbar文字大小 */
+.nav_text{
+    cursor: pointer;
+    font-size: 1.2rem;
+}
+/* navbar login登入圖(NANA的私心) */
+.my_login_img{
+    height:40px;
+    width: 40px;
+    border-radius: 10%;
+    border: 1px solid rgba(45, 58, 58, 0.5);
+    overflow: hidden;
+    display:inline-flex;
+}
+.yoko_logo {
+    height: 100%;
+    width: 100%;
+    object-fit: cover; 
+}
+/* navbar login登入彈出後的框框(此區為修改bootstrap內建css) */
+.dropdown-toggle::after {
+    display: inline !important;
+    vertical-align: 0px !important;
+}
+.dropdown-item:hover, .dropdown-item:focus {
+    color: #2d3a3a !important;
+    background-color: #f8f9fa !important;
+  }  
+.dropdown-item.active, .dropdown-item:active {
+    color: #fff !important;
+    background-color: rgba(45, 58, 58, 0.5) !important;
+}
+
+/* ------------------------------以下為首頁左方aside-------------------------------------- */
+/* aside內的元素 */
+.aside_logo {
+    width: 40px;
+    height: 30px;
+    padding: 0px 10px 0px 0px;
+}
+.aside_hover{
+    margin-bottom: 0 !important;
+    cursor: pointer;
+}
+.aside_text{
+    padding: 0px 10px 0px 0px;
+    font-size: 1.2rem;
+}
+.fa-caret-down{
+    color: transparent;
+}
+/* 首頁左方那欄 */
+.aside_heigh{
+    height: 100vh;
+    background: #2d3a3a;
+}
+.aside.card{
+    border: none;
+    border-radius: 0px;    
+}
+.aside.card-header{
+    border-bottom: none;
+    text-align: left;
+}
+.aside.card-header:first-child {
+    border-radius: 0px;
+}
+/* 首頁左方那欄按鈕(此區為修改bootstrap內建css) */
+.btn-info {
+    color: rgba(255, 255, 255, .5);
+    background-color: #2d3a3a;
+    border-color: #2d3a3a;
+}
+.btn-info:hover {
+    color: #fff;
+    background-color: #171719;
+    border-color: #171719;
+}
+.btn-info:hover .fa-caret-down {
+    color: #ffc408;
+}
+.btn-info:hover .aside_logo {
+    filter: brightness(200%);
+}
+.btn-info:focus,
+.btn-info.focus {            
+    color: rgb(255, 255, 255);
+    background-color: #171719;
+    border-color: #171719;
+    box-shadow: none;
+}
+.btn-info:focus .aside_logo {
+    filter: brightness(200%);
+}
+.btn-info:focus .fa-caret-down {
+    color: #ffc408;
+}
+.btn-info:not(:disabled):not(.disabled):active:focus,
+.btn-info:not(:disabled):not(.disabled).active:focus,
+.show>.btn-info.dropdown-toggle:focus {
+    color: rgb(255, 255, 255);
+    background-color: #171719;
+    border-color: #171719;
+    box-shadow: none;
+}
+/*首頁左方那欄子目錄(此區為修改bootstrap內建css)*/
+.btn{
+    border: 0px;
+}
+.btn-light {
+    color: rgba(255, 255, 255, 0.5) ;
+    background-color: rgba(45, 58, 58, 0.5);
+    width: 100%;
+    display: block;
+    border-radius: 0px;
+    padding: 5px 0px;
+}
+.btn-light:hover{
+    background: rgba(45, 58, 58, 0.5);
+    color: #2d3a3a;
+}
+.btn-light:focus{
+    color: #171719;
+    box-shadow: none;
+}
+.btn-light:not(:disabled):not(.disabled):active:focus,
+.btn-light:not(:disabled):not(.disabled).active:focus,
+.show>.btn-light.dropdown-toggle:focus {
+    color: #171719;
+    background-color: rgba(45, 58, 58, 0.5);
+    border-color: rgba(45, 58, 58, 0.5);
+    box-shadow: none;
+}
+.fa-caret-right{
+    margin: 0px 5px 0px -10px;
+    color: transparent;
+}
+.btn-light:hover .fa-caret-right{
+    color: #171719;
+}
+.btn-light:focus .fa-caret-right{
+    color: #171719;
+    box-shadow: none;
+}
+
+/* ------------------------------以下為首頁右方section-------------------------------------- */
+.container{
+    margin-left: 20px;
+    padding: 20px;
+}
+/* 標題那條綠色線 */
+.title_line {
+    border-bottom: 2px solid #9cc5a1;
+    width: 100%;
+}
+/* 搜尋按鈕 */
+.search.form-control:focus {
+    color: #495057;
+    border-color: #ffffff;
+    box-shadow: 0 0 0 0.2rem rgba(255, 196, 8, 0.5);
+}
+
+/* ----------------------------以下為右方section 修改個人資料頁時表單使用的css------------------------------ */
+.update.card {
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px rgb(104, 104, 104);
+    padding: 30px;
+    color: #2d3a3a;
+    margin:2rem 0px 0px 100px;  
+}
+.update.card-body {
+    border: 30px solid transparent;
+    border-image: url(images/icon_bg_border2.svg) 100 round;
+}
+.update.form-text {
+    color: #cd4042;
+    font-size: 1rem;
+}
+.update_label {
+    font-size: 1.3rem;
+}
+.update.form-control:focus {
+    color: #495057;
+    border-color: #ffffff;
+    box-shadow: 0 0 0 0.2rem rgba(156, 197, 161, 0.5);
+}
+
+
+  
