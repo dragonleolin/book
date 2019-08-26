@@ -1,14 +1,26 @@
 # books
-品書網
 
-src
+# 品書網
+
+## src
 
 廠商管理: vendorManagement
 
+廠商書籍管理: vendorBooks
+
+會員管理: memberManagement
 
 會員書籍: memberBooks
 
-tools
+書評人管理: reviewManagement
+
+實體活動管理: activityManaagement
+
+虛擬行銷管理: promotionManagement
+
+
+
+## tools
 
 品書index: 公版html
 
