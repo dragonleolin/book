@@ -128,7 +128,7 @@ body{
 }
 /* 首頁左方那欄 */
 .aside_heigh{
-    height: 100vh;
+    /* min-height: 100vh; */
     background: #2d3a3a;
 }
 .aside.card{
