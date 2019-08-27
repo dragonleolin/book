@@ -1,5 +1,5 @@
 <?php
-// exit;
+exit;
 require __DIR__ . '/__connect_db.php';
 $rand_phone = "";
 for ($i = 0; $i < 8; $i++) {

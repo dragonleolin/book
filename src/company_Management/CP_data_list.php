@@ -26,11 +26,17 @@ $stmt = $pdo->query($sql);
     body {
         background: url(../../images/bg.png) repeat center top;
     }
+
+    .page-position {
+        position: absolute;
+        bottom: 3%;
+        left: 50%;
+    }
 </style>
 <?php include __DIR__ . '/../../pbook_index/__html_body.php' ?>
 <?php include __DIR__ . '/../../pbook_index/__navbar.php' ?>
 <!-- 右邊section資料欄位 -->
-<section>
+<section class="position-relative">
     <div class="container">
         <nav class="navbar justify-content-between" style="padding: 0px;width: 80vw;">
             <div>
@@ -45,7 +51,7 @@ $stmt = $pdo->query($sql);
                     </div>
                 </li>
                 <li class="nav-item" style="margin: 0px 10px">
-                    <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">
+                    <button class="btn btn-outline-primary my-2 my-sm-0" type="submit" onclick="insert()">
                         <i class="fas fa-plus-circle"></i>
                         新增出版社
                     </button>
@@ -63,7 +69,7 @@ $stmt = $pdo->query($sql);
 
         <!-- 每個人填資料的區塊 -->
         <div style="margin-top: 1rem">
-            <table class="table table-striped table-bordered" style="width: 80vw ; text-align: center; font-size:16px;">
+            <table class="table table-striped table-bordered" style="width: 80vw ; text-align: center; font-size:16px; height:75vh">
                 <thead>
                     <tr>
                         <th scope="col">#</th>
@@ -76,7 +82,7 @@ $stmt = $pdo->query($sql);
                         <th scope="col">書籍庫存</th>
                         <th scope="col">帳號</th>
                         <th scope="col">密碼</th>
-                        <th scope="col">出版社logo</th>
+                        <th scope="col">logo</th>
                         <th scope="col">註冊日期</th>
                         <th scope="col">修改</th>
                         <th scope="col">刪除</th>
@@ -107,7 +113,7 @@ $stmt = $pdo->query($sql);
 
         <!-- 我是分頁按鈕列 請自取並調整頁面擺放位置 -->
         <nav aria-label="Page navigation example">
-            <ul class="pagination">
+            <ul class="pagination page-position ">
                 <li class="page-item">
                     <a class="page-link" href="?page=<?= $page - 1 ?>" aria-label="Previous">
                         <span aria-hidden="true">&laquo;</span>
@@ -116,18 +122,30 @@ $stmt = $pdo->query($sql);
                 <?php
                 $p_start = $page - 5;
                 $p_end = $page + 5;
-                for ($i = $p_start; $i <= $p_end; $i++) :
-                    if ($i < 1 or $i > $totalPages) continue;
-                ?>
-                <li class="page-item ">
-                    <a class="page-link" href="?page=<?= $i ?>"><?= $i ?></a>
+                if ($page < 5) :
+                    for ($i = $p_start; $i <= 10; $i++) :
+                        if ($i < 1 or $i > $totalPages) continue;
+                        ?>
+                <li class="page-item">
+                    <a class="page-link" style="<?= $i == $page ? 'background: rgba(156, 197, 161, 0.5) ;color: #ffffff;':'' ?>" href="?page=<?= $i ?>"><?= $i ?></a>
                 </li>
                 <?php endfor; ?>
+                <?php endif; ?>
+                <?php
+                if ($page >= 5) :
+                    for ($i = 1; $i <= $p_end; $i++) :
+                        if ($i < 1 or $i > $totalPages) continue;
+                        ?>
+                <li class="page-item ">
+                <a class="page-link" style="<?= $i == $page ? 'background: rgba(156, 197, 161, 0.5) ;color: #ffffff;':'' ?>" href="?page=<?= $i ?>"><?= $i ?></a>
+                </li>
+                <?php endfor; ?>
+                <?php endif; ?>
                 <li class="page-item">
                     <a class="page-link" href="?page=<?= $page + 1 ?>" aria-label="Next">
                         <span aria-hidden="true">&raquo;</span>
                     </a>
-                </li>   
+                </li>
             </ul>
         </nav>
 

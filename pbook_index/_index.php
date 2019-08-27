@@ -48,7 +48,7 @@
             <div class="aside card">
                 <button type="button" class="aside card-header btn btn-info" id="headingOne">
                     <div class="aside_hover" data-toggle="collapse" data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
-                        <img class="aside_logo" src="../../images/icon_VD_m.svg" alt="">
+                        <img class="aside_logo" src="../images/icon_VD_m.svg" alt="">
                         <span class="aside_text">出版社管理</span>
                         <i class="fas fa-caret-down"></i>
                     </div>
@@ -68,7 +68,7 @@
             <div class="aside card">
                 <button type="button" class="aside card-header btn btn-info" id="headingTwo">
                     <div class="aside_hover" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                        <img class="aside_logo" src="../../images/icon_VB_m.svg" alt="">
+                        <img class="aside_logo" src="../images/icon_VB_m.svg" alt="">
                         <span class="aside_text">出版社書籍管理</span>
                         <i class="fas fa-caret-down"></i>
                     </div>
@@ -88,7 +88,7 @@
             <div class="aside card">
                 <button type="button" class="aside card-header btn btn-info" id="headingThree">
                     <div class="aside_hover" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                        <img class="aside_logo" src="../../images/icon_MR_m.svg" alt="">
+                        <img class="aside_logo" src="../images/icon_MR_m.svg" alt="">
                         <span class="aside_text">會員管理</span>
                         <i class="fas fa-caret-down"></i>
                     </div>
@@ -116,7 +116,7 @@
             <div class="aside card">
                 <button type="button" class="aside card-header btn btn-info" id="headingFour">
                     <div class="aside_hover" data-toggle="collapse" data-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
-                        <img class="aside_logo" src="../../images/icon_MB_m.svg" alt="">
+                        <img class="aside_logo" src="../images/icon_MB_m.svg" alt="">
                         <span class="aside_text">會員書籍管理</span>
                         <i class="fas fa-caret-down"></i>
                     </div>
@@ -136,7 +136,7 @@
             <div class="aside card">
                 <button type="button" class="aside card-header btn btn-info" id="headingFive">
                     <div class="aside_hover" data-toggle="collapse" data-target="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
-                        <img class="aside_logo" src="../../images/icon_BR_m.svg" alt="">
+                        <img class="aside_logo" src="../images/icon_BR_m.svg" alt="">
                         <span class="aside_text">書評人管理</span>
                         <i class="fas fa-caret-down"></i>
                     </div>
@@ -164,7 +164,7 @@
             <div class="aside card">
                 <button type="button" class="aside card-header btn btn-info" id="headingSix">
                     <div class="aside_hover" data-toggle="collapse" data-target="#collapseSix" aria-expanded="false" aria-controls="collapseSix">
-                        <img class="aside_logo" src="../../images/icon_AC_m.svg" alt="">
+                        <img class="aside_logo" src="../images/icon_AC_m.svg" alt="">
                         <span class="aside_text">實體活動管理</span>
                         <i class="fas fa-caret-down"></i>
                     </div>
@@ -184,7 +184,7 @@
             <div class="aside card">
                 <button type="button" class="aside card-header btn btn-info" id="headingSeven">
                     <div class="aside_hover" data-toggle="collapse" data-target="#collapseSeven" aria-expanded="false" aria-controls="collapseSeven">
-                        <img class="aside_logo" src="../../images/icon_PP_m.svg" alt="">
+                        <img class="aside_logo" src="../images/icon_PP_m.svg" alt="">
                         <span class="aside_text">虛擬行銷管理</span>
                         <i class="fas fa-caret-down"></i>
                     </div>
