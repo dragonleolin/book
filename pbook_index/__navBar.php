@@ -1,4 +1,27 @@
+<nav class="navbar justify-content-between my_bg_seasongreen">
+    <a class="navbar-brand" href="#">
+        <img class="book_logo" src="../images/icon_logo.svg" alt="">
+    </a>
+    <ul class="nav justify-content-between">
+        <li class="nav-item">
+            <a class="nav-link my_text_blacktea nav_text">管理者「大師」,您好</a>
+        </li>
+        <li class="nav-item dropdown">
+            <a style="display: inline" class="nav-link dropdown-toggle my_text_yellow" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                <div class="my_login_img"><img class="yoko_logo" src="../images/yoko.jpg" alt=""></div>
+            </a>
+            <div class="dropdown-menu" style="left: -100%;top: 90%;">
+                <a class="dropdown-item" href="#">修改密碼</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="#">登出</a>
+            </div>
+        </li>
+    </ul>
+</nav>
+
+<div class="d-flex flex-row my_content">
     <!-- 左邊aside選單欄位 -->
+    
     <aside class="d-flex aside_heigh">
         <div id="accordion">
             <div class="aside card">
@@ -13,10 +36,6 @@
                     <button type="button" class="btn btn-light sub_aside_text">
                         <i class="fas fa-caret-right"></i>
                         <span>廠商總表</span>
-                    </button>
-                    <button type="button" class="btn btn-light sub_aside_text">
-                        <i class="fas fa-caret-right"></i>
-                        <span>新增廠商</span>
                     </button>
                     <button type="button" class="btn btn-light sub_aside_text">
                         <i class="fas fa-caret-right"></i>
