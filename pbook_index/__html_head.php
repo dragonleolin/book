@@ -11,5 +11,3 @@
     <link rel="stylesheet" href="../fontawesome/css/all.css">
     <link rel="stylesheet" href="../lib/mycss.css">
     <title><?= isset($page_title) ? $page_title : 'Document'  ?></title>
-</head>
-<body>

@@ -4,6 +4,12 @@ require __DIR__ . '/__connect_db.php';
 ?>
 
 <?php include __DIR__ . '/__html_head.php' ?>
+<style>
+    body{
+        background: url(../images/bg.png) repeat center top;
+    }
+</style>
+<?php include __DIR__ . '/__html_body.php' ?>
 <nav class="navbar justify-content-between my_bg_seasongreen">
     <a class="navbar-brand" href="#">
         <img class="book_logo" src="../images/icon_logo.svg" alt="">
@@ -25,7 +31,7 @@ require __DIR__ . '/__connect_db.php';
     </ul>
 </nav>
 
-<content class="d-flex flex-row my_content">
+<div class="d-flex flex-row my_content">
     <!-- 左邊aside選單欄位 -->
     <aside class="d-flex aside_heigh">
         <div id="accordion">
@@ -333,5 +339,5 @@ require __DIR__ . '/__connect_db.php';
                 </div> -->
 
     </section>
-</content>
-<?php include __DIR__ . '/__html_head.php' ?>
+</div>
+<?php include __DIR__ . '/__html_foot.php' ?>
