@@ -1,3 +1,11 @@
+<?php
+require __DIR__. '/__connect_db.php';
+
+$stmt = $pdo->query("SELECT * FROM `ac_pbook`");
+$rows = $stmt->fetchAll();
+
+?>
+
 <?php include __DIR__ . '/../../pbook_index/__html_head.php' ?>
 <style>
     body{
@@ -6,12 +14,15 @@
 </style>
 <?php include __DIR__ . '/../../pbook_index/__html_body.php' ?>
 <?php include __DIR__ . '/../../pbook_index/__navbar.php' ?>
+
+
+
     <!-- 右邊section資料欄位 -->
     <section>
         <div class="container">
             <nav class="navbar justify-content-between" style="padding: 0px;width: 80vw;">
                 <div>
-                    <h4>廠商總表</h4>
+                    <h4>品書官方活動總表</h4>
                     <div class="title_line"></div>
                 </div>
                 <ul class="nav justify-content-between">
@@ -40,66 +51,41 @@
 
             <!-- 每個人填資料的區塊 -->
             <div style="margin-top: 1rem">
-                <table class="table table-striped table-bordered" style="text-align: center">
+                <table class="table table-striped table-bordered" style="text-align: center; width:80vw">
                     <thead>
                         <tr>
                             <th scope="col">#</th>
                             <th scope="col">姓名</th>
-                            <th scope="col">電子郵箱</th>
-                            <th scope="col">手機</th>
-                            <th scope="col">生日</th>
-                            <th scope="col">地址</th>
+                            <th scope="col">標題</th>
+                            <th scope="col">活動類型</th>
+                            <th scope="col">活動時間</th>
+                            <th scope="col">活動地點</th>
+                            <th scope="col">聯絡電話</th>
+                            <th scope="col">主辦單位</th>
+                            <th scope="col">參加費用</th>
+                            <!-- <th scope="col">建立時間</th> -->
                             <th scope="col">修改</th>
                             <th scope="col">刪除</th>
                         </tr>
                     </thead>
+
                     <tbody>
+                        <?php foreach($rows as $r):?>
                         <tr>
-                            <td>1</td>
-                            <td>王小明</td>
-                            <td>hihi@gmail.com</td>
-                            <td>0988555888</td>
-                            <td>2000-05-09</td>
-                            <td>台北市大安區資訊教育研究所</td>
+                            <td><?= $r['AC_sid'] ?></td>
+                            <td><?= $r['AC_name'] ?></td>
+                            <td><?= $r['AC_title'] ?></td>
+                            <td><?= $r['AC_type'] ?></td>
+                            <td><?= $r['AC_date'] ?></td>
+                            <td><?= $r['AC_eventArea'] ?></td>
+                            <td><?= $r['AC_mobile'] ?></td>
+                            <td><?= $r['AC_organizer'] ?></td>
+                            <td><?= $r['AC_price'] ?></td>
+                            
                             <td><a href="#"><i class="fas fa-edit"></i></a></td>
                             <td><a href="#"><i class="fas fa-trash-alt"></i></a></td>
                         </tr>
-                    </tbody>
-                    <tbody>
-                        <tr>
-                            <td>1</td>
-                            <td>王小明</td>
-                            <td>hihi@gmail.com</td>
-                            <td>0988555888</td>
-                            <td>2000-05-09</td>
-                            <td>台北市大安區資訊教育研究所</td>
-                            <td><a href="#"><i class="fas fa-edit"></i></a></td>
-                            <td><a href="#"><i class="fas fa-trash-alt"></i></a></td>
-                        </tr>
-                    </tbody>
-                    <tbody>
-                        <tr>
-                            <td>1</td>
-                            <td>王小明</td>
-                            <td>hihi@gmail.com</td>
-                            <td>0988555888</td>
-                            <td>2000-05-09</td>
-                            <td>台北市大安區資訊教育研究所</td>
-                            <td><a href="#"><i class="fas fa-edit"></i></a></td>
-                            <td><a href="#"><i class="fas fa-trash-alt"></i></a></td>
-                        </tr>
-                    </tbody>
-                    <tbody>
-                        <tr>
-                            <td>1</td>
-                            <td>王小明</td>
-                            <td>hihi@gmail.com</td>
-                            <td>0988555888</td>
-                            <td>2000-05-09</td>
-                            <td>台北市大安區資訊教育研究所</td>
-                            <td><a href="#"><i class="fas fa-edit"></i></a></td>
-                            <td><a href="#"><i class="fas fa-trash-alt"></i></a></td>
-                        </tr>
+                        <?php endforeach; ?>
                     </tbody>
                 </table>
             </div>
@@ -115,6 +101,8 @@
                     <li class="page-item"><a class="page-link" href="#">1</a></li>
                     <li class="page-item"><a class="page-link" href="#">2</a></li>
                     <li class="page-item"><a class="page-link" href="#">3</a></li>
+                    <li class="page-item"><a class="page-link" href="#">4</a></li>
+                    <li class="page-item"><a class="page-link" href="#">5</a></li>
                     <li class="page-item">
                         <a class="page-link my_text_blacktea" href="#" aria-label="Next">
                             <span aria-hidden="true">&raquo;</span>
@@ -136,5 +124,5 @@
                 </div> -->
 
     </section>
-</div>
+
 <?php include __DIR__ . '/../../pbook_index/__html_foot.php' ?>
