@@ -40,7 +40,7 @@
 
         <!-- 每個人填資料的區塊 -->
         <div style="margin-top: 1rem">
-            <table class="table table-striped table-bordered" style="text-align: center">
+            <table class="table table-striped table-bordered" style="width: 80vw ; text-align: center;">
                 <thead>
                     <tr>
                         <th scope="col">#</th>
@@ -49,59 +49,28 @@
                         <th scope="col">電話</th>
                         <th scope="col">地址</th>
                         <th scope="col">統一編號</th>
-                        <th scope="col">廠商logo</th>
                         <th scope="col">書籍庫存</th>
                         <th scope="col">帳號</th>
                         <th scope="col">密碼</th>
+                        <th scope="col">廠商logo</th>
                         <th scope="col">註冊日期</th>
-                        <th scope="col">刪除</th>
                         <th scope="col">修改</th>
+                        <th scope="col">刪除</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
                         <td>1</td>
-                        <td>王小明</td>
-                        <td>hihi@gmail.com</td>
+                        <td>尖端</td>
+                        <td>王大明</td>
                         <td>0988555888</td>
-                        <td>2000-05-09</td>
                         <td>台北市大安區資訊教育研究所</td>
-                        <td><a href="#"><i class="fas fa-edit"></i></a></td>
-                        <td><a href="#"><i class="fas fa-trash-alt"></i></a></td>
-                    </tr>
-                </tbody>
-                <tbody>
-                    <tr>
-                        <td>1</td>
-                        <td>王小明</td>
-                        <td>hihi@gmail.com</td>
-                        <td>0988555888</td>
-                        <td>2000-05-09</td>
-                        <td>台北市大安區資訊教育研究所</td>
-                        <td><a href="#"><i class="fas fa-edit"></i></a></td>
-                        <td><a href="#"><i class="fas fa-trash-alt"></i></a></td>
-                    </tr>
-                </tbody>
-                <tbody>
-                    <tr>
-                        <td>1</td>
-                        <td>王小明</td>
-                        <td>hihi@gmail.com</td>
-                        <td>0988555888</td>
-                        <td>2000-05-09</td>
-                        <td>台北市大安區資訊教育研究所</td>
-                        <td><a href="#"><i class="fas fa-edit"></i></a></td>
-                        <td><a href="#"><i class="fas fa-trash-alt"></i></a></td>
-                    </tr>
-                </tbody>
-                <tbody>
-                    <tr>
-                        <td>1</td>
-                        <td>王小明</td>
-                        <td>hihi@gmail.com</td>
-                        <td>0988555888</td>
-                        <td>2000-05-09</td>
-                        <td>台北市大安區資訊教育研究所</td>
+                        <td>88666688</td>
+                        <td>100</td>
+                        <td>afnzivsno</td>
+                        <td>asfdfh8</td>
+                        <td>logo</td>
+                        <td>2012/10/12</td>
                         <td><a href="#"><i class="fas fa-edit"></i></a></td>
                         <td><a href="#"><i class="fas fa-trash-alt"></i></a></td>
                     </tr>

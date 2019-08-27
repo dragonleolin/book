@@ -1,4 +1,4 @@
-<?php include __DIR__ . '/__html_head.php' ?>
+<?php include __DIR__ . '/../../pbook_index/__html_head.php' ?>
 <style>
     body {
         background: url(../../images/bg.png) repeat center top;
@@ -37,7 +37,7 @@
         color: #cd4042;
     }
 </style>
-<?php include __DIR__ . '/__html_body.php' ?>
+<?php include __DIR__ . '/../../pbook_index/__html_body.php' ?>
 <nav class="navbar justify-content-between my_bg_seasongreen">
     <a class="navbar-brand" href="#">
         <img style="cursor: default" class="book_logo" src="../images/icon_logo.svg" alt="">
@@ -69,4 +69,4 @@
         </form>
     </div>
 </div>
-<?php include __DIR__ . '/__html_foot.php' ?>
+<?php include __DIR__ . '/../../pbook_index/__html_foot.php' ?>
