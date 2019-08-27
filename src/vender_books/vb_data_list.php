@@ -82,7 +82,7 @@
                         <tr>
                             <th scope="col">#</th>
                             <th scope="col">ISBN</th>
-                            <th scope="col">書名</th>
+                            <th scope="col">書籍名稱</th>
                             <th scope="col">分類</th>
                             <th scope="col">作者</th>
                             <th scope="col">出版社</th>
