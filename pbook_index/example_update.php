@@ -1,7 +1,7 @@
 <?php include __DIR__ . '/__html_head.php' ?>
 <style>
     body {
-        background: url(../images/bg.png) repeat center top;
+        background: url(../../images/bg.png) repeat center top;
     }
 </style>
 <?php include __DIR__ . '/__html_body.php' ?>
