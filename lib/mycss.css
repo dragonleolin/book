@@ -148,6 +148,9 @@ body{
 .aside_heigh{
     background: #2d3a3a;
 }
+#accordion{
+    width: 250px;
+}
 .aside.card{
     border: none;
     border-radius: 0px;    

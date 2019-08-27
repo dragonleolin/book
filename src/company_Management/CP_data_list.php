@@ -51,7 +51,7 @@ $stmt = $pdo->query($sql);
                     </div>
                 </li>
                 <li class="nav-item" style="margin: 0px 10px">
-                    <button class="btn btn-outline-primary my-2 my-sm-0" type="submit" onclick="insert()">
+                    <button class="btn btn-outline-primary my-2 my-sm-0" type="submit" onclick="data_insert()">
                         <i class="fas fa-plus-circle"></i>
                         新增出版社
                     </button>
@@ -163,4 +163,10 @@ $stmt = $pdo->query($sql);
 
 </section>
 </div>
+<script>
+    function data_insert(){
+        location="CP_data_insert.php";
+    }
+
+</script>
 <?php include __DIR__ . '/../../pbook_index/__html_foot.php' ?>
