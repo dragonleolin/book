@@ -1,7 +1,7 @@
 
 
-<?php include '/../../pbook_index/__html_head.php' ?>
-<?php include '/../../pbook_index/__html_body.php' ?>
+<?php include __DIR__.'/../../pbook_index/__html_head.php' ?>
+<?php include __DIR__.'/../../pbook_index/__html_body.php' ?>
 
 
 <div style="margin-top: 1rem">
@@ -34,4 +34,4 @@
 
 
 
-<?php include '/../../pbook_index/__html_foot.php' ?>
+<?php include __DIR__.'/../../pbook_index/__html_foot.php' ?>
