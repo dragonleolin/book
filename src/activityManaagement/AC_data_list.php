@@ -1,11 +1,12 @@
 <?php
-require __DIR__. '/__connect_db.php';
+require __DIR__. '/AC__connect_db.php';
+// --------------------------------------
 
+// --------------------------------------
 $stmt = $pdo->query("SELECT * FROM `ac_pbook`");
 $rows = $stmt->fetchAll();
 
 ?>
-
 <?php include __DIR__ . '/../../pbook_index/__html_head.php' ?>
 <style>
     body{
