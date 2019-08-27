@@ -2,6 +2,7 @@
 /* 字型:googlefonts-Noto Sans TC */
 body{
     font-family: 'Noto Sans TC', sans-serif !important;
+    background: url(images/bg.png) repeat center top;
 }
 /* 品書logo */
 .book_logo{
