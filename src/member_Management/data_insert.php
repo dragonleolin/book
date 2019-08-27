@@ -29,6 +29,7 @@ $a_level = [
     .input_width {
         width: 500px;
     }
+
     .small_fix {
         width: 200px;
         margin: 0 20px 0 20px;
@@ -45,12 +46,21 @@ $a_level = [
         <h4>新增會員資料</h4>
         <div class="title_line"></div>
     </div>
+    <div id="hello">
+        <pre>
+    <?php
+    if (!empty($_POST)) {
+        print_r($_POST);
+    }
+    ?>
+        </pre>
+    </div>
     <div class="container">
         <div class="">
             <form name="form1" style="width:800px" onsubmit="return checkForm()">
                 <div class="form-group">
                     <label for="number">會員編號 : <?= $new_number ?></label>
-                    <input type="text" class="form-control" id="number" value="<?= $new_number ?>" style="display:none">
+                    <input type="text" class="form-control" id="number" name="number" value="<?= $new_number ?>" style="display:none">
                 </div>
                 <label class="form-group">
                     <label for="personLevel">會員等級 : </label>
@@ -65,21 +75,21 @@ $a_level = [
                 <div class="form-group ">
                     <label for="name">會員姓名</label>
                     <div class="d-flex">
-                        <input type="text" class="form-control input_width" id="name">
+                        <input type="text" class="form-control input_width" id="name" name="name">
                         <p id="nameHelp" class="form-text text-muted small_fix">請輸入姓名</p>
                     </div>
                 </div>
                 <div class="form-group ">
                     <label for="password">密碼</label>
                     <div class="d-flex">
-                        <input type="password" class="form-control input_width" id="password">
+                        <input type="password" class="form-control input_width" id="password" name="password">
                         <p id="passwordHelp" class="form-text text-muted small_fix">請輸入正確密碼格式</p>
                     </div>
                 </div>
                 <div class="form-group ">
                     <label for="email">電子信箱</label>
                     <div class="d-flex">
-                        <input type="email" class="form-control input_width" id="email">
+                        <input type="email" class="form-control input_width" id="email" name="email">
                         <p id="emailHelp" class="form-text text-muted small_fix">請輸入電子信箱格式</p>
                     </div>
                 </div>
@@ -98,30 +108,26 @@ $a_level = [
                 <div class="form-group ">
                     <label for="birthday">生日</label>
                     <div class="d-flex">
-                        <input type="text" class="form-control input_width" id="birthday">
+                        <input type="text" class="form-control input_width" id="birthday" name="birthday">
                     </div>
                 </div>
                 <div class="form-group ">
                     <label for="mobile">手機</label>
                     <div class="d-flex">
-                        <input type="text" class="form-control input_width" id="mobile">
+                        <input type="text" class="form-control input_width" id="mobile" name="mobile">
                         <p id="mobileHelp" class="form-text text-muted small_fix">請輸入正確手機格式</p>
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="career">職業</label>
-                    <input type="text" class="form-control input_width" id="career">
+                    <input type="text" class="form-control input_width" id="career" name="career">
                 </div>
                 <div class="form-group">
                     <label for="address">地址</label>
-                    <input type="text" class="form-control input_width" id="address">
+                    <input type="text" class="form-control input_width" id="address" name="address">
                 </div>
 
                 <button type="submit" class="btn btn-primary" id="submit_btn">Submit</button>
-                <div class="form-group">
-                    <input type="text" class="form-control" id="createdTime" value="<?= NOW() ?>">
-                </div>
-
             </form>
         </div>
 
@@ -129,23 +135,23 @@ $a_level = [
 
 
 <script>
-    let submit_btn = document.querySelector('#submit_btn');
-    function checkForm(){
+   
+    function checkForm() {
         let fd = new FormData(document.form1);
-        fetch('data_insert_API.php',{
-            method:'POST',
-            body:fd,
-        })
-        .then(Response=>{
-            return Response.json();
-        })
-        .then(json=>{
-            console.log(json);
-            if(json.success){
-            }
-        })
+        let hello=document.querySelector('#hello');
+        fetch('data_insert_API.php', {
+                method: 'POST',
+                body: fd,
+            })
+            .then(response => {
+                return response.json();
+            })
+            .then(json => {
+                console.log(json);
+                hello.innerHTML= json.info;
+            })
 
-        return false;
+        return false; // 表單不用傳統的 post 方式送出
     }
 </script>
 
