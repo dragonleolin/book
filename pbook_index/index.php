@@ -1,6 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="../bootstrap/css/bootstrap.css">
+    <script src="../lib/jquery-3.4.1.js"></script>
+    <script src="../bootstrap/js/bootstrap.js"></script>
+    <link href="https://fonts.googleapis.com/css?family=Noto+Sans+TC&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../fontawesome/css/all.css">
+    <link rel="stylesheet" href="../lib/mycss.css">
+    <title>品書</title>
+
+<style>
+    body {
+        background: url(../images/bg.png) repeat center top;
+    }
+</style>
+<?php include __DIR__ . '/__html_body.php' ?>
 <nav class="navbar justify-content-between my_bg_seasongreen">
-    <a class="navbar-brand" href="../../pbook_index/index.php">
-        <img class="book_logo" src="../../images/icon_logo.svg" alt="">
+    <a class="navbar-brand" href="../pbook_index/index.php">
+        <img class="book_logo" src="../images/icon_logo.svg" alt="">
     </a>
     <ul class="nav justify-content-between">
         <li class="nav-item">
@@ -8,7 +29,7 @@
         </li>
         <li class="nav-item dropdown">
             <a style="display: inline" class="nav-link dropdown-toggle my_text_yellow" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
-                <div class="my_login_img"><img class="yoko_logo" src="../../images/yoko.jpg" alt=""></div>
+                <div class="my_login_img"><img class="yoko_logo" src="../images/yoko.jpg" alt=""></div>
             </a>
             <div class="dropdown-menu" style="left: -100%;top: 90%;">
                 <a class="dropdown-item" href="#">修改密碼</a>
@@ -193,3 +214,9 @@
             </div>
         </div>
     </aside>
+    <!-- 右邊section資料欄位 -->
+    <section style="width: calc(100vw - 280px);">
+        <img src="../images/admin_bg.png" alt="" style="height: 100%;object-fit: contain;width:100%">
+    </section>
+</div>
+<?php include __DIR__ . '/__html_foot.php' ?>

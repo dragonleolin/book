@@ -1,5 +1,5 @@
 <nav class="navbar justify-content-between my_bg_seasongreen">
-    <a class="navbar-brand" href="#">
+    <a class="navbar-brand" href="../../pbook_index/index.php">
         <img class="book_logo" src="../../images/icon_logo.svg" alt="">
     </a>
     <ul class="nav justify-content-between">
@@ -28,18 +28,18 @@
                 <button type="button" class="aside card-header btn btn-info" id="headingOne">
                     <div class="aside_hover" data-toggle="collapse" data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
                         <img class="aside_logo" src="../../images/icon_VD_m.svg" alt="">
-                        <span class="aside_text">廠商管理</span>
+                        <span class="aside_text">出版社管理</span>
                         <i class="fas fa-caret-down"></i>
                     </div>
                 </button>
                 <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
                     <button type="button" class="btn btn-light sub_aside_text">
                         <i class="fas fa-caret-right"></i>
-                        <span>廠商總表</span>
+                        <span>出版社總表</span>
                     </button>
                     <button type="button" class="btn btn-light sub_aside_text">
                         <i class="fas fa-caret-right"></i>
-                        <span>廠商訂單總表</span>
+                        <span>出版社訂單總表</span>
                     </button>
                 </div>
             </div>
@@ -48,18 +48,18 @@
                 <button type="button" class="aside card-header btn btn-info" id="headingTwo">
                     <div class="aside_hover" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
                         <img class="aside_logo" src="../../images/icon_VB_m.svg" alt="">
-                        <span class="aside_text">廠商書籍管理</span>
+                        <span class="aside_text">出版社書籍管理</span>
                         <i class="fas fa-caret-down"></i>
                     </div>
                 </button>
                 <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
                     <button type="button" class="btn btn-light sub_aside_text">
                         <i class="fas fa-caret-right"></i>
-                        <span>廠商書籍總表</span>
+                        <span>出版社書籍總表</span>
                     </button>
                     <button type="button" class="btn btn-light sub_aside_text">
                         <i class="fas fa-caret-right"></i>
-                        <span>新增廠商書籍</span>
+                        <span>新增出版社書籍</span>
                     </button>
                 </div>
             </div>
@@ -155,7 +155,7 @@
                     </button>
                     <button type="button" class="btn btn-light sub_aside_text">
                         <i class="fas fa-caret-right"></i>
-                        <span>廠商主辦活動總表</span>
+                        <span>出版社主辦活動總表</span>
                     </button>
                 </div>
             </div>

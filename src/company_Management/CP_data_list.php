@@ -1,3 +1,26 @@
+<?php
+require __DIR__ . '/__connect_db.php';
+$page_title = '出版社總表';
+$page = isset($_GET['page']) ? intval($_GET['page']) : 1;
+$per_page = 8;    //一頁10筆
+$totalRows = $pdo->query("SELECT COUNT(1) FROM `cp_data_list`")->fetch(PDO::FETCH_NUM)[0];    // 拿到總筆數
+$totalPages = ceil($totalRows / $per_page);    //算總頁數
+if ($page < 1) {
+    header('Location: CP_data_list.php');
+    exit;
+}
+if ($page > $totalPages) {
+    header('Location: CP_data_list.php?page=' . $totalPages);
+    exit;
+}
+
+$sql = sprintf(
+    "SELECT * FROM `cp_data_list` ORDER BY `sid` ASC LIMIT %s, %s",
+    ($page - 1) * $per_page,    //從第幾筆開始
+    $per_page    //一頁幾筆
+);
+$stmt = $pdo->query($sql);
+?>
 <?php include __DIR__ . '/../../pbook_index/__html_head.php' ?>
 <style>
     body {
@@ -11,7 +34,7 @@
     <div class="container">
         <nav class="navbar justify-content-between" style="padding: 0px;width: 80vw;">
             <div>
-                <h4>廠商總表</h4>
+                <h4>出版社總表</h4>
                 <div class="title_line"></div>
             </div>
             <ul class="nav justify-content-between">
@@ -24,7 +47,7 @@
                 <li class="nav-item" style="margin: 0px 10px">
                     <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">
                         <i class="fas fa-plus-circle"></i>
-                        新增廠商
+                        新增出版社
                     </button>
                 </li>
                 <li class="nav-item" style="flex-grow: 1">
@@ -40,40 +63,44 @@
 
         <!-- 每個人填資料的區塊 -->
         <div style="margin-top: 1rem">
-            <table class="table table-striped table-bordered" style="width: 80vw ; text-align: center;">
+            <table class="table table-striped table-bordered" style="width: 80vw ; text-align: center; font-size:16px;">
                 <thead>
                     <tr>
                         <th scope="col">#</th>
                         <th scope="col">出版社名</th>
                         <th scope="col">聯絡人</th>
                         <th scope="col">電話</th>
+                        <th scope="col">電子郵件</th>
                         <th scope="col">地址</th>
                         <th scope="col">統一編號</th>
                         <th scope="col">書籍庫存</th>
                         <th scope="col">帳號</th>
                         <th scope="col">密碼</th>
-                        <th scope="col">廠商logo</th>
+                        <th scope="col">出版社logo</th>
                         <th scope="col">註冊日期</th>
                         <th scope="col">修改</th>
                         <th scope="col">刪除</th>
                     </tr>
                 </thead>
                 <tbody>
+                    <?php while ($r = $stmt->fetch()) : ?>
                     <tr>
-                        <td>1</td>
-                        <td>尖端</td>
-                        <td>王大明</td>
-                        <td>0988555888</td>
-                        <td>台北市大安區資訊教育研究所</td>
-                        <td>88666688</td>
-                        <td>100</td>
-                        <td>afnzivsno</td>
-                        <td>asfdfh8</td>
-                        <td>logo</td>
-                        <td>2012/10/12</td>
+                        <td><?= $r['sid'] ?></td>
+                        <td><?= htmlentities($r['cp_name']) ?></td>
+                        <td><?= htmlentities($r['cp_contact_p']) ?></td>
+                        <td><?= htmlentities($r['cp_phone']) ?></td>
+                        <td><?= htmlentities($r['cp_email']) ?></td>
+                        <td><?= htmlentities($r['cp_address']) ?></td>
+                        <td><?= htmlentities($r['cp_tax_id']) ?></td>
+                        <td><?= htmlentities($r['cp_stock']) ?></td>
+                        <td><?= htmlentities($r['cp_account']) ?></td>
+                        <td><?= htmlentities($r['cp_password']) ?></td>
+                        <td><?= htmlentities($r['cp_logo']) ?></td>
+                        <td><?= htmlentities($r['cp_created_date']) ?></td>
                         <td><a href="#"><i class="fas fa-edit"></i></a></td>
                         <td><a href="#"><i class="fas fa-trash-alt"></i></a></td>
                     </tr>
+                    <?php endwhile; ?>
                 </tbody>
             </table>
         </div>
@@ -82,18 +109,25 @@
         <nav aria-label="Page navigation example">
             <ul class="pagination">
                 <li class="page-item">
-                    <a class="page-link" href="#" aria-label="Previous">
+                    <a class="page-link" href="?page=<?= $page - 1 ?>" aria-label="Previous">
                         <span aria-hidden="true">&laquo;</span>
                     </a>
                 </li>
-                <li class="page-item"><a class="page-link" href="#">1</a></li>
-                <li class="page-item"><a class="page-link" href="#">2</a></li>
-                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                <?php
+                $p_start = $page - 5;
+                $p_end = $page + 5;
+                for ($i = $p_start; $i <= $p_end; $i++) :
+                    if ($i < 1 or $i > $totalPages) continue;
+                ?>
+                <li class="page-item ">
+                    <a class="page-link" href="?page=<?= $i ?>"><?= $i ?></a>
+                </li>
+                <?php endfor; ?>
                 <li class="page-item">
-                    <a class="page-link my_text_blacktea" href="#" aria-label="Next">
+                    <a class="page-link" href="?page=<?= $page + 1 ?>" aria-label="Next">
                         <span aria-hidden="true">&raquo;</span>
                     </a>
-                </li>
+                </li>   
             </ul>
         </nav>
 
