@@ -1,7 +1,8 @@
-<?php require  __DIR__ . '/_db_connect.php' ?>
+
 
 <?php include '/../../pbook_index/__html_head.php' ?>
-<?php include '/../../pbook_index/__html_head.php' ?>
+<?php include '/../../pbook_index/__html_body.php' ?>
+
 
 <div style="margin-top: 1rem">
     <table class="table table-striped table-bordered" style="text-align: center">
@@ -33,4 +34,4 @@
 
 
 
-<?php include __DIR__ . '/_footer.php' ?>
+<?php include '/../../pbook_index/__html_foot.php' ?>
