@@ -1,3 +1,8 @@
+<?php
+// require __DIR__. '/__admin_required.php';
+require __DIR__ . '/__connect_db.php';
+$page_title = '新增出版社';
+?>
 <?php include __DIR__ . '/../../pbook_index/__html_head.php' ?>
 <style>
     body {
@@ -11,7 +16,7 @@
         <div class="container">
             <nav class="navbar justify-content-between" style="padding: 0px;width: 80vw;">
                 <div>
-                    <h4>會員資料修改</h4>
+                    <h4>新增出版社</h4>
                     <div class="title_line"></div>
                 </div>
             </nav>
@@ -22,29 +27,49 @@
                     <div class="card-body">
                         <form>
                             <div class="form-group">
-                                <label for="name" class="update_label">姓名</label>
-                                <input type="text" class="update form-control" id="name" name="name">
-                                <small id="nameHelp" class="update form-text">示意:錯誤顯示訊息</small>
+                                <label for="cp_name" class="update_label">出版社名</label>
+                                <input type="text" class="update form-control" id="cp_name" name="cp_name">
+                                <small id="cp_nameHelp" class="update form-text"></small>
                             </div>
                             <div class="form-group">
-                                <label for="email" class="update_label">電子郵箱</label>
+                                <label for="email" class="update_label">聯絡人</label>
                                 <input type="text" class="update form-control" id="email" name="email">
-                                <small id="emailHelp" class="update form-text">示意:錯誤顯示訊息</small>
+                                <small id="emailHelp" class="update form-text"></small>
                             </div>
                             <div class="form-group">
-                                <label for="mobile" class="update_label">手機</label>
+                                <label for="mobile" class="update_label">電話</label>
                                 <input type="text" class="update form-control" id="mobile" name="mobile">
-                                <small id="mobileHelp" class="update form-text">示意:錯誤顯示訊息</small>
+                                <small id="mobileHelp" class="update form-text"></small>
                             </div>
                             <div class="form-group">
-                                <label for="birthday" class="update_label">生日</label>
+                                <label for="birthday" class="update_label">電子郵件</label>
                                 <input type="text" class="update form-control" id="birthday" name="birthday">
-                                <small id="birthdayHelp" class="update form-text">示意:錯誤顯示訊息</small>
+                                <small id="birthdayHelp" class="update form-text"></small>
                             </div>
                             <div class="form-group">
-                                <label for="address" class="update_label">地址</label>
+                                <label for="address" class="update_label">統一編號</label>
                                 <input type="text" class="update form-control" id="address" name="address">
-                                <small id="addressHelp" class="update form-text">示意:錯誤顯示訊息</small>
+                                <small id="addressHelp" class="update form-text"></small>
+                            </div>
+                            <div class="form-group">
+                                <label for="address" class="update_label">書籍庫存</label>
+                                <input type="text" class="update form-control" id="address" name="address">
+                                <small id="addressHelp" class="update form-text"></small>
+                            </div>
+                            <div class="form-group">
+                                <label for="address" class="update_label">帳號</label>
+                                <input type="text" class="update form-control" id="address" name="address">
+                                <small id="addressHelp" class="update form-text"></small>
+                            </div>
+                            <div class="form-group">
+                                <label for="address" class="update_label">密碼</label>
+                                <input type="text" class="update form-control" id="address" name="address">
+                                <small id="addressHelp" class="update form-text"></small>
+                            </div>
+                            <div class="form-group">
+                                <label for="address" class="update_label">logo</label>
+                                <input type="text" class="update form-control" id="address" name="address">
+                                <small id="addressHelp" class="update form-text"></small>
                             </div>
                             <div style="text-align: center">
                                 <button type="submit" class="btn btn-warning" id="submit_btn">&nbsp;確&nbsp;認&nbsp;修&nbsp;改&nbsp;</button>
