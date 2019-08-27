@@ -1,4 +1,5 @@
-<aside class="d-flex aside_heigh">
+    <!-- 左邊aside選單欄位 -->
+    <aside class="d-flex aside_heigh">
         <div id="accordion">
             <div class="aside card">
                 <button type="button" class="aside card-header btn btn-info" id="headingOne">
@@ -12,6 +13,10 @@
                     <button type="button" class="btn btn-light sub_aside_text">
                         <i class="fas fa-caret-right"></i>
                         <span>廠商總表</span>
+                    </button>
+                    <button type="button" class="btn btn-light sub_aside_text">
+                        <i class="fas fa-caret-right"></i>
+                        <span>新增廠商</span>
                     </button>
                     <button type="button" class="btn btn-light sub_aside_text">
                         <i class="fas fa-caret-right"></i>
