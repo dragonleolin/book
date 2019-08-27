@@ -2,11 +2,11 @@
 
 # 品書網
 
-## src
+## pbook_index
 
-廠商管理: vendorManagement
+廠商管理: companyManagement
 
-廠商書籍管理: vendorBooks
+廠商書籍管理: companyBooks
 
 會員管理: memberManagement
 
