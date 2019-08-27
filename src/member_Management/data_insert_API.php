@@ -33,9 +33,13 @@ if (
 }
 
 $sql = "INSERT INTO `mr_information`
-(`sid`, `MR_number`, `MR_name`, `MR_password`, `MR_nickname`, `MR_email`, `MR_gender`, `MR_birthday`, `MR_mobile`, `MR_career`, `MR_address`, `MR_personLevel`, `MR_createdDate`) 
+(`sid`, `MR_number`, `MR_name`, `MR_password`, `MR_nickname`, 
+`MR_email`, `MR_gender`, `MR_birthday`, `MR_mobile`, `MR_career`, 
+`MR_address`, `MR_personLevel`, `MR_createdDate`) 
 VALUES
-(`sid`, ?, ?, ?, ?, ?, ?, ?, ?,?, ?', ?, NOW())";
+(`sid`, ?, ?, ?,'nickname', 
+?, '2', ?, ?, ?,
+ ?, ?, NOW())";
 
 $stmt = $pdo->prepare($sql);
 
@@ -43,16 +47,18 @@ $stmt->execute([
     $_POST['number'],
     $_POST['name'],
     $_POST['password'],
+    // $_POST['nickname'],
     $_POST['email'],
-    $_POST['gender'],
+    // // $_POST['gender'],
     $_POST['birthday'],
     $_POST['mobile'],
     $_POST['career'],
     $_POST['address'],
-
+    $_POST['personLevel'],
 ]);
 
- echo $stmt->rowCount();
+
+echo $stmt->rowCount();
 //rowCount()可以返回DELETE, INSERT, 或者UPDATE語句的影響行數
 //此API只能新增一筆資料，回傳1代表新增成功
 if ($stmt->rowCount() == 1) {
