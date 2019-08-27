@@ -40,7 +40,7 @@
 <?php include __DIR__ . '/../../pbook_index/__html_body.php' ?>
 <nav class="navbar justify-content-between my_bg_seasongreen">
     <a class="navbar-brand" href="#">
-        <img style="cursor: default" class="book_logo" src="../../images/icon_logo.svg" alt="">
+        <img style="cursor: default" class="book_logo" src="../images/icon_logo.svg" alt="">
     </a>
     <ul class="nav justify-content-between">
         <li class="nav-item">

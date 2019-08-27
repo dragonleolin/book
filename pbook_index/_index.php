@@ -1,6 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="../bootstrap/css/bootstrap.css">
+    <script src="../lib/jquery-3.4.1.js"></script>
+    <script src="../bootstrap/js/bootstrap.js"></script>
+    <link href="https://fonts.googleapis.com/css?family=Noto+Sans+TC&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../fontawesome/css/all.css">
+    <link rel="stylesheet" href="../lib/mycss.css">
+    <title>品書</title>
+
+<style>
+    body {
+        background: url(../images/bg.png) repeat center top;
+    }
+</style>
+<?php include __DIR__ . '/__html_body.php' ?>
 <nav class="navbar justify-content-between my_bg_seasongreen">
-    <a class="navbar-brand" href="../../pbook_index/_index.php">
-        <img class="book_logo" src="../../images/icon_logo.svg" alt="">
+    <a class="navbar-brand" href="../pbook_index/_index.php">
+        <img class="book_logo" src="../images/icon_logo.svg" alt="">
     </a>
     <ul class="nav justify-content-between">
         <li class="nav-item">
@@ -8,7 +29,7 @@
         </li>
         <li class="nav-item dropdown">
             <a style="display: inline" class="nav-link dropdown-toggle my_text_yellow" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
-                <div class="my_login_img"><img class="yoko_logo" src="../../images/yoko.jpg" alt=""></div>
+                <div class="my_login_img"><img class="yoko_logo" src="../images/yoko.jpg" alt=""></div>
             </a>
             <div class="dropdown-menu" style="left: -100%;top: 90%;">
                 <a class="dropdown-item" href="#">修改密碼</a>
@@ -27,7 +48,7 @@
             <div class="aside card">
                 <button type="button" class="aside card-header btn btn-info" id="headingOne">
                     <div class="aside_hover" data-toggle="collapse" data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
-                        <img class="aside_logo" src="../../images/icon_VD_m.svg" alt="">
+                        <img class="aside_logo" src="../images/icon_VD_m.svg" alt="">
                         <span class="aside_text">出版社管理</span>
                         <i class="fas fa-caret-down"></i>
                     </div>
@@ -47,7 +68,7 @@
             <div class="aside card">
                 <button type="button" class="aside card-header btn btn-info" id="headingTwo">
                     <div class="aside_hover" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                        <img class="aside_logo" src="../../images/icon_VB_m.svg" alt="">
+                        <img class="aside_logo" src="../images/icon_VB_m.svg" alt="">
                         <span class="aside_text">出版社書籍管理</span>
                         <i class="fas fa-caret-down"></i>
                     </div>
@@ -67,28 +88,35 @@
             <div class="aside card">
                 <button type="button" class="aside card-header btn btn-info" id="headingThree">
                     <div class="aside_hover" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                        <img class="aside_logo" src="../../images/icon_MR_m.svg" alt="">
+                        <img class="aside_logo" src="../images/icon_MR_m.svg" alt="">
                         <span class="aside_text">會員管理</span>
                         <i class="fas fa-caret-down"></i>
                     </div>
                 </button>
                 <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordion">
-                    <button type="button" class="btn btn-light sub_aside_text" >
+                    <button type="button" class="btn btn-light sub_aside_text">
                         <i class="fas fa-caret-right"></i>
-                        <span>會員列表</span>
+                        <span>會員總表</span>
                     </button>
                     <button type="button" class="btn btn-light sub_aside_text">
                         <i class="fas fa-caret-right"></i>
-                        <span>會員等級</span>
+                        <span>新增會員</span>
                     </button>
-
+                    <button type="button" class="btn btn-light sub_aside_text">
+                        <i class="fas fa-caret-right"></i>
+                        <span>會員訂單總表</span>
+                    </button>
+                    <button type="button" class="btn btn-light sub_aside_text">
+                        <i class="fas fa-caret-right"></i>
+                        <span>會員書評總表</span>
+                    </button>
                 </div>
             </div>
 
             <div class="aside card">
                 <button type="button" class="aside card-header btn btn-info" id="headingFour">
                     <div class="aside_hover" data-toggle="collapse" data-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
-                        <img class="aside_logo" src="../../images/icon_MB_m.svg" alt="">
+                        <img class="aside_logo" src="../images/icon_MB_m.svg" alt="">
                         <span class="aside_text">會員書籍管理</span>
                         <i class="fas fa-caret-down"></i>
                     </div>
@@ -108,7 +136,7 @@
             <div class="aside card">
                 <button type="button" class="aside card-header btn btn-info" id="headingFive">
                     <div class="aside_hover" data-toggle="collapse" data-target="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
-                        <img class="aside_logo" src="../../images/icon_BR_m.svg" alt="">
+                        <img class="aside_logo" src="../images/icon_BR_m.svg" alt="">
                         <span class="aside_text">書評人管理</span>
                         <i class="fas fa-caret-down"></i>
                     </div>
@@ -136,7 +164,7 @@
             <div class="aside card">
                 <button type="button" class="aside card-header btn btn-info" id="headingSix">
                     <div class="aside_hover" data-toggle="collapse" data-target="#collapseSix" aria-expanded="false" aria-controls="collapseSix">
-                        <img class="aside_logo" src="../../images/icon_AC_m.svg" alt="">
+                        <img class="aside_logo" src="../images/icon_AC_m.svg" alt="">
                         <span class="aside_text">實體活動管理</span>
                         <i class="fas fa-caret-down"></i>
                     </div>
@@ -156,7 +184,7 @@
             <div class="aside card">
                 <button type="button" class="aside card-header btn btn-info" id="headingSeven">
                     <div class="aside_hover" data-toggle="collapse" data-target="#collapseSeven" aria-expanded="false" aria-controls="collapseSeven">
-                        <img class="aside_logo" src="../../images/icon_PP_m.svg" alt="">
+                        <img class="aside_logo" src="../images/icon_PP_m.svg" alt="">
                         <span class="aside_text">虛擬行銷管理</span>
                         <i class="fas fa-caret-down"></i>
                     </div>
@@ -186,3 +214,9 @@
             </div>
         </div>
     </aside>
+    <!-- 右邊section資料欄位 -->
+    <section style="width: calc(100vw - 280px);">
+        <img src="../images/admin_bg.png" alt="" style="height: 100%;object-fit: contain;width:100%">
+    </section>
+</div>
+<?php include __DIR__ . '/__html_foot.php' ?>

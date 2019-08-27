@@ -1,11 +1,34 @@
-<?php include __DIR__ . '/../../pbook_index/__html_head.php' ?>
+<?php include __DIR__ . '/__html_head.php' ?>
 <style>
-    body{
-        background: url(../../images/bg.png) repeat center top;
+    body {
+        background: url(../images/bg.png) repeat center top;
     }
 </style>
-<?php include __DIR__ . '/../../pbook_index/__html_body.php' ?>
-<?php include __DIR__ . '/../../pbook_index/__navbar.php' ?>
+<?php include __DIR__ . '/__html_body.php' ?>
+<nav class="navbar justify-content-between my_bg_seasongreen">
+    <a class="navbar-brand" href="#">
+        <img class="book_logo" src="../images/icon_logo.svg" alt="">
+    </a>
+    <ul class="nav justify-content-between">
+        <li class="nav-item">
+            <a class="nav-link my_text_blacktea nav_text">管理者「大師」,您好</a>
+        </li>
+        <li class="nav-item dropdown">
+            <a style="display: inline" class="nav-link dropdown-toggle my_text_yellow" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                <div class="my_login_img"><img class="yoko_logo" src="../images/yoko.jpg" alt=""></div>
+            </a>
+            <div class="dropdown-menu" style="left: -100%;top: 90%;">
+                <a class="dropdown-item" href="#">修改密碼</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="#">登出</a>
+            </div>
+        </li>
+    </ul>
+</nav>
+
+<div class="d-flex flex-row my_content">
+    <!-- 左邊aside選單欄位 -->
+    <?php include __DIR__ . '/__navbar.php' ?>
     <!-- 右邊section資料欄位 -->
     <section>
         <div class="container">
@@ -44,13 +67,18 @@
                     <thead>
                         <tr>
                             <th scope="col">#</th>
-                            <th scope="col">姓名</th>
-                            <th scope="col">電子郵箱</th>
-                            <th scope="col">手機</th>
-                            <th scope="col">生日</th>
+                            <th scope="col">出版社名</th>
+                            <th scope="col">聯絡人</th>
+                            <th scope="col">電話</th>
                             <th scope="col">地址</th>
-                            <th scope="col">修改</th>
+                            <th scope="col">統一編號</th>
+                            <th scope="col">廠商logo</th>
+                            <th scope="col">書籍庫存</th>
+                            <th scope="col">帳號</th>
+                            <th scope="col">密碼</th>
+                            <th scope="col">註冊日期</th>
                             <th scope="col">刪除</th>
+                            <th scope="col">修改</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -137,4 +165,4 @@
 
     </section>
 </div>
-<?php include __DIR__ . '/../../pbook_index/__html_foot.php' ?>
+<?php include __DIR__ . '/__html_foot.php' ?>
