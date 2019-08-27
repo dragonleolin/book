@@ -20,7 +20,7 @@
 </style>
 <?php include __DIR__ . '/__html_body.php' ?>
 <nav class="navbar justify-content-between my_bg_seasongreen">
-    <a class="navbar-brand" href="../pbook_index/index.php">
+    <a class="navbar-brand" href="../pbook_index/_index.php">
         <img class="book_logo" src="../images/icon_logo.svg" alt="">
     </a>
     <ul class="nav justify-content-between">
