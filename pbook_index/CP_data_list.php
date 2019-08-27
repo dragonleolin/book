@@ -1,6 +1,6 @@
 <?php include __DIR__ . '/__html_head.php' ?>
 <style>
-    body{
+    body {
         background: url(../images/bg.png) repeat center top;
     }
 </style>
@@ -29,7 +29,6 @@
 <div class="d-flex flex-row my_content">
     <!-- 左邊aside選單欄位 -->
     <?php include __DIR__ . '/__navbar.php' ?>
-
     <!-- 右邊section資料欄位 -->
     <section>
         <div class="container">
@@ -68,13 +67,18 @@
                     <thead>
                         <tr>
                             <th scope="col">#</th>
-                            <th scope="col">姓名</th>
-                            <th scope="col">電子郵箱</th>
-                            <th scope="col">手機</th>
-                            <th scope="col">生日</th>
+                            <th scope="col">出版社名</th>
+                            <th scope="col">聯絡人</th>
+                            <th scope="col">電話</th>
                             <th scope="col">地址</th>
-                            <th scope="col">修改</th>
+                            <th scope="col">統一編號</th>
+                            <th scope="col">廠商logo</th>
+                            <th scope="col">書籍庫存</th>
+                            <th scope="col">帳號</th>
+                            <th scope="col">密碼</th>
+                            <th scope="col">註冊日期</th>
                             <th scope="col">刪除</th>
+                            <th scope="col">修改</th>
                         </tr>
                     </thead>
                     <tbody>
