@@ -29,7 +29,6 @@ $a_level = [
     .input_width {
         width: 500px;
     }
-
     .small_fix {
         width: 200px;
         margin: 0 20px 0 20px;
@@ -143,7 +142,6 @@ $a_level = [
         .then(json=>{
             console.log(json);
             if(json.success){
-                
             }
         })
 

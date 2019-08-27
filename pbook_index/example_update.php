@@ -54,12 +54,12 @@
                 </div>
 
                 <!-- 以下為修改或新增成功才會跳出來的顯示框 -->
-                <!-- <div class="success update card">
+                <div class="success update card">
                         <div class="success card-body">
                             <label class="success_text">修改成功</label>
                             <div><img class="success_img" src="../images/icon_checked.svg"></div>
                         </div>
-                    </div> -->
+                    </div>
             </div>
     </section>
 </div>
