@@ -1,5 +1,5 @@
 <?php
-// require __DIR__. '/__admin_required.php';
+require __DIR__. '/__admin_required.php';
 require __DIR__ . '/__connect_db.php';
 $page_title = '資料修改';
 

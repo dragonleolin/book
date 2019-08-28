@@ -3,8 +3,9 @@
         <img class="book_logo" src="../../images/icon_logo.svg" alt="">
     </a>
     <ul class="nav justify-content-between">
+    <?php if (isset($_SESSION['loginUser'])) : ?>
         <li class="nav-item">
-            <a class="nav-link my_text_blacktea nav_text">管理者「大師」,您好</a>
+            <a class="nav-link my_text_blacktea nav_text"><?= $_SESSION['loginUser']['name'] ?>,您好</a>
         </li>
         <li class="nav-item dropdown">
             <a style="display: inline" class="nav-link dropdown-toggle my_text_yellow" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
@@ -13,9 +14,14 @@
             <div class="dropdown-menu" style="left: -100%;top: 90%;">
                 <a class="dropdown-item" href="#">修改密碼</a>
                 <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="#">登出</a>
+                <a class="dropdown-item" href="../../pbook_index/logout.php">登出</a>
             </div>
         </li>
+        <?php else : ?>
+        <li class="nav-item">
+            <a class="nav-link my_text_blacktea nav_text" href="../../pbook_index/login.php">登入</a>
+        </li>
+        <?php endif; ?>
     </ul>
 </nav>
 

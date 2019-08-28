@@ -1,13 +1,13 @@
-<?php include __DIR__ . '/__html_head.php' ?>
+<?php include __DIR__ . '/BR__html_head.php' ?>
 <style>
     body {
-        background: url(../images/bg.png) repeat center top;
+        background: url(../../images/bg.png) repeat center top;
     }
 </style>
 <?php include __DIR__ . '/BR__html_body.php' ?>
 <nav class="navbar justify-content-between my_bg_seasongreen">
     <a class="navbar-brand" href="#">
-        <img class="book_logo" src="../images/icon_logo.svg" alt="">
+        <img class="book_logo" src="../../images/icon_logo.svg" alt="">
     </a>
     <ul class="nav justify-content-between">
         <li class="nav-item">
@@ -15,7 +15,7 @@
         </li>
         <li class="nav-item dropdown">
             <a style="display: inline" class="nav-link dropdown-toggle my_text_yellow" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
-                <div class="my_login_img"><img class="yoko_logo" src="../images/yoko.jpg" alt=""></div>
+                <div class="my_login_img"><img class="yoko_logo" src="../../images/yoko.jpg" alt=""></div>
             </a>
             <div class="dropdown-menu" style="left: -100%;top: 90%;">
                 <a class="dropdown-item" href="#">修改密碼</a>
@@ -31,7 +31,7 @@
     <?php include __DIR__ . '/BR__navbar.php' ?>
     <!-- 右邊section資料欄位 -->
     <section style="width: calc(100vw - 280px);">
-        <img src="../images/admin_bg.png" alt="" style="height: 100%;object-fit: contain;width:100%">
+        <img src="../../images/admin_bg.png" alt="" style="height: 100%;object-fit: contain;width:100%">
     </section>
 </div>
 <?php include __DIR__ . '/BR__html_foot.php' ?>

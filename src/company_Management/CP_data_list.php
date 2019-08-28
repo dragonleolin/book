@@ -1,4 +1,5 @@
 <?php
+require __DIR__ . '/__admin_required.php';
 require __DIR__ . '/__connect_db.php';
 $page_title = '出版社總表';
 $page = isset($_GET['page']) ? intval($_GET['page']) : 1;
@@ -90,22 +91,22 @@ $stmt = $pdo->query($sql);
                 </thead>
                 <tbody>
                     <?php while ($r = $stmt->fetch()) : ?>
-                    <tr>
-                        <td><?= $r['sid'] ?></td>
-                        <td><?= htmlentities($r['cp_name']) ?></td>
-                        <td><?= htmlentities($r['cp_contact_p']) ?></td>
-                        <td><?= htmlentities($r['cp_phone']) ?></td>
-                        <td><?= htmlentities($r['cp_email']) ?></td>
-                        <td><?= htmlentities($r['cp_address']) ?></td>
-                        <td><?= htmlentities($r['cp_tax_id']) ?></td>
-                        <td><?= htmlentities($r['cp_stock']) ?></td>
-                        <td><?= htmlentities($r['cp_account']) ?></td>
-                        <td><?= htmlentities($r['cp_password']) ?></td>
-                        <td><?= htmlentities($r['cp_logo']) ?></td>
-                        <td><?= htmlentities($r['cp_created_date']) ?></td>
-                        <td><a href="CP_data_edit.php?sid=<?= $r['sid'] ?>"><i class="fas fa-edit"></i></a></td>
-                        <td><a href="javascript:delete_one(<?= $r['sid'] ?>)"><i class="fas fa-trash-alt"></i></a></td>
-                    </tr>
+                        <tr>
+                            <td><?= $r['sid'] ?></td>
+                            <td><?= htmlentities($r['cp_name']) ?></td>
+                            <td><?= htmlentities($r['cp_contact_p']) ?></td>
+                            <td><?= htmlentities($r['cp_phone']) ?></td>
+                            <td><?= htmlentities($r['cp_email']) ?></td>
+                            <td><?= htmlentities($r['cp_address']) ?></td>
+                            <td><?= htmlentities($r['cp_tax_id']) ?></td>
+                            <td><?= htmlentities($r['cp_stock']) ?></td>
+                            <td><?= htmlentities($r['cp_account']) ?></td>
+                            <td><?= htmlentities($r['cp_password']) ?></td>
+                            <td><?= htmlentities($r['cp_logo']) ?></td>
+                            <td><?= htmlentities($r['cp_created_date']) ?></td>
+                            <td><a href="CP_data_edit.php?sid=<?= $r['sid'] ?>"><i class="fas fa-edit"></i></a></td>
+                            <td><a href="javascript:delete_one(<?= $r['sid'] ?>)"><i class="fas fa-trash-alt"></i></a></td>
+                        </tr>
                     <?php endwhile; ?>
                 </tbody>
             </table>
@@ -115,8 +116,13 @@ $stmt = $pdo->query($sql);
         <nav aria-label="Page navigation example">
             <ul class="pagination page-position ">
                 <li class="page-item">
+                    <a class="page-link" href="?page=1" aria-label="Previous">
+                    <i class="fas fa-angle-double-left"></i>
+                    </a>
+                </li>
+                <li class="page-item">
                     <a class="page-link" href="?page=<?= $page - 1 ?>" aria-label="Previous">
-                        <span aria-hidden="true">&laquo;</span>
+                        <i class="fas fa-angle-left"></i>
                     </a>
                 </li>
                 <?php
@@ -126,24 +132,29 @@ $stmt = $pdo->query($sql);
                     for ($i = $p_start; $i <= 10; $i++) :
                         if ($i < 1 or $i > $totalPages) continue;
                         ?>
-                <li class="page-item">
-                    <a class="page-link" style="<?= $i == $page ? 'background: rgba(156, 197, 161, 0.5) ;color: #ffffff;' : '' ?>" href="?page=<?= $i ?>"><?= $i ?></a>
-                </li>
-                <?php endfor; ?>
+                        <li class="page-item">
+                            <a class="page-link" style="<?= $i == $page ? 'background: rgba(156, 197, 161, 0.5) ;color: #ffffff;' : '' ?>" href="?page=<?= $i ?>"><?= $i ?></a>
+                        </li>
+                    <?php endfor; ?>
                 <?php endif; ?>
                 <?php
                 if ($page >= 6) :
                     for ($i = 1; $i <= $p_end; $i++) :
                         if ($i < 1 or $i > $totalPages) continue;
                         ?>
-                <li class="page-item ">
-                    <a class="page-link" style="<?= $i == $page ? 'background: rgba(156, 197, 161, 0.5) ;color: #ffffff;' : '' ?>" href="?page=<?= $i ?>"><?= $i ?></a>
-                </li>
-                <?php endfor; ?>
+                        <li class="page-item ">
+                            <a class="page-link" style="<?= $i == $page ? 'background: rgba(156, 197, 161, 0.5) ;color: #ffffff;' : '' ?>" href="?page=<?= $i ?>"><?= $i ?></a>
+                        </li>
+                    <?php endfor; ?>
                 <?php endif; ?>
                 <li class="page-item">
                     <a class="page-link" href="?page=<?= $page + 1 ?>" aria-label="Next">
-                        <span aria-hidden="true">&raquo;</span>
+                        <i class="fas fa-angle-right"></i>
+                    </a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="?page=<?= $totalPages?>" aria-label="Next">
+                    <i class="fas fa-angle-double-right"></i>
                     </a>
                 </li>
             </ul>
@@ -169,13 +180,16 @@ $stmt = $pdo->query($sql);
     }
     let delete_confirm = document.querySelector('#delete_confirm');
     let a;
+
     function delete_one(sid) {
         a = sid;
         delete_confirm.style.display = 'block';
     }
+
     function delete_yes() {
         location.href = 'CP_data_delete.php?sid=' + a;
     }
+
     function delete_no() {
         location.href = window.location.href;
     }
