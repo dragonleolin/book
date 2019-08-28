@@ -18,12 +18,12 @@ if (empty($row)) {
 ?>
 <style>
     body {
-        background: url(../images/bg.png) repeat center top;
+        background: url(../../images/bg.png) repeat center top;
     }
 </style>
 <?php include __DIR__ . '/BR__html_head.php' ?>
 <nav class="navbar justify-content-between my_bg_seasongreen">
-    <a class="navbar-brand" href="#">
+    <a class="navbar-brand" href="example_index.php">
         <img class="book_logo" src="../../images/icon_logo.svg" alt="">
     </a>
     <ul class="nav justify-content-between">
@@ -58,95 +58,205 @@ if (empty($row)) {
 
             <!-- 每個人填資料的區塊 -->
             <div class="container">
-                <div class="update card mx-auto">
-                    <div class="card-body">
-                        <form action="BR_update_api.php" method="post">
+
+                <!-- <div class="card-body">
+                    <form name="BR_form" onsubmit="return check_form()">
+                        <input type="hidden" name="sid" value="<?= $row['sid'] ?>">
+                        <div class="form-group">
+                            <label for="BR_name" class="update_label">姓名</label>
+                            <input type="text" class="update form-control" id="BR_name" name="BR_name" value="<?= htmlentities($row['BR_name']) ?>">
+                            <small id="BR_nameHelp" class="update form-text"></small>
+                        </div>
+                        <div class="form-group">
+                            <label for="BR_phone" class="update_label">電話</label>
+                            <input type="text" class="update form-control" id="BR_phone" name="BR_phone" value="<?= htmlentities($row['BR_phone']) ?>">
+                            <small id="BR_phoneHelp" class="update form-text"></small>
+                        </div>
+                        <div class="form-group">
+                            <label for="BR_email" class="update_label">信箱</label>
+                            <input type="text" class="update form-control" id="BR_email" name="BR_email" value="<?= htmlentities($row['BR_email']) ?>">
+                            <small id="BR_emailHelp" class="update form-text"></small>
+                        </div>
+                        <div class="form-group">
+                            <label for="BR_address" class="update_label">地址</label>
+                            <input type="text" class="update form-control" id="BR_address" name="BR_address" value="<?= htmlentities($row['BR_address']) ?>">
+                            <small id="BR_addressHelp" class="update form-text"></small>
+                        </div>
+                        <div class="form-group">
+                            <label for="BR_gender" class="update_label">性別</label>
+                            <br>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="BR_gender" id="BR_gender" value="male" checked>
+                                <label class="form-check-label" for="BR_gender">男</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="BR_gender" id="BR_gender" value="female">
+                                <label class="form-check-label" for="BR_gender">女</label>
+                            </div>
+                            <small id="genderHelp" class="update form-text"></small>
+                        </div>
+                        <div class="form-group">
+                            <label for="BR_birthday" class="update_label">生日</label>
+                            <input type="text" class="update form-control" id="BR_birthday" name="BR_birthday" value="<?= htmlentities($row['BR_birthday']) ?>">
+                            <small id="BR_birthdayHelp" class="update form-text"></small>
+                        </div>
+                        <div class="form-group">
+                            <label for="BR_job" class="update_label">工作</label>
+                            <input type="text" class="update form-control" id="BR_job" name="BR_job" value="<?= htmlentities($row['BR_job']) ?>">
+                            <small id="BR_jobHelp" class="update form-text"></small>
+                        </div>
+                        <div style="text-align: center">
+                            <button type="submit" class="btn btn-warning" id="submit_btn">&nbsp;確&nbsp;認&nbsp;修&nbsp;改&nbsp;</button>
+                        </div>
+                    </form>
+                </div> -->
+                <section class="d-flex" style="min-width:600px;">
+                    <div class="card-body d-flex">
+                        <form name="BR_form" onsubmit="return check_form()" style="width:800px;margin:-15px 50px">
                             <input type="hidden" name="sid" value="<?= $row['sid'] ?>">
                             <div class="form-group">
-                                <label for="BR_name" class="update_label">姓名</label>
-                                <input type="text" class="update form-control" id="BR_name" name="BR_name" value="<?= htmlentities($row['BR_name']) ?>">
-                                <small id="BR_nameHelp" class="update form-text"></small>
+                                <label for="BR_name" class="update_label">書評人姓名</label>
+                                <span id="BR_nameHelp" style="margin:0px 10px;color:red"></span>
+                                <input type="text" class="form-control" id="BR_name" name="BR_name" value="<?= htmlentities($row['BR_name']) ?>">
                             </div>
                             <div class="form-group">
-                                <label for="BR_phone" class="update_label">電話</label>
-                                <input type="text" class="update form-control" id="BR_phone" name="BR_phone" value="<?= htmlentities($row['BR_phone']) ?>">
-                                <small id="BR_phoneHelp" class="update form-text"></small>
+                                <label for="BR_phone" class="update_label">書評人電話</label>
+                                <span id="BR_phoneHelp" style="margin:0px 10px;color:red"></span>
+                                <input type="text" class="form-control" id="BR_phone" name="BR_phone" value="<?= htmlentities($row['BR_phone']) ?>">
                             </div>
                             <div class="form-group">
-                                <label for="BR_email" class="update_label">信箱</label>
-                                <input type="text" class="update form-control" id="BR_email" name="BR_email" value="<?= htmlentities($row['BR_email']) ?>">
-                                <small id="BR_emailHelp" class="update form-text"></small>
+                                <label for="BR_email" class="update_label">書評人信箱</label>
+                                <span id="BR_emailHelp" style="margin:0px 10px;color:red"></span>
+                                <input type="text" class="form-control" id="BR_email" name="BR_email" value="<?= htmlentities($row['BR_email']) ?>">
                             </div>
                             <div class="form-group">
-                                <label for="BR_address" class="update_label">地址</label>
-                                <input type="text" class="update form-control" id="BR_address" name="BR_address" value="<?= htmlentities($row['BR_address']) ?>">
-                                <small id="BR_addressHelp" class="update form-text"></small>
+                                <label for="BR_address" class="update_label">書評人地址</label>
+                                <span id="BR_addressHelp" style="margin:0px 10px;color:red"></span>
+                                <input type="text" class="form-control" id="BR_address" name="BR_address" value="<?= htmlentities($row['BR_address']) ?>">
+                            </div>
+                            <label class="update_label">書評人性別</label> <br>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="BR_gender" id="BR_gender" value="male" checked>
+                                <label class="form-check-label" for="BR_gender">男</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="BR_gender" id="BR_gender" value="female">
+                                <label class="form-check-label" for="BR_gender">女</label>
+                                <small id="BR_genderHelp" class="form-text"></small>
                             </div>
                             <div class="form-group">
-                                <label for="BR_gender" class="update_label">性別</label>
-                                <br>
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="BR_gender" id="BR_gender" value="male">
-                                    <label class="form-check-label" for="BR_gender">男</label>
-                                </div>
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="BR_gender" id="BR_gender" value="female">
-                                    <label class="form-check-label" for="BR_gender">女</label>
-                                </div>
-                                <small id="genderHelp" class="update form-text"></small>
+                                <label for="BR_birthday" class="update_label">書評人生日</label>
+                                <span id="BR_birthdayHelp" style="margin:0px 10px;color:red"></span>
+                                <input type="text" class="form-control" id="BR_birthday" name="BR_birthday" value="<?= htmlentities($row['BR_birthday']) ?>">
                             </div>
                             <div class="form-group">
-                                <label for="BR_birthday" class="update_label">生日</label>
-                                <input type="text" class="update form-control" id="BR_birthday" name="BR_birthday" value="<?= htmlentities($row['BR_birthday']) ?>">
-                                <small id="BR_birthdayHelp" class="update form-text"></small>
+                                <label for="BR_job" class="update_label">書評人工作</label>
+                                <input type="text" class="form-control" id="BR_job" name="BR_job" value="<?= htmlentities($row['BR_job']) ?>">
                             </div>
-                            <div class="form-group">
-                                <label for="BR_job" class="update_label">工作</label>
-                                <input type="text" class="update form-control" id="BR_job" name="BR_job" value="<?= htmlentities($row['BR_job']) ?>">
-                                <small id="BR_jobHelp" class="update form-text"></small>
-                            </div>
-                            <div style="text-align: center">
-                                <button type="submit" class="btn btn-warning" id="submit_btn">&nbsp;確&nbsp;認&nbsp;修&nbsp;改&nbsp;</button>
-                            </div>
+                            <button type="submit" class="btn btn-primary" id="submit_btn">修改</button>
                         </form>
-                    </div>
-                </div>
+                </section>
 
 
 
                 <!-- 以下為修改或新增成功才會跳出來的顯示框 -->
-                <!-- <div class="success update card">
-                        <div class="success card-body">
-                            <label class="success_text">修改成功</label>
-                            <div><img class="success_img" src="../images/icon_checked.svg"></div>
-                        </div>
-                    </div> -->
+                <div class="success update card" style="display:none ; transform: translate(0,-70vh)" id="success_update">
+                    <div class="success card-body">
+                        <label class="success_text">修改成功</label>
+                        <div><img class="success_img" src="../../images/icon_checked.svg"></div>
+                    </div>
+                </div>
             </div>
     </section>
     <script>
+        let insert_info = document.querySelector('#success_update');
+
+        let i, s, item;
+
+        const error_text = [{
+                id: 'BR_name',
+                checker: /^\S{2,}/,
+                info: '請輸入正確姓名格式'
+            },
+            {
+                id: 'BR_phone',
+                checker: /^09\d{2}\-?\d{3}\-?\d{3}$/,
+                info: '請輸入正確電話格式'
+            },
+            {
+                id: 'BR_email',
+                checker: /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i,
+                info: '請輸入正確信箱格式'
+            },
+            {
+                id: 'BR_birthday',
+                checker: /^\d{4}-\d{2}-\d{2}$/,
+                info: '請輸入生日格式'
+            },
+            {
+                id: 'BR_address',
+                checker: /.+/,
+                info: '請輸入地址格式'
+            },
+        ];
+
+
+        //拿到對應輸入欄位 ID 顯示訊息的小文字框
+        for (i in error_text) {
+            item = error_text[i];
+            item.el = document.querySelector('#' + item.id);
+            item.error_info = document.querySelector('#' + item.id + 'Help');
+        }
+
         function check_form() {
             let fd = new FormData(document.BR_form);
-            fetch('BR_update_api.php', {
-                    method: 'POST',
-                    body: fd,
-                })
-                .then(response => {
-                    return response.json();
-                })
-                .then(json => {
-                    console.log(json);
-                    info_bar.style.display = 'block';
-                    info_bar.innerHTML = json.info;
-                    if (json.success) {
-                        info_bar.className = 'alert alert-success'
-                    } else {
-                        info_bar.className = 'alert alert-danger'
-                    }
-                });
 
 
-            return false;
-        }
+            for (i in error_text) {
+                item = error_text[i];
+                item.el.style.border = '1px solid #cccccc';
+                item.error_info.innerHTML = '';
+            }
+
+            let passcheck = true;
+            for (i in error_text) {
+                item = error_text[i];
+
+                if (!item.checker.test(item.el.value)) {
+                    item.el.style.border = '1px solid red';
+                    item.error_info.style.color = 'red';
+                    item.error_info.innerHTML = item.info;
+                    passcheck = false;
+                }
+
+            }
+
+            
+                fetch('BR_update_api.php', {
+                        method: 'POST',
+                        body: fd,
+                    })
+                    .then(response => {
+                        return response.json();
+                    })
+                    .then(json => {
+
+                        if (json.success) {
+                            insert_info.style.display = 'block'
+                            setTimeout(function() {
+                                location.href = 'BR_data_list.php';
+                            }, 1500);
+
+                        } else {
+                            console.log('1')
+                        }
+
+                    });
+
+                return false;
+            }
+        
     </script>
+
 </div>
 <?php include __DIR__ . '/BR__html_foot.php' ?>

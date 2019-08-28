@@ -46,4 +46,6 @@ if ($stmt->rowCount() == 1) {
     $result['code'] = 420;
     $result['info'] = '修改失敗';
 }
-header('Location: BR_data_list.php');
+
+echo json_encode($result, JSON_UNESCAPED_UNICODE);
+// header('Location: BR_data_list.php');
