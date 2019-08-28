@@ -5,7 +5,7 @@
     }
 </style>
 <?php include __DIR__ . '/../../pbook_index/__html_body.php' ?>
-<?php include __DIR__ . '/../../pbook_index/__navbar.php' ?>
+<?php include __DIR__ . '/AC__navbar.php' ?>
     <!-- 右邊section資料欄位 -->
     <section>
         <div class="container">
