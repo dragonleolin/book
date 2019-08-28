@@ -27,9 +27,10 @@ $form_data2 = [
         left: calc(50% - 350px);
         top: 30%;
     }
-    .rand_button{
-        right :10%  ;
-        top : 0;  
+
+    .rand_button {
+        right: 10%;
+        top: 0;
     }
 </style>
 <?php include __DIR__ . '/../../pbook_index/__html_body.php' ?>
@@ -100,13 +101,14 @@ $form_data2 = [
     function getRandom(min, max) {
         return Math.floor(Math.random() * (max - min + 1)) + min;
     };
+
     function rand_data() {
         let rand_phone = "";
         for (let i = 0; i < 8; i++) {
             let d = getRandom(0, 9);
             rand_phone = rand_phone + d;
         };
-        
+
         let rand_email = "";
         for (let i = 0; i < getRandom(6, 10); i++) {
             let c = getRandom(1, 3);
@@ -124,7 +126,7 @@ $form_data2 = [
             }
             rand_email = rand_email + b;
         };
-        
+
         let rand_tax = "";
         for (let i = 0; i < 8; i++) {
             let d = getRandom(0, 9);
@@ -266,6 +268,9 @@ $form_data2 = [
                     info_bar.innerHTML = json.info;
                     if (json.success) {
                         info_position.style.display = 'block';
+                        setTimeout(function() {
+                            location.href = 'CP_data_list.php';
+                        }, 1000);
                     } else {
                         info_position.style.display = 'none';
                     }
