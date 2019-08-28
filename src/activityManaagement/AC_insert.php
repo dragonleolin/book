@@ -17,7 +17,7 @@ $page_title = '活動資料修改'
         <div class="container">
             <nav class="navbar justify-content-between" style="padding: 0px;width: 80vw;">
                 <div>
-                    <h4>活動資料修改</h4>
+                    <h4>新增活動</h4>
                     <div class="title_line"></div>
                 </div>
             </nav>
@@ -26,31 +26,31 @@ $page_title = '活動資料修改'
             <div class="container">
                 <section class="d-flex" style="min-width:600px;">
                     <div class="card-body d-flex">
-                        <form style="width:800px;margin:-15px 50px" method="post">
+                        <form style="width:800px;margin:-15px 50px" action="AC_insert_api.php" method="post">
                             <div class="form-group">
                                 <label for="AC_name" class="update_label">申請人</label>
-                                <span style="margin:0px 10px;color:red">示意:錯誤顯示訊息</span>
+                                <!-- <span style="margin:0px 10px;color:red">示意:錯誤顯示訊息</span> -->
                                 <input type="text" class="update form-control" id="AC_name" name="AC_name">
                             </div>
                             <div class="form-group">
                                 <label for="AC_title" class="update_label">標題</label>
-                                <span style="margin:0px 10px;color:red">示意:錯誤顯示訊息</span>
+                                <!-- <span style="margin:0px 10px;color:red">示意:錯誤顯示訊息</span> -->
                                 <input type="text" class="update form-control" id="AC_title" name="AC_title">
                             </div>
                             <div class="form-group">
                                 <label for="AC_type" class="update_label">活動類型</label>
-                                <span style="margin:0px 10px;color:red">示意:錯誤顯示訊息</span>
+                                <!-- <span style="margin:0px 10px;color:red">示意:錯誤顯示訊息</span> -->
                                 <input type="text" class="update form-control" id="AC_type" name="AC_type">
                                 
                             </div>
                             <div class="form-group">
-                                <label for="AC_date" class="update_label">時間</label>
-                                <span style="margin:0px 10px;color:red">示意:錯誤顯示訊息</span>
+                                <label for="AC_date" class="update_label">日期</label>
+                                <!-- <span style="margin:0px 10px;color:red">示意:錯誤顯示訊息</span> -->
                                 <input type="text" class="update form-control" id="AC_date" name="AC_date">
                             </div>
                             <div class="form-group">
                                 <label for="AC_eventArea" class="update_label">地點</label>
-                                <span style="margin:0px 10px;color:red">示意:錯誤顯示訊息</span>
+                                <!-- <span style="margin:0px 10px;color:red">示意:錯誤顯示訊息</span> -->
                                 <input type="text" class="update form-control" id="AC_eventArea" name="AC_eventArea">
                             </div>
                             <div class="form-group">
@@ -72,7 +72,7 @@ $page_title = '活動資料修改'
                             
 
                             <div style="position:absolute;left:900px;">
-                                <button type="submit" class="btn btn-warning" id="submit_btn">&nbsp;確&nbsp;認&nbsp;修&nbsp;改&nbsp;</button>
+                                <button type="submit" class="btn btn-warning" id="submit_btn">&nbsp;確&nbsp;認&nbsp;新&nbsp;增&nbsp;</button>
                             </div>
 
                         </form>
@@ -82,7 +82,7 @@ $page_title = '活動資料修改'
                             <input type="file" class="form-control-file" id="exampleFormControlFile1">
                         </div> -->
                     </div>
-                    <div >
+                    <!-- <div >
                         <div class="form-group" style="">
                             <label for="categories" class="update_label">活動介紹</label>
                             <textarea class="update form-control" id="exampleFormControlTextarea1" rows="3"
@@ -106,7 +106,7 @@ $page_title = '活動資料修改'
                               }
                             }
                         </script>                   
-                    </div>
+                    </div> -->
                     </section>  
             </form>
 
@@ -119,6 +119,8 @@ $page_title = '活動資料修改'
                 </div> -->
             </div>
     </section>
+
+
 
 </div>
 <?php include __DIR__ . '/../../pbook_index/__html_foot.php' ?>
