@@ -1,12 +1,6 @@
 <?php
 
-$ar = [
-    -1 => '過期',
-    '無庫存',
-];
+require __DIR__.'/__connect_db.php';
 
+?>
 
-print_r($ar);
-
-echo "<br>";
-echo $ar[-1];

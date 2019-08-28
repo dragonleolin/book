@@ -23,7 +23,7 @@
                 <a class="nav-link" href="coupon_insert.php">新增折價券</a>
             </li>
             <li class="nav-item <?= $page_name == 'data_insert' ? 'active' : '' ?>">
-                <a class="nav-link" href="coupon_member.php">會員持有折價券</a>
+                <a class="nav-link" href="coupon_member.php">規則列表</a>
             </li>
 
         </ul>

@@ -2,15 +2,15 @@
 $page_name = 'coupon_edit';
 $page_title = '編輯折價券';
 $coupon_id = isset($_GET['coupon_id']) ? intval($_GET['coupon_id']) : 0;
-if(empty($coupon_id)){
-    header('Location: '.$_SERVER['HTTP_REFERER']);
+if (empty($coupon_id)) {
+    header('Location: ' . $_SERVER['HTTP_REFERER']);
     exit();
 }
 require __DIR__ . '/__connect_db.php';
 $sql = "SELECT * FROM `coupon` WHERE `coupon_id` = {$coupon_id}";
 $row = $pdo->query($sql)->fetch();
-if(empty($row)){
-    header('Location: '.$_SERVER['HTTP_REFERER']);
+if (empty($row)) {
+    header('Location: ' . $_SERVER['HTTP_REFERER']);
     exit();
 }
 
@@ -39,21 +39,24 @@ include __DIR__ . '/../../pbook_index/__navbar.php';
                     <div class="card-body">
                         <h5 class="card-title">新增折價券</h5>
                         <form name="form1" onsubmit="return checkForm()">
-                            <input type="hidden" name="coupon_id" value="<?= $row['coupon_id']?>">
+                            <input type="hidden" name="coupon_id" value="<?= $row['coupon_id'] ?>">
                             <div class="form-group">
                                 <label for="coupon_content">活動名稱</label>
-                                <input type="text" class="form-control" id="coupon_content" name="coupon_content" value="<?= htmlentities($row['coupon_content']);?>">
+                                <input type="text" class="form-control" id="coupon_content" name="coupon_content"
+                                       value="<?= htmlentities($row['coupon_content']); ?>">
                                 <small class="form-text"></small>
                             </div>
                             <div class="form-group">
                                 <label for="coupon_no">折價券編號</label>
                                 <button type="button" class="btn btn-light rounded" onclick="rand_no()">隨機產生</button>
-                                <input type="text" class="form-control" id="coupon_no" name="coupon_no" value="<?= htmlentities($row['coupon_no']);?>">
+                                <input type="text" class="form-control" id="coupon_no" name="coupon_no"
+                                       value="<?= htmlentities($row['coupon_no']); ?>">
                                 <small class="form-text"></small>
                             </div>
                             <div class="form-group">
                                 <label for="coupon_rule">折價規則</label>
-                                <select class="form-control" id="coupon_rule" name="coupon_rule" onchange="show_rule()"  value="<?= htmlentities($row['coupon_rule']);?>">
+                                <select class="form-control" id="coupon_rule" name="coupon_rule" onchange="show_rule()"
+                                        value="<?= htmlentities($row['coupon_rule']); ?>">
                                     <option value="1">金額</option>
                                     <option value="2">百分比</option>
                                 </select>
@@ -61,22 +64,26 @@ include __DIR__ . '/../../pbook_index/__navbar.php';
                             </div>
                             <div class="form-group">
                                 <label id="coupon_price_label" for="coupon_price">折價金額</label>
-                                <input type="text" class="form-control" id="coupon_price" name="coupon_price" value="<?= htmlentities($row['coupon_price']);?>">
+                                <input type="text" class="form-control" id="coupon_price" name="coupon_price"
+                                       value="<?= htmlentities($row['coupon_price']); ?>">
                                 <small class="form-text"></small>
                             </div>
                             <div class="form-group">
                                 <label for="coupon_number">發送數量</label>
-                                <input type="text" class="form-control" id="coupon_number" name="coupon_number" value="<?= htmlentities($row['coupon_number']);?>">
+                                <input type="text" class="form-control" id="coupon_number" name="coupon_number"
+                                       value="<?= htmlentities($row['coupon_number']); ?>">
                                 <small class="form-text"></small>
                             </div>
                             <div class="form-group">
-                                <label for="coupon_limit">適用消費下限(TWD)</label>
-                                <input type="text" class="form-control" id="coupon_limit" name="coupon_limit" value="<?= htmlentities($row['coupon_limit']);?>">
+                                <label for="coupon_limit">限制規則</label>
+                                <input type="text" class="form-control" id="coupon_limit" name="coupon_limit"
+                                       value="<?= htmlentities($row['coupon_limit']); ?>">
                                 <small class="form-text"></small>
                             </div>
                             <div class="form-group">
                                 <label for="coupon_send_type">發送類型</label>
-                                <select class="form-control" id="coupon_send_type" name="coupon_send_type" value="<?= htmlentities($row['coupon_send_type']);?>">
+                                <select class="form-control" id="coupon_send_type" name="coupon_send_type"
+                                        value="<?= htmlentities($row['coupon_send_type']); ?>">
                                     <option value="1">全館發送</option>
                                     <option value="2">優惠序號</option>
                                     <option value="3">消費回饋</option>
@@ -86,17 +93,20 @@ include __DIR__ . '/../../pbook_index/__navbar.php';
                             </div>
                             <div class="form-group">
                                 <label for="coupon_start_time">起始日期</label>
-                                <input type="date" class="form-control" id="coupon_start_time" name="coupon_start_time" value="<?= htmlentities($row['coupon_start_time']);?>">
+                                <input type="date" class="form-control" id="coupon_start_time" name="coupon_start_time"
+                                       value="<?= htmlentities($row['coupon_start_time']); ?>">
                                 <small class="form-text"></small>
                             </div>
                             <div class="form-group">
                                 <label for="coupon_end_time">終止日期</label>
-                                <input type="date" class="form-control" id="coupon_end_time" name="coupon_end_time" value="<?= htmlentities($row['coupon_end_time']);?>">
+                                <input type="date" class="form-control" id="coupon_end_time" name="coupon_end_time"
+                                       value="<?= htmlentities($row['coupon_end_time']); ?>">
                                 <small class="form-text"></small>
                             </div>
                             <div class="form-group">
                                 <label for="coupon_sp_rule">特殊規則</label>
-                                <select class="form-control" id="coupon_sp_rule" name="coupon_sp_rule" value="<?= htmlentities($row['coupon_sp_rule']);?>">
+                                <select class="form-control" id="coupon_sp_rule" name="coupon_sp_rule"
+                                        value="<?= htmlentities($row['coupon_sp_rule']); ?>">
                                     <option value="0">none</option>
                                     <option value="1">test1</option>
                                     <option value="2">test2</option>
@@ -194,7 +204,13 @@ include __DIR__ . '/../../pbook_index/__navbar.php';
         }
 
         function rand_no() {
-            document.querySelector('#coupon_no').value = "<?= md5(uniqid())?>";
+            let ALPHABET = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+            let ID_LENGTH = 10;
+            let rtn = '';
+            for (let i = 0; i < ID_LENGTH; i++) {
+                rtn += ALPHABET.charAt(Math.floor(Math.random() * ALPHABET.length));
+            }
+            document.querySelector('#coupon_no').value = rtn;
         }
 
         function formatDate(date) {
