@@ -42,14 +42,19 @@ if (empty($row)) {
 ?><?php include '../../pbook_index/__html_head.php' ?>
 <link rel="stylesheet" href="lib/memberlist.css">
 <style>
-
+    .nike {
+        position: absolute;
+        top: 20%;
+        left: 20%;
+        display: none;
+    }
 </style>
 <?php include '../../pbook_index/__html_body.php' ?>
 <?php include '../../pbook_index/__navbar.php' ?>
 <div>
 
 </div>
-<section class="p-4 container-fluid">
+<section class="p-4 container-fluid dis_relative">
     <div>
         <h4>修改會員資料
             <a href="<?= $_SERVER['HTTP_REFERER'] ?>" class="back_arrow">
@@ -64,19 +69,21 @@ if (empty($row)) {
                 <div class="alert alert-primary " role="alert" id="info-bar"></div>
             </div>
         </div>
+        
         <div class="">
             <form name="form1" style="width:1100px" onsubmit="return checkForm()">
                 <div class="form-group">
-                    <label for="number">會員編號 : <?= $row['MR_number'] ?></label>
-                    <input type="text" class="form-control" id="number" name="number" value="" style="display:none">
+                <input type="hidden" name="sid" value="<?= $row['sid'] ?>">
+                    <label for="number">會員編號 :<?= $row['MR_number'] ?></label>
+                    <input type="text" class="form-control" id="number" name="number" value="<?= $row['MR_number'] ?>" style="display:none">
                 </div>
                 <label class="form-group">
                     <label for="personLevel">會員等級 : </label>
                     <?php for ($i = 0; $i < 5; $i++) : ?>
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="personLevel" value="<?= $i ?>" id="personLevel<?= $i ?>" <?= ($i == $row['MR_personLevel']) ? 'checked' : '' ?>>
-                        <label class="form-check-label" for="personLevel<?= $i ?>"><?= $a_level[$i] ?> </label>
-                    </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="personLevel" value="<?= $i ?>" id="personLevel<?= $i ?>" <?= ($i == $row['MR_personLevel']) ? 'checked' : '' ?>>
+                            <label class="form-check-label" for="personLevel<?= $i ?>"><?= $a_level[$i] ?> </label>
+                        </div>
                     <?php endfor ?>
                 </label>
                 <div>
@@ -84,8 +91,14 @@ if (empty($row)) {
                         <div>
                             <label for="name">會員姓名</label>
                             <div class="">
-                                <input type="text" class="form-control input_width" id="name" name="name" value="<?= $row['MR_name'] ?>">
+                                <input type="text" class="form-control right_input1" id="name" name="name" value="<?= $row['MR_name'] ?>">
                                 <small id="nameHelp" class="form-text  small_fix"></small>
+                            </div>
+                        </div>
+                        <div class="right_input ">
+                            <label for="nickname">暱稱</label>
+                            <div class="">
+                                <input type="text" class="form-control right_input1 " id="nickname" name="nickname" value="<?= $row['MR_nickname'] ?>">
                             </div>
                         </div>
                         <div class="form-group gender_fix">
@@ -158,6 +171,12 @@ if (empty($row)) {
                 <button type="submit" class="btn btn-primary" id="submit_btn">提交</button>
             </form>
         </div>
+        <div class="success update card nike" id="nike7">
+            <div class="success card-body">
+                <label class="success_text">新增成功</label>
+                <div><img class="success_img" src="../../images/icon_checked.svg"></div>
+            </div>
+        </div>
 
 </section>
 
@@ -198,13 +217,13 @@ if (empty($row)) {
     let password = document.querySelector('#password');
     let eye1 = document.querySelector('#eye1');
     let eye2 = document.querySelector('#eye2');
-    
+
     const showPassword = (evt) => {
         if (evt.currentTarget.id == 'eye1') {
-            password.type = (password.type=="password")? "text" :"password";
+            password.type = (password.type == "password") ? "text" : "password";
         }
         if (evt.currentTarget.id == 'eye2') {
-            password_confirm.type = (password_confirm.type=="password")? "text" :"password";
+            password_confirm.type = (password_confirm.type == "password") ? "text" : "password";
         }
     }
     eye1.addEventListener('click', showPassword);
@@ -212,7 +231,7 @@ if (empty($row)) {
 
 
 
- 
+
     function checkForm() {
         isPass = true;
         for (a in required_fields) {
@@ -235,8 +254,8 @@ if (empty($row)) {
 
         if (isPass) {
             let fd = new FormData(document.form1);
-            let hello = document.querySelector('#hello');
-            fetch('MR_memberData_insertAPI.php', {
+            let nike7 = document.querySelector('#nike7');          
+            fetch('MR_memberData_updateAPI.php', {
                     method: 'POST',
                     body: fd,
                 })
@@ -245,15 +264,15 @@ if (empty($row)) {
                 })
                 .then(json => {
                     console.log(json);
-
-                    info_bar.innerHTML = json.info;
-                    info_bar.style.display = 'block';
                     if (json.success) {
-                        info_bar.className = 'alert alert-success';
+                        info_bar.style.display = 'none';
+                        nike7.style.display = "block";
                         setTimeout(() => {
                             location.href = 'MR_memberDataList.php';
-                        }, 1000);
+                        }, 1500);
                     } else {
+                        info_bar.style.display = 'block';
+                        info_bar.innerHTML = json.info;
                         info_bar.className = "alert alert-danger";
                     }
                 })

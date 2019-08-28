@@ -28,6 +28,10 @@ small {
 .right_input {
     margin: 0 0 0 20px;
 }
+.right_input1{
+    width: 200px;
+}
+
 
 .small_fix {
     width: 200px;
