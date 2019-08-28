@@ -1,18 +1,6 @@
 <?php
 exit;
-
-require __DIR__. '/AC__connect_db.php';
-
-for($k=1; $k<100; $k++){
-    $s = "INSERT INTO `ac_pbook`
-            (`AC_name`, `AC_title`, `AC_type`, `AC_date`, `AC_eventArea`, `AC_mobile`, `AC_organizer`, `AC_price`, `AC_created_at`)
-             VALUES
-              ('假的實體活動{$k}', '123@gmail.com', '0982333666', '1990-10-10', '台北市', '2019-08-27 12:00:00') ";
-//    echo $s;
-//    break;
-    $pdo->query($s);
-}
-
+// ---------------------------------------------------
 INSERT INTO `ac_pbook` (`AC_sid`, `AC_name`, `AC_title`, `AC_type`, `AC_date`, `AC_eventArea`, `AC_mobile`, `AC_organizer`, `AC_price`, `AC_created_at`) 
 VALUES 
 (NULL, '肥宅小編', '肚子好餓', '新書發表', '2019-06-21', '台北市中山區', '0982116999', '肥宅書紡', '500','2019-08-26 00:00:00'),
@@ -26,7 +14,19 @@ VALUES
 (NULL, '江老師', '林小姐新書分享｜江老師二手書', '好書特賣會', '2019-08-12', '彰化市', '0982116888', '東大日語系', '350', '2019-08-27 00:00:00'),
 (NULL, '春風先生', '二手惜物、為愛義賣 春風先生x品書二手物義賣', '二手書跳蚤會', '2019-08-22', '新北市中和區', '0982116888', '春風企業', '0', '2019-08-27 00:00:00'),
 (NULL, '春風先生', '春風跨海而來──半生書蠹酬知己座談會', '書評座談', '2019-08-26', '台中市', '0982116888', '春風企業', '10', '2019-08-26 00:00:00');
-
+// ---------------------------------------------------
 class" <?= $page_name=='data_list' ? 'active' : '' ?>"
+// ---------------------------------------------------
+require __DIR__. '/AC__connect_db.php';
+
+for($k=1; $k<100; $k++){
+    $s = "INSERT INTO `ac_pbook`
+            (`AC_name`, `AC_title`, `AC_type`, `AC_date`, `AC_eventArea`, `AC_mobile`, `AC_organizer`, `AC_price`, `AC_created_at`)
+             VALUES
+              ('假的實體活動{$k}', '123@gmail.com', '0982333666', '1990-10-10', '台北市', '2019-08-27 12:00:00') ";
+//    echo $s;
+//    break;
+    $pdo->query($s);
+}
 
 ?>

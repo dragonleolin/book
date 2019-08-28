@@ -5,7 +5,7 @@ $page_name = 'AC_date_list';
 
 $page = isset($_GET['page']) ? intval($_GET['page']) : 1; //用戶選頁
 
-$per_page = 5; //每筆顯示頁數
+$per_page = 10; //每筆顯示頁數
 
 $ac_sql = "SELECT COUNT(1) FROM `ac_pbook`";
 
@@ -22,7 +22,7 @@ if($page > $totalPages){
     exit;
 }
 
-$sql = sprintf("SELECT * FROM `ac_pbook` ORDER BY `AC_name` DESC LIMIT %s,%s",//limit
+$sql = sprintf("SELECT * FROM `ac_pbook` ORDER BY `AC_name` ASC LIMIT %s,%s",//limit
 ($page-1)*$per_page,
 $per_page    //呈現的頁數
 );
@@ -82,8 +82,8 @@ $stmt = $pdo->query($sql);
                             <th scope="col">姓名</th>
                             <th scope="col">標題</th>
                             <th scope="col">活動類型</th>
-                            <th scope="col">活動時間</th>
-                            <th scope="col">活動地點</th>
+                            <th scope="col">時間</th>
+                            <th scope="col">地點</th>
                             <th scope="col">聯絡電話</th>
                             <th scope="col">主辦單位</th>
                             <th scope="col">參加費用</th>
@@ -107,7 +107,7 @@ $stmt = $pdo->query($sql);
                             <td><?= $r['AC_price'] ?></td>
                             <td><?= $r['AC_created_at'] ?></td>
                             
-                            <td><a href="#"><i class="fas fa-edit"></i></a></td>
+                            <td><a href="AC_update.php"><i class="fas fa-edit"></i></a></td>
                             <td><a href="#"><i class="fas fa-trash-alt"></i></a></td>
                         </tr>
                         <?php } ?>
@@ -121,7 +121,7 @@ $stmt = $pdo->query($sql);
             </div>
 
             <!-- 我是分頁按鈕列 請自取並調整頁面擺放位置 -->
-            <nav aria-label="Page navigation example">
+            <nav aria-label="Page navigation example" style="position:absolute;left:800px;margin:5px 0;">
                 <ul class="pagination">
                     <li class="page-item">
                     <a class="page-link" href="?page=<?= $page - 1 ?>" aria-label="Previous">
@@ -172,7 +172,7 @@ $stmt = $pdo->query($sql);
                             <button type="button" class="delete btn btn-warning">取消</button>
                         </div>
                     </div>
-                </div> -->
+            </div> -->
 
     </section>
 
