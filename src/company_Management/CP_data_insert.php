@@ -1,5 +1,5 @@
 <?php
-// require __DIR__. '/__admin_required.php';
+require __DIR__. '/__admin_required.php';
 require __DIR__ . '/__connect_db.php';
 $page_title = '新增出版社';
 $form_data1 = [
