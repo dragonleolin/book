@@ -1,11 +1,11 @@
-<?php include __DIR__ . '/__html_head.php' ?>
+<?php include __DIR__ . '/../../pbook_index/__html_head.php' ?>
 <style>
     body{
-        background: url(../images/bg.png) repeat center top;
+        background: url(../../images/bg.png) repeat center top;
     }
 </style>
-<?php include __DIR__ . '/__html_body.php' ?>
-<?php include __DIR__ . '/__navbar.php' ?>
+<?php include __DIR__ . '/../../pbook_index/__html_body.php' ?>
+<?php include __DIR__ . '/../../pbook_index/__navbar.php' ?>
     <!-- 右邊section資料欄位 -->
     <section>
         <div class="container">
@@ -137,4 +137,4 @@
 
     </section>
 </div>
-<?php include __DIR__ . '/__html_foot.php' ?>
+<?php include __DIR__ . '/../../pbook_index/__html_foot.php' ?>
