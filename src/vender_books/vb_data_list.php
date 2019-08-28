@@ -1,4 +1,6 @@
-<?php require __DIR__. '/__connect_db.php';
+<?php 
+    require __DIR__. '/__connect_db.php';
+    $page_name = 'vb_data_list';
     $page_title = '出版社書籍總表';
     $page = isset($_GET['page']) ? intval($_GET['page']) : 1; //用戶選取的頁數
     $per_page = 10; //每頁幾筆資料
