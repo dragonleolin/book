@@ -1,9 +1,9 @@
 <?php
 
-$db_host = '';
-$db_name = '';
-$db_user = '';
-$db_pass = '';
+$db_host = '192.168.27.186';
+$db_name = 'pbook';
+$db_user = 'weihsun';
+$db_pass = '841012';
 
 $dsn = "mysql:host={$db_host};dbname={$db_name}";
 

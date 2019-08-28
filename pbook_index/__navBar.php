@@ -1,10 +1,11 @@
 <nav class="navbar justify-content-between my_bg_seasongreen">
-    <a class="navbar-brand" href="../../pbook_index/index.php">
+    <a class="navbar-brand" href="../../pbook_index/_index.php">
         <img class="book_logo" src="../../images/icon_logo.svg" alt="">
     </a>
     <ul class="nav justify-content-between">
+    <?php if (isset($_SESSION['loginUser'])) : ?>
         <li class="nav-item">
-            <a class="nav-link my_text_blacktea nav_text">管理者「大師」,您好</a>
+            <a class="nav-link my_text_blacktea nav_text"><?= $_SESSION['loginUser']['name'] ?>,您好</a>
         </li>
         <li class="nav-item dropdown">
             <a style="display: inline" class="nav-link dropdown-toggle my_text_yellow" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
@@ -13,9 +14,14 @@
             <div class="dropdown-menu" style="left: -100%;top: 90%;">
                 <a class="dropdown-item" href="#">修改密碼</a>
                 <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="#">登出</a>
+                <a class="dropdown-item" href="../../pbook_index/logout.php">登出</a>
             </div>
         </li>
+        <?php else : ?>
+        <li class="nav-item">
+            <a class="nav-link my_text_blacktea nav_text" href="../../pbook_index/login.php">登入</a>
+        </li>
+        <?php endif; ?>
     </ul>
 </nav>
 
@@ -33,7 +39,7 @@
                     </div>
                 </button>
                 <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
-                    <button type="button" class="btn btn-light sub_aside_text">
+                    <button type="button" class="btn btn-light sub_aside_text" onclick="CP_data_list()">
                         <i class="fas fa-caret-right"></i>
                         <span>出版社總表</span>
                     </button>
@@ -73,22 +79,15 @@
                     </div>
                 </button>
                 <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordion">
-                    <button type="button" class="btn btn-light sub_aside_text">
+                    <button type="button" class="btn btn-light sub_aside_text" >
                         <i class="fas fa-caret-right"></i>
-                        <span>會員總表</span>
+                        <span>會員列表</span>
                     </button>
                     <button type="button" class="btn btn-light sub_aside_text">
                         <i class="fas fa-caret-right"></i>
-                        <span>新增會員</span>
+                        <span>會員等級</span>
                     </button>
-                    <button type="button" class="btn btn-light sub_aside_text">
-                        <i class="fas fa-caret-right"></i>
-                        <span>會員訂單總表</span>
-                    </button>
-                    <button type="button" class="btn btn-light sub_aside_text">
-                        <i class="fas fa-caret-right"></i>
-                        <span>會員書評總表</span>
-                    </button>
+
                 </div>
             </div>
 
@@ -193,3 +192,8 @@
             </div>
         </div>
     </aside>
+    <script>
+        function CP_data_list() {
+            location = "../company_Management/CP_data_list.php";
+        }
+    </script>
