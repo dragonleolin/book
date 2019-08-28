@@ -106,13 +106,13 @@ $rows = $stmt->fetchAll();
     <nav class="" aria-label="Page navigation example ">
         <ul class="pagination justify-content-center">
             <li class="page-item">
-                <a class="page-link my_text_blacktea" href="?page=<?= 1 ?>" aria-label="Next">
-                    <i class="far fa-arrow-alt-circle-left"></i>
+                <a class="page-link my_text_blacktea" href="?page=1" aria-label="Next">
+                <i class="fas fa-angle-double-left"></i>
                 </a>
             </li>
             <li class="page-item">
-                <a class="page-link" href="?page=<?= $page - 1 ?>">
-                    <span aria-hidden="true">&laquo;</span>
+                <a class="page-link" href="?page=<?= ($page - 1 <= 0) ? 1 : $page - 1 ?>">
+                <i class="fas fa-angle-left"></i>
                 </a>
             </li>
             <?php
@@ -128,32 +128,46 @@ $rows = $stmt->fetchAll();
                     <a class="page-link" href="?page=<?= $i ?>"><?= $i ?></a></li>
             <?php endfor; ?>
             <li class="page-item">
-                <a class="page-link my_text_blacktea" href="?page=<?= $page  + 1 ?>" aria-label="Next">
-                    <span aria-hidden="true">&raquo;</span>
+                <a class="page-link my_text_blacktea" href="?page=<?= ($page + 1 > $totalPage) ? $totalPage : $page + 1 ?> ?>" aria-label="Next">
+                <i class="fas fa-angle-right"></i>
                 </a>
             </li>
             <li class="page-item">
                 <a class="page-link my_text_blacktea" href="?page=<?= $totalPage ?>" aria-label="Next">
-                    <i class="far fa-arrow-alt-circle-right"></i>
+                <i class="fas fa-angle-double-right"></i>
                 </a>
             </li>
         </ul>
     </nav>
+    <!-- 刪除提示框 -->
+    <div class="delete update card" id="delete_confirm" style="display:none">
+        <div class="delete card-body">
+            <label class="delete_text " id="delete_info"></label>
+            <div>
+                <button type="button" class="delete btn btn-danger" onclick="delete_yes()">確認</button>
+                <button type="button" class="delete btn btn-warning" onclick="delete_no()">取消</button>
+            </div>
+        </div>
+    </div>
 </section>
 <script>
-    let search_bar = document.querySelector('#search_bar');
-    const letsSearch = (evt) => {
-        // location.href
-
-
-    }
-    search_bar.addEventListener('keydown', letsSearch);
+    let delete_info = document.querySelector('#delete_info');
+    let delete_confirm = document.querySelector('#delete_confirm')
 
     function delete_one(sid) {
-        console.log('2');
-        if (confirm(`確定要刪除編號${sid}的資料嗎?`)) {
-            location.href = 'MR_memberData_delete.php?sid=' + sid;
-        }
+        delete_confirm.style.display = "block";
+        delete_info.innerHTML = `確定要刪除編號${sid}的資料嗎?`;
+        delete_sid = sid;
+        // if (confirm(`確定要刪除編號${sid}的資料嗎?`)) {
+        //     location.href = 'MR_memberData_delete.php?sid=' + sid;
+        // }
+    }
+    let delete_sid;
+    function delete_yes() {
+        location.href = 'MR_memberData_delete.php?sid=' + delete_sid;
+    }
+    function delete_no() {
+        delete_confirm.style.display = "none";
     }
 </script>
 
