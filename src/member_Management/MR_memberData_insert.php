@@ -58,10 +58,10 @@ $a_level = [
                 <label class="form-group">
                     <label for="personLevel">會員等級 : </label>
                     <?php for ($i = 0; $i < 5; $i++) : ?>
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="personLevel" value="<?= $i ?>" id="personLevel<?= $i ?>">
-                        <label class="form-check-label" for="personLevel<?= $i ?>"><?= $a_level[$i] ?> </label>
-                    </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="personLevel" value="<?= $i ?>" id="personLevel<?= $i ?>">
+                            <label class="form-check-label" for="personLevel<?= $i ?>"><?= $a_level[$i] ?> </label>
+                        </div>
                     <?php endfor ?>
                 </label>
                 <div>
@@ -69,8 +69,14 @@ $a_level = [
                         <div>
                             <label for="name">會員姓名</label>
                             <div class="">
-                                <input type="text" class="form-control input_width" id="name" name="name">
+                                <input type="text" class="form-control right_input1" id="name" name="name">
                                 <small id="nameHelp" class="form-text  small_fix"></small>
+                            </div>
+                        </div>
+                        <div class="right_input ">
+                            <label for="nickname">暱稱</label>
+                            <div class="">
+                                <input type="text" class="form-control right_input1 " id="nickname" name="nickname">
                             </div>
                         </div>
                         <div class="form-group gender_fix">
@@ -91,7 +97,7 @@ $a_level = [
                         <label for="password">密碼</label>
                         <div class="dis_relative">
                             <input type="password" class="form-control input_width " id="password" name="password">
-                            <i class="fas fa-eye-slash ps_hide" id="eye1"></i>    
+                            <i class="fas fa-eye-slash ps_hide" id="eye1"></i>
                         </div>
                     </div>
                     <div class="form-group right_input ">
@@ -183,14 +189,14 @@ $a_level = [
     let password = document.querySelector('#password');
     let eye1 = document.querySelector('#eye1');
     let eye2 = document.querySelector('#eye2');
-    
+
 
     const showPassword = (evt) => {
         if (evt.currentTarget.id == 'eye1') {
-            password.type = (password.type=="password")? "text" :"password";
+            password.type = (password.type == "password") ? "text" : "password";
         }
         if (evt.currentTarget.id == 'eye2') {
-            password_confirm.type = (password_confirm.type=="password")? "text" :"password";
+            password_confirm.type = (password_confirm.type == "password") ? "text" : "password";
         }
     }
     eye1.addEventListener('click', showPassword);

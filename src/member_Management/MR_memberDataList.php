@@ -75,7 +75,7 @@ $rows = $stmt->fetchAll();
             <thead>
                 <tr>
                     <?php for ($i = 0; $i < count($thead_item); $i++) : ?>
-                    <th scope="col"><?= $thead_item[$i] ?></th>
+                        <th scope="col"><?= $thead_item[$i] ?></th>
                     <?php endfor ?>
                     <th scope="col">詳細</th>
                     <th scope="col">修改</th>
@@ -85,26 +85,31 @@ $rows = $stmt->fetchAll();
             <tbody>
 
                 <?php foreach ($rows as $a) : ?>
-                <tr>
-                    <td><?= $a['sid'] ?></td>
-                    <td><?= htmlentities($a['MR_number']) ?></td>
-                    <td><?= htmlentities($a['MR_personLevel']) ?></td>
-                    <td><?= htmlentities($a['MR_name']) ?></td>
-                    <td><?= htmlentities($a['MR_password']) ?></td>
-                    <td><?= htmlentities($a['MR_email']) ?></td>
-                    <td><?= (htmlentities($a['MR_gender'])) ? '男' : '女' ?></td>
-                    <td><?= htmlentities($a['MR_birthday']) ?></td>
-                    <td><?= htmlentities($a['MR_mobile']) ?></td>
-                    <td><a href="#"><i class="fas fa-file-alt"></i></i></a></td>
-                    <td><a href="MR_memberData_update.php?sid=<?= $a['sid'] ?>"><i class="fas fa-edit"></i></a></td>
-                    <td><a href="javascript:delete_one(<?= $a['sid'] ?>)"><i class="fas fa-trash-alt"></i></a></td>
-                </tr>
+                    <tr>
+                        <td><?= $a['sid'] ?></td>
+                        <td><?= htmlentities($a['MR_number']) ?></td>
+                        <td><?= htmlentities($a['MR_personLevel']) ?></td>
+                        <td><?= htmlentities($a['MR_name']) ?></td>
+                        <td><?= htmlentities($a['MR_password']) ?></td>
+                        <td><?= htmlentities($a['MR_email']) ?></td>
+                        <td><?= (htmlentities($a['MR_gender'])) ? '男' : '女' ?></td>
+                        <td><?= htmlentities($a['MR_birthday']) ?></td>
+                        <td><?= htmlentities($a['MR_mobile']) ?></td>
+                        <td><a href="#"><i class="fas fa-file-alt"></i></i></a></td>
+                        <td><a href="MR_memberData_update.php?sid=<?= $a['sid'] ?>"><i class="fas fa-edit"></i></a></td>
+                        <td><a href="javascript:delete_one(<?= $a['sid'] ?>)"><i class="fas fa-trash-alt"></i></a></td>
+                    </tr>
                 <?php endforeach ?>
             </tbody>
         </table>
     </div>
     <nav class="" aria-label="Page navigation example ">
         <ul class="pagination justify-content-center">
+            <li class="page-item">
+                <a class="page-link my_text_blacktea" href="?page=<?= 1 ?>" aria-label="Next">
+                    <i class="far fa-arrow-alt-circle-left"></i>
+                </a>
+            </li>
             <li class="page-item">
                 <a class="page-link" href="?page=<?= $page - 1 ?>">
                     <span aria-hidden="true">&laquo;</span>
@@ -119,33 +124,37 @@ $rows = $stmt->fetchAll();
                 if ($i < 1 or $i > $totalPage) continue;
                 //continue跳過該次迴圈
                 ?>
-            <li class="page-item <?= $i == $page ? 'active' : '' ?>">
-                <a class="page-link" href="?page=<?= $i ?>"><?= $i ?></a></li>
+                <li class="page-item <?= $i == $page ? 'active' : '' ?>">
+                    <a class="page-link" href="?page=<?= $i ?>"><?= $i ?></a></li>
             <?php endfor; ?>
             <li class="page-item">
                 <a class="page-link my_text_blacktea" href="?page=<?= $page  + 1 ?>" aria-label="Next">
                     <span aria-hidden="true">&raquo;</span>
                 </a>
-
+            </li>
+            <li class="page-item">
+                <a class="page-link my_text_blacktea" href="?page=<?= $totalPage ?>" aria-label="Next">
+                    <i class="far fa-arrow-alt-circle-right"></i>
+                </a>
             </li>
         </ul>
     </nav>
 </section>
 <script>
-    let search_bar=document.querySelector('#search_bar');
-    const letsSearch=(evt)=>{
+    let search_bar = document.querySelector('#search_bar');
+    const letsSearch = (evt) => {
         // location.href
 
 
     }
-    search_bar.addEventListener('keydown',letsSearch);
-    
+    search_bar.addEventListener('keydown', letsSearch);
+
     function delete_one(sid) {
         console.log('2');
         if (confirm(`確定要刪除編號${sid}的資料嗎?`)) {
-                location.href = 'MR_memberData_delete.php?sid=' + sid;
-            }
+            location.href = 'MR_memberData_delete.php?sid=' + sid;
         }
+    }
 </script>
 
 <?php include '../../pbook_index/__html_foot.php' ?>
