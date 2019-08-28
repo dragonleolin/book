@@ -94,7 +94,7 @@ $form_data2 = [
             <label class="success_text" id="info_bar"></label>
             <div><img class="success_img" src="../../images/icon_checked.svg"></div>
         </div>
-    </div>  
+    </div>
 </section>
 </div>
 <script>
