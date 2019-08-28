@@ -33,7 +33,7 @@
                     </div>
                 </button>
                 <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
-                    <button type="button" class="btn btn-light sub_aside_text">
+                    <button type="button" class="btn btn-light sub_aside_text" onclick="CP_data_list()">
                         <i class="fas fa-caret-right"></i>
                         <span>出版社總表</span>
                     </button>
@@ -186,3 +186,8 @@
             </div>
         </div>
     </aside>
+    <script>
+        function CP_data_list() {
+            location = "../company_Management/CP_data_list.php";
+        }
+    </script>

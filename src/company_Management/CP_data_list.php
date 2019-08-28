@@ -47,7 +47,7 @@ $stmt = $pdo->query($sql);
                 <li class="nav-item">
                     <div style="padding: 0.375rem 0.75rem;">
                         <i class="fas fa-check"></i>
-                        目前總計___筆資料
+                        目前總計<?=$totalRows ?>筆資料
                     </div>
                 </li>
                 <li class="nav-item" style="margin: 0px 10px">
@@ -69,7 +69,7 @@ $stmt = $pdo->query($sql);
 
         <!-- 每個人填資料的區塊 -->
         <div style="margin-top: 1rem">
-            <table class="table table-striped table-bordered" style="width: 80vw ; text-align: center; font-size:16px; height:75vh">
+            <table class="table table-striped table-bordered" style="width: 80vw ; text-align: center; font-size:16px; max-height:75vh">
                 <thead>
                     <tr>
                         <th scope="col">#</th>
@@ -120,9 +120,9 @@ $stmt = $pdo->query($sql);
                     </a>
                 </li>
                 <?php
-                $p_start = $page - 5;
-                $p_end = $page + 5;
-                if ($page < 5) :
+                $p_start = $page - 4;
+                $p_end = $page + 4;
+                if ($page < 6) :
                     for ($i = $p_start; $i <= 10; $i++) :
                         if ($i < 1 or $i > $totalPages) continue;
                         ?>
@@ -132,7 +132,7 @@ $stmt = $pdo->query($sql);
                 <?php endfor; ?>
                 <?php endif; ?>
                 <?php
-                if ($page >= 5) :
+                if ($page >= 6) :
                     for ($i = 1; $i <= $p_end; $i++) :
                         if ($i < 1 or $i > $totalPages) continue;
                         ?>

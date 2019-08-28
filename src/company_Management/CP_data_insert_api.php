@@ -7,20 +7,16 @@ $result = [
     'code' => 400,
     'info' => '輸入錯誤',
 ];
-# 如果沒有輸入必要欄位, 就離開
-if (empty($_POST['cp_name'])) {
-    echo json_encode($result, JSON_UNESCAPED_UNICODE);
-    exit;
-}
 
 $sql = "INSERT INTO `cp_data_list`(`cp_name`, `cp_contact_p`, `cp_phone`, `cp_email`, `cp_address`, `cp_tax_id`, `cp_stock`, `cp_account`, `cp_password`, `cp_logo`, `cp_created_date`)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?,NOW())";
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?,NOW())";
 $stmt = $pdo->prepare($sql);
 $stmt->execute([
     $_POST['cp_name'],
     $_POST['cp_contact_p'],
     $_POST['cp_phone'],
     $_POST['cp_email'],
+    $_POST['cp_address'],
     $_POST['cp_tax_id'],
     $_POST['cp_stock'],
     $_POST['cp_account'],
@@ -34,6 +30,7 @@ if ($stmt->rowCount() == 1) {
     $result['code'] = 200;
     $result['info'] = '新增成功';
 } else {
+    $result['success'] = false;
     $result['code'] = 400;
     $result['info'] = '新增失敗';
 }
