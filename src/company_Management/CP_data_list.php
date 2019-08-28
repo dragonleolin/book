@@ -47,7 +47,7 @@ $stmt = $pdo->query($sql);
                 <li class="nav-item">
                     <div style="padding: 0.375rem 0.75rem;">
                         <i class="fas fa-check"></i>
-                        目前總計<?=$totalRows ?>筆資料
+                        目前總計<?= $totalRows ?>筆資料
                     </div>
                 </li>
                 <li class="nav-item" style="margin: 0px 10px">
@@ -103,8 +103,8 @@ $stmt = $pdo->query($sql);
                         <td><?= htmlentities($r['cp_password']) ?></td>
                         <td><?= htmlentities($r['cp_logo']) ?></td>
                         <td><?= htmlentities($r['cp_created_date']) ?></td>
-                        <td><a href="CP_data_edit.php?sid=<?= $r['sid']?>"><i class="fas fa-edit"></i></a></td>
-                        <td><a href="#"><i class="fas fa-trash-alt"></i></a></td>
+                        <td><a href="CP_data_edit.php?sid=<?= $r['sid'] ?>"><i class="fas fa-edit"></i></a></td>
+                        <td><a href="javascript:delete_one(<?= $r['sid'] ?>)"><i class="fas fa-trash-alt"></i></a></td>
                     </tr>
                     <?php endwhile; ?>
                 </tbody>
@@ -127,7 +127,7 @@ $stmt = $pdo->query($sql);
                         if ($i < 1 or $i > $totalPages) continue;
                         ?>
                 <li class="page-item">
-                    <a class="page-link" style="<?= $i == $page ? 'background: rgba(156, 197, 161, 0.5) ;color: #ffffff;':'' ?>" href="?page=<?= $i ?>"><?= $i ?></a>
+                    <a class="page-link" style="<?= $i == $page ? 'background: rgba(156, 197, 161, 0.5) ;color: #ffffff;' : '' ?>" href="?page=<?= $i ?>"><?= $i ?></a>
                 </li>
                 <?php endfor; ?>
                 <?php endif; ?>
@@ -137,7 +137,7 @@ $stmt = $pdo->query($sql);
                         if ($i < 1 or $i > $totalPages) continue;
                         ?>
                 <li class="page-item ">
-                <a class="page-link" style="<?= $i == $page ? 'background: rgba(156, 197, 161, 0.5) ;color: #ffffff;':'' ?>" href="?page=<?= $i ?>"><?= $i ?></a>
+                    <a class="page-link" style="<?= $i == $page ? 'background: rgba(156, 197, 161, 0.5) ;color: #ffffff;' : '' ?>" href="?page=<?= $i ?>"><?= $i ?></a>
                 </li>
                 <?php endfor; ?>
                 <?php endif; ?>
@@ -151,22 +151,35 @@ $stmt = $pdo->query($sql);
 
 
         <!-- 刪除提示框 -->
-        <!-- <div class="delete update card">
-                    <div class="delete card-body">
-                        <label class="delete_text">您確認要刪除資料嗎?</label>
-                        <div>
-                            <button type="button" class="delete btn btn-danger">確認</button>
-                            <button type="button" class="delete btn btn-warning">取消</button>
-                        </div>
-                    </div>
-                </div> -->
+        <div class="delete update card" id="delete_confirm" style="display: none">
+            <div class="delete card-body">
+                <label class="delete_text">您確認要刪除資料嗎?</label>
+                <div>
+                    <button type="button" class="delete btn btn-danger" onclick="delete_yes()">確認</button>
+                    <button type="button" class="delete btn btn-warning" onclick="delete_no()">取消</button>
+                </div>
+            </div>
+        </div>
 
 </section>
 </div>
 <script>
-    function data_insert(){
-        location="CP_data_insert.php";
+    function data_insert() {
+        location = "CP_data_insert.php";
+    }
+    let delete_confirm = document.querySelector('#delete_confirm');
+    var a;
+    function delete_one(sid) {
+        var a = sid;
+        delete_confirm.style.display = 'block';
     }
 
+    function delete_yes(a) {
+        location.href = 'CP_data_delete.php?sid=' + a;
+    }
+
+    function delete_no() {
+        location.href = window.location.href;
+    }
 </script>
 <?php include __DIR__ . '/../../pbook_index/__html_foot.php' ?>
