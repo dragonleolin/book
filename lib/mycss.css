@@ -296,6 +296,7 @@ body{
     text-align: center;
 }
 .success_text{
+    background: #fff;
     font-size: 50px;
     color: #ffc408;
 }
