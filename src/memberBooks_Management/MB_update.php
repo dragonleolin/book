@@ -1,21 +1,14 @@
 <?php
-require __DIR__ . '/__connect_db.php';
-$page_name = 'MB_data_list';
-$page_title = '新增資料';
+
+
 
 ?>
+
+
 <?php include __DIR__ . '/../../pbook_index/__html_head.php' ?>
 <style>
     body {
         background: url(../../images/bg.png) repeat center top;
-    }
-    .big_container{
-        position: relative;
-    }
-    .success_bar{
-        position: absolute;
-        top: 250px;
-        left: 500px;
     }
 </style>
 <?php include __DIR__ . '/../../pbook_index/__html_body.php' ?>
@@ -23,10 +16,10 @@ $page_title = '新增資料';
 <!-- 右邊section資料欄位 -->
 
 <section>
-    <div class="container big_container">
+    <div class="container">
         <nav class="navbar justify-content-between" style="padding: 0px;width: 80vw;">
             <div>
-                <h4>新增會員書籍</h4>
+                <h4>修改會員書籍</h4>
                 <div class="title_line"></div>
             </div>
         </nav>
@@ -86,11 +79,11 @@ $page_title = '新增資料';
                             <input type="text" class="form-control" id="mb_shelveMember" name="mb_shelveMember">
                         </div>
 
-                        <div class="form-group">
+                        <!-- <div class="form-group">
                             <label for="mb_pic">Example file input</label>
                             <input type="file" class="form-control-file" id="mb_pic" name="mb_pic">
-                        </div>
-                        <div class="form-group">
+                        </div> -->
+                        <!-- <div class="form-group">
                             <label for="mb_categories" class="update_label">分類</label>
                             <div class="form-check d-flex" style="background:#ddd;margin:0px 0px 20px 0px">
                                 <div style="width:100px">
@@ -178,7 +171,7 @@ $page_title = '新增資料';
                                     <label class="form-check-label" for="inlineCheckbox1">文學小說</label>
                                 </div>
                             </div>
-                        </div>
+                        </div> -->
                         <div class="from-group">
                             <label for="mb_remarks" class="update_label">備註</label>
                             <textarea class="update form-control" name="mb_remarks" id="mb_remarks" cols="30" rows="10" style="width:700px;height:130px;resize:none"></textarea>
@@ -191,19 +184,19 @@ $page_title = '新增資料';
             </form>
         </div>
     </div>
-    <div class="success update card success_bar" id="success_bar" style="background:#fff; display:none;">
-        <div class="success card-body">
-            <label class="success_text" id="info-bar"></label>
-            <div><img class="success_img" src="../../images/icon_checked.svg"></div>
-        </div>
-    </div>
 </section>
 <!-- 以下為修改或新增成功才會跳出來的顯示框 -->
-
+<div class="success update card" id="info-bar" style="display:none">
+    <div class="success card-body">
+        <label class="success_text">新增成功</label>
+        <div><img class="success_img" src="../..//images/icon_checked.svg"></div>
+    </div>
 </div>
+</div>
+
+
 <script>
     let info_bar = document.querySelector('#info-bar');
-    let success_bar = document.querySelector('#success_bar')
     const submit_btn = document.querySelector('#submit_btn');
     let i, s, item;
 
@@ -255,60 +248,29 @@ $page_title = '新增資料';
 
     ];
 
-    for (s in require_fields) {
-        item = require_fields[s];
-        item.el = document.querySelector('#' + item.id);
-        item.infoEl = document.querySelector('#' + item.id + 'Help');
-    }
-
 
 
     function checkForm() {
 
-        for (s in require_fields) {
-            item = require_fields[s];
-            item.el.style.border = '1px solid #CCCCCC';
-            item.infoEl.innerHTML = '';
-        }
-        info_bar.style.display = 'none';
-        info_bar.innerHTML = '';
 
-        //TODO: 檢查必要欄位，欄位值的格式
-        let isPass = true;
-        //方法二
-        for (s in require_fields) {
-            item = require_fields[s];
-
-            if (!item.pattern.test(item.el.value)) {
-                item.el.style.border = '1px solid red';
-                item.infoEl.innerHTML = item.info;
-                isPass = false;
-            }
-        }
 
         let fd = new FormData(document.form1);
 
-        if (isPass) {
-            fetch('MB_insert_api.php', {
-                    method: 'POST',
-                    body: fd,
-                })
-                .then(response => {
-                    return response.json();
-                })
-                .then(json => {
-                    console.log(json);
-                    success_bar.style.display = 'block';
-                    info_bar.innerHTML = json.info;
-                    if (json.success) {
 
-                    } else {
-                        
-                    }
-                });
-            } else {
-            
-        }
+        fetch('MB_insert_api.php', {
+                method: 'POST',
+                body: fd,
+            })
+            .then(response => {
+                return response.json();
+            })
+            .then(json => {
+                console.log(json);
+
+            });
+
+
+
         return false;
     }
 </script>

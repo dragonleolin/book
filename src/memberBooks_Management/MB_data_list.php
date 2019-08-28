@@ -26,11 +26,10 @@ if ($page > $totalPages) {
 }
 
 $page_sql = sprintf(
-    "SELECT * FROM `mb_books` ORDER BY `sid` ASC LIMIT %s, %s",
+    "SELECT * FROM `mb_books` ORDER BY `mb_sid` ASC LIMIT %s, %s",
     ($page - 1) * $per_page, //從第幾筆開始
     $per_page  //一頁幾筆
 );
-
 $t_stmt = $pdo->query($page_sql);
 
 
@@ -108,19 +107,19 @@ $t_stmt = $pdo->query($page_sql);
                 <tbody>
                     <?php while ($r = $t_stmt->fetch()) { ?>
                     <tr>
-                        <td><?= $r['sid'] ?></td>
-                        <td><?= htmlentities($r['isbn']) ?></td>
-                        <td><?= htmlentities($r['name']) ?></td>
-                        <td><?= htmlentities($r['categories']) ?></td>
-                        <td><?= htmlentities($r['author']) ?></td>
-                        <td><?= htmlentities($r['publishing']) ?></td>
-                        <td><?= htmlentities($r['publish_date']) ?></td>
-                        <td><?= htmlentities($r['version']) ?></td>
-                        <td><?= htmlentities($r['fixed_price']) ?></td>
-                        <td><?= htmlentities($r['page']) ?></td>
-                        <td><?= htmlentities($r['savingStatus']) ?></td>
-                        <td><?= htmlentities($r['shelve_member']) ?></td>
-                        <td><?= htmlentities($r['shelve_date']) ?></td>
+                        <td><?= $r['mb_sid'] ?></td>
+                        <td><?= htmlentities($r['mb_isbn']) ?></td>
+                        <td><?= htmlentities($r['mb_name']) ?></td>
+                        <td><?= htmlentities($r['mb_categories']) ?></td>
+                        <td><?= htmlentities($r['mb_author']) ?></td>
+                        <td><?= htmlentities($r['mb_publishing']) ?></td>
+                        <td><?= htmlentities($r['mb_publishDate']) ?></td>
+                        <td><?= htmlentities($r['mb_version']) ?></td>
+                        <td><?= htmlentities($r['mb_fixedPrice']) ?></td>
+                        <td><?= htmlentities($r['mb_page']) ?></td>
+                        <td><?= htmlentities($r['mb_savingStatus']) ?></td>
+                        <td><?= htmlentities($r['mb_shelveMember']) ?></td>
+                        <td><?= htmlentities($r['mb_shelveDate']) ?></td>
                         <td><a href="#"><i class="fas fa-edit"></i></a></td>
                         <td><a href="#"><i class="fas fa-trash-alt"></i></a></td>
                     </tr>
