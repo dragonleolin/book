@@ -27,6 +27,10 @@ $form_data2 = [
         left: calc(50% - 350px);
         top: 30%;
     }
+    .rand_button{
+        right :10%  ;
+        top : 0;  
+    }
 </style>
 <?php include __DIR__ . '/../../pbook_index/__html_body.php' ?>
 <?php include __DIR__ . '/../../pbook_index/__navbar.php' ?>
@@ -40,7 +44,10 @@ $form_data2 = [
             </div>
         </nav>
         <!-- 每個人填資料的區塊 -->
-        <div class="container position-relative">
+        <div class="container position-relative" style="margin-left:calc( 50% - 314px)">
+            <div style="text-align: center">
+                <button type="button" class="btn btn-warning position-absolute rand_button" onclick="rand_data()">隨機產生</button>
+            </div>
             <div class="row">
                 <form name="form1" style="width:1000px" onsubmit="return checkForm()">
                     <div class="form-group d-flex">
@@ -90,6 +97,85 @@ $form_data2 = [
 </section>
 </div>
 <script>
+    function getRandom(min, max) {
+        return Math.floor(Math.random() * (max - min + 1)) + min;
+    };
+    function rand_data() {
+        let rand_phone = "";
+        for (let i = 0; i < 8; i++) {
+            let d = getRandom(0, 9);
+            rand_phone = rand_phone + d;
+        };
+        
+        let rand_email = "";
+        for (let i = 0; i < getRandom(6, 10); i++) {
+            let c = getRandom(1, 3);
+            let a, b;
+            if (c == 1) {
+                a = getRandom(97, 122);
+                b = String.fromCharCode(a);
+            }
+            if (c == 2) {
+                a = getRandom(65, 90);
+                b = String.fromCharCode(a);
+            }
+            if (c == 3) {
+                b = getRandom(0, 9);
+            }
+            rand_email = rand_email + b;
+        };
+        
+        let rand_tax = "";
+        for (let i = 0; i < 8; i++) {
+            let d = getRandom(0, 9);
+            rand_tax = rand_tax + d;
+        };
+        let rand_stock = "";
+        for (let i = 0; i < 3; i++) {
+            let d = getRandom(0, 9);
+            rand_stock = rand_stock + d;
+        };
+        let rand_acc = "";
+        for (let i = 0; i < getRandom(6, 14); i++) {
+            let c = getRandom(1, 3);
+            let a, b;
+            if (c == 1) {
+                a = getRandom(97, 122);
+                b = String.fromCharCode(a);
+            }
+            if (c == 2) {
+                a = getRandom(65, 90);
+                b = String.fromCharCode(a);
+            }
+            if (c == 3) {
+                b = getRandom(0, 9);
+            }
+            rand_acc = rand_acc + b;
+        };
+        let rand_pass = "";
+        for (let i = 0; i < getRandom(6, 14); i++) {
+            let c = getRandom(1, 3);
+            let a, b;
+            if (c == 1) {
+                a = getRandom(97, 122);
+                b = String.fromCharCode(a);
+            }
+            if (c == 2) {
+                a = getRandom(65, 90);
+                b = String.fromCharCode(a);
+            }
+            if (c == 3) {
+                b = getRandom(0, 9);
+            }
+            rand_pass = rand_pass + b;
+        };
+        document.querySelector('#cp_phone').value = '09' + rand_phone;
+        document.querySelector('#cp_email').value = rand_email + '@gmail.com';
+        document.querySelector('#cp_tax_id').value = rand_tax;
+        document.querySelector('#cp_stock').value = rand_stock;
+        document.querySelector('#cp_account').value = rand_acc;
+        document.querySelector('#cp_password').value = rand_pass;
+    }
     let info_bar = document.querySelector('#info_bar');
     let info_position = document.querySelector('#info_position');
     const required_fields = [{

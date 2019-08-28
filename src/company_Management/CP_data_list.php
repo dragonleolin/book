@@ -103,7 +103,7 @@ $stmt = $pdo->query($sql);
                         <td><?= htmlentities($r['cp_password']) ?></td>
                         <td><?= htmlentities($r['cp_logo']) ?></td>
                         <td><?= htmlentities($r['cp_created_date']) ?></td>
-                        <td><a href="#"><i class="fas fa-edit"></i></a></td>
+                        <td><a href="CP_data_edit.php?sid=<?= $r['sid']?>"><i class="fas fa-edit"></i></a></td>
                         <td><a href="#"><i class="fas fa-trash-alt"></i></a></td>
                     </tr>
                     <?php endwhile; ?>
