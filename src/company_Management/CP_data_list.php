@@ -168,16 +168,14 @@ $stmt = $pdo->query($sql);
         location = "CP_data_insert.php";
     }
     let delete_confirm = document.querySelector('#delete_confirm');
-    var a;
+    let a;
     function delete_one(sid) {
-        var a = sid;
+        a = sid;
         delete_confirm.style.display = 'block';
     }
-
-    function delete_yes(a) {
+    function delete_yes() {
         location.href = 'CP_data_delete.php?sid=' + a;
     }
-
     function delete_no() {
         location.href = window.location.href;
     }
