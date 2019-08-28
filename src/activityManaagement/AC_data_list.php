@@ -1,11 +1,34 @@
 <?php
 require __DIR__. '/AC__connect_db.php';
 // --------------------------------------
+$page_name = 'AC_date_list';
 
+$page = isset($_GET['page']) ? intval($_GET['page']) : 1; //用戶選頁
+
+$per_page = 5; //每筆顯示頁數
+
+$ac_sql = "SELECT COUNT(1) FROM `ac_pbook`";
+
+$totalRows = $pdo->query($ac_sql)->fetch(PDO::FETCH_NUM)[0];//總筆數
+$totalPages = ceil($totalRows/$per_page);//總頁數
+
+//分頁上限轉向
+if($page < 1){
+    header('Location: AC_data_list.php?page='. $totalPages);
+    exit;
+}
+if($page > $totalPages){
+    header('Location: AC_data_list.php');
+    exit;
+}
+
+$sql = sprintf("SELECT * FROM `ac_pbook` ORDER BY `AC_name` DESC LIMIT %s,%s",//limit
+($page-1)*$per_page,
+$per_page    //呈現的頁數
+);
+
+$stmt = $pdo->query($sql);
 // --------------------------------------
-$stmt = $pdo->query("SELECT * FROM `ac_pbook`");
-$rows = $stmt->fetchAll();
-
 ?>
 <?php include __DIR__ . '/../../pbook_index/__html_head.php' ?>
 <style>
@@ -14,7 +37,7 @@ $rows = $stmt->fetchAll();
     }
 </style>
 <?php include __DIR__ . '/../../pbook_index/__html_body.php' ?>
-<?php include __DIR__ . '/../../pbook_index/__navbar.php' ?>
+<?php include __DIR__ . '/AC__navbar.php' ?>
 
 
 
@@ -64,15 +87,15 @@ $rows = $stmt->fetchAll();
                             <th scope="col">聯絡電話</th>
                             <th scope="col">主辦單位</th>
                             <th scope="col">參加費用</th>
-                            <!-- <th scope="col">建立時間</th> -->
+                            <th scope="col">建立時間</th>
                             <th scope="col">修改</th>
                             <th scope="col">刪除</th>
                         </tr>
                     </thead>
 
                     <tbody>
-                        <?php foreach($rows as $r):?>
-                        <tr>
+                        <?php while($r=$stmt->fetch()){ ?>
+                            <tr>
                             <td><?= $r['AC_sid'] ?></td>
                             <td><?= $r['AC_name'] ?></td>
                             <td><?= $r['AC_title'] ?></td>
@@ -82,11 +105,17 @@ $rows = $stmt->fetchAll();
                             <td><?= $r['AC_mobile'] ?></td>
                             <td><?= $r['AC_organizer'] ?></td>
                             <td><?= $r['AC_price'] ?></td>
+                            <td><?= $r['AC_created_at'] ?></td>
                             
                             <td><a href="#"><i class="fas fa-edit"></i></a></td>
                             <td><a href="#"><i class="fas fa-trash-alt"></i></a></td>
                         </tr>
-                        <?php endforeach; ?>
+                        <?php } ?>
+
+
+                       
+                        
+                        
                     </tbody>
                 </table>
             </div>
@@ -95,19 +124,40 @@ $rows = $stmt->fetchAll();
             <nav aria-label="Page navigation example">
                 <ul class="pagination">
                     <li class="page-item">
-                        <a class="page-link" href="#" aria-label="Previous">
-                            <span aria-hidden="true">&laquo;</span>
-                        </a>
+                    <a class="page-link" href="?page=<?= $page - 1 ?>" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
                     </li>
-                    <li class="page-item"><a class="page-link" href="#">1</a></li>
-                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                    <li class="page-item"><a class="page-link" href="#">3</a></li>
-                    <li class="page-item"><a class="page-link" href="#">4</a></li>
-                    <li class="page-item"><a class="page-link" href="#">5</a></li>
+                    
+                    <?php
+                    $p_start = $page - 5;
+                    $p_end = $page + 5;
+                     if ($page < 5) :
+                         for ($i = $p_start; $i <= 10; $i++) :
+                            if ($i < 1 or $i > $totalPages) continue;
+                            ?>
+
                     <li class="page-item">
-                        <a class="page-link my_text_blacktea" href="#" aria-label="Next">
-                            <span aria-hidden="true">&raquo;</span>
-                        </a>
+                    <a class="page-link" style="<?= $i == $page ? 'background: rgba(156, 197, 161, 0.5) ;color: #ffffff;':'' ?>" href="?page=<?= $i ?>"><?= $i ?></a>
+                    </li>
+                    <?php endfor; ?>
+                    <?php endif; ?>
+                    <?php
+                    if ($page >= 5) :
+                      for ($i = 1; $i <= $p_end; $i++) :
+                        if ($i < 1 or $i > $totalPages) continue;
+                        ?>
+                        
+                    <li class="page-item ">
+                    <a class="page-link" style="<?= $i == $page ? 'background: rgba(156, 197, 161, 0.5) ;color: #ffffff;':'' ?>" href="?page=<?= $i ?>"><?= $i ?></a>
+                    </li>
+                    <?php endfor; ?>
+                    <?php endif; ?>
+
+                    <li class="page-item">
+                    <a class="page-link" href="?page=<?= $page + 1 ?>" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
                     </li>
                 </ul>
             </nav>

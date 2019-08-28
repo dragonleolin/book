@@ -15,6 +15,12 @@ $pdo_options = [
 
 $pdo = new PDO($dsn, $db_user, $db_pass, $pdo_options);
 
-if(! isset($_SESSION)){
-    session_start();
-}
+// try {
+//     $pdo = new PDO($dsn, $db_user, $db_pass, $pdo_options);
+// }   catch(PDOException $ex) {
+//     echo 'connection failed:'. $ex->getMessage();
+// } 
+
+// if(! isset($_SESSION)){ 
+//     session_start();
+// }
