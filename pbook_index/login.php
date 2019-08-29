@@ -82,7 +82,7 @@ $page_title = '登入';
             <h5 class="card-title">品書網管理者登入</h5>
             <form name="form1" onsubmit="return checkForm()">
                 <div class="form-group">
-                    <label for="email">帳號</label>
+                    <label for="account">帳號</label>
                     <input type="text" class="form-control" id="account" name="account" >
                     <small id="accountHelp" class="form-text"></small>
                 </div>

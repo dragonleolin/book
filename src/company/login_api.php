@@ -25,6 +25,7 @@ $stmt->execute([
 ]);
 
 $row = $stmt->fetch();
+
 if (!empty($row)) {
     $_SESSION['loginUser2'] = $row;
     $result['success'] = true;

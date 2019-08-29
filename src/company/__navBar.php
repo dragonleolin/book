@@ -19,7 +19,7 @@
         </li>
         <?php else : ?>
         <li class="nav-item">
-            <a class="nav-link my_text_blacktea nav_text" href="../../pbook_index/login.php">登入</a>
+            <a class="nav-link my_text_blacktea nav_text" href="login.php">登入</a>
         </li>
         <?php endif; ?>
     </ul>

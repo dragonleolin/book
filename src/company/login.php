@@ -2,7 +2,7 @@
 require __DIR__ . '/__connect_db.php';
 $page_title = '登入';
 ?>
-<?php include __DIR__ . '__html_head.php' ?>
+<?php include __DIR__ . '/__html_head.php' ?>
 <style>
     body {
         background: url(../../images/bg.png) repeat center top;
@@ -67,7 +67,7 @@ $page_title = '登入';
         <h5 class="card-title">品書網出版社登入</h5>
         <form name="form1" onsubmit="return checkForm()">
             <div class="form-group">
-                <label for="email">帳號</label>
+                <label for="account">帳號</label>
                 <input type="text" class="form-control" id="account" name="account">
                 <small id="accountHelp" class="form-text"></small>
             </div>
