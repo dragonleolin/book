@@ -1,5 +1,5 @@
 <?php
-$db_host = 'localhost';
+$db_host = '192.168.27.186';
 $db_name = 'nana_vb_project';
 $db_user = 'Nana';
 $db_pass = 'addme';

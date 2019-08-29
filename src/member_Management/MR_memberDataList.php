@@ -13,7 +13,7 @@ $per_page = 10; // 每頁顯示的筆數
 
 $params = [];
 $where = ' WHERE 1 ';
-if(! empty($search)){
+if (!empty($search)) {
     $params['search'] = $search;
     $search = $pdo->quote("%$search%");
     $where .= " AND (`MR_name` LIKE $search OR `MR_email` LIKE $search OR `MR_mobile` LIKE $search) ";
@@ -36,11 +36,16 @@ if ($page > $totalPage) {
     exit;
 }
 
-$sql = "SELECT * FROM `mr_information` $where ORDER BY `sid` LIMIT ". ($page - 1) * $per_page .",". $per_page;
+$sql = "SELECT * FROM `mr_information` $where ORDER BY `sid` LIMIT " . ($page - 1) * $per_page . "," . $per_page;
 $stmt = $pdo->query($sql);
 $rows = $stmt->fetchAll();
 ?>
 <?php include '../../pbook_index/__html_head.php' ?>
+<style>
+    body {
+        background: url(../../images/bg.png) repeat center top;
+    }
+</style>
 <?php include '../../pbook_index/__html_body.php' ?>
 <?php include '../../pbook_index/__navbar.php' ?>
 <div id="outerSpace">

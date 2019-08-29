@@ -145,8 +145,8 @@ $stmt = $pdo->query($categories_sql);
                             <td><?= $row[$i]['fixed_price']; ?></td>
                             <td><?= $row[$i]['page']; ?></td>
                             <td><?= $row[$i]['stock']; ?></td>
-                            <td><a href="#" onclick="vb_data_update()"><i class="fas fa-edit"></i></a></td>
-                            <td><a href="#" onclick="delete_one(<?= $row[$i]['sid']; ?>)" id="btn_delete"><i class="fas fa-trash-alt"></i></a></td>
+                            <td><a href="vb_data_update.php?sid=<?= $row[$i]['sid'] ?>"><i class="fas fa-edit"></i></a></td>
+                            <td><a href="#" onclick="delete_one(<?= $row[$i]['sid'] ?>)" id="btn_delete"><i class="fas fa-trash-alt"></i></a></td>
                         </tr>
                     <?php endfor; ?>
                 </tbody>
@@ -213,12 +213,7 @@ $stmt = $pdo->query($categories_sql);
         location = "vb_data_insert.php";
     }
 
-    function vb_data_update() {
-        location = "vb_data_update.php";
-    }
-
     let a;
-
     function delete_one(sid) {
         a = sid;
         let my_delete = document.querySelector('#my_delete');
@@ -230,7 +225,7 @@ $stmt = $pdo->query($categories_sql);
     }
 
     function delete_no() {
-        location.href = window.location.href;
+        location.href = 'vb_data_list.php?page=' + <?= $page ?>;
     }
 
 
