@@ -24,6 +24,7 @@ if (!isset($_SESSION)) {
         }
     </style>
     <?php include __DIR__ . '/__html_body.php' ?>
+
     <nav class="navbar justify-content-between my_bg_seasongreen">
         <a class="navbar-brand" href="_index.php">
             <img class="book_logo" src="../images/icon_logo.svg" alt="">
@@ -230,6 +231,7 @@ if (!isset($_SESSION)) {
             <img src="../images/admin_bg.png" alt="" style="height: 100%;object-fit: contain;width:100%">
         </section>
     </div>
+    
     <script>
         function CP_data_list() {
             location = "../src/company_Management/CP_data_list.php";
