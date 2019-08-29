@@ -28,8 +28,8 @@ $row = $stmt->fetchAll();
 
 ?>
 
-<?php require 'BR__html_head.php'; ?>
-<?php include __DIR__ . '/BR__html_body.php' ?>
+<?php require '__html_head.php'; ?>
+<?php include __DIR__ . '/__html_body.php' ?>
 <nav class="navbar justify-content-between my_bg_seasongreen">
     <a class="navbar-brand" href="example_index.php">
         <img class="book_logo" src="../../images/icon_logo.svg" alt="">
@@ -52,7 +52,7 @@ $row = $stmt->fetchAll();
 </nav>
 <div class="d-flex flex-row my_content">
     <!-- 左邊aside選單欄位 -->
-    <?php include __DIR__ . '/BR__navbar.php' ?>
+    <?php include __DIR__ . '/__navbar.php' ?>
     <!-- 右邊section資料欄位 -->
     <section>
         <div class="container">
@@ -152,3 +152,4 @@ $row = $stmt->fetchAll();
 
     </section>
 </div>
+<?php require '__html_foot.php'; ?>
