@@ -3,31 +3,31 @@
         <img class="book_logo" src="../../images/icon_logo.svg" alt="">
     </a>
     <ul class="nav justify-content-between">
-    <?php if (isset($_SESSION['loginUser'])) : ?>
-        <li class="nav-item">
-            <a class="nav-link my_text_blacktea nav_text">管理者「<?= $_SESSION['loginUser']['name'] ?>」,您好</a>
-        </li>
-        <li class="nav-item dropdown">
-            <a style="display: inline" class="nav-link dropdown-toggle my_text_yellow" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
-                <div class="my_login_img"><img class="yoko_logo" src="../../images/yoko.jpg" alt=""></div>
-            </a>
-            <div class="dropdown-menu" style="left: -100%;top: 90%;">
-                <a class="dropdown-item" href="../../pbook_index/password_edit.php">修改密碼</a>
-                <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="../../pbook_index/logout.php">登出</a>
-            </div>
-        </li>
+        <?php if (isset($_SESSION['loginUser'])) : ?>
+            <li class="nav-item">
+                <a class="nav-link my_text_blacktea nav_text">管理者「<?= $_SESSION['loginUser']['name'] ?>」,您好</a>
+            </li>
+            <li class="nav-item dropdown">
+                <a style="display: inline" class="nav-link dropdown-toggle my_text_yellow" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                    <div class="my_login_img"><img class="yoko_logo" src="../../images/yoko.jpg" alt=""></div>
+                </a>
+                <div class="dropdown-menu" style="left: -100%;top: 90%;">
+                    <a class="dropdown-item" href="../../pbook_index/password_edit.php">修改密碼</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="../../pbook_index/logout.php">登出</a>
+                </div>
+            </li>
         <?php else : ?>
-        <li class="nav-item">
-            <a class="nav-link my_text_blacktea nav_text" href="../../pbook_index/login.php">登入</a>
-        </li>
+            <li class="nav-item">
+                <a class="nav-link my_text_blacktea nav_text" href="../../pbook_index/login.php">登入</a>
+            </li>
         <?php endif; ?>
     </ul>
 </nav>
 
 <div class="d-flex flex-row my_content">
     <!-- 左邊aside選單欄位 -->
-    
+
     <aside class="d-flex aside_heigh">
         <div id="accordion">
             <div class="aside card">
@@ -79,7 +79,7 @@
                     </div>
                 </button>
                 <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordion">
-                    <button type="button" class="btn btn-light sub_aside_text" >
+                    <button type="button" class="btn btn-light sub_aside_text">
                         <i class="fas fa-caret-right"></i>
                         <span>會員列表</span>
                     </button>
@@ -112,32 +112,32 @@
             </div>
 
             <div class="aside card">
-            <button type="button" class="aside card-header btn btn-info" id="headingFive">
-                <div class="aside_hover" data-toggle="collapse" data-target="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
-                    <img class="aside_logo" src="../../images/icon_BR_m.svg" alt="">
-                    <span class="aside_text">書評人管理</span>
-                    <i class="fas fa-caret-down"></i>
+                <button type="button" class="aside card-header btn btn-info" id="headingFive">
+                    <div class="aside_hover" data-toggle="collapse" data-target="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
+                        <img class="aside_logo" src="../../images/icon_BR_m.svg" alt="">
+                        <span class="aside_text">書評人管理</span>
+                        <i class="fas fa-caret-down"></i>
+                    </div>
+                </button>
+                <div id="collapseFive" class="collapse" aria-labelledby="headingFive" data-parent="#accordion">
+                    <button type="button" class="btn btn-light sub_aside_text" onclick="location.href='BR_data_list.php'">
+                        <i class="fas fa-caret-right"></i>
+                        <span>書評人總表</span>
+                    </button>
+                    <button type="button" class="btn btn-light sub_aside_text " onclick="location.href='BR_insert.php'">
+                        <i class="fas fa-caret-right"></i>
+                        <span>新增書評人</span>
+                    </button>
+                    <button type="button" class="btn btn-light sub_aside_text" onclick="location.href='BR_bookreview_list.php'">
+                        <i class="fas fa-caret-right"></i>
+                        <span>書評列表</span>
+                    </button>
+                    <button type="button" class="btn btn-light sub_aside_text">
+                        <i class="fas fa-caret-right"></i>
+                        <span>影片列表</span>
+                    </button>
                 </div>
-            </button>
-            <div id="collapseFive" class="collapse" aria-labelledby="headingFive" data-parent="#accordion">
-                <button type="button" class="btn btn-light sub_aside_text" onclick="location.href='BR_data_list.php'">
-                    <i class="fas fa-caret-right"></i>
-                    <span>書評人總表</span>
-                </button>
-                <button type="button" class="btn btn-light sub_aside_text " onclick="location.href='BR_insert.php'">
-                    <i class="fas fa-caret-right"></i>
-                    <span>新增書評人</span>
-                </button>
-                <button type="button" class="btn btn-light sub_aside_text" onclick="location.href='BR_bookreview_list.php'">
-                    <i class="fas fa-caret-right"></i>
-                    <span>書評列表</span>
-                </button>
-                <button type="button" class="btn btn-light sub_aside_text">
-                    <i class="fas fa-caret-right"></i>
-                    <span>影片列表</span>
-                </button>
             </div>
-        </div>
 
             <div class="aside card">
                 <button type="button" class="aside card-header btn btn-info" id="headingSix">
@@ -196,9 +196,11 @@
         function CP_data_list() {
             location = "../company_Management/CP_data_list.php";
         }
+
         function vb_data_list() {
             location = "../venderBooks_Management/vb_data_list.php";
         }
+
         function vb_data_insert() {
             location = "../venderBooks_Management/vb_data_insert.php";
         }
