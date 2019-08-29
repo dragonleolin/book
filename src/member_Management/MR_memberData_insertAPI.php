@@ -1,19 +1,19 @@
-<?php require  '_db_connect.php' ?>
+<?php require  'MR_db_connect.php' ?>
 <?php
-$data_item = [
-    '#' => 'sid',
-    '會員編號' => 'number',
-    '等級' => 'personLevel',
-    '姓名' => 'name',
-    '密碼' => 'password',
-    '電子信箱' => 'email',
-    '性別' => 'gender',
-    '生日' => 'birthday',
-    '手機' => 'mobile',
-    '職業' => 'career',
-    '地址' => 'address',
-    '建立時間' => 'createdDate',
-];
+// $data_item = [
+//     '#' => 'sid',
+//     '會員編號' => 'number',
+//     '等級' => 'personLevel',
+//     '姓名' => 'name',
+//     '密碼' => 'password',
+//     '電子信箱' => 'email',
+//     '性別' => 'gender',
+//     '生日' => 'birthday',
+//     '手機' => 'mobile',
+//     '職業' => 'career',
+//     '地址' => 'address',
+//     '建立時間' => 'createdDate',
+// ];
 
 $result = [
     'success' => false,
@@ -58,7 +58,7 @@ $stmt->execute([
 ]);
 
 
-echo $stmt->rowCount();
+// echo $stmt->rowCount();
 //rowCount()可以返回DELETE, INSERT, 或者UPDATE語句的影響行數
 //此API只能新增一筆資料，回傳1代表新增成功
 if ($stmt->rowCount() == 1) {

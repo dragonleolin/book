@@ -30,13 +30,13 @@ $row = $stmt->fetchAll();
 ?>
 <style>
     body {
-        background: url(../images/bg.png) repeat center top;
+        background: url(../../images/bg.png) repeat center top;
     }
 </style>
 <?php require 'BR__html_head.php'; ?>
 <?php include __DIR__ . '/BR__html_body.php' ?>
 <nav class="navbar justify-content-between my_bg_seasongreen">
-    <a class="navbar-brand" href="#">
+    <a class="navbar-brand" href="example_index.php">
         <img class="book_logo" src="../../images/icon_logo.svg" alt="">
     </a>
     <ul class="nav justify-content-between">
@@ -119,8 +119,12 @@ $row = $stmt->fetchAll();
                             <td><?= htmlentities($value['BR_gender']) ?></td>
                             <td><?= htmlentities($value['BR_birthday']) ?></td>
                             <td><?= htmlentities($value['BR_job']) ?></td>
-                            <td><a href="BR_update.php?sid=<?= $value['sid'] ?>"><i class="fas fa-edit"></i></a></td>
-                            <td><a href="BR_delete.php?sid=<?= $value['sid'] ?>"><i class="fas fa-trash-alt"></i>
+                            <td><a href="BR_update.php?sid=<?= $value['sid'] ?>">
+                                    <i class="fas fa-edit"></i>
+                                </a>
+                            </td>
+                            <td><a href="javascript:delete_doublecheck(<?= $value['sid'] ?>)">
+                                    <i class="fas fa-trash-alt"></i>
                                 </a>
                             </td>
                         </tr>
@@ -133,18 +137,18 @@ $row = $stmt->fetchAll();
             <nav aria-label="Page navigation example">
                 <ul class="pagination">
                     <li class="page-item">
-                        <a class="page-link" href="#" aria-label="Previous">
+                        <a class="page-link" href="?page=<?= $page - 1 ?>" aria-label="Previous">
                             <span aria-hidden="true">&laquo;</span>
                         </a>
                     </li>
                     <?php for ($i = 1; $i <= $total_page; $i++) : ?>
-                    <li class="page-item" >
-                        <a class="page-link" href="?page=<?= $i ?>"><?= $i ?>
+                    <li class="page-item">
+                        <a class="page-link" style="<?= $i == $page ? 'background: rgba(156, 197, 161, 0.5) ;color: #ffffff;' : '' ?>" href="?page=<?= $i ?>"><?= $i ?>
                         </a>
                     </li>
                     <?php endfor; ?>
                     <li class="page-item">
-                        <a class="page-link" aria-label="Next" >
+                        <a class="page-link" aria-label="Next" href="?page=<?= $page + 1 ?>">
                             <span aria-hidden="true">&raquo;</span>
                         </a>
                     </li>
@@ -153,16 +157,32 @@ $row = $stmt->fetchAll();
 
 
             <!-- 刪除提示框 -->
-            <!-- <div class="delete update card">
-                    <div class="delete card-body">
-                        <label class="delete_text">您確認要刪除資料嗎?</label>
-                        <div>
-                            <button type="button" class="delete btn btn-danger">確認</button>
-                            <button type="button" class="delete btn btn-warning">取消</button>
-                        </div>
+            <div id="d_window" class="delete update card" style="display:none;">
+                <div class="delete card-body">
+                    <label class="delete_text">您確認要刪除資料嗎?</label>
+                    <div>
+                        <button type="button" class="delete btn btn-danger"  onclick="delete_enter()"> 確認</button>
+                        <button type="button" class="delete btn btn-warning" onclick="delete_cancel()">取消</button>
+                        <!-- <a href="BR_delete.php?sid=<?= $value['sid'] ?>"></a>  -->
                     </div>
-                </div> -->
+                </div>
+            </div>
 
     </section>
 </div>
+
+<script>
+    let delete_window = document.querySelector('#d_window');
+    let d;
+    function delete_doublecheck(sid) {
+        d = sid;
+        delete_window.style.display = 'block';
+    };
+    function delete_enter(){
+        location.href = 'BR_delete.php?sid=' + d;
+    }
+    function delete_cancel(){
+        window.location.href='BR_data_list.php'
+    }
+</script>
 <?php require 'BR__html_foot.php'; ?>

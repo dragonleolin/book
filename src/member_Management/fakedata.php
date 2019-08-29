@@ -1,4 +1,4 @@
-<?php require  '_db_connect.php' ?>
+<?php require  'MR_db_connect.php' ?>
 
 <?php
 

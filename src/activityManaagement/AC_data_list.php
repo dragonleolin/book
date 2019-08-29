@@ -22,7 +22,7 @@ if($page > $totalPages){
     exit;
 }
 
-$sql = sprintf("SELECT * FROM `ac_pbook` ORDER BY `AC_name` ASC LIMIT %s,%s",//limit
+$sql = sprintf("SELECT * FROM `ac_pbook` ORDER BY `AC_sid` DESC LIMIT %s,%s",//limit
 ($page-1)*$per_page,
 $per_page    //呈現的頁數
 );
@@ -57,9 +57,9 @@ $stmt = $pdo->query($sql);
                         </div>
                     </li>
                     <li class="nav-item" style="margin: 0px 10px">
-                        <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">
+                        <button class="btn btn-outline-primary my-2 my-sm-0" type="submit" onclick="location.href='AC_insert.php'">
                             <i class="fas fa-plus-circle"></i>
-                            新增廠商
+                            新增活動
                         </button>
                     </li>
                     <li class="nav-item" style="flex-grow: 1">
