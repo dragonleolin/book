@@ -1,6 +1,6 @@
 <?php
 
-$db_host = '192.168.27.186';
+$db_host = 'localhost';
 $db_name = 'pbook';
 $db_user = 'weihsun';
 $db_pass = '841012';
@@ -14,6 +14,7 @@ $pdo_options = [
 ];
 
 $pdo = new PDO($dsn, $db_user, $db_pass, $pdo_options);
+
 
 if(! isset($_SESSION)){
     session_start();

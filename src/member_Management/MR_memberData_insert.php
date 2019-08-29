@@ -27,7 +27,9 @@ $a_level = [
 <?php include '../../pbook_index/__html_head.php' ?>
 <link rel="stylesheet" href="lib/memberlist.css">
 <style>
-
+ body {
+            background: url(../../images/bg.png) repeat center top;
+        }
 </style>
 <?php include '../../pbook_index/__html_body.php' ?>
 <?php include '../../pbook_index/__navbar.php' ?>
@@ -43,15 +45,15 @@ $a_level = [
         </h4>
         <div class="title_line"></div>
     </div>
-    <div class="container-fluid">
-        <div class="container">
-            <div class="row mt-3 ">
-                <div class="col-md-6">
-                    <div class="alert alert-primary " role="alert" id="info-bar"></div>
-                </div>
+    <div class=" ">
+        <div class="row mt-3 ">
+            <div class="col-md-6">
+                <div class="alert alert-primary " role="alert" id="info-bar"></div>
             </div>
-            <div class="">
-                <form name="form1" style="width:1100px" onsubmit="return checkForm()">
+        </div>
+        <div class="container-fluid">
+            <form name="form1" style="" onsubmit="return checkForm()" class="d-flex">
+                <div>
                     <div class="form-group">
                         <label for="number">會員編號 : <?= $new_number ?></label>
                         <input type="text" class="form-control" id="number" name="number" value="<?= $new_number ?>" style="display:none">
@@ -148,9 +150,21 @@ $a_level = [
                     </div>
 
                     <button type="submit" class="btn btn-primary" id="submit_btn">新增</button>
-                </form>
-            </div>
+                </div>
+                <div class="">
+                    <div class="">
+                        <label for="pic">會員頭像</label>
+                        <div class="d-flex ">
+                            <figure id="demo-fig">
+                                <img src="" alt="" id="demo">
+                            </figure>
+                            <input type="file" class="form-control-file" id="pic" name="pic">
+                        </div>
+                    </div>
+                </div>
+            </form>
         </div>
+    </div>
 </section>
 
 
@@ -202,6 +216,17 @@ $a_level = [
     }
     eye1.addEventListener('click', showPassword);
     eye2.addEventListener('click', showPassword);
+
+    let pic = document.querySelector('#pic');
+
+    $(pic).change(function() {
+        var file = $('#pic')[0].files[0];
+        var reader = new FileReader;
+        reader.onload = function(e) {
+            $('#demo').attr('src', e.target.result);
+        };
+        reader.readAsDataURL(file);
+    });
 
 
     function checkForm() {

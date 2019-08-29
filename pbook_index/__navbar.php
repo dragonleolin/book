@@ -1,5 +1,5 @@
 <nav class="navbar justify-content-between my_bg_seasongreen">
-    <a class="navbar-brand" href="../../pbook_index/_index.php">
+    <a class="navbar-brand" href="../../_index.php">
         <img class="book_logo" src="../../images/icon_logo.svg" alt="">
     </a>
     <ul class="nav justify-content-between">
@@ -79,7 +79,8 @@
                     </div>
                 </button>
                 <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordion">
-                    <button type="button" class="btn btn-light sub_aside_text" >
+                    <button type="button" class="btn btn-light sub_aside_text" 
+                    onclick="javascript:location.href='../src/member_Management/MR_memberDataList.php'" >
                         <i class="fas fa-caret-right"></i>
                         <span>會員列表</span>
                     </button>
