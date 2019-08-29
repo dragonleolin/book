@@ -278,8 +278,8 @@ $page_title = '新增資料';
             item.el.style.border = '1px solid #CCCCCC';
             item.infoEl.innerHTML = '';
         }
-        info_bar.style.display = 'none';
-        info_bar.innerHTML = '';
+        // info_bar.style.display = 'none';
+        // info_bar.innerHTML = '';
 
         //TODO: 檢查必要欄位，欄位值的格式
         let isPass = true;
