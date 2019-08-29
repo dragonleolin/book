@@ -13,8 +13,7 @@ if(empty($_POST['AC_name']) or empty($_POST['AC_sid'])){
     exit;
 }
 
-
-$sql = "UPDATE `address_book` SET
+$sql = "UPDATE `AC_pbook` SET
          `name`=?,
          `email`=?,
          `mobile`=?,
@@ -25,12 +24,12 @@ $sql = "UPDATE `address_book` SET
 $stmt = $pdo->prepare($sql);
 
 $stmt->execute([
-        $_POST['name'],
-        $_POST['email'],
-        $_POST['mobile'],
-        $_POST['birthday'],
-        $_POST['address'],
-        $_POST['sid'],
+        $_POST['AC_name'],
+        $_POST['AC_email'],
+        $_POST['AC_mobile'],
+        $_POST['AC_birthday'],
+        $_POST['AC_address'],
+        $_POST['AC_sid'],
 ]);
 
 //echo $stmt->rowCount();

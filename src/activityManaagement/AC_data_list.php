@@ -1,7 +1,7 @@
 <?php
 require __DIR__. '/AC__connect_db.php';
-// --------------------------------------
 $page_name = 'AC_date_list';
+$page_title = '品書 - 活動總表';
 
 $page = isset($_GET['page']) ? intval($_GET['page']) : 1; //用戶選頁
 
@@ -46,7 +46,7 @@ $stmt = $pdo->query($sql);
         <div class="container">
             <nav class="navbar justify-content-between" style="padding: 0px;width: 80vw;">
                 <div>
-                    <h4>品書官方活動總表</h4>
+                    <h4>品書官方 - 活動總表</h4>
                     <div class="title_line"></div>
                 </div>
                 <ul class="nav justify-content-between">
@@ -95,27 +95,22 @@ $stmt = $pdo->query($sql);
 
                     <tbody>
                         <?php while($r=$stmt->fetch()){ ?>
-                            <tr>
-                            <td><?= $r['AC_sid'] ?></td>
-                            <td><?= $r['AC_name'] ?></td>
-                            <td><?= $r['AC_title'] ?></td>
-                            <td><?= $r['AC_type'] ?></td>
-                            <td><?= $r['AC_date'] ?></td>
-                            <td><?= $r['AC_eventArea'] ?></td>
-                            <td><?= $r['AC_mobile'] ?></td>
-                            <td><?= $r['AC_organizer'] ?></td>
-                            <td><?= $r['AC_price'] ?></td>
-                            <td><?= $r['AC_created_at'] ?></td>
-                            
-                            <td><a href="AC_update.php"><i class="fas fa-edit"></i></a></td>
-                            <td><a href="#"><i class="fas fa-trash-alt"></i></a></td>
+                        <tr>
+                            <td><?= htmlentities($r['AC_sid']) ?></td>
+                            <td><?= htmlentities($r['AC_name']) ?></td>
+                            <td><?= htmlentities($r['AC_title']) ?></td>
+                            <td><?= htmlentities($r['AC_type']) ?></td>
+                            <td><?= htmlentities($r['AC_date']) ?></td>
+                            <td><?= htmlentities($r['AC_eventArea']) ?></td>
+                            <td><?= htmlentities($r['AC_mobile']) ?></td>
+                            <td><?= htmlentities($r['AC_organizer']) ?></td>
+                            <td><?= htmlentities($r['AC_price']) ?></td>
+                            <td><?= htmlentities($r['AC_created_at']) ?></td>
+                            <td><a href="AC_update.php?sid=<?= $r['AC_sid'] ?>"><i class="fas fa-edit"></i></a>
+                            <td><a href="javascript:delete_one(<?= $r['AC_sid'] ?>)"><i class="fas fa-trash-alt"></i></a></td>
                         </tr>
                         <?php } ?>
-
-
                        
-                        
-                        
                     </tbody>
                 </table>
             </div>
@@ -162,18 +157,33 @@ $stmt = $pdo->query($sql);
                 </ul>
             </nav>
 
-
             <!-- 刪除提示框 -->
-            <!-- <div class="delete update card">
-                    <div class="delete card-body">
-                        <label class="delete_text">您確認要刪除資料嗎?</label>
-                        <div>
-                            <button type="button" class="delete btn btn-danger">確認</button>
-                            <button type="button" class="delete btn btn-warning">取消</button>
-                        </div>
-                    </div>
-            </div> -->
-
+            <div class="delete update card" id="my_delete" style="display:none">
+            <div class="delete card-body">
+                <label class="delete_text">您確認要刪除資料嗎?</label>
+                <div>
+                    <button type="button" class="delete btn btn-danger" onclick="delete_yes()">確認</button>
+                    <button type="button" class="delete btn btn-warning" onclick="delete_no()">取消</button>
+                </div>
+            </div>
+            </div>     
     </section>
+ 
+    <script>
+    let a;
+    function delete_one(sid) {
+        a = sid;
+        let my_delete = document.querySelector('#my_delete');
+        my_delete.style.display = 'block';      
+    }
+
+    function delete_yes() {
+        location.href = 'AC_delete.php?sid=' + a;
+    }
+
+    function delete_no() {
+        location.href = 'AC_data_list.php?page=' + <?= $page ?>;
+    }
+    </script>
 
 <?php include __DIR__ . '/../../pbook_index/__html_foot.php' ?>
