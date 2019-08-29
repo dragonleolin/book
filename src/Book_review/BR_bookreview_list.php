@@ -30,7 +30,7 @@ $row = $stmt->fetchAll();
 
 <?php require '__html_head.php'; ?>
 <?php include __DIR__ . '/__html_body.php' ?>
-<?php include '../../pbook_index/__navBar.php' ?>
+<?php include '../../pbook_index/__navbar.php' ?>
     <!-- 右邊section資料欄位 -->
     <section>
         <div class="container">
