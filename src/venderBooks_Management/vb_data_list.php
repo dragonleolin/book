@@ -146,7 +146,7 @@ $stmt = $pdo->query($categories_sql);
                             <td><?= $row[$i]['page']; ?></td>
                             <td><?= $row[$i]['stock']; ?></td>
                             <td><a href="#" onclick="vb_data_update()"><i class="fas fa-edit"></i></a></td>
-                            <td><a href="#"><i class="fas fa-trash-alt"></i></a></td>
+                            <td><a href="#" onclick="delete_one(<?= $row[$i]['sid']; ?>)" id="btn_delete"><i class="fas fa-trash-alt"></i></a></td>
                         </tr>
                     <?php endfor; ?>
                 </tbody>
@@ -197,6 +197,15 @@ $stmt = $pdo->query($categories_sql);
                 </li>
             </ul>
         </nav>
+        <div class="delete update card" id="my_delete" style="display:none">
+            <div class="delete card-body">
+                <label class="delete_text">您確認要刪除資料嗎?</label>
+                <div>
+                    <button type="button" class="delete btn btn-danger" onclick="delete_yes()">確認</button>
+                    <button type="button" class="delete btn btn-warning" onclick="delete_no()">取消</button>
+                </div>
+            </div>
+        </div>
     </div>
 </section>
 <script>
@@ -207,5 +216,24 @@ $stmt = $pdo->query($categories_sql);
     function vb_data_update() {
         location = "vb_data_update.php";
     }
+
+    let a;
+
+    function delete_one(sid) {
+        a = sid;
+        let my_delete = document.querySelector('#my_delete');
+        my_delete.style.display = 'block';      
+    }
+
+    function delete_yes() {
+        location.href = 'vb_data_delete.php?sid=' + a;
+    }
+
+    function delete_no() {
+        location.href = window.location.href;
+    }
+
+
+
 </script>
 <?php include __DIR__ . '/../../pbook_index/__html_foot.php' ?>
