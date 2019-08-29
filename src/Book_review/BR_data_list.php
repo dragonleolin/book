@@ -35,7 +35,7 @@ $row = $stmt->fetchAll();
 </style>
 <?php require '__html_head.php'; ?>
 <?php include __DIR__ . '/__html_body.php' ?>
-<?php include '../../pbook_index/__navbar.php' ?>
+<?php include '../../pbook_index/__navBar.php' ?>
 
 <div class="d-flex flex-row my_content">
     <!-- 右邊section資料欄位 -->
