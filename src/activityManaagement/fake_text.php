@@ -1,15 +1,16 @@
 <?php
 exit;
 // ---------------------------------------------------
-// 姓名	
-// 標題
-// 活動類型
-// 時間
-// 地點
-// 聯絡電話
-// 主辦單位
-// 參加費用
-// 建立時間
+// 編號`AC_sid`
+// 姓名`AC_name`
+// 標題`AC_title`
+// 活動類型`AC_type`
+// 時間`AC_date`
+// 地點`AC_eventArea`
+// 聯絡電話`AC_mobile`
+// 主辦單位`AC_organizer`
+// 參加費用`AC_price`
+// 建立時間`AC_created_at`
 // ---------------------------------------------------
 // INSERT INTO `ac_pbook` (`AC_sid`, `AC_name`, `AC_title`, `AC_type`, `AC_date`, `AC_eventArea`, `AC_mobile`, `AC_organizer`, `AC_price`, `AC_created_at`) 
 // VALUES 
