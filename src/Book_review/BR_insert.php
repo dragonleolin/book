@@ -34,7 +34,7 @@
         <div class="container">
             <nav class="navbar justify-content-between" style="padding: 0px;width: 80vw;">
                 <div>
-                    <h4>活動資料修改</h4>
+                    <h4>書評人資料新增</h4>
                     <div class="title_line"></div>
                 </div>
             </nav>
@@ -42,7 +42,7 @@
             <div class="container">
                 <section class="d-flex" style="min-width:600px;">
                     <div class="card-body d-flex">
-                        <form name="BR_form" onsubmit="return check_form()" style="width:800px;margin:-15px 50px">
+                        <form name="BR_form" onsubmit="return check_form()" style="width:800px;margin:-15px 50px ; visibility:visible" id="main_datalist">
                             <div class="form-group">
                                 <label for="BR_name" class="update_label">書評人姓名</label>
                                 <span id="BR_nameHelp" style="margin:0px 10px;color:red"></span>
@@ -94,7 +94,7 @@
 
 
                 <!-- 以下為修改或新增成功才會跳出來的顯示框 -->
-                <div class="success update card" style="display:none" id="success_insert">
+                <div class="success update card" style="display:none; transform: translate(170px,-55vh)" id="success_insert">
                     <div class="success card-body">
                         <label class="success_text">新增成功</label>
                         <div>
@@ -107,7 +107,7 @@
     </section>
     <script>
         let insert_info = document.querySelector('#success_insert');
-
+        let main_datalist_hidden = document.querySelector('#main_datalist')
         let i, s, item;
 
         const error_text = [{
@@ -184,6 +184,7 @@
                 .then(json => {
 
                     if (json.success) {
+                        main_datalist_hidden.style.visibility = 'hidden';
                         insert_info.style.display = 'block'
                         setTimeout(function() {
                             location.href = 'BR_data_list.php';
