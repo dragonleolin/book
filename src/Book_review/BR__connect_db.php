@@ -1,8 +1,8 @@
 <?php
 
-$db_host='localhost';
-$db_name='br';
-$db_user='opcp';
+$db_host='192.168.27.186';
+$db_name='book_review';
+$db_user='shan';
 $db_password='opcp2428';
 
 $dsn="mysql:host={$db_host};dbname={$db_name}";
