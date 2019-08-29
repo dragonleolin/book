@@ -11,7 +11,7 @@ if (empty($_POST['account']) or empty($_POST['oldpassword']) or empty($_POST['ne
     echo json_encode($result, JSON_UNESCAPED_UNICODE);
     exit;
 }
-$sql = "SELECT `account`, `password`, `name` FROM `member` WHERE `account`=? AND `password`=SHA1(?)";
+$sql = "SELECT `cp_account`, `cp_password`, `cp_name` FROM `cp_data_list` WHERE `cp_account`=? AND `cp_password`=?";
 $stmt = $pdo->prepare($sql);
 $stmt->execute([
     $_POST['account'],
@@ -19,13 +19,13 @@ $stmt->execute([
 ]);
 $row = $stmt->fetch();
 if (!empty($row)) {
-    $sql2 = "UPDATE `member` SET `password`= SHA1(?) WHERE `account`=?";
+    $sql2 = "UPDATE `cp_data_list` SET `cp_password`= ? WHERE `cp_account`=?";
     $stmt2 = $pdo->prepare($sql2);
     $stmt2->execute([
         $_POST['newpassword'],
         $_POST['account'],
     ]);
-    $sql3 = "SELECT `account`, `password`, `name` FROM `member` WHERE `account`=? AND `password`=SHA1(?)";
+    $sql3 = "SELECT `cp_account`, `cp_password`, `cp_name` FROM `cp_data_list` WHERE `cp_account`=? AND `cp_password`=?";
     $stmt3 = $pdo->prepare($sql3);
     $stmt3->execute([
         $_POST['account'],
@@ -33,7 +33,7 @@ if (!empty($row)) {
     ]);
     $row2 = $stmt3->fetch();
     if (!empty($row2)) {
-        $_SESSION['loginUser'] = $row2;
+        $_SESSION['loginUser2'] = $row2;
         $result['success'] = true;
         $result['code'] = 200;
         $result['info'] = '修改成功';

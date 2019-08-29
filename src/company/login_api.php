@@ -25,8 +25,9 @@ $stmt->execute([
 ]);
 
 $row = $stmt->fetch();
+
 if (!empty($row)) {
-    $_SESSION['loginUser'] = $row;
+    $_SESSION['loginUser2'] = $row;
     $result['success'] = true;
     $result['code'] = 200;
     $result['info'] = '登入成功';

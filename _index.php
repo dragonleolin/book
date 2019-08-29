@@ -38,14 +38,14 @@ if (!isset($_SESSION)) {
                         <div class="my_login_img"><img class="yoko_logo" src="images/yoko.jpg" alt=""></div>
                     </a>
                     <div class="dropdown-menu" style="left: -100%;top: 90%;">
-                        <a class="dropdown-item" href="password_edit.php">修改密碼</a>
+                        <a class="dropdown-item" href="pbook_index/password_edit.php">修改密碼</a>
                         <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="logout.php">登出</a>
+                        <a class="dropdown-item" href="pbook_index/logout.php">登出</a>
                     </div>
                 </li>
             <?php else : ?>
                 <li class="nav-item">
-                    <a class="nav-link my_text_blacktea nav_text" href="login.php">登入</a>
+                    <a class="nav-link my_text_blacktea nav_text" href="pbook_index/login.php">登入</a>
                 </li>
             <?php endif; ?>
         </ul>
@@ -105,21 +105,13 @@ if (!isset($_SESSION)) {
                         </div>
                     </button>
                     <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordion">
-                        <button type="button" class="btn btn-light sub_aside_text">
+                        <button type="button" class="btn btn-light sub_aside_text" onclick="location.href='src/member_Management/MR_memberDataList.php'">
                             <i class="fas fa-caret-right"></i>
-                            <span>會員總表</span>
+                            <span>品書會員列表</span>
                         </button>
                         <button type="button" class="btn btn-light sub_aside_text">
                             <i class="fas fa-caret-right"></i>
-                            <span>新增會員</span>
-                        </button>
-                        <button type="button" class="btn btn-light sub_aside_text">
-                            <i class="fas fa-caret-right"></i>
-                            <span>會員訂單總表</span>
-                        </button>
-                        <button type="button" class="btn btn-light sub_aside_text">
-                            <i class="fas fa-caret-right"></i>
-                            <span>會員書評總表</span>
+                            <span>會員等級</span>
                         </button>
                     </div>
                 </div>
