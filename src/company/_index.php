@@ -12,7 +12,7 @@ $page_title = '品書';
     }
 </style>
 <?php include __DIR__ . '/__html_body.php' ?>
-<?php include __DIR__ . '/__navBar.php' ?>
+<?php include __DIR__ . '/__navbar.php' ?>
 <!-- 右邊section資料欄位 -->
 <section style="width: calc(100vw - 280px);">
     <img src="../../images/admin_bg.png" alt="" style="height: 100%;object-fit: contain;width:100%">

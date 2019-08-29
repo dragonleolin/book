@@ -344,3 +344,12 @@ body{
     border: 0px;
 }
 
+.data{
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px rgb(104, 104, 104);
+    padding: 30px;
+    color: #2d3a3a;
+    margin:2rem 0px 0px 100px;
+    width: 1200px;  
+}

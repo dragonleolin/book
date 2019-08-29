@@ -38,7 +38,7 @@
                         </div>
                     </button>
                     <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
-                        <button type="button" class="btn btn-light sub_aside_text">
+                        <button type="button" class="btn btn-light sub_aside_text" onclick="location.href='data.php'">
                             <i class="fas fa-caret-right"></i>
                             <span>基本資料</span>
                         </button>
