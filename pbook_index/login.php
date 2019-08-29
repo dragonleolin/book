@@ -22,9 +22,7 @@ $page_title = '登入';
     <style>
         body {
             background: url(../images/bg.png) repeat center top;
-
         }
-
         .wrapper {
             width: 600px;
             background: #2d3a3a;
@@ -62,11 +60,15 @@ $page_title = '登入';
             left: -26%;
             top: 6%;
         }
+        #info_position2 {
+            left: -26%;
+            top: 6%;
+        }
     </style>
     <?php include __DIR__ . '/__html_body.php' ?>
     <nav class="navbar justify-content-between my_bg_seasongreen">
         <a class="navbar-brand" href="_index.php">
-            <img style="cursor: default" class="book_logo" src="../images/icon_logo.svg" alt="">
+            <img class="book_logo" src="../images/icon_logo.svg" alt="">
         </a>
         <ul class="nav justify-content-between">
             <li class="nav-item">
@@ -99,11 +101,19 @@ $page_title = '登入';
                     <div><img class="success_img" src="../images/icon_checked.svg"></div>
                 </div>
             </div>
+            <div class="success update card position-absolute" id="info_position2" style="display:none; background:#2d3a3a;box-shadow: 0px 0px 10px red;">
+                <div class="success card-body">
+                    <label class="success_text" id="info_bar2" style="color: #fff;  background:#2d3a3a"></label>
+                    <div><img class="success_img" src="../images/icon_false.svg"></div>
+                </div>
+            </div>
         </div>
     </div>
     <script>
-        let info_bar = document.querySelector('#info_bar');
+         let info_bar = document.querySelector('#info_bar');
+        let info_bar2 = document.querySelector('#info_bar2');
         let info_position = document.querySelector('#info_position');
+        let info_position2 = document.querySelector('#info_position2');
         let s, item;
         const required_fields = [{
                 id: 'account',
@@ -152,13 +162,17 @@ $page_title = '登入';
                     .then(json => {
                         console.log(json);;
                         info_bar.innerHTML = json.info;
+                        info_bar2.innerHTML = json.info;
                         if (json.success) {
                             info_position.style.display = 'block';
                             setTimeout(function() {
                                 location.href = '_index.php';
                             }, 1000);
                         } else {
-                            info_position.style.display = 'none';
+                            info_position2.style.display = 'block';
+                            setTimeout(function() {
+                                location.href = window.location.href;
+                            }, 1000);
                         }
                     });
             }

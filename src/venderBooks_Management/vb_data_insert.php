@@ -1,7 +1,22 @@
 <?php
-require __DIR__. '/__connect_db.php';
+require __DIR__ . '/__connect_db.php';
 $page_name = 'vb_data_insert';
 $page_title = '新增出版社書籍';
+
+$categories_sql = "SELECT `sid`,`name` FROM `vb_categories` WHERE 1";
+$stmt = $pdo->query($categories_sql);
+$row = $stmt->fetchAll(PDO::FETCH_UNIQUE);
+
+$new_row = [];
+
+foreach ($row as $r => $s) {
+    foreach ($s as $k => $v) {
+        $new_row[$r] = $v;
+    }
+}
+
+$my_categories = empty($_POST['categories']) ? 0 : intval($_POST['categories']);
+
 ?>
 
 <?php include __DIR__ . '/../../pbook_index/__html_head.php' ?>
@@ -25,7 +40,7 @@ $page_title = '新增出版社書籍';
     </nav>
 
     <!-- 每個人填資料的區塊 -->
-    <div class="container2" style="margin:20px 0px 0px 0px">
+    <div class="container2" style="margin:15px 0px 0px 0px">
         <form name="form1" method="post" enctype="multipart/form-data" onsubmit="return checkForm()">
             <div class="d-flex">
                 <div style="min-width:700px;margin:0px 30px">
@@ -89,170 +104,26 @@ $page_title = '新增出版社書籍';
                         <span style="margin:0px -10px;color:red" id="stockHelp"></span>
                         <input type="text" class="update form-control" id="stock" name="stock">
                     </div>
-                
+
                     <div class="form-group d-flex">
                         <div>
-                            <label for="pic"
-                                style="font-size: 20px;margin:0px 0px 15px 0px">・請選擇書籍封面照片</label>
+                            <label for="pic" style="font-size: 20px;margin:0px 0px 15px 0px">・請選擇書籍封面照片</label>
                             <input type="file" class="form-control-file" id="pic" name="pic">
                         </div>
                         <div style="height: 230px;width: 230px;border: 1px solid #ddd">
                             <img style="object-fit: contain;width: 100%;height: 100%" id="demo" />
                         </div>
                     </div>
-                
 
                     <div class="form-group" style="margin:-30px 0px 0px 0px">
                         <label for="categories" class="update_label">・分類</label>
-                        <div class="d-flex flex-column">
-                            <div class="d-flex" style="margin:0px 0px 10px 0px">
-                                <div class="form-check" style="margin:0px 20px 0px 0px">
-                                    <input class="form-check-input" type="radio" name="exampleRadios"
-                                        id="exampleRadios1" value="option1" checked>
-                                    <label class="form-check-label" for="exampleRadios1">
-                                        文學小說
-                                    </label>
+                        <div class="d-flex flex-wrap">
+                            <?php foreach ($new_row as $k => $v) : ?>
+                                <div class="form-check" style="margin:0px 20px 10px 0px">
+                                    <input class="form-check-input" type="radio" name="categories" id="categories<?= $k ?>" value="<?= $k ?>" <?= $my_categories == 0 ? 'checked' : '' ?>>
+                                    <label class="form-check-label" for="categories<?= $k ?>"><?= $v ?></label>
                                 </div>
-                                <div class="form-check" style="margin:0px 20px 0px 0px">
-                                    <input class="form-check-input" type="radio" name="exampleRadios"
-                                        id="exampleRadios2" value="option2">
-                                    <label class="form-check-label" for="exampleRadios2">
-                                        商業理財
-                                    </label>
-                                </div>
-                                <div class="form-check" style="margin:0px 20px 0px 0px">
-                                    <input class="form-check-input" type="radio" name="exampleRadios"
-                                        id="exampleRadios3" value="option3">
-                                    <label class="form-check-label" for="exampleRadios3">
-                                        藝術設計
-                                    </label>
-                                </div>
-                                <div class="form-check" style="margin:0px 20px 0px 0px">
-                                    <input class="form-check-input" type="radio" name="exampleRadios"
-                                        id="exampleRadios4" value="option4">
-                                    <label class="form-check-label" for="exampleRadios4">
-                                        人文史地
-                                    </label>
-                                </div>
-                                <div class="form-check" style="margin:0px 20px 0px 0px">
-                                    <input class="form-check-input" type="radio" name="exampleRadios"
-                                        id="exampleRadios5" value="option5">
-                                    <label class="form-check-label" for="exampleRadios5">
-                                        社會科學
-                                    </label>
-                                </div>
-                                <div class="form-check" style="margin:0px 20px 0px 0px">
-                                    <input class="form-check-input" type="radio" name="exampleRadios"
-                                        id="exampleRadios6" value="option6">
-                                    <label class="form-check-label" for="exampleRadios6">
-                                        自然科普
-                                    </label>
-                                </div>
-                            </div>
-                            <div class="d-flex" style="margin:0px 0px 10px 0px">
-                                <div class="form-check" style="margin:0px 20px 0px 0px">
-                                    <input class="form-check-input" type="radio" name="exampleRadios"
-                                        id="exampleRadios7" value="option7">
-                                    <label class="form-check-label" for="exampleRadios7">
-                                        心理勵志
-                                    </label>
-                                </div>
-                                <div class="form-check" style="margin:0px 20px 0px 0px">
-                                    <input class="form-check-input" type="radio" name="exampleRadios"
-                                        id="exampleRadios8" value="option8">
-                                    <label class="form-check-label" for="exampleRadios8">
-                                        醫療保健
-                                    </label>
-                                </div>
-                                <div class="form-check" style="margin:0px 20px 0px 0px">
-                                    <input class="form-check-input" type="radio" name="exampleRadios"
-                                        id="exampleRadios9" value="option9">
-                                    <label class="form-check-label" for="exampleRadios9">
-                                        飲食
-                                    </label>
-                                </div>
-                                <div class="form-check" style="margin:0px 20px 0px 0px">
-                                    <input class="form-check-input" type="radio" name="exampleRadios"
-                                        id="exampleRadios10" value="option10">
-                                    <label class="form-check-label" for="exampleRadios10">
-                                        生活風格
-                                    </label>
-                                </div>
-                                <div class="form-check" style="margin:0px 20px 0px 0px">
-                                    <input class="form-check-input" type="radio" name="exampleRadios"
-                                        id="exampleRadios11" value="option11">
-                                    <label class="form-check-label" for="exampleRadios11">
-                                        旅遊
-                                    </label>
-                                </div>
-                                <div class="form-check" style="margin:0px 20px 0px 0px">
-                                    <input class="form-check-input" type="radio" name="exampleRadios"
-                                        id="exampleRadios12" value="option12">
-                                    <label class="form-check-label" for="exampleRadios12">
-                                        宗教命理
-                                    </label>
-                                </div>
-                                <div class="form-check" style="margin:0px 20px 0px 0px">
-                                    <input class="form-check-input" type="radio" name="exampleRadios"
-                                        id="exampleRadios13" value="option13">
-                                    <label class="form-check-label" for="exampleRadios13">
-                                        親子教養
-                                    </label>
-                                </div>
-                            </div>
-                            <div class="d-flex" style="margin:0px 0px 10px 0px">
-                                <div class="form-check" style="margin:0px 20px 0px 0px">
-                                    <input class="form-check-input" type="radio" name="exampleRadios"
-                                        id="exampleRadios14" value="option14">
-                                    <label class="form-check-label" for="exampleRadios14">
-                                        童書/青少年文學
-                                    </label>
-                                </div>
-                                <div class="form-check" style="margin:0px 20px 0px 0px">
-                                    <input class="form-check-input" type="radio" name="exampleRadios"
-                                        id="exampleRadios15" value="option15">
-                                    <label class="form-check-label" for="exampleRadios15">
-                                        輕小說
-                                    </label>
-                                </div>
-                                <div class="form-check" style="margin:0px 20px 0px 0px">
-                                    <input class="form-check-input" type="radio" name="exampleRadios"
-                                        id="exampleRadios16" value="option16">
-                                    <label class="form-check-label" for="exampleRadios16">
-                                        漫畫
-                                    </label>
-                                </div>
-                                <div class="form-check" style="margin:0px 20px 0px 0px">
-                                    <input class="form-check-input" type="radio" name="exampleRadios"
-                                        id="exampleRadios17" value="option17">
-                                    <label class="form-check-label" for="exampleRadios17">
-                                        語言學習
-                                    </label>
-                                </div>
-                                <div class="form-check" style="margin:0px 20px 0px 0px">
-                                    <input class="form-check-input" type="radio" name="exampleRadios"
-                                        id="exampleRadios18" value="option18">
-                                    <label class="form-check-label" for="exampleRadios18">
-                                        考試用書
-                                    </label>
-                                </div>
-                                <div class="form-check" style="margin:0px 20px 0px 0px">
-                                    <input class="form-check-input" type="radio" name="exampleRadios"
-                                        id="exampleRadios19" value="option19">
-                                    <label class="form-check-label" for="exampleRadios19">
-                                        電腦資訊
-                                    </label>
-                                </div>
-                            </div>
-                            <div class="d-flex" style="margin:0px 0px 10px 0px">
-                                <div class="form-check" style="margin:0px 20px 0px 0px">
-                                    <input class="form-check-input" type="radio" name="exampleRadios"
-                                        id="exampleRadios20" value="option20">
-                                    <label class="form-check-label" for="exampleRadios20">
-                                        專業/教科書/政府出版品
-                                    </label>
-                                </div>
-                            </div>
+                            <?php endforeach; ?>
                         </div>
                     </div>
 
@@ -260,12 +131,11 @@ $page_title = '新增出版社書籍';
                         <label for="introduction" class="update_label">・書籍簡介</label>
                         <span style="margin:0px 20px" class="my_text_blacktea_fifty">限制200字以內</span>
                         <span style="margin:0px -10px;color:red" id="introductionHelp"></span>
-                        <textarea class="update form-control" id="introduction" rows="3"
-                            style="width:700px;height:200px;resize:none"></textarea>
+                        <textarea class="update form-control" id="introduction" rows="3" style="width:700px;height:200px;resize:none" name="introduction"></textarea>
                     </div>
 
                     <div>
-                        <button style="margin:20px 0px 0px -80px" type="submit" class="btn btn-warning" id="submit_btn">
+                        <button style="margin:5px 0px 0px -80px" type="submit" class="btn btn-warning" id="submit_btn">
                             &nbsp;確&nbsp;認&nbsp;新&nbsp;增&nbsp;
                         </button>
                     </div>
@@ -291,10 +161,10 @@ $page_title = '新增出版社書籍';
 </div>
 
 <script>
-    $('#pic').change(function () {
+    $('#pic').change(function() {
         var file = $('#pic')[0].files[0];
         var reader = new FileReader;
-        reader.onload = function (e) {
+        reader.onload = function(e) {
             $('#demo').attr('src', e.target.result);
         };
         reader.readAsDataURL(file);
@@ -353,8 +223,7 @@ $page_title = '新增出版社書籍';
         // 判斷isbn碼,出版日期,定價,頁數,庫存,書籍簡介格式是否正確                       
         let s, item;
 
-        const required_fields = [
-            {
+        const required_fields = [{
                 id: 'isbn',
                 pattern: /(^\d{10}$)|(^\d{13}$)/,
                 info: '請填寫正確的isbn碼'
@@ -381,7 +250,7 @@ $page_title = '新增出版社書籍';
             },
             {
                 id: 'introduction',
-                pattern: /^\S{0,200}$/,
+                pattern: /\S{0,200}$/,
                 info: '超過字數限制,請重新輸入'
             },
         ];
@@ -417,32 +286,31 @@ $page_title = '新增出版社書籍';
         if (isPass) {
             let fd = new FormData(document.form1);
             fetch('vb_data_insert_api.php', {
-                method: 'POST',
-                body: fd,
-            })
+                    method: 'POST',
+                    body: fd,
+                })
 
-            .then(response => {
-                return response.json();
-            })
-            // 收到後台回傳的新增判斷(是否成功,然後顯示到前台讓用戶知道)
-            // 新增成功跳回出版社書籍的datalist,失敗就回到上一層
-            .then(json => {
-                console.log(json);
-                if (json.success) {
-                    success.style.display = 'block';
-                    container2.style.display = 'none';
-                    setTimeout(function () {
-                        location.href = document.referrer;
+                .then(response => {
+                    return response.json();
+                })
+                // 收到後台回傳的新增判斷(是否成功,然後顯示到前台讓用戶知道)
+                // 新增成功跳回出版社書籍的datalist,失敗就回到上一層
+                .then(json => {
+                    console.log(json);
+                    if (json.success) {
+                        success.style.display = 'block';
+                        container2.style.display = 'none';
+                        setTimeout(function() {
+                            location.href = document.referrer;
                         }, 1000)
-                } else {
-                    my_false.style.display = 'block';
-                    container2.style.display = 'none';
-                    setTimeout(function () {
-                        location.href = document.referrer;
+                    } else {
+                        my_false.style.display = 'block';
+                        container2.style.display = 'none';
+                        setTimeout(function() {
+                            location.href = document.referrer;
                         }, 1000)
                     }
-                }
-                );
+                });
         }
 
         //不讓表單直接送出

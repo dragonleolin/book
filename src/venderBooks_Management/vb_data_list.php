@@ -69,7 +69,7 @@ $stmt = $pdo->query($categories_sql);
                 <li class="nav-item" style="margin: 0px 10px">
                     <button class="btn btn-outline-primary my-2 my-sm-0" type="button" onclick="vb_data_insert()">
                         <i class="fas fa-plus-circle"></i>
-                        新增廠商
+                        新增出版社書籍
                     </button>
                 </li>
                 <li class="nav-item" style="flex-grow: 1">
@@ -84,7 +84,6 @@ $stmt = $pdo->query($categories_sql);
         </nav>
 
         <!-- 每個人填資料的區塊 -->
-
         <div style="margin-top: 1.5rem">
             <table class="table table-striped table-bordered" style="text-align: center;width:83vw">
                 <thead>
@@ -129,7 +128,11 @@ $stmt = $pdo->query($categories_sql);
                                                 </button>
                                             </div>
                                             <div class="modal-body" style="width:450px;width:450px;margin:0 auto">
-                                                <img style="object-fit: contain;width: 100%;height: 100%;" src="<?= 'vb_images/' . $row[$i]['pic'];?>" alt="">
+                                                <img style="object-fit: contain;width: 100%;height: 100%;" src="<?= 'vb_images/' . $row[$i]['pic']; ?>" alt="">
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                                                <button type="button" class="btn btn-primary" onclick="vb_data_update()">修改圖片</button>
                                             </div>
                                         </div>
                                     </div>
@@ -142,12 +145,11 @@ $stmt = $pdo->query($categories_sql);
                             <td><?= $row[$i]['fixed_price']; ?></td>
                             <td><?= $row[$i]['page']; ?></td>
                             <td><?= $row[$i]['stock']; ?></td>
-                            <td><a href="#"><i class="fas fa-edit"></i></a></td>
-                            <td><a href="#"><i class="fas fa-trash-alt"></i></a></td>
+                            <td><a href="#" onclick="vb_data_update()"><i class="fas fa-edit"></i></a></td>
+                            <td><a href="#" onclick="delete_one(<?= $row[$i]['sid']; ?>)" id="btn_delete"><i class="fas fa-trash-alt"></i></a></td>
                         </tr>
                     <?php endfor; ?>
                 </tbody>
-
             </table>
         </div>
 
@@ -195,23 +197,43 @@ $stmt = $pdo->query($categories_sql);
                 </li>
             </ul>
         </nav>
-
-
-        <!-- 刪除提示框 -->
-        <!-- <div class="delete update card">
-                    <div class="delete card-body">
-                        <label class="delete_text">您確認要刪除資料嗎?</label>
-                        <div>
-                            <button type="button" class="delete btn btn-danger">確認</button>
-                            <button type="button" class="delete btn btn-warning">取消</button>
-                        </div>
-                    </div>
-                </div> -->
-
+        <div class="delete update card" id="my_delete" style="display:none">
+            <div class="delete card-body">
+                <label class="delete_text">您確認要刪除資料嗎?</label>
+                <div>
+                    <button type="button" class="delete btn btn-danger" onclick="delete_yes()">確認</button>
+                    <button type="button" class="delete btn btn-warning" onclick="delete_no()">取消</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </section>
 <script>
     function vb_data_insert() {
         location = "vb_data_insert.php";
     }
+
+    function vb_data_update() {
+        location = "vb_data_update.php";
+    }
+
+    let a;
+
+    function delete_one(sid) {
+        a = sid;
+        let my_delete = document.querySelector('#my_delete');
+        my_delete.style.display = 'block';      
+    }
+
+    function delete_yes() {
+        location.href = 'vb_data_delete.php?sid=' + a;
+    }
+
+    function delete_no() {
+        location.href = window.location.href;
+    }
+
+
+
 </script>
 <?php include __DIR__ . '/../../pbook_index/__html_foot.php' ?>
