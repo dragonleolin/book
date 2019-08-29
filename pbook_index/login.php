@@ -22,9 +22,7 @@ $page_title = '登入';
     <style>
         body {
             background: url(../images/bg.png) repeat center top;
-
         }
-
         .wrapper {
             width: 600px;
             background: #2d3a3a;
