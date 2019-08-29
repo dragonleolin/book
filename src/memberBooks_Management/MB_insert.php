@@ -3,7 +3,7 @@ require __DIR__ . '/__connect_db.php';
 $page_name = 'MB_data_list';
 $page_title = '新增資料';
 
-$categories_data= [
+$categories_data = [
     '1' => '文學小說',
     '2' => '商業理財',
     '3' => '藝術設計',
@@ -117,30 +117,40 @@ $sel_id = empty($_POST['mb_categories']) ? 0 : intval($_POST['mb_categories']);
                             <input type="text" class="form-control" id="mb_shelveMember" name="mb_shelveMember">
                         </div>
 
-                        <div class="form-group">
-                            <label for="mb_pic">Example file input</label>
-                            <input type="file" class="form-control-file" id="mb_pic" name="mb_pic">
-                        </div>
-                        <div class="form-group" style="">
-                            <label for="mb_categories" class="update_label">分類</label>
-                            <div class="d-flex flex-wrap" >
-                                <?php 
-                                        $i = 0;
-                                        foreach($categories_data as $k => $v):
-                                    ?>
-                                <div style="width:100px">
-                                    <input class="form-check-input" checked type="radio" 
-                                    name="sel_id" id="sel_id-<?= $k?>" value="<?= $k ?>" <?= $sel_id == $k ? 'checked': '' ?>>
-                                    <label class="form-check-label" for="sel_id-<?= $k ?>"><?= $v ?></label>
-                                </div>
-                                    <?php
-                                    $i++; 
-                                    endforeach ?>     
+                        <div class="form-group d-flex">
+                            <div class="col-lg-5">
+                                <label for="mb_pic" style="font-size: 20px">・請選擇書籍照片</label>
+                                <input type="file" class="form-control-file" id="mb_pic" name="mb_pic" style="display:none">
+                                <br>
+                                <button class="btn btn-outline-primary my-2 my-sm-0" type="button" onclick="uploadFile()">
+                                    <i class="fas fa-plus-circle" style="margin-right:5px"></i>選擇檔案
+                                </button>
+                            </div>
+                            <div style="height: 230px;width: 230px;border: 1px solid #ddd">
+                                <img style="object-fit: contain;width: 100%;height: 100%" id="demo" />
                             </div>
                         </div>
-                        <div class="from-group">
+                        <div class="form-group" style="margin: -50px -20px 10px 0px; padding: 20px 50px 20px 30px;">
+                            <label for="mb_categories" class="update_label">分類</label>
+                            <div class="d-flex flex-wrap" style="padding-left: 20px;">
+                                <?php
+                                $i = 0;
+                                foreach ($categories_data as $k => $v) :
+                                    ?>
+                                    <div style="width:150px">
+                                        <input class="form-check-input" checked type="radio" name="sel_id" id="sel_id-<?= $k ?>" value="<?= $k ?>" <?= $sel_id == $k ? 'checked' : '' ?>>
+                                        <label class="form-check-label" for="sel_id-<?= $k ?>"><?= $v ?></label>
+                                    </div>
+                                <?php
+                                    $i++;
+                                endforeach ?>
+                            </div>
+                        </div>
+                        <div class="from-group" style="margin: -70px -20px 10px 0px; padding: 20px 50px 20px 30px;">
                             <label for="mb_remarks" class="update_label">備註</label>
-                            <textarea class="update form-control" name="mb_remarks" id="mb_remarks" cols="30" rows="10" style="width:700px;height:50px;resize:none"></textarea>
+                            <span style="margin:0px 20px" class="my_text_blacktea_fifty"></span>
+                            <span style="margin:0px -10px;color:red" id="introductionHelp"></span>
+                            <textarea class="update form-control" name="mb_remarks" id="mb_remarks" rows="5" style="width:700px;height:90px;resize:none"></textarea>
                         </div>
                     </section>
                 </section>
@@ -164,7 +174,33 @@ $sel_id = empty($_POST['mb_categories']) ? 0 : intval($_POST['mb_categories']);
     let info_bar = document.querySelector('#info-bar');
     let success_bar = document.querySelector('#success_bar')
     const submit_btn = document.querySelector('#submit_btn');
+    // const mb_pic = document.querySelector('#mb_pic')
     let i, s, item;
+
+
+    function uploadFile() {
+        // mb_pic.addEventListener('click', function(){
+        //     $('mb_pic').change(function(){
+        //         var file = $('#mb_pic')[0].files[0];
+        //         var reader = new FileReader;
+        //         reader.onload =function(e){
+        //             $('#demo').attr('src', e.target.result);
+        //         }
+        //         reader.readAsDataURL(file);
+        //     })
+        // })
+        document.querySelector('#mb_pic').click();
+
+    }
+
+    $('#mb_pic').change(function() {
+        var file = $('#mb_pic')[0].files[0];
+        var reader = new FileReader;
+        reader.onload = function(e) {
+            $('#demo').attr('src', e.target.result);
+        }
+        reader.readAsDataURL(file);
+    })
 
     const require_fields = [{
             id: 'mb_isbn',
