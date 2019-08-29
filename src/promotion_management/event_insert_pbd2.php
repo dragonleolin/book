@@ -9,6 +9,16 @@ include __DIR__ . '/../../pbook_index/__navbar.php';
 
 $_SESSION['event_insert_pbd2'] = $_POST;
 
+$cate_sql = "SELECT `sid`,`name` FROM `vb_categories` WHERE 1";
+$cate_stmt = $pdo->query($cate_sql);
+$temp_row = $cate_stmt->fetchAll(PDO::FETCH_UNIQUE);
+$cate_row = [];
+foreach ($temp_row as $r => $s) {
+    foreach ($s as $k => $v) {
+        $cate_row[$r] = $v;
+    }
+}
+
 ?>
     <style>
         small.form-text {
@@ -24,46 +34,46 @@ $_SESSION['event_insert_pbd2'] = $_POST;
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title">選擇適用商品</h5>
-                        <form name="form2" onsubmit="return checkForm()">
-                            <div class="row">
-                                <div class="form-group col-md-6">
-                                    <label for="event_pbd">使用分類</label>
-                                    <small class="form-text"></small>
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="form-group col-md-6">
-                                    <label for="event_pbd_type">新增品項</label>
-                                    <select class="form-control" id="event_pbd_type" name="event_pbd_type"">
-                                    <option value="1">每滿減</option>
-                                    <option value="2">階梯減價</option>
-                                    </select>
-                                    <small class="form-text"></small>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="form-group col-md-6">
-                                    <label for="price_condition">每滿(元)</label>
-                                    <input type="text" class="form-control" id="price_condition" name="price_condition">
-                                    <small class="form-text"></small>
-                                </div>
-                                <div class="form-group">
-                                    <label for="discount_amount">減</label>
-                                    <div class="d-flex">
-                                        <input type="text" class="form-control" id="discount_amount"
-                                               name="discount_amount">
-                                        <small class="form-text"></small>
-                                        <select class="form-control col-md-5" name="discount_type" id="discount_type">
-                                            <option value="1">元</option>
-                                            <option value="2">百分比</option>
-                                        </select>
+                        <form name="form2" onsubmit="return checkForm()" method="POST" action="event_insert_pbd_api.php">
+                            <div class="row border-bottom">
+                                <div id="categories_block" class="form-group col-md-12">
+                                    <label for="categories" class="update_label">使用分類</label>
+                                    <div class="d-flex mt-2 mb-2">
+                                        <button type="button" class="btn btn-info btn-sm mr-2" onclick="checkAll(true)">全選</button>
+                                        <button type="button" class="btn btn-info btn-sm" onclick="checkAll(false)">全部取消</button>
+                                    </div>
+                                    <div class="d-flex flex-wrap">
+                                        <?php foreach ($cate_row as $k => $v) : ?>
+                                            <div class="form-check" style="margin:0px 20px 10px 0px">
+                                                <input class="form-check-input" type="checkbox" name="categories[]"
+                                                       id="categories<?= $k ?>" value="<?= $k ?>">
+                                                <label class="form-check-label"
+                                                       for="categories<?= $k ?>"><?= $v ?></label>
+                                            </div>
+                                        <?php endforeach; ?>
                                     </div>
                                 </div>
                             </div>
+
+                            <div class="row mt-2">
+                                <div class="form-group col-md-4">
+                                    <label for="book_id_type">新增品項</label>
+                                    <select class="form-control" id="book_id_type" name="book_id_type">
+                                        <option value="1">ISBN</option>
+                                        <option value="2">書籍編號</option>
+                                    </select>
+                                    <small class="form-text"></small>
+                                </div>
+                                <div class="form-group col-md-8">
+                                    <label for="book_id">　</label>
+                                    <input type="text" class="form-control" id="book_id" name="book_id">
+                                    <small class="form-text"></small>
+                                </div>
+                            </div>
+
                     </div>
 
-                    <button id="submit_btn" type="submit" class="btn btn-primary mr-3 ml-3 mb-3">下一步</button>
+                    <button id="submit_btn" type="submit" class="btn btn-primary mr-3 ml-3 mb-3">完成</button>
 
                     </form>
                 </div>
@@ -73,18 +83,19 @@ $_SESSION['event_insert_pbd2'] = $_POST;
     </div>
 
     <script>
-        "use strict";
+        "use strict"
+
 
         let item;
         const submit_btn = document.querySelector('#submit_btn');
         const coupon_limit = document.querySelector('#coupon_limit');
-        let limit_const = <?= json_encode($limit_const); ?>;
-        limit_const.forEach((val, ind) => {
-            let limit_opt = document.createElement('option');
-            limit_opt.value = val.sid;
-            limit_opt.innerHTML = val.description;
-            coupon_limit.appendChild(limit_opt);
-        });
+        //let limit_const = <?//= json_encode($limit_const); ?>//;
+        //limit_const.forEach((val, ind) => {
+        //    let limit_opt = document.createElement('option');
+        //    limit_opt.value = val.sid;
+        //    limit_opt.innerHTML = val.description;
+        //    coupon_limit.appendChild(limit_opt);
+        //});
 
         const required_fields = [
             {
@@ -124,102 +135,47 @@ $_SESSION['event_insert_pbd2'] = $_POST;
             },
         ];
 
-        for (let s in required_fields) {
-            item = required_fields[s];
-            item.el = document.querySelector('#' + item.id);
-            item.infoEl = item.el.closest('.form-group').querySelector('small');
-        }
+        // for (let s in required_fields) {
+        //     item = required_fields[s];
+        //     item.el = document.querySelector('#' + item.id);
+        //     item.infoEl = item.el.closest('.form-group').querySelector('small');
+        // }
 
         function checkForm() {
             let isPass = true;
-            submit_btn.style.display = 'none';
 
-            for (let s in required_fields) {
-
-                //先重置
-                item = required_fields[s];
-                item.el.style.border = '1px solid #ccc';
-                item.infoEl.innerText = '';
-
-                //再檢查
-                if (!item.pattern.test(item.el.value)) {
-                    item.el.style.border = '1px solid red';
-                    item.infoEl.innerText = item.info;
-                    isPass = false;
-                }
-            }
+            // submit_btn.style.display = 'none';
+            //
+            // for (let s in required_fields) {
+            //
+            //     //先重置
+            //     item = required_fields[s];
+            //     item.el.style.border = '1px solid #ccc';
+            //     item.infoEl.innerText = '';
+            //
+            //     //再檢查
+            //     if (!item.pattern.test(item.el.value)) {
+            //         item.el.style.border = '1px solid red';
+            //         item.infoEl.innerText = item.info;
+            //         isPass = false;
+            //     }
+            // }
 
             if (isPass) {
-                let fd = new FormData(document.form1);
-                let info_bar = document.querySelector('#info_bar');
-                fetch('coupon_insert_api.php', {
-                    method: 'POST',
-                    body: fd,
-                })
-                    .then(response => {
-                        return response.json();
-                    })
-                    .then(json => {
-                        submit_btn.style.display = 'block';
-                        console.log(json);
-                        info_bar.style.display = 'block';
-                        info_bar.innerHTML = json.info;
-                        if (json.success) {
-                            info_bar.className = 'alert alert-success';
-                            setTimeout(() => {
-                                location.href = 'coupon_list.php';
-                            }, 750)
-                        } else {
-                            info_bar.className = 'alert alert-danger';
-                        }
-                    });
+                return true;
             } else {
-                submit_btn.style.display = 'block';
-            }
-            return false;
-        }
-
-        const coupon_price_label = document.querySelector('#coupon_price_label');
-        const coupon_rule = document.querySelector('#coupon_rule');
-        const coupon_start_time = document.querySelector('#coupon_start_time');
-        const coupon_end_time = document.querySelector('#coupon_end_time');
-        const coupon_no = document.querySelector('#coupon_no');
-
-        function show_rule() {
-
-            if (coupon_rule.value === "1") {
-                coupon_price_label.innerHTML = '折價金額';
-            } else {
-                coupon_price_label.innerHTML = '折扣百分比(%)';
+                return false;
             }
         }
 
-        function rand_no() {
-            let ALPHABET = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-            let ID_LENGTH = 10;
-            let rtn = '';
-            for (let i = 0; i < ID_LENGTH; i++) {
-                rtn += ALPHABET.charAt(Math.floor(Math.random() * ALPHABET.length));
+
+        function checkAll(k) {
+            let cate_boxes = document.querySelectorAll('#categories_block input');
+            for (let i = 0; i < cate_boxes.length; i++){
+                cate_boxes[i].checked = k;
             }
-            coupon_no.value = rtn;
         }
-
-        function formatDate(date) {
-            let d = new Date(date),
-                month = '' + (d.getMonth() + 1),
-                day = '' + d.getDate(),
-                year = d.getFullYear();
-
-            if (month.length < 2) month = '0' + month;
-            if (day.length < 2) day = '0' + day;
-
-            return [year, month, day].join('-');
-        }
-
-        coupon_start_time.value = formatDate(new Date());
-        coupon_end_time.value = formatDate(new Date());
 
     </script>
 
-<?php print_r($_SESSION)?>
 <?php include __DIR__ . '/../../pbook_index/__html_foot.php'; ?>

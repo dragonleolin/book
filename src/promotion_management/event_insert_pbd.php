@@ -79,16 +79,16 @@ include __DIR__ . '/../../pbook_index/__navbar.php';
                                 <div style="display: none" id="priceStage2"
                                      class="row border-bottom justify-content-between mt-2">
                                     <div class="form-group col-md-6">
-                                        <label for="price_condition1">每滿(元)</label>
-                                        <input type="text" class="form-control" id="price_condition1"
-                                               name="price_condition1">
+                                        <label for="price_condition2">每滿(元)</label>
+                                        <input type="text" class="form-control" id="price_condition2"
+                                               name="price_condition2">
                                         <small class="form-text"></small>
                                     </div>
                                     <div class="form-group col-md-6">
-                                        <label for="discount_amount1">減</label>
+                                        <label for="discount_amount2">減</label>
                                         <div class="d-flex">
-                                            <input type="text" class="form-control" id="discount_amount1"
-                                                   name="discount_amount1">
+                                            <input type="text" class="form-control" id="discount_amount2"
+                                                   name="discount_amount2">
                                             <small class="form-text"></small>
                                             <select class="form-control sel_discount_type" onchange="sel_type(1)">
                                                 <option value="1">元</option>
@@ -100,16 +100,16 @@ include __DIR__ . '/../../pbook_index/__navbar.php';
                                 <div style="display: none" id="priceStage3"
                                      class="row border-bottom justify-content-between mt-2">
                                     <div class="form-group col-md-6">
-                                        <label for="price_condition1">每滿(元)</label>
-                                        <input type="text" class="form-control" id="price_condition1"
-                                               name="price_condition1">
+                                        <label for="price_condition3">每滿(元)</label>
+                                        <input type="text" class="form-control" id="price_condition3"
+                                               name="price_condition3">
                                         <small class="form-text"></small>
                                     </div>
                                     <div class="form-group col-md-6">
-                                        <label for="discount_amount1">減</label>
+                                        <label for="discount_amount3">減</label>
                                         <div class="d-flex">
-                                            <input type="text" class="form-control" id="discount_amount1"
-                                                   name="discount_amount1">
+                                            <input type="text" class="form-control" id="discount_amount3"
+                                                   name="discount_amount3">
                                             <small class="form-text"></small>
                                             <select class="form-control sel_discount_type" onchange="sel_type(2)">
                                                 <option value="1">元</option>
@@ -121,7 +121,7 @@ include __DIR__ . '/../../pbook_index/__navbar.php';
 
 
                             </div>
-                            <button id="addStageBtn" class="btn btn-outline-primary my-2 my-sm-0" type="button"
+                            <button style="display: none" id="addStageBtn" class="btn btn-outline-primary my-2 my-sm-0" type="button"
                                     onclick="addStage()">
                                 <i class="fas fa-plus-circle"></i>新增階段
                             </button>
@@ -236,12 +236,29 @@ include __DIR__ . '/../../pbook_index/__navbar.php';
         document.querySelector('#event_start_time').value = formatDate(new Date());
         document.querySelector('#event_end_time').value = formatDate(new Date());
 
+
+        const event_pbd_type = document.querySelector('#event_pbd_type');
+        const addStageBtn = document.querySelector('#addStageBtn');
         let stage = 1;
+
+        event_pbd_type.addEventListener('change',()=>{
+            if(event_pbd_type.value == 4){
+                addStageBtn.style.display = 'inline-block';
+            }
+            else{
+                addStageBtn.style.display = 'none';
+                for(let i = 1; i < 3; i++){
+                    let priceStage = document.querySelector('#priceStage' + i);
+                    priceStage.style.display = 'none';
+                }
+                stage = 0;
+            }
+        });
 
         function addStage() {
             stage++;
             if (stage == 3) {
-                document.querySelector('#addStageBtn').style.display = 'none';
+                addStageBtn.style.display = 'none';
             }
             let priceStage = document.querySelector('#priceStage' + stage);
             priceStage.style.display = 'flex';
