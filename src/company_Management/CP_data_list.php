@@ -58,8 +58,8 @@ $stmt = $pdo->query($sql);
                     </button>
                 </li>
                 <li class="nav-item" style="flex-grow: 1">
-                    <form class="form-inline my-2 my-lg-0">
-                        <input class="search form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+                    <form class="form-inline my-2 my-lg-0" name="form1">
+                        <input class="search form-control mr-sm-2" type="search" autocomplete="off" placeholder="Search" aria-label="Search" name="data_search">
                         <button class="btn btn-outline-warning my-2 my-sm-0" type="submit">
                             <i class="fas fa-search"></i>
                         </button>
@@ -117,7 +117,7 @@ $stmt = $pdo->query($sql);
             <ul class="pagination page-position ">
                 <li class="page-item">
                     <a class="page-link" href="?page=1" aria-label="Previous">
-                    <i class="fas fa-angle-double-left"></i>
+                        <i class="fas fa-angle-double-left"></i>
                     </a>
                 </li>
                 <li class="page-item">
@@ -129,7 +129,7 @@ $stmt = $pdo->query($sql);
                 $p_start = $page - 4;
                 $p_end = $page + 4;
                 if ($page < 6) :
-                    for ($i = $p_start; $i <= 10; $i++) :
+                    for ($i = $p_start; $i <= 9; $i++) :
                         if ($i < 1 or $i > $totalPages) continue;
                         ?>
                         <li class="page-item">
@@ -138,8 +138,18 @@ $stmt = $pdo->query($sql);
                     <?php endfor; ?>
                 <?php endif; ?>
                 <?php
-                if ($page >= 6) :
-                    for ($i = 1; $i <= $p_end; $i++) :
+                if ($page < $totalPages - 3 && $page >= 6) :
+                    for ($i = $p_start; $i <= $p_end; $i++) :
+                        if ($i < 1 or $i > $totalPages) continue;
+                        ?>
+                        <li class="page-item ">
+                            <a class="page-link" style="<?= $i == $page ? 'background: rgba(156, 197, 161, 0.5) ;color: #ffffff;' : '' ?>" href="?page=<?= $i ?>"><?= $i ?></a>
+                        </li>
+                    <?php endfor; ?>
+                <?php endif; ?>
+                <?php
+                if ($page >= $totalPages - 3) :
+                    for ($i = $totalPages - 8; $i <= $p_end; $i++) :
                         if ($i < 1 or $i > $totalPages) continue;
                         ?>
                         <li class="page-item ">
@@ -153,8 +163,8 @@ $stmt = $pdo->query($sql);
                     </a>
                 </li>
                 <li class="page-item">
-                    <a class="page-link" href="?page=<?= $totalPages?>" aria-label="Next">
-                    <i class="fas fa-angle-double-right"></i>
+                    <a class="page-link" href="?page=<?= $totalPages ?>" aria-label="Next">
+                        <i class="fas fa-angle-double-right"></i>
                     </a>
                 </li>
             </ul>

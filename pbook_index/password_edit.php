@@ -1,8 +1,6 @@
 <?php
 require __DIR__ . '/__connect_db.php';
-$page_title = '登入';
-
-
+$page_title = '修改密碼';
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -18,7 +16,6 @@ $page_title = '登入';
     <link rel="stylesheet" href="../fontawesome/css/all.css">
     <link rel="stylesheet" href="../lib/mycss.css">
     <title><?= isset($page_title) ? $page_title : 'Document'  ?></title>
-
     <style>
         body {
             background: url(../images/bg.png) repeat center top;
@@ -77,20 +74,25 @@ $page_title = '登入';
 
     <div class="wrapper">
         <div class="border_dot">
-            <h5 class="card-title">品書網管理者登入</h5>
+            <h5 class="card-title">修改密碼</h5>
             <form name="form1" onsubmit="return checkForm()">
                 <div class="form-group">
-                    <label for="email">帳號</label>
+                    <label for="email">請輸入帳號</label>
                     <input type="text" class="form-control" id="account" name="account" >
                     <small id="accountHelp" class="form-text"></small>
                 </div>
                 <div class="form-group">
-                    <label for="password">密碼</label>
-                    <input type="password" class="form-control" id="password" name="password" autocomplete="new-password">
-                    <small id="passwordHelp" class="form-text"></small>
+                    <label for="oldpassword">請輸入舊密碼</label>
+                    <input type="password" class="form-control" id="oldpassword" name="oldpassword" autocomplete="new-password">
+                    <small id="oldpasswordHelp" class="form-text"></small>
+                </div>
+                <div class="form-group">
+                    <label for="newpassword">請輸入新密碼</label>
+                    <input type="password" class="form-control" id="newpassword" name="newpassword" autocomplete="new-password">
+                    <small id="newpasswordHelp" class="form-text"></small>
                 </div>
                 <div style="text-align: center">
-                    <button type="submit" class="btn btn-warning" id="submit_btn">&nbsp;登&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;入&nbsp;</button>
+                    <button type="submit" class="btn btn-warning" id="submit_btn">&nbsp;修&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;改&nbsp;</button>
                 </div>
             </form>
             <div class="success update card position-absolute" id="info_position" style="display:none; background:#fff">
@@ -111,7 +113,12 @@ $page_title = '登入';
                 info: '請輸入正確帳號',
             },
             {
-                id: 'password',
+                id: 'oldpassword',
+                pattern: /^\S{6,14}$/,
+                info: '請輸入正確密碼',
+            },
+            {
+                id: 'newpassword',
                 pattern: /^\S{6,14}$/,
                 info: '請輸入正確密碼',
             }
@@ -142,7 +149,7 @@ $page_title = '登入';
             }
             let fd = new FormData(document.form1);
             if (isPass) {
-                fetch('login_api.php', {
+                fetch('password_edit_api.php', {
                         method: 'POST',
                         body: fd,
                     })

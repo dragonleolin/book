@@ -25,20 +25,20 @@ if (!isset($_SESSION)) {
     </style>
     <?php include __DIR__ . '/__html_body.php' ?>
     <nav class="navbar justify-content-between my_bg_seasongreen">
-        <a class="navbar-brand" href="../pbook_index/_index.php">
+        <a class="navbar-brand" href="_index.php">
             <img class="book_logo" src="../images/icon_logo.svg" alt="">
         </a>
         <ul class="nav justify-content-between">
             <?php if (isset($_SESSION['loginUser'])) : ?>
                 <li class="nav-item">
-                    <a class="nav-link my_text_blacktea nav_text"><?= $_SESSION['loginUser']['name'] ?>,您好</a>
+                    <a class="nav-link my_text_blacktea nav_text">管理者「<?= $_SESSION['loginUser']['name'] ?>」,您好</a>
                 </li>
                 <li class="nav-item dropdown">
                     <a style="display: inline" class="nav-link dropdown-toggle my_text_yellow" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
                         <div class="my_login_img"><img class="yoko_logo" src="../images/yoko.jpg" alt=""></div>
                     </a>
                     <div class="dropdown-menu" style="left: -100%;top: 90%;">
-                        <a class="dropdown-item" href="#">修改密碼</a>
+                        <a class="dropdown-item" href="password_edit.php">修改密碼</a>
                         <div class="dropdown-divider"></div>
                         <a class="dropdown-item" href="logout.php">登出</a>
                     </div>
