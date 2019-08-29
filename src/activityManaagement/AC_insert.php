@@ -58,7 +58,7 @@ $page_title = '品書 - 活動新增';
                                 <input type="text" class="update form-control" id="AC_eventArea" name="AC_eventArea" value="">
                             </div>
                             <div class="form-group">
-                                <label for="AC_mobile" class="update_label">連絡電話</label>
+                                <label for="AC_mobile" class="update_label">手機號碼</label>
                                 <span id="AC_mobileHelp" style="margin:0px 10px; color:red"></span>
                                 <input type="text" class="update form-control" id="AC_mobile" name="AC_mobile" value="">
                             </div>
@@ -164,7 +164,7 @@ $page_title = '品書 - 活動新增';
             },{
                 id: 'AC_mobile',
                 checker: /^09\d{2}\-?\d{3}\-?\d{3}$/,
-                info: '請輸入正確電話格式'
+                info: '請輸入正確手機格式'
             },{
             id: 'AC_organizer',
                 checker: /.+/,

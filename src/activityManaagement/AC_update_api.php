@@ -23,7 +23,7 @@ $sql = "UPDATE `AC_pbook` SET
          `AC_organizer`=?
          `AC_price`=?
          `AC_created_at`=?
-         WHERE `sid`=?";
+         WHERE `AC_sid`=?";
 
 $stmt = $pdo->prepare($sql);
 
@@ -37,6 +37,7 @@ $stmt->execute([
         $_POST[`AC_organizer`],
         $_POST[`AC_price`],
         $_POST[`AC_created_at`],
+        $_POST[`AC_sid`],
 ]);
 
 //echo $stmt->rowCount();
