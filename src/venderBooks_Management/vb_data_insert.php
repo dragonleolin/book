@@ -106,9 +106,13 @@ $my_categories = empty($_POST['categories']) ? 0 : intval($_POST['categories']);
                     </div>
 
                     <div class="form-group d-flex">
-                        <div>
-                            <label for="pic" style="font-size: 20px;margin:0px 0px 15px 0px">・請選擇書籍封面照片</label>
-                            <input type="file" class="form-control-file" id="pic" name="pic">
+                        <div class="col-lg-5">
+                            <label for="pic" style="font-size: 20px">・請選擇書籍封面照片</label>
+                            <input type="file" class="form-control-file" id="pic" name="pic" style="display:none">
+                            <br>
+                            <button class="btn btn-outline-primary my-2 my-sm-0" type="button" onclick="selUpload()">
+                                <i class="fas fa-plus-circle" style="margin-right:5px"></i>選擇檔案
+                            </button>
                         </div>
                         <div style="height: 230px;width: 230px;border: 1px solid #ddd">
                             <img style="object-fit: contain;width: 100%;height: 100%" id="demo" />
@@ -161,6 +165,10 @@ $my_categories = empty($_POST['categories']) ? 0 : intval($_POST['categories']);
 </div>
 
 <script>
+    function selUpload(){
+        document.querySelector('#pic').click();
+    }
+
     $('#pic').change(function() {
         var file = $('#pic')[0].files[0];
         var reader = new FileReader;
