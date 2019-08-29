@@ -38,14 +38,14 @@ if (!isset($_SESSION)) {
                         <div class="my_login_img"><img class="yoko_logo" src="images/yoko.jpg" alt=""></div>
                     </a>
                     <div class="dropdown-menu" style="left: -100%;top: 90%;">
-                        <a class="dropdown-item" href="password_edit.php">修改密碼</a>
+                        <a class="dropdown-item" href="pbook_index/password_edit.php">修改密碼</a>
                         <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="logout.php">登出</a>
+                        <a class="dropdown-item" href="pbook_index/logout.php">登出</a>
                     </div>
                 </li>
             <?php else : ?>
                 <li class="nav-item">
-                    <a class="nav-link my_text_blacktea nav_text" href="login.php">登入</a>
+                    <a class="nav-link my_text_blacktea nav_text" href="pbook_index/login.php">登入</a>
                 </li>
             <?php endif; ?>
         </ul>

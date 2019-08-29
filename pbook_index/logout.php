@@ -7,4 +7,4 @@ unset($_SESSION['loginUser']);
 // } else {
 //     header('Location: _index.php');
 // }
-header('Location: _index.php');
+header('Location: ../_index.php');
