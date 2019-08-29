@@ -119,7 +119,7 @@ include __DIR__ . '/../../pbook_index/__navbar.php';
                     </td>
                     <td><?= ($r['coupon_status'] == -1) ? '過期' : '已使用' . $r['coupon_status']; ?></td>
                     <td><a href="coupon_edit.php?coupon_id=<?= $r['coupon_id'] . '&page=' . $page ?>"><i
-                                    class="fas fa-edit"></i></a>
+                                class="fas fa-edit"></i></a>
                     </td>
                     <td><a href="javascript:delete_one(<?= $r['coupon_id'] ?>)"><i class="fas fa-trash-alt"></i></a>
                     </td>

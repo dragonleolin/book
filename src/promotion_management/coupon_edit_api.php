@@ -15,10 +15,6 @@ if (empty($_POST['coupon_no'])) {
     exit;
 }
 
-foreach ($_POST as $k=>$v){
-    $_POST[$k] = empty($_POST[$k])? NULL:$v;
-}
-
 $sql = "UPDATE `coupon` 
 SET 
 `coupon_content`=?,`coupon_no`=?,
@@ -32,14 +28,14 @@ $stmt = $pdo->prepare($sql);
 $stmt->execute([
     $_POST['coupon_content'],
     $_POST['coupon_no'],
-    $_POST['coupon_rule'],
-    $_POST['coupon_price'],
-    $_POST['coupon_number'],
-    $_POST['coupon_limit'],
-    $_POST['coupon_send_type'],
+    intval($_POST['coupon_rule']),
+    intval($_POST['coupon_price']),
+    intval($_POST['coupon_number']),
+    intval($_POST['coupon_limit']),
+    intval($_POST['coupon_send_type']),
     $_POST['coupon_start_time'],
     $_POST['coupon_end_time'],
-    $_POST['coupon_sp_rule'],
+    intval($_POST['coupon_sp_rule']),
     $_POST['coupon_id'],
 ]);
 
