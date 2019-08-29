@@ -1,27 +1,11 @@
 <?php
 require __DIR__ . '/__connect_db.php';
-$page_title = '登入';
-
-
+$page_title = '修改密碼';
 ?>
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="stylesheet" href="../bootstrap/css/bootstrap.css">
-    <script src="../lib/jquery-3.4.1.js"></script>
-    <script src="../bootstrap/js/bootstrap.js"></script>
-    <link href="https://fonts.googleapis.com/css?family=Noto+Sans+TC&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../fontawesome/css/all.css">
-    <link rel="stylesheet" href="../lib/mycss.css">
-    <title><?= isset($page_title) ? $page_title : 'Document'  ?></title>
-
+<?php include __DIR__ . '__html_head.php' ?>
     <style>
         body {
-            background: url(../images/bg.png) repeat center top;
+            background: url(../../images/bg.png) repeat center top;
         }
         .wrapper {
             width: 600px;
@@ -39,7 +23,7 @@ $page_title = '登入';
         .border_dot {
             margin: 0 auto;
             border: 30px solid transparent;
-            border-image: url(../images/icon_bg_border2.svg) 100 round;
+            border-image: url(../../images/icon_bg_border2.svg) 100 round;
         }
 
         .card-title {
@@ -58,59 +42,65 @@ $page_title = '登入';
 
         #info_position {
             left: -26%;
-            top: 6%;
+            top: 16%;
         }
+        
         #info_position2 {
             left: -26%;
-            top: 6%;
+            top: 16%;
         }
     </style>
     <?php include __DIR__ . '/__html_body.php' ?>
     <nav class="navbar justify-content-between my_bg_seasongreen">
-        <a class="navbar-brand" href="../_index.php">
-            <img class="book_logo" src="../images/icon_logo.svg" alt="">
+        <a class="navbar-brand" href="_index.php">
+            <img class="book_logo" src="../../images/icon_logo.svg" alt="">
         </a>
         <ul class="nav justify-content-between">
             <li class="nav-item">
-                <a class="nav-link my_text_blacktea nav_text" style="cursor: default">管理者系統</a>
+                <a class="nav-link my_text_blacktea nav_text" style="cursor: default">出版社系統</a>
             </li>
         </ul>
     </nav>
 
     <div class="wrapper">
         <div class="border_dot">
-            <h5 class="card-title">品書網管理者登入</h5>
+            <h5 class="card-title">修改密碼</h5>
             <form name="form1" onsubmit="return checkForm()">
                 <div class="form-group">
-                    <label for="email">帳號</label>
-                    <input type="text" class="form-control" id="account" name="account" >
+                    <label for="email">請輸入帳號</label>
+                    <input type="text" class="form-control" id="account" name="account">
                     <small id="accountHelp" class="form-text"></small>
                 </div>
                 <div class="form-group">
-                    <label for="password">密碼</label>
-                    <input type="password" class="form-control" id="password" name="password" autocomplete="new-password">
-                    <small id="passwordHelp" class="form-text"></small>
+                    <label for="oldpassword">請輸入舊密碼</label>
+                    <input type="password" class="form-control" id="oldpassword" name="oldpassword" autocomplete="new-password">
+                    <small id="oldpasswordHelp" class="form-text"></small>
+                </div>
+                <div class="form-group">
+                    <label for="newpassword">請輸入新密碼</label>
+                    <input type="password" class="form-control" id="newpassword" name="newpassword" autocomplete="new-password">
+                    <small id="newpasswordHelp" class="form-text"></small>
                 </div>
                 <div style="text-align: center">
-                    <button type="submit" class="btn btn-warning" id="submit_btn">&nbsp;登&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;入&nbsp;</button>
+                    <button type="submit" class="btn btn-warning" id="submit_btn">&nbsp;修&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;改&nbsp;</button>
                 </div>
             </form>
             <div class="success update card position-absolute" id="info_position" style="display:none; background:#fff">
                 <div class="success card-body">
                     <label class="success_text" id="info_bar"></label>
-                    <div><img class="success_img" src="../images/icon_checked.svg"></div>
+                    <div><img class="success_img" src="../../images/icon_checked.svg"></div>
                 </div>
             </div>
             <div class="success update card position-absolute" id="info_position2" style="display:none; background:#2d3a3a;box-shadow: 0px 0px 10px red;">
                 <div class="success card-body">
                     <label class="success_text" id="info_bar2" style="color: #fff;  background:#2d3a3a"></label>
-                    <div><img class="success_img" src="../images/icon_false.svg"></div>
+                    <div><img class="success_img" src="../../images/icon_false.svg"></div>
                 </div>
             </div>
         </div>
     </div>
     <script>
-         let info_bar = document.querySelector('#info_bar');
+        let info_bar = document.querySelector('#info_bar');
         let info_bar2 = document.querySelector('#info_bar2');
         let info_position = document.querySelector('#info_position');
         let info_position2 = document.querySelector('#info_position2');
@@ -121,7 +111,12 @@ $page_title = '登入';
                 info: '請輸入正確帳號',
             },
             {
-                id: 'password',
+                id: 'oldpassword',
+                pattern: /^\S{6,14}$/,
+                info: '請輸入正確密碼',
+            },
+            {
+                id: 'newpassword',
                 pattern: /^\S{6,14}$/,
                 info: '請輸入正確密碼',
             }
@@ -152,7 +147,7 @@ $page_title = '登入';
             }
             let fd = new FormData(document.form1);
             if (isPass) {
-                fetch('login_api.php', {
+                fetch('password_edit_api.php', {
                         method: 'POST',
                         body: fd,
                     })
@@ -160,13 +155,13 @@ $page_title = '登入';
                         return response.json();
                     })
                     .then(json => {
-                        console.log(json);;
+                        console.log(json);
                         info_bar.innerHTML = json.info;
                         info_bar2.innerHTML = json.info;
                         if (json.success) {
                             info_position.style.display = 'block';
                             setTimeout(function() {
-                                location.href = '../_index.php';
+                                location.href = '_index.php';
                             }, 1000);
                         } else {
                             info_position2.style.display = 'block';

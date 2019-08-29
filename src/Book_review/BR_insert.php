@@ -4,31 +4,11 @@
         background: url(../../images/bg.png) repeat center top;
     }
 </style>
-<?php include __DIR__ . '/BR__html_head.php' ?>
-<nav class="navbar justify-content-between my_bg_seasongreen">
-    <a class="navbar-brand" href="example_index.php">
-        <img class="book_logo" src="../../images/icon_logo.svg" alt="">
-    </a>
-    <ul class="nav justify-content-between">
-        <li class="nav-item">
-            <a class="nav-link my_text_blacktea nav_text">管理者「大師」,您好</a>
-        </li>
-        <li class="nav-item dropdown">
-            <a style="display: inline" class="nav-link dropdown-toggle my_text_yellow" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
-                <div class="my_login_img"><img class="yoko_logo" src="../../images/yoko.jpg" alt=""></div>
-            </a>
-            <div class="dropdown-menu" style="left: -100%;top: 90%;">
-                <a class="dropdown-item" href="#">修改密碼</a>
-                <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="#">登出</a>
-            </div>
-        </li>
-    </ul>
-</nav>
+<?php include __DIR__ . '/__html_head.php' ?>
+<?php include __DIR__ . '/__html_body.php' ?>
+<?php include '../../pbook_index/__navbar.php'?>
 
 <div class="d-flex flex-row my_content">
-    <!-- 左邊aside選單欄位 -->
-    <?php include __DIR__ . '/BR__navbar.php' ?>
     <!-- 右邊section資料欄位 -->
     <section>
         <div class="container">
@@ -87,7 +67,7 @@
                                 <label for="BR_job" class="update_label">書評人工作</label>
                                 <input type="text" class="form-control" id="BR_job" name="BR_job" placeholder="請輸入目前工作">
                             </div>
-                            <button type="submit" class="btn btn-primary" id="submit_btn">新增</button>
+                            <button type="submit" class="btn btn-primary" id="insert_btn">新增</button>
                         </form>
                 </section>
 
@@ -107,7 +87,8 @@
     </section>
     <script>
         let insert_info = document.querySelector('#success_insert');
-        let main_datalist_hidden = document.querySelector('#main_datalist')
+        let main_datalist_hidden = document.querySelector('#main_datalist');
+        let insert_btn = document.querySelector('#insert_btn');
         let i, s, item;
 
         const error_text = [{
@@ -160,6 +141,7 @@
                 item.error_info.innerHTML = '';
             }
 
+            insert_btn.style.display = 'none';
             let passcheck = true;
             for (i in error_text) {
                 item = error_text[i];
@@ -173,32 +155,34 @@
 
             }
 
+            if (passcheck) {
+                fetch('BR_insert_api.php', {
+                        method: 'POST',
+                        body: fd,
+                    })
+                    .then(response => {
+                        return response.json();
+                    })
+                    .then(json => {
+                        insert_btn.style.display = 'block';
+                        if (json.success) {
+                            main_datalist_hidden.style.visibility = 'hidden';
+                            insert_info.style.display = 'block'
+                            setTimeout(function() {
+                                location.href = 'BR_data_list.php';
+                            }, 1500);
 
-            fetch('BR_insert_api.php', {
-                    method: 'POST',
-                    body: fd,
-                })
-                .then(response => {
-                    return response.json();
-                })
-                .then(json => {
+                        } else {
+                            console.log('1')
+                        }
 
-                    if (json.success) {
-                        main_datalist_hidden.style.visibility = 'hidden';
-                        insert_info.style.display = 'block'
-                        setTimeout(function() {
-                            location.href = 'BR_data_list.php';
-                        }, 1500);
-
-                    } else {
-                        info_bar.className = 'alert alert-danger'
-                    }
-
-                });
-
+                    });
+            } else {
+                insert_btn.style.display = 'block';
+            }
             return false;
         }
     </script>
 
 </div>
-<?php include __DIR__ . '/BR__html_foot.php' ?>
+<?php include __DIR__ . '/__html_foot.php' ?>

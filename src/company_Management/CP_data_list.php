@@ -3,6 +3,7 @@ require __DIR__ . '/__admin_required.php';
 require __DIR__ . '/__connect_db.php';
 $page_title = '出版社總表';
 $page = isset($_GET['page']) ? intval($_GET['page']) : 1;
+$search = isset($_GET['search']) ? $_GET['search'] : '';
 $per_page = 8;    //一頁10筆
 $totalRows = $pdo->query("SELECT COUNT(1) FROM `cp_data_list`")->fetch(PDO::FETCH_NUM)[0];    // 拿到總筆數
 $totalPages = ceil($totalRows / $per_page);    //算總頁數
@@ -14,12 +15,15 @@ if ($page > $totalPages) {
     header('Location: CP_data_list.php?page=' . $totalPages);
     exit;
 }
+$params = [];
+$where = ' WHERE 1 ';
+if(! empty($search)){
+    $params['search'] = $search;
+    $search = $pdo->quote("%$search%");
+    $where .= " AND (`cp_name` LIKE $search OR `cp_contact_p` LIKE $search OR `cp_phone` LIKE $search OR `cp_email` LIKE $search OR `cp_address` LIKE $search OR `cp_account` LIKE $search) ";
+}
 
-$sql = sprintf(
-    "SELECT * FROM `cp_data_list` ORDER BY `sid` ASC LIMIT %s, %s",
-    ($page - 1) * $per_page,    //從第幾筆開始
-    $per_page    //一頁幾筆
-);
+$sql = "SELECT * FROM `cp_data_list` $where ORDER BY `sid` LIMIT ". ($page - 1) * $per_page .",". $per_page;
 $stmt = $pdo->query($sql);
 $rows = $stmt->fetchAll();
 ?>
@@ -60,7 +64,7 @@ $rows = $stmt->fetchAll();
                 </li>
                 <li class="nav-item" style="flex-grow: 1">
                     <form class="form-inline my-2 my-lg-0" name="form1">
-                        <input class="search form-control mr-sm-2" type="search" autocomplete="off" placeholder="Search" aria-label="Search" name="data_search">
+                        <input class="search form-control mr-sm-2" type="search" autocomplete="off" placeholder="Search" aria-label="Search" id="search" name="search" >
                         <button class="btn btn-outline-warning my-2 my-sm-0" type="submit">
                             <i class="fas fa-search"></i>
                         </button>
@@ -131,30 +135,33 @@ $rows = $stmt->fetchAll();
                 $p_end = $page + 3;
                 if ($page < 5) :
                     for ($i = $p_start; $i <= 7; $i++) :
+                        $params['page'] = $i;
                         if ($i < 1 or $i > $totalPages) continue;
                         ?>
                         <li class="page-item">
-                            <a class="page-link" style="<?= $i == $page ? 'background: rgba(156, 197, 161, 0.5) ;color: #ffffff;' : '' ?>" href="?page=<?= $i ?>"><?= $i ?></a>
+                            <a class="page-link" style="<?= $i == $page ? 'background: rgba(156, 197, 161, 0.5) ;color: #ffffff;' : '' ?>" href="?<?= http_build_query($params) ?>"><?= $i ?></a>
                         </li>
                     <?php endfor; ?>
                 <?php endif; ?>
                 <?php
                 if ($page < $totalPages - 3 && $page >= 5) :
                     for ($i = $p_start; $i <= $p_end; $i++) :
+                        $params['page'] = $i;
                         if ($i < 1 or $i > $totalPages) continue;
                         ?>
                         <li class="page-item ">
-                            <a class="page-link" style="<?= $i == $page ? 'background: rgba(156, 197, 161, 0.5) ;color: #ffffff;' : '' ?>" href="?page=<?= $i ?>"><?= $i ?></a>
+                            <a class="page-link" style="<?= $i == $page ? 'background: rgba(156, 197, 161, 0.5) ;color: #ffffff;' : '' ?>" href="?<?= http_build_query($params) ?>"><?= $i ?></a>
                         </li>
                     <?php endfor; ?>
                 <?php endif; ?>
                 <?php
                 if ($page >= $totalPages - 3) :
                     for ($i = $totalPages - 6; $i <= $p_end; $i++) :
+                        $params['page'] = $i;
                         if ($i < 1 or $i > $totalPages) continue;
                         ?>
                         <li class="page-item ">
-                            <a class="page-link" style="<?= $i == $page ? 'background: rgba(156, 197, 161, 0.5) ;color: #ffffff;' : '' ?>" href="?page=<?= $i ?>"><?= $i ?></a>
+                            <a class="page-link" style="<?= $i == $page ? 'background: rgba(156, 197, 161, 0.5) ;color: #ffffff;' : '' ?>" href="?<?= http_build_query($params) ?>"><?= $i ?></a>
                         </li>
                     <?php endfor; ?>
                 <?php endif; ?>
@@ -186,6 +193,11 @@ $rows = $stmt->fetchAll();
 </section>
 </div>
 <script>
+    // function data_search() {
+    //    if(empty(search.value)){
+    //        location ="CP_data_list.php";
+    //    }
+    // }
     function data_insert() {
         location = "CP_data_insert.php";
     }

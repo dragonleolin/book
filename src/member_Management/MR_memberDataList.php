@@ -7,9 +7,20 @@ $thead_item = [
 $page_title = '資料列表';
 
 $page = isset($_GET['page']) ? intval($_GET['page']) : 1;
+$search = isset($_GET['search']) ? $_GET['search'] : '';
 
 $per_page = 10; // 每頁顯示的筆數
-$count = "SELECT COUNT(1) FROM `mr_information`"; //用count計算出總筆數
+
+$params = [];
+$where = ' WHERE 1 ';
+if (!empty($search)) {
+    $params['search'] = $search;
+    $search = $pdo->quote("%$search%");
+    $where .= " AND (`MR_name` LIKE $search OR `MR_email` LIKE $search OR `MR_mobile` LIKE $search) ";
+}
+
+
+$count = "SELECT COUNT(1) FROM `mr_information` $where"; //用count計算出總筆數
 
 $totalRows = $pdo->query($count)->fetch(PDO::FETCH_NUM)[0];
 
@@ -25,20 +36,20 @@ if ($page > $totalPage) {
     exit;
 }
 
-$sql = sprintf(
-    "SELECT * FROM `mr_information` ORDER BY `sid` LIMIT %s,%s",
-    ($page - 1) * $per_page,
-    $per_page
-);
+$sql = "SELECT * FROM `mr_information` $where ORDER BY `sid` LIMIT " . ($page - 1) * $per_page . "," . $per_page;
 $stmt = $pdo->query($sql);
 $rows = $stmt->fetchAll();
 ?>
-
 <?php include '../../pbook_index/__html_head.php' ?>
+<style>
+    body {
+        background: url(../../images/bg.png) repeat center top;
+    }
+</style>
 <?php include '../../pbook_index/__html_body.php' ?>
 <?php include '../../pbook_index/__navbar.php' ?>
 <div id="outerSpace">
-    <section class="justify-content-center p-4">
+    <section class="justify-content-center p-4 container-fluid">
         <div class="container-fluid">
             <nav class="navbar justify-content-between" style="padding: 0px;width: 80vw;">
                 <div>
@@ -125,9 +136,10 @@ $rows = $stmt->fetchAll();
                 for ($i = $p_start; $i <= $p_end; $i++) :
                     if ($i < 1 or $i > $totalPage) continue;
                     //continue跳過該次迴圈
+                    $params['page'] = $i;
                     ?>
                     <li class="page-item <?= $i == $page ? 'active' : '' ?>">
-                        <a class="page-link" href="?page=<?= $i ?>"><?= $i ?></a></li>
+                        <a class="page-link" href="?<?= http_build_query($params) ?>"><?= $i ?></a></li>
                 <?php endfor; ?>
                 <li class="page-item">
                     <a class="page-link my_text_blacktea" href="?page=<?= ($page + 1 > $totalPage) ? $totalPage : $page + 1 ?> ?>" aria-label="Next">

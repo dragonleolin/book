@@ -106,23 +106,23 @@ $t_stmt = $pdo->query($page_sql);
                 </thead>
                 <tbody>
                     <?php while ($r = $t_stmt->fetch()) { ?>
-                    <tr>
-                        <td><?= $r['mb_sid'] ?></td>
-                        <td><?= htmlentities($r['mb_isbn']) ?></td>
-                        <td><?= htmlentities($r['mb_name']) ?></td>
-                        <td><?= htmlentities($r['mb_categories']) ?></td>
-                        <td><?= htmlentities($r['mb_author']) ?></td>
-                        <td><?= htmlentities($r['mb_publishing']) ?></td>
-                        <td><?= htmlentities($r['mb_publishDate']) ?></td>
-                        <td><?= htmlentities($r['mb_version']) ?></td>
-                        <td><?= htmlentities($r['mb_fixedPrice']) ?></td>
-                        <td><?= htmlentities($r['mb_page']) ?></td>
-                        <td><?= htmlentities($r['mb_savingStatus']) ?></td>
-                        <td><?= htmlentities($r['mb_shelveMember']) ?></td>
-                        <td><?= htmlentities($r['mb_shelveDate']) ?></td>
-                        <td><a href="#"><i class="fas fa-edit"></i></a></td>
-                        <td><a href="#"><i class="fas fa-trash-alt"></i></a></td>
-                    </tr>
+                        <tr>
+                            <td><?= $r['mb_sid'] ?></td>
+                            <td><?= htmlentities($r['mb_isbn']) ?></td>
+                            <td><?= htmlentities($r['mb_name']) ?></td>
+                            <td><?= htmlentities($r['mb_categories']) ?></td>
+                            <td><?= htmlentities($r['mb_author']) ?></td>
+                            <td><?= htmlentities($r['mb_publishing']) ?></td>
+                            <td><?= htmlentities($r['mb_publishDate']) ?></td>
+                            <td><?= htmlentities($r['mb_version']) ?></td>
+                            <td><?= htmlentities($r['mb_fixedPrice']) ?></td>
+                            <td><?= htmlentities($r['mb_page']) ?></td>
+                            <td><?= htmlentities($r['mb_savingStatus']) ?></td>
+                            <td><?= htmlentities($r['mb_shelveMember']) ?></td>
+                            <td><?= htmlentities($r['mb_shelveDate']) ?></td>
+                            <td><a href="MB_update.php?mb_sid=<?= $r['mb_sid'] ?>"><i class="fas fa-edit"></i></a></td>
+                            <td><a href="javascript:delete_one(<?= $r['mb_sid'] ?>)"><i class="fas fa-trash-alt"></i></a></td>
+                        </tr>
                     <?php } ?>
                 </tbody>
             </table>
@@ -141,20 +141,20 @@ $t_stmt = $pdo->query($page_sql);
                         for ($i = $p_start; $i <= $p_end; $i++) :
                             if ($i < 1 or $i > $totalPages) continue;
                             ?>
-                    <li class="page-item">
-                        <a class="page-link" href="?page=<?= $i ?>"><?= $i ?></a>
-                    </li>
-                    <?php endfor; ?>
+                            <li class="page-item">
+                                <a class="page-link" href="?page=<?= $i ?>"><?= $i ?></a>
+                            </li>
+                        <?php endfor; ?>
                     <?php endif; ?>
                     <?php
                     if ($page >= 5) :
                         for ($i = 1; $i <= $p_end; $i++) :
                             if ($i < 1 or $i > $totalPages) continue;
                             ?>
-                    <li class="page-item">
-                        <a class="page-link" href="?page=<?= $i ?>"><?= $i ?></a>
-                    </li>
-                    <?php endfor; ?>
+                            <li class="page-item">
+                                <a class="page-link" href="?page=<?= $i ?>"><?= $i ?></a>
+                            </li>
+                        <?php endfor; ?>
                     <?php endif; ?>
                     <li class="page-item">
                         <a class="page-link" href="?page=<?= $page + 1 ?>" aria-label="Next">
@@ -166,16 +166,37 @@ $t_stmt = $pdo->query($page_sql);
 
 
             <!-- 刪除提示框 -->
-            <!-- <div class="delete update card">
-                    <div class="delete card-body">
-                        <label class="delete_text">您確認要刪除資料嗎?</label>
-                        <div>
-                            <button type="button" class="delete btn btn-danger">確認</button>
-                            <button type="button" class="delete btn btn-warning">取消</button>
-                        </div>
+            <div class="delete update card" id="deleteType" style="display: none;">
+                <div class="delete card-body">
+                    <label class="delete_text">您確認要刪除資料嗎?</label>
+                    <div>
+                        <button type="button" class="delete btn btn-danger" id="confirm">確認</button>
+                        <button type="button" class="delete btn btn-warning" id="cancel">取消</button>
                     </div>
-                </div> -->
+                </div>
+            </div>
 
 </section>
+<script>
+    let deleteType = document.querySelector('#deleteType');
+    let confirm = document.querySelector('#confirm');
+    let cancel = document.querySelector('#cancel');
+
+    function delete_one(mb_sid) {
+
+        deleteType.style.display = "block";
+
+        // if (confirm(`確定要刪除編號為 ${mb_sid} 的資料嗎?`)) {
+        //     location.href = 'MB_delete.php?mb_sid=' + mb_sid;
+        // }
+
+        confirm.addEventListener('click', function() {
+            location.href = 'MB_delete.php?mb_sid=' + mb_sid;
+        })
+        cancel.addEventListener('click', function() {
+            location.href = window.location.href;
+        })
+    }
+</script>
 </div>
 <?php include __DIR__ . '/../../pbook_index/__html_foot.php' ?>

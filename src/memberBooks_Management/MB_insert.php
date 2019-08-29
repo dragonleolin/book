@@ -65,7 +65,7 @@ $page_title = '新增資料';
                             <input type="text" class="form-control" id="mb_publishDate" name="mb_publishDate">
                         </div>
                         <div class="form-group">
-                            <label for="mb_version">版本</label>
+                            <label for="mb_version" class="update_label">版本</label>
                             <span id="mb_mb_versionHelp" style="margin:0px 10px;color:red"></span>
                             <input type="text" class="form-control" id="mb_version" name="mb_version">
                         </div>
@@ -199,7 +199,7 @@ $page_title = '新增資料';
             </form>
         </div>
     </div>
-    <div class="success update card success_bar" id="success_bar" style="background:#fff; display:none;">
+    <div class="success update card success_bar" id="success_bar" style="background:#fff; display: none">
         <div class="success card-body">
             <label class="success_text" id="info-bar"></label>
             <div><img class="success_img" src="../../images/icon_checked.svg"></div>
@@ -278,8 +278,8 @@ $page_title = '新增資料';
             item.el.style.border = '1px solid #CCCCCC';
             item.infoEl.innerHTML = '';
         }
-        info_bar.style.display = 'none';
-        info_bar.innerHTML = '';
+        // info_bar.style.display = 'none';
+        // info_bar.innerHTML = '';
 
         //TODO: 檢查必要欄位，欄位值的格式
         let isPass = true;
@@ -308,9 +308,11 @@ $page_title = '新增資料';
                     success_bar.style.display = 'block';
                     info_bar.innerHTML = json.info;
                     if (json.success) {
-                        
+                        setTimeout(function() {
+                            location.href = 'MB_data_list.php';
+                        }, 1000);
                     } else {
-
+                        success_bar.style.display = 'none'
                     }
                 });
         } else {
