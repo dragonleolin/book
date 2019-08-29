@@ -1,14 +1,14 @@
 <?php
-$page_name = 'event_insert';
-$page_title = '新增活動';
+$page_name = 'event_insert_pbd2';
+$page_title = '選擇滿減促銷活動適用商品範圍';
 require __DIR__ . '/__connect_db.php';
 
 include __DIR__ . '/../../pbook_index/__html_head.php';
 include __DIR__ . '/../../pbook_index/__html_body.php';
 include __DIR__ . '/../../pbook_index/__navbar.php';
 
-$sql_limit = 'SELECT * FROM `pm_limit_by` WHERE 1 ORDER BY `event`, `type`, `description`';
-$limit_const = $pdo->query($sql_limit)->fetchAll();
+$_SESSION['event_insert_pbd2'] = $_POST;
+
 ?>
     <style>
         small.form-text {
@@ -17,88 +17,59 @@ $limit_const = $pdo->query($sql_limit)->fetchAll();
     </style>
 
     <div class="container-fluid pt-3">
-        <?php include __DIR__ . '/__coupon_navbar.php'; ?>
         <div class="row">
             <div class="col-md-2"></div>
             <div class="col-md-8">
                 <div class="alert alert-primary" role="alert" id="info_bar" style="display: none"></div>
                 <div class="card">
                     <div class="card-body">
-                        <h5 class="card-title">新增折價券</h5>
-                        <form name="form1" onsubmit="return checkForm()">
-                            <div class="form-group">
-                                <label for="coupon_content">活動名稱</label>
-                                <input type="text" class="form-control" id="coupon_content" name="coupon_content">
-                                <small class="form-text"></small>
+                        <h5 class="card-title">選擇適用商品</h5>
+                        <form name="form2" onsubmit="return checkForm()">
+                            <div class="row">
+                                <div class="form-group col-md-6">
+                                    <label for="event_pbd">使用分類</label>
+                                    <small class="form-text"></small>
+                                </div>
                             </div>
-                            <div class="form-group">
-                                <label for="coupon_no">折價券編號</label>
-                                <button type="button" class="btn btn-light rounded" onclick="rand_no()">隨機產生</button>
-                                <input type="text" class="form-control" id="coupon_no" name="coupon_no">
-                                <small class="form-text"></small>
+
+                            <div class="row">
+                                <div class="form-group col-md-6">
+                                    <label for="event_pbd_type">新增品項</label>
+                                    <select class="form-control" id="event_pbd_type" name="event_pbd_type"">
+                                    <option value="1">每滿減</option>
+                                    <option value="2">階梯減價</option>
+                                    </select>
+                                    <small class="form-text"></small>
+                                </div>
                             </div>
-                            <div class="form-group">
-                                <label for="coupon_rule">折價規則</label>
-                                <select class="form-control" id="coupon_rule" name="coupon_rule" onchange="show_rule()">
-                                    <option value="1">金額</option>
-                                    <option value="2">百分比</option>
-                                </select>
-                                <small class="form-text"></small>
+                            <div class="row">
+                                <div class="form-group col-md-6">
+                                    <label for="price_condition">每滿(元)</label>
+                                    <input type="text" class="form-control" id="price_condition" name="price_condition">
+                                    <small class="form-text"></small>
+                                </div>
+                                <div class="form-group">
+                                    <label for="discount_amount">減</label>
+                                    <div class="d-flex">
+                                        <input type="text" class="form-control" id="discount_amount"
+                                               name="discount_amount">
+                                        <small class="form-text"></small>
+                                        <select class="form-control col-md-5" name="discount_type" id="discount_type">
+                                            <option value="1">元</option>
+                                            <option value="2">百分比</option>
+                                        </select>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="form-group">
-                                <label id="coupon_price_label" for="coupon_price">折價金額</label>
-                                <input type="text" class="form-control" id="coupon_price" name="coupon_price">
-                                <small class="form-text"></small>
-                            </div>
-                            <div class="form-group">
-                                <label for="coupon_number">發送數量</label>
-                                <input type="text" class="form-control" id="coupon_number" name="coupon_number">
-                                <small class="form-text"></small>
-                            </div>
-                            <div class="form-group">
-                                <label for="coupon_limit">限制規則</label>
-                                <select class="form-control" id="coupon_limit" name="coupon_limit">
-                                </select>
-                                <small class="form-text"></small>
-                            </div>
-                            <div class="form-group">
-                                <label for="coupon_send_type">發送類型</label>
-                                <select class="form-control" id="coupon_send_type" name="coupon_send_type">
-                                    <option value="0">自動使用</option>
-                                    <option value="1" selected>全館發送</option>
-                                    <option value="2">優惠序號</option>
-                                    <option value="3">消費回饋</option>
-                                    <option value="4">生日禮</option>
-                                </select>
-                                <small class="form-text"></small>
-                            </div>
-                            <div class="form-group">
-                                <label for="coupon_start_time">起始日期</label>
-                                <input type="date" class="form-control" id="coupon_start_time" name="coupon_start_time">
-                                <small class="form-text"></small>
-                            </div>
-                            <div class="form-group">
-                                <label for="coupon_end_time">終止日期</label>
-                                <input type="date" class="form-control" id="coupon_end_time" name="coupon_end_time">
-                                <small class="form-text"></small>
-                            </div>
-                            <div class="form-group">
-                                <label for="coupon_sp_rule">特殊規則</label>
-                                <select class="form-control" id="coupon_sp_rule" name="coupon_sp_rule">
-                                    <option value="0">none</option>
-                                    <option value="1">test1</option>
-                                    <option value="2">test2</option>
-                                    <option value="3">test3</option>
-                                    <option value="4">test4</option>
-                                </select>
-                                <small class="form-text"></small>
-                            </div>
-                            <button id="submit_btn" type="submit" class="btn btn-primary">提交</button>
-                        </form>
                     </div>
+
+                    <button id="submit_btn" type="submit" class="btn btn-primary mr-3 ml-3 mb-3">下一步</button>
+
+                    </form>
                 </div>
             </div>
         </div>
+    </div>
     </div>
 
     <script>
@@ -108,7 +79,7 @@ $limit_const = $pdo->query($sql_limit)->fetchAll();
         const submit_btn = document.querySelector('#submit_btn');
         const coupon_limit = document.querySelector('#coupon_limit');
         let limit_const = <?= json_encode($limit_const); ?>;
-        limit_const.forEach((val, ind)=>{
+        limit_const.forEach((val, ind) => {
             let limit_opt = document.createElement('option');
             limit_opt.value = val.sid;
             limit_opt.innerHTML = val.description;
@@ -250,5 +221,5 @@ $limit_const = $pdo->query($sql_limit)->fetchAll();
 
     </script>
 
-
+<?php print_r($_SESSION)?>
 <?php include __DIR__ . '/../../pbook_index/__html_foot.php'; ?>
