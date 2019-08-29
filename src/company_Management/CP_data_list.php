@@ -21,6 +21,7 @@ $sql = sprintf(
     $per_page    //一頁幾筆
 );
 $stmt = $pdo->query($sql);
+$rows = $stmt->fetchAll();
 ?>
 <?php include __DIR__ . '/../../pbook_index/__html_head.php' ?>
 <style>
@@ -90,7 +91,7 @@ $stmt = $pdo->query($sql);
                     </tr>
                 </thead>
                 <tbody>
-                    <?php while ($r = $stmt->fetch()) : ?>
+                    <?php foreach ($rows as $r) : ?>
                         <tr>
                             <td><?= $r['sid'] ?></td>
                             <td><?= htmlentities($r['cp_name']) ?></td>
@@ -107,7 +108,7 @@ $stmt = $pdo->query($sql);
                             <td><a href="CP_data_edit.php?sid=<?= $r['sid'] ?>"><i class="fas fa-edit"></i></a></td>
                             <td><a href="javascript:delete_one(<?= $r['sid'] ?>)"><i class="fas fa-trash-alt"></i></a></td>
                         </tr>
-                    <?php endwhile; ?>
+                    <?php endforeach; ?>
                 </tbody>
             </table>
         </div>
@@ -126,10 +127,10 @@ $stmt = $pdo->query($sql);
                     </a>
                 </li>
                 <?php
-                $p_start = $page - 4;
-                $p_end = $page + 4;
-                if ($page < 6) :
-                    for ($i = $p_start; $i <= 9; $i++) :
+                $p_start = $page - 3;
+                $p_end = $page + 3;
+                if ($page < 5) :
+                    for ($i = $p_start; $i <= 7; $i++) :
                         if ($i < 1 or $i > $totalPages) continue;
                         ?>
                         <li class="page-item">
@@ -138,7 +139,7 @@ $stmt = $pdo->query($sql);
                     <?php endfor; ?>
                 <?php endif; ?>
                 <?php
-                if ($page < $totalPages - 3 && $page >= 6) :
+                if ($page < $totalPages - 3 && $page >= 5) :
                     for ($i = $p_start; $i <= $p_end; $i++) :
                         if ($i < 1 or $i > $totalPages) continue;
                         ?>
@@ -149,7 +150,7 @@ $stmt = $pdo->query($sql);
                 <?php endif; ?>
                 <?php
                 if ($page >= $totalPages - 3) :
-                    for ($i = $totalPages - 8; $i <= $p_end; $i++) :
+                    for ($i = $totalPages - 6; $i <= $p_end; $i++) :
                         if ($i < 1 or $i > $totalPages) continue;
                         ?>
                         <li class="page-item ">
