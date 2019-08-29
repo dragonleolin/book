@@ -105,21 +105,13 @@ if (!isset($_SESSION)) {
                         </div>
                     </button>
                     <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordion">
-                        <button type="button" class="btn btn-light sub_aside_text">
+                        <button type="button" class="btn btn-light sub_aside_text" onclick="location.href='src/member_Management/MR_memberDataList.php'">
                             <i class="fas fa-caret-right"></i>
-                            <span>會員總表</span>
+                            <span>品書會員列表</span>
                         </button>
                         <button type="button" class="btn btn-light sub_aside_text">
                             <i class="fas fa-caret-right"></i>
-                            <span>新增會員</span>
-                        </button>
-                        <button type="button" class="btn btn-light sub_aside_text">
-                            <i class="fas fa-caret-right"></i>
-                            <span>會員訂單總表</span>
-                        </button>
-                        <button type="button" class="btn btn-light sub_aside_text">
-                            <i class="fas fa-caret-right"></i>
-                            <span>會員書評總表</span>
+                            <span>會員等級</span>
                         </button>
                     </div>
                 </div>
