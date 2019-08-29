@@ -13,12 +13,13 @@ if(empty($_POST['mb_name'])){
     exit;
 }
 
-$sql = "INSERT INTO `mb_books`( 
+$sql = "INSERT INTO `mb_books`(
     `mb_isbn`, `mb_name`, `mb_author`, `mb_publishing`, 
-    `mb_publishDate`, `mb_fixedPrice`, `mb_page`, 
-    `mb_savingStatus`, `mb_shelveMember`, `mb_shelveDate`,
-       `mb_remarks`)
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), ?)";
+    `mb_publishDate`, `mb_version`, `mb_fixedPrice`, 
+    `mb_page`, `mb_savingStatus`, `mb_shelveMember`, 
+    `mb_remarks`, `mb_shelveDate`) 
+    VALUES (
+    ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())";
 
 $stmt = $pdo->prepare($sql); 
 
@@ -28,6 +29,7 @@ $stmt->execute([
     $_POST['mb_author'],
     $_POST['mb_publishing'],
     $_POST['mb_publishDate'],
+    $_POST['mb_version'],
     $_POST['mb_fixedPrice'],
     $_POST['mb_page'],
     $_POST['mb_savingStatus'],

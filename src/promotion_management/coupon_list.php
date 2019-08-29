@@ -24,6 +24,9 @@ $sql = sprintf('SELECT * FROM `coupon` ORDER BY `coupon_id` DESC LIMIT %s, %s', 
 $stmt = $pdo->query($sql);
 $rows = $stmt->fetchAll();
 
+$sql_limit = 'SELECT * FROM `pm_limit_by` WHERE 1';
+$limit_const = $pdo->query($sql_limit)->fetchAll(PDO::FETCH_UNIQUE);
+
 $rule_const = [
     '特殊',
     '金額',
@@ -47,48 +50,78 @@ include __DIR__ . '/../../pbook_index/__navbar.php';
 ?>
 
     <div class="container-fluid pt-3 pb-5">
-        <?php include __DIR__ . '/__coupon_navbar.php'; ?>
+
+        <nav class="navbar justify-content-between mb-3" style="padding: 0px;width: 80vw;">
+            <div>
+                <h4>折價券列表</h4>
+                <div class="title_line"></div>
+            </div>
+            <ul class="nav justify-content-between">
+                <li class="nav-item">
+                    <div style="padding: 0.375rem 0.75rem;">
+                        <i class="fas fa-check"></i>
+                        目前總計<?= $total_rows ?>筆資料
+                    </div>
+                </li>
+                <li class="nav-item" style="margin: 0px 10px">
+                    <button class="btn btn-outline-primary my-2 my-sm-0" type="submit"
+                            onclick="location.href='coupon_insert.php'">
+                        <i class="fas fa-plus-circle"></i>
+                        新增折價券
+                    </button>
+                </li>
+                <li class="nav-item" style="flex-grow: 1">
+                    <form class="form-inline my-2 my-lg-0">
+                        <input class="search form-control mr-sm-2" type="search" placeholder="Search"
+                               aria-label="Search">
+                        <button class="btn btn-outline-warning my-2 my-sm-0" type="submit">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </form>
+                </li>
+            </ul>
+        </nav>
 
 
         <table class="table table-striped table-bordered">
             <thead>
             <tr>
-                <th scope="col">刪除</th>
                 <th scope="col">編號</th>
                 <th scope="col">內容</th>
                 <th scope="col">券號</th>
                 <th scope="col">規則</th>
                 <th scope="col">折扣</th>
                 <th scope="col">數量</th>
+                <th scope="col">使用限制</th>
                 <th scope="col">發送類型</th>
                 <th scope="col">時間</th>
                 <th scope="col">狀態</th>
-                <th scope="col">編輯</th>
+                <th scope="col">修改</th>
+                <th scope="col">刪除</th>
             </tr>
             </thead>
             <tbody>
             <?php foreach ($rows as $r) : ?>
                 <tr>
-                    <!-- 用htmlentities做跳脫，避免被xss攻擊 -->
-                    <td><a href="javascript:delete_one(<?= $r['coupon_id'] ?>)"><i class="fas fa-trash-alt"></i></a></td>
                     <th scope="row"><?= $r['coupon_id']; ?></th>
                     <td><?= htmlentities($r['coupon_content']); ?></td>
                     <td><?= htmlentities($r['coupon_no']); ?></td>
                     <td><?= $rule_const[$r['coupon_rule']]; ?></td>
-                    <td>
-                        <?= $r['coupon_price']; ?>
-                        <?= $r['coupon_rule'] == 2 ? '%' : ''; ?>
+                    <td><?= $r['coupon_price'].($r['coupon_rule'] == 2 ? '%' : '');?>
                     </td>
                     <td><?= $r['coupon_number']; ?></td>
-                    <td><?= $send_const[$r['coupon_send_type']]; ?></td>
+                    <td><?= isset($limit_const[$r['coupon_limit']])?$limit_const[$r['coupon_limit']]['description']:'找不到限制規則'; ?></td>
+                    <td><?= isset($send_const[$r['coupon_send_type']])?$send_const[$r['coupon_send_type']]:'找不到發送規則'; ?></td>
                     <td>
                         開始時間：<?= htmlentities($r['coupon_start_time']); ?><br>
                         結束時間：<?= htmlentities($r['coupon_end_time']); ?><br>
                         建立時間：<?= htmlentities($r['coupon_created_time']); ?>
                     </td>
-                    <td><?= ($r['coupon_status']==-1)?'過期':'已使用'.$r['coupon_status']; ?></td>
+                    <td><?= ($r['coupon_status'] == -1) ? '過期' : '已使用' . $r['coupon_status']; ?></td>
                     <td><a href="coupon_edit.php?coupon_id=<?= $r['coupon_id'] . '&page=' . $page ?>"><i
                                     class="fas fa-edit"></i></a>
+                    </td>
+                    <td><a href="javascript:delete_one(<?= $r['coupon_id'] ?>)"><i class="fas fa-trash-alt"></i></a>
                     </td>
                 </tr>
             <?php endforeach; ?>

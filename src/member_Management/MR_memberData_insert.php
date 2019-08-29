@@ -27,7 +27,9 @@ $a_level = [
 <?php include '../../pbook_index/__html_head.php' ?>
 <link rel="stylesheet" href="lib/memberlist.css">
 <style>
-
+ body {
+            background: url(../../images/bg.png) repeat center top;
+        }
 </style>
 <?php include '../../pbook_index/__html_body.php' ?>
 <?php include '../../pbook_index/__navbar.php' ?>
@@ -43,28 +45,29 @@ $a_level = [
         </h4>
         <div class="title_line"></div>
     </div>
-    <div class="container">
+    <div class=" ">
         <div class="row mt-3 ">
             <div class="col-md-6">
                 <div class="alert alert-primary " role="alert" id="info-bar"></div>
             </div>
         </div>
-        <div class="">
-            <form name="form1" style="width:1100px" onsubmit="return checkForm()">
-                <div class="form-group">
-                    <label for="number">會員編號 : <?= $new_number ?></label>
-                    <input type="text" class="form-control" id="number" name="number" value="<?= $new_number ?>" style="display:none">
-                </div>
-                <label class="form-group">
-                    <label for="personLevel">會員等級 : </label>
-                    <?php for ($i = 0; $i < 5; $i++) : ?>
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="personLevel" value="<?= $i ?>" id="personLevel<?= $i ?>">
-                            <label class="form-check-label" for="personLevel<?= $i ?>"><?= $a_level[$i] ?> </label>
-                        </div>
-                    <?php endfor ?>
-                </label>
+        <div class="container-fluid">
+            <form name="form1" style="" onsubmit="return checkForm()" class="d-flex">
                 <div>
+                    <div class="form-group">
+                        <label for="number">會員編號 : <?= $new_number ?></label>
+                        <input type="text" class="form-control" id="number" name="number" value="<?= $new_number ?>" style="display:none">
+                    </div>
+                    <label class="form-group">
+                        <label for="personLevel">會員等級 : </label>
+                        <?php for ($i = 0; $i < 5; $i++) : ?>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="personLevel" value="<?= $i ?>" id="personLevel<?= $i ?>">
+                                <label class="form-check-label" for="personLevel<?= $i ?>"><?= $a_level[$i] ?> </label>
+                            </div>
+                        <?php endfor ?>
+                    </label>
+
                     <div class="form-group  d-flex">
                         <div>
                             <label for="name">會員姓名</label>
@@ -91,65 +94,77 @@ $a_level = [
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="d-flex">
-                    <div class="form-group ">
-                        <label for="password">密碼</label>
-                        <div class="dis_relative">
-                            <input type="password" class="form-control input_width " id="password" name="password">
-                            <i class="fas fa-eye-slash ps_hide" id="eye1"></i>
-                        </div>
-                    </div>
-                    <div class="form-group right_input ">
-                        <label for="password_confirm">確認密碼</label>
-                        <div class="dis_relative">
-                            <input type="password" class="form-control input_width" id="password_confirm" name="password_confirm">
-                            <i class="fas fa-eye-slash ps_hide" id="eye2"></i>
-                        </div>
-                    </div>
-                </div>
-                <small id="" class="form-text text-muted pass_comment">
-                    至少有一個數字、一個小寫英文字母、一個大寫英文字母、密碼長度在 6 ~ 15 之間</small>
-                <small id="passwordHelp" class="form-text small_fix"></small>
-                <div class="d-flex">
-                    <div class="form-group ">
-                        <label for="email">電子信箱</label>
-                        <div class="d-flex">
-                            <input type="email" class="form-control input_width" id="email" name="email">
-                        </div>
-                    </div>
-                    <div class="form-group right_input">
-                        <label for="mobile">手機</label>
-                        <div class="d-flex">
-                            <input type="text" class="form-control input_width" id="mobile" name="mobile">
 
-                        </div>
-                    </div>
-                </div>
-                <div class=" d-flex">
-                    <small id="emailHelp" class="form-text  small_fix small_help"></small>
-                    <small id="mobileHelp" class="form-text  small_fix small_help"></small>
-                </div>
-                <div class="form-group ">
-                    <label for="birthday">生日</label>
                     <div class="d-flex">
-                        <input type="text" class="form-control input_width" id="birthday" name="birthday">
+                        <div class="form-group ">
+                            <label for="password">密碼</label>
+                            <div class="dis_relative">
+                                <input type="password" class="form-control input_width " id="password" name="password">
+                                <i class="fas fa-eye-slash ps_hide" id="eye1" style="cursor: pointer"></i>
+                            </div>
+                        </div>
+                        <div class="form-group right_input ">
+                            <label for="password_confirm">確認密碼</label>
+                            <div class="dis_relative">
+                                <input type="password" class="form-control input_width" id="password_confirm" name="password_confirm">
+                                <i class="fas fa-eye-slash ps_hide" id="eye2" style="cursor: pointer"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <small id="" class="form-text text-muted pass_comment">
+                        至少有一個數字、一個小寫英文字母、一個大寫英文字母、密碼長度在 6 ~ 15 之間</small>
+                    <small id="passwordHelp" class="form-text small_fix"></small>
+                    <div class="d-flex">
+                        <div class="form-group ">
+                            <label for="email">電子信箱</label>
+                            <div class="d-flex">
+                                <input type="email" class="form-control input_width" id="email" name="email">
+                            </div>
+                        </div>
+                        <div class="form-group right_input">
+                            <label for="mobile">手機</label>
+                            <div class="d-flex">
+                                <input type="text" class="form-control input_width" id="mobile" name="mobile">
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class=" d-flex">
+                        <small id="emailHelp" class="form-text  small_fix small_help"></small>
+                        <small id="mobileHelp" class="form-text  small_fix small_help"></small>
+                    </div>
+                    <div class="form-group ">
+                        <label for="birthday">生日</label>
+                        <div class="d-flex">
+                            <input type="text" class="form-control input_width" id="birthday" name="birthday">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="career">職業</label>
+                        <input type="text" class="form-control input_width" id="career" name="career">
+                    </div>
+                    <div class="form-group">
+                        <label for="address">地址</label>
+                        <input type="text" class="form-control input_width2" id="address" name="address">
+                    </div>
+
+                    <button type="submit" class="btn btn-primary" id="submit_btn">新增</button>
+                </div>
+                <div class="">
+                    <div class="">
+                        <label for="pic">會員頭像</label>
+                        <div class="d-flex ">
+                            <figure id="demo-fig">
+                                <img src="" alt="" id="demo">
+                            </figure>
+                            <input type="file" class="form-control-file" id="pic" name="pic">
+                        </div>
                     </div>
                 </div>
-
-                <div class="form-group">
-                    <label for="career">職業</label>
-                    <input type="text" class="form-control input_width" id="career" name="career">
-                </div>
-                <div class="form-group">
-                    <label for="address">地址</label>
-                    <input type="text" class="form-control input_width2" id="address" name="address">
-                </div>
-
-                <button type="submit" class="btn btn-primary" id="submit_btn">新增</button>
             </form>
         </div>
-
+    </div>
 </section>
 
 
@@ -201,6 +216,17 @@ $a_level = [
     }
     eye1.addEventListener('click', showPassword);
     eye2.addEventListener('click', showPassword);
+
+    let pic = document.querySelector('#pic');
+
+    $(pic).change(function() {
+        var file = $('#pic')[0].files[0];
+        var reader = new FileReader;
+        reader.onload = function(e) {
+            $('#demo').attr('src', e.target.result);
+        };
+        reader.readAsDataURL(file);
+    });
 
 
     function checkForm() {

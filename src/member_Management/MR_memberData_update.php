@@ -42,6 +42,9 @@ if (empty($row)) {
 ?><?php include '../../pbook_index/__html_head.php' ?>
 <link rel="stylesheet" href="lib/memberlist.css">
 <style>
+    body {
+            background: url(../../images/bg.png) repeat center top;
+        }
     .nike {
         position: absolute;
         top: 20%;
@@ -119,14 +122,14 @@ if (empty($row)) {
                         <label for="password">密碼</label>
                         <div class="dis_relative">
                             <input type="password" class="form-control input_width " id="password" name="password" value="<?= $row['MR_password'] ?>">
-                            <i class="fas fa-eye-slash ps_hide" id="eye1"></i>
+                            <i class="fas fa-eye-slash ps_hide" id="eye1" style="cursor: pointer"></i>
                         </div>
                     </div>
                     <div class="form-group right_input ">
                         <label for="password_confirm">確認密碼</label>
                         <div class="dis_relative">
                             <input type="password" class="form-control input_width " id="password_confirm" name="password_confirm" value="<?= $row['MR_password'] ?>">
-                            <i class="fas fa-eye-slash ps_hide" id="eye2"></i>
+                            <i class="fas fa-eye-slash ps_hide" id="eye2" style="cursor: pointer"></i>
                         </div>
                     </div>
                 </div>

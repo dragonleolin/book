@@ -33,32 +33,11 @@ $row = $stmt->fetchAll();
         background: url(../../images/bg.png) repeat center top;
     }
 </style>
-<?php require 'BR__html_head.php'; ?>
-<?php include __DIR__ . '/BR__html_body.php' ?>
-<nav class="navbar justify-content-between my_bg_seasongreen">
-    <a class="navbar-brand" href="example_index.php">
-        <img class="book_logo" src="../../images/icon_logo.svg" alt="">
-    </a>
-    <ul class="nav justify-content-between">
-        <li class="nav-item">
-            <a class="nav-link my_text_blacktea nav_text">管理者「大師」,您好</a>
-        </li>
-        <li class="nav-item dropdown">
-            <a style="display: inline" class="nav-link dropdown-toggle my_text_yellow" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
-                <div class="my_login_img"><img class="yoko_logo" src="../../images/yoko.jpg" alt=""></div>
-            </a>
-            <div class="dropdown-menu" style="left: -100%;top: 90%;">
-                <a class="dropdown-item" href="#">修改密碼</a>
-                <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="#">登出</a>
-            </div>
-        </li>
-    </ul>
-</nav>
+<?php require '__html_head.php'; ?>
+<?php include __DIR__ . '/__html_body.php' ?>
+<?php include '../../pbook_index/__navbar.php' ?>
 
 <div class="d-flex flex-row my_content">
-    <!-- 左邊aside選單欄位 -->
-    <?php include __DIR__ . '/BR__navbar.php' ?>
     <!-- 右邊section資料欄位 -->
     <section>
         <div class="container">
@@ -84,7 +63,7 @@ $row = $stmt->fetchAll();
                         <form class="form-inline my-2 my-lg-0">
                             <input class="search form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
                             <button class="btn btn-outline-warning my-2 my-sm-0" type="submit">
-                                <i class="fas fa-search"></i>
+                                <i class="fas fa-search"  name="Submit" value="提交"></i>
                             </button>
                         </form>
                     </li>
@@ -134,7 +113,7 @@ $row = $stmt->fetchAll();
             </div>
 
             <!-- 我是分頁按鈕列 請自取並調整頁面擺放位置 -->
-            <nav aria-label="Page navigation example">
+            <nav aria-label="Page navigation example" class="d-flex justify-content-center">
                 <ul class="pagination">
                     <li class="page-item">
                         <a class="page-link" href="?page=<?= $page - 1 ?>" aria-label="Previous">
@@ -182,7 +161,7 @@ $row = $stmt->fetchAll();
         location.href = 'BR_delete.php?sid=' + d;
     }
     function delete_cancel(){
-        window.location.href='BR_data_list.php'
+        location.href = window.location.href;
     }
 </script>
-<?php require 'BR__html_foot.php'; ?>
+<?php require '__html_foot.php'; ?>

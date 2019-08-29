@@ -1,7 +1,20 @@
 <?php
 require __DIR__. '/AC__connect_db.php';
-$page_name = 'AC_date_list';
-$page_title = '活動資料修改'
+$page_name = 'AC_date_update';
+$page_title = '品書 - 活動編輯';
+
+$sid = isset($_GET['sid']) ? intval($_GET['sid']) : 0;
+if(empty($sid)) {
+    header('Location: AC_data_list.php');
+    exit;
+}
+$sql = "SELECT * FROM `AC_pbook` WHERE `AC_sid`=$sid";
+$row = $pdo->query($sql)->fetch();
+if(empty($row)) {
+    header('Location: AC_data_list.php');
+    exit;
+}
+
 
 ?>
 <?php include __DIR__ . '/../../pbook_index/__html_head.php' ?>
@@ -10,58 +23,62 @@ $page_title = '活動資料修改'
         background: url(../../images/bg.png) repeat center top;
     }
 </style>
+
 <?php include __DIR__ . '/../../pbook_index/__html_body.php' ?>
 <?php include __DIR__ . '/AC__navbar.php' ?>
+
     <!-- 右邊section資料欄位 -->
     <section>
         <div class="container">
             <nav class="navbar justify-content-between" style="padding: 0px;width: 80vw;">
                 <div>
-                    <h4>活動資料修改</h4>
+                    <h4>編輯活動</h4>
                     <div class="title_line"></div>
                 </div>
             </nav>
 
             <!-- 每個人填資料的區塊 -->
-            <div class="container">
+            <div class="container2" style="visibility:visible;" id="main_datalist">
                 <section class="d-flex" style="min-width:600px;">
                     <div class="card-body d-flex">
-                        <form style="width:800px;margin:-15px 50px" method="post">
+                                                                <!-- action="AC_insert_api.php" method="post"-->
+                        <form style="width:800px;margin:-15px 50px;" name="form1" onsubmit="return checkForm()">
                             <div class="form-group">
                                 <label for="AC_name" class="update_label">申請人</label>
-                                <span style="margin:0px 10px;color:red">示意:錯誤顯示訊息</span>
-                                <input type="text" class="update form-control" id="AC_name" name="AC_name">
+                                <span id="AC_nameHelp" style="margin:0px 10px; color:red"></span>
+                                <input type="text" class="update form-control" id="AC_name" name="AC_name" value="<?= htmlentities($row['AC_name']) ?>">
                             </div>
                             <div class="form-group">
                                 <label for="AC_title" class="update_label">標題</label>
-                                <span style="margin:0px 10px;color:red">示意:錯誤顯示訊息</span>
-                                <input type="text" class="update form-control" id="AC_title" name="AC_title">
+                                <span id="AC_titleHelp" style="margin:0px 10px; color:red"></span>
+                                <input type="text" class="update form-control" id="AC_title" name="AC_title" value="<?= htmlentities($row['AC_title']) ?>">
                             </div>
                             <div class="form-group">
                                 <label for="AC_type" class="update_label">活動類型</label>
-                                <span style="margin:0px 10px;color:red">示意:錯誤顯示訊息</span>
-                                <input type="text" class="update form-control" id="AC_type" name="AC_type">
+                                <span id="AC_typeHelp" style="margin:0px 10px; color:red"></span>
+                                <input type="text" class="update form-control" id="AC_type" name="AC_type" value="<?= htmlentities($row['AC_type']) ?>">
                                 
                             </div>
                             <div class="form-group">
-                                <label for="AC_date" class="update_label">時間</label>
-                                <span style="margin:0px 10px;color:red">示意:錯誤顯示訊息</span>
-                                <input type="text" class="update form-control" id="AC_date" name="AC_date">
+                                <label for="AC_date" class="update_label">活動開始日期</label>
+                                <span style="color:#ccc; margin:0 20px">年-月-日</span>
+                                <span id="AC_dateHelp" style="margin:0px 10px; color:red"></span>
+                                <input type="text" class="update form-control" id="AC_date" name="AC_date" value="<?= htmlentities($row['AC_date']) ?>">
                             </div>
                             <div class="form-group">
-                                <label for="AC_eventArea" class="update_label">地點</label>
-                                <span style="margin:0px 10px;color:red">示意:錯誤顯示訊息</span>
-                                <input type="text" class="update form-control" id="AC_eventArea" name="AC_eventArea">
+                                <label for="AC_eventArea" class="update_label">地點</label >
+                                <span id="AC_eventAreaHelp" style="margin:0px 10px; color:red"></span>
+                                <input type="text" class="update form-control" id="AC_eventArea" name="AC_eventArea" value="<?= htmlentities($row['AC_eventArea']) ?>">
                             </div>
                             <div class="form-group">
                                 <label for="AC_mobile" class="update_label">連絡電話</label>
-                                <!-- <span style="margin:0px 10px;color:red">示意:錯誤顯示訊息</span> -->
-                                <input type="text" class="update form-control" id="AC_mobile" name="AC_mobile">
+                                <span id="AC_mobileHelp" style="margin:0px 10px; color:red"></span>
+                                <input type="text" class="update form-control" id="AC_mobile" name="AC_mobile" value="<?= htmlentities($row['AC_mobile']) ?>">
                             </div>
                             <div class="form-group">
                                 <label for="AC_organizer" class="update_label">主辦方</label>
-                                <!-- <span style="margin:0px 10px;color:red">示意:錯誤顯示訊息</span> -->
-                                <input type="text" class="update form-control" id="AC_organizer" name="AC_organizer">
+                                <span id="AC_organizerHelp" style="margin:0px 10px; color:red"></span>
+                                <input type="text" class="update form-control" id="AC_organizer" name="AC_organizer" value="<?= htmlentities($row['AC_organizer']) ?>">
                             </div>
                             <!-- <div class="form-group">
                                 <label for="AC_price" class="update_label">參加費</label>
@@ -69,19 +86,12 @@ $page_title = '活動資料修改'
                                 <input type="text" class="update form-control" id="AC_price" name="AC_price">
                             </div> -->
 
-                            
-
                             <div style="position:absolute;left:900px;">
-                                <button type="submit" class="btn btn-warning" id="submit_btn">&nbsp;確&nbsp;認&nbsp;修&nbsp;改&nbsp;</button>
+                                <button type="submit" class="btn btn-warning" id="success">&nbsp;確&nbsp;認&nbsp;新&nbsp;增&nbsp;</button>
                             </div>
-
                         </form>
-
-                        <!-- <div class="form-group" style="margin:20px 60px;">
-                            <label for="exampleFormControlFile1"><h4>上傳活動封面</h4></label>
-                            <input type="file" class="form-control-file" id="exampleFormControlFile1">
-                        </div> -->
                     </div>
+
                     <div >
                         <div class="form-group" style="">
                             <label for="categories" class="update_label">活動介紹</label>
@@ -89,9 +99,14 @@ $page_title = '活動資料修改'
                             style="width:500px;height:165px;resize:none"></textarea>
                         </div>
 
-                        <form action="/somewhere/to/upload" enctype="multipart/form-data">
-                        <input style="margin:50px" type="file" onchange="readURL(this)" targetID="AC_img" accept="image/gif, image/jpeg, image/png"/ >
-                        <img id="AC_img" src="#" />
+                        <div class="form-group" style="margin:20px 0;">
+                            <label for="exampleFormControlFile1"><h4>上傳活動封面</h4></label>
+                            
+                            <form action="/somewhere/to/upload" enctype="multipart/form-data">
+                                <input style="margin:0px" type="file" onchange="readURL(this)" targetID="AC_img" accept="image/gif, image/jpeg, image/png"/ >
+                                <img style="margin:10px 0; width:500px; background-size:cover;" id="AC_img" src="" />
+                            </form>
+                        </div>
 
                         <script>
                             function readURL(input){
@@ -105,20 +120,132 @@ $page_title = '活動資料修改'
                                 reader.readAsDataURL(input.files[0]);
                               }
                             }
-                        </script>                   
+                        </script>         
                     </div>
-                    </section>  
-            </form>
+                </section>  
+             </div>
+        
 
-                <!-- 以下為修改或新增成功才會跳出來的顯示框 -->
-                <!-- <div class="success update card">
-                        <div class="success card-body">
-                            <label class="success_text">修改成功</label>
-                            <div><img class="success_img" src="../images/icon_checked.svg"></div>
-                        </div>
-                </div> -->
+            <!-- 以下為新增成功才會跳出來的顯示框 -->
+        <div class="success update card" id="submit_btn" style="display:none; position:absolute;top:300px; left:500px;">
+            <div class="success card-body">
+                <label class="success_text" style="background:transparent">新增成功!</label>
+                <div><img class="success_img" src="../../images/icon_checked.svg"></div>
             </div>
-    </section>
+        </div>
 
+        <!-- 以下為新增失敗才會跳出來的顯示框 --> 
+        <!-- <div class="success update card" id="my_false" style="box-shadow:0px 0px 10px red; display:none; position:absolute;top:300px; left:500px;">
+            <div class="success card-body">
+            <label class="success_text" style="background:transparent;color:rgb(228, 63, 63)">新增失敗!</label>
+            <div><img class="success_img" src="../../images/icon_false.svg"></div>
+        </div> -->
+</div>
+        
+    </section>
+</div>
+
+</div>
+    <script>
+        let container2 =  document.querySelector('.container2');
+        let success = document.querySelector('#submit_btn');
+        let my_false = document.querySelector('#my_false');
+        let main_datalist_hidden = document.querySelector('#main_datalist');
+        // 檢查有沒有輸入----------------------------------------------
+        let i, s, item;
+
+        const error_text = [{
+                id: 'AC_name',
+                checker: /^\S{2,}/,
+                info: '請輸入正確姓名格式'
+            },{
+            id: 'AC_title',
+                checker: /^\S{2,}/,
+                info: '請輸入正確活動格式'
+            },{
+            id: 'AC_type',
+                checker: /^\S{2,}/,
+                info: '請輸入正確類型格式'
+            },{
+            id: 'AC_date',
+                checker: /^20\d{2}\-?\d{1,2}\-?\d{2}$/,
+                info: '請輸入正確活動開始日期'
+            },{
+            id: 'AC_eventArea',
+                checker: /.+/,
+                info: '請輸入活動地點'
+            },{
+                id: 'AC_mobile',
+                checker: /^09\d{2}\-?\d{3}\-?\d{3}$/,
+                info: '請輸入正確電話格式'
+            },{
+            id: 'AC_organizer',
+                checker: /.+/,
+                info: '請輸入主辦單位'
+            },
+            ];
+        
+            for (i in error_text) {
+                item = error_text[i];
+                item.el = document.querySelector('#' + item.id);
+                item.error_info = document.querySelector('#' + item.id + 'Help');
+            }
+
+            function checkForm() {
+            let fd = new FormData(document.form1);
+
+            for (i in error_text) {
+                item = error_text[i];
+                item.el.style.border = '1px solid #cccccc';
+                item.error_info.innerHTML = '';
+            }
+
+            let passcheck = true;
+            for (i in error_text) {
+                item = error_text[i];
+
+                if (!item.checker.test(item.el.value)) {
+                    item.el.style.border = '1px solid red';
+                    item.error_info.style.color = 'red';
+                    item.error_info.innerHTML = item.info;
+                    passcheck = false;
+                }
+            }   
+
+        // 輸入成功或失敗，跳出圖片及轉向----------------------------------------------
+       
+
+                fetch('AC_insert_api.php', {
+                    method: 'POST',
+                    body: fd,
+                })
+
+                .then(response=>{
+                    return response.json();
+                })
+
+                
+                .then(json => {
+                    console.log(json);
+                    // success.innerHTML = json.info;
+                    if (json.success){
+                        submit_btn.style.display = 'block';
+                        main_datalist_hidden.style.visibility = 'hidden';
+                        setTimeout(function(){
+                        location.href = 'AC_data_list.php';
+                        },1000)
+                    } else {
+                        my_false.style.display = 'block';
+                        main_datalist_hidden.style.visibility = 'hidden';
+                        setTimeout(function(){
+                            location.href = 'AC_insert.php';
+                        },500)
+                    }
+                });
+                   
+            return false; // 表單不出用傳統的 post 方式送出
+        }
+
+    </script>
 </div>
 <?php include __DIR__ . '/../../pbook_index/__html_foot.php' ?>
