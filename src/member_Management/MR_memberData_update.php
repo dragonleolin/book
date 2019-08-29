@@ -42,6 +42,9 @@ if (empty($row)) {
 ?><?php include '../../pbook_index/__html_head.php' ?>
 <link rel="stylesheet" href="lib/memberlist.css">
 <style>
+    body {
+            background: url(../../images/bg.png) repeat center top;
+        }
     .nike {
         position: absolute;
         top: 20%;
