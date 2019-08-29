@@ -66,7 +66,7 @@ $t_stmt = $pdo->query($page_sql);
                     </div>
                 </li>
                 <li class="nav-item" style="margin: 0px 10px">
-                    <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">
+                    <button class="btn btn-outline-primary my-2 my-sm-0" type="submit" onclick="data_insert()">
                         <i class="fas fa-plus-circle"></i>
                         新增會員書籍
                     </button>
@@ -181,6 +181,10 @@ $t_stmt = $pdo->query($page_sql);
     let deleteType = document.querySelector('#deleteType');
     let confirm = document.querySelector('#confirm');
     let cancel = document.querySelector('#cancel');
+
+    function data_insert(){
+        location = "MB_insert.php";
+    }
 
     function delete_one(mb_sid) {
 
