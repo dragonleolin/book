@@ -51,68 +51,16 @@ if (empty($row)) {
         <div class="container">
             <nav class="navbar justify-content-between" style="padding: 0px;width: 80vw;">
                 <div>
-                    <h4>會員資料修改</h4>
+                    <h4>書評人資料修改</h4>
                     <div class="title_line"></div>
                 </div>
             </nav>
 
             <!-- 每個人填資料的區塊 -->
             <div class="container">
-
-                <!-- <div class="card-body">
-                    <form name="BR_form" onsubmit="return check_form()">
-                        <input type="hidden" name="sid" value="<?= $row['sid'] ?>">
-                        <div class="form-group">
-                            <label for="BR_name" class="update_label">姓名</label>
-                            <input type="text" class="update form-control" id="BR_name" name="BR_name" value="<?= htmlentities($row['BR_name']) ?>">
-                            <small id="BR_nameHelp" class="update form-text"></small>
-                        </div>
-                        <div class="form-group">
-                            <label for="BR_phone" class="update_label">電話</label>
-                            <input type="text" class="update form-control" id="BR_phone" name="BR_phone" value="<?= htmlentities($row['BR_phone']) ?>">
-                            <small id="BR_phoneHelp" class="update form-text"></small>
-                        </div>
-                        <div class="form-group">
-                            <label for="BR_email" class="update_label">信箱</label>
-                            <input type="text" class="update form-control" id="BR_email" name="BR_email" value="<?= htmlentities($row['BR_email']) ?>">
-                            <small id="BR_emailHelp" class="update form-text"></small>
-                        </div>
-                        <div class="form-group">
-                            <label for="BR_address" class="update_label">地址</label>
-                            <input type="text" class="update form-control" id="BR_address" name="BR_address" value="<?= htmlentities($row['BR_address']) ?>">
-                            <small id="BR_addressHelp" class="update form-text"></small>
-                        </div>
-                        <div class="form-group">
-                            <label for="BR_gender" class="update_label">性別</label>
-                            <br>
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="BR_gender" id="BR_gender" value="male" checked>
-                                <label class="form-check-label" for="BR_gender">男</label>
-                            </div>
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="BR_gender" id="BR_gender" value="female">
-                                <label class="form-check-label" for="BR_gender">女</label>
-                            </div>
-                            <small id="genderHelp" class="update form-text"></small>
-                        </div>
-                        <div class="form-group">
-                            <label for="BR_birthday" class="update_label">生日</label>
-                            <input type="text" class="update form-control" id="BR_birthday" name="BR_birthday" value="<?= htmlentities($row['BR_birthday']) ?>">
-                            <small id="BR_birthdayHelp" class="update form-text"></small>
-                        </div>
-                        <div class="form-group">
-                            <label for="BR_job" class="update_label">工作</label>
-                            <input type="text" class="update form-control" id="BR_job" name="BR_job" value="<?= htmlentities($row['BR_job']) ?>">
-                            <small id="BR_jobHelp" class="update form-text"></small>
-                        </div>
-                        <div style="text-align: center">
-                            <button type="submit" class="btn btn-warning" id="submit_btn">&nbsp;確&nbsp;認&nbsp;修&nbsp;改&nbsp;</button>
-                        </div>
-                    </form>
-                </div> -->
                 <section class="d-flex" style="min-width:600px;">
                     <div class="card-body d-flex">
-                        <form name="BR_form" onsubmit="return check_form()" style="width:800px;margin:-15px 50px">
+                        <form name="BR_form" onsubmit="return check_form()" style="width:800px;margin:-15px 50px ;  visibility:visible;" id="main_datalist">
                             <input type="hidden" name="sid" value="<?= $row['sid'] ?>">
                             <div class="form-group">
                                 <label for="BR_name" class="update_label">書評人姓名</label>
@@ -155,12 +103,13 @@ if (empty($row)) {
                             </div>
                             <button type="submit" class="btn btn-primary" id="submit_btn">修改</button>
                         </form>
+                    </div>
                 </section>
 
 
 
                 <!-- 以下為修改或新增成功才會跳出來的顯示框 -->
-                <div class="success update card" style="display:none ; transform: translate(0,-70vh)" id="success_update">
+                <div class="success update card" style="display:none; transform: translate(170px,-55vh)" id="success_update">
                     <div class="success card-body">
                         <label class="success_text">修改成功</label>
                         <div><img class="success_img" src="../../images/icon_checked.svg"></div>
@@ -170,6 +119,7 @@ if (empty($row)) {
     </section>
     <script>
         let insert_info = document.querySelector('#success_update');
+        let main_datalist_hidden = document.querySelector('#main_datalist')
 
         let i, s, item;
 
@@ -231,31 +181,34 @@ if (empty($row)) {
 
             }
 
-            
-                fetch('BR_update_api.php', {
-                        method: 'POST',
-                        body: fd,
-                    })
-                    .then(response => {
-                        return response.json();
-                    })
-                    .then(json => {
 
-                        if (json.success) {
-                            insert_info.style.display = 'block'
-                            setTimeout(function() {
-                                location.href = 'BR_data_list.php';
-                            }, 1500);
+            fetch('BR_update_api.php', {
+                    method: 'POST',
+                    body: fd,
+                })
+                .then(response => {
+                    return response.json();
+                })
+                .then(json => {
 
-                        } else {
-                            console.log('1')
-                        }
 
-                    });
+                    if (json.success) {
+                        main_datalist_hidden.style.visibility = 'hidden';
+                        insert_info.style.display = 'block'
 
-                return false;
-            }
-        
+                        setTimeout(function() {
+
+                            location.href = 'BR_data_list.php';
+                        }, 1500);
+
+                    } else {
+                        console.log('1')
+                    }
+
+                });
+
+            return false;
+        }
     </script>
 
 </div>

@@ -303,6 +303,7 @@ body{
 .success_img{
     width: 100px;
 }
+
 /* 刪除提示框 */
 .delete.update.card{
     background: #2d3a3a;
@@ -342,3 +343,4 @@ body{
     box-shadow: 0 0 0 0.2rem #9cc5a1 ;
     border: 0px;
 }
+

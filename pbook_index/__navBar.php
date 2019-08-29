@@ -5,14 +5,14 @@
     <ul class="nav justify-content-between">
     <?php if (isset($_SESSION['loginUser'])) : ?>
         <li class="nav-item">
-            <a class="nav-link my_text_blacktea nav_text"><?= $_SESSION['loginUser']['name'] ?>,您好</a>
+            <a class="nav-link my_text_blacktea nav_text">管理者「<?= $_SESSION['loginUser']['name'] ?>」,您好</a>
         </li>
         <li class="nav-item dropdown">
             <a style="display: inline" class="nav-link dropdown-toggle my_text_yellow" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
                 <div class="my_login_img"><img class="yoko_logo" src="../../images/yoko.jpg" alt=""></div>
             </a>
             <div class="dropdown-menu" style="left: -100%;top: 90%;">
-                <a class="dropdown-item" href="#">修改密碼</a>
+                <a class="dropdown-item" href="../../pbook_index/password_edit.php">修改密碼</a>
                 <div class="dropdown-divider"></div>
                 <a class="dropdown-item" href="../../pbook_index/logout.php">登出</a>
             </div>
@@ -59,11 +59,11 @@
                     </div>
                 </button>
                 <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
-                    <button type="button" class="btn btn-light sub_aside_text">
+                    <button type="button" class="btn btn-light sub_aside_text" onclick="vb_data_list()">
                         <i class="fas fa-caret-right"></i>
                         <span>出版社書籍總表</span>
                     </button>
-                    <button type="button" class="btn btn-light sub_aside_text">
+                    <button type="button" class="btn btn-light sub_aside_text" onclick="vb_data_insert()">
                         <i class="fas fa-caret-right"></i>
                         <span>新增出版社書籍</span>
                     </button>
@@ -195,5 +195,11 @@
     <script>
         function CP_data_list() {
             location = "../company_Management/CP_data_list.php";
+        }
+        function vb_data_list() {
+            location = "../venderBooks_Management/vb_data_list.php";
+        }
+        function vb_data_insert() {
+            location = "../venderBooks_Management/vb_data_insert.php";
         }
     </script>
