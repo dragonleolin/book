@@ -9,10 +9,12 @@ $page_title = '新增資料';
     body {
         background: url(../../images/bg.png) repeat center top;
     }
-    .big_container{
+
+    .big_container {
         position: relative;
     }
-    .success_bar{
+
+    .success_bar {
         position: absolute;
         top: 250px;
         left: 500px;
@@ -33,7 +35,7 @@ $page_title = '新增資料';
 
         <div class="container">
 
-            <form name="form1" onsubmit="return checkForm()" style="margin-top: 10px;">
+            <form name="form1" onsubmit="return checkForm();" style="margin-top: 10px;">
 
                 <section name="" id="" class="d-flex">
                     <section style="min-width:700px;margin:0px 30px">
@@ -63,26 +65,32 @@ $page_title = '新增資料';
                             <input type="text" class="form-control" id="mb_publishDate" name="mb_publishDate">
                         </div>
                         <div class="form-group">
+                            <label for="mb_version">版本</label>
+                            <span id="mb_mb_versionHelp" style="margin:0px 10px;color:red"></span>
+                            <input type="text" class="form-control" id="mb_version" name="mb_version">
+                        </div>
+                        <div class="form-group">
                             <label for="mb_fixedPrice">定價</label>
                             <span id="mb_fixedPriceHelp" style="margin:0px 10px;color:red"></span>
                             <input type="text" class="form-control" id="mb_fixedPrice" name="mb_fixedPrice">
                         </div>
+
+                    </section>
+                    <section style="min-width:700px;margin:0px 30px">
+
                         <div class="form-group">
                             <label for="mb_page">頁數</label>
                             <span id="mb_pageHelp" style="margin:0px 10px;color:red"></span>
                             <input type="text" class="form-control" id="mb_page" name="mb_page">
                         </div>
-
-                    </section>
-                    <section style="min-width:700px;margin:0px 30px">
                         <div class="form-group">
                             <label for="mb_savingStatus">書況</label>
-                            <span id="mb_savingStatusHelp" style="margin:0px 10px;color:red"> </span>
+                            <span id="mb_savingStatusHelp" style="margin:0px 10px;color:red"></span>
                             <input type="text" class="form-control" id="mb_savingStatus" name="mb_savingStatus">
                         </div>
                         <div class="form-group">
                             <label for="mb_shelveMember">上架會員</label>
-                            <span id="mb_shelveMemberHelp" style="margin:0px 10px;color:red"> </span>
+                            <span id="mb_shelveMemberHelp" style="margin:0px 10px;color:red"></span>
                             <input type="text" class="form-control" id="mb_shelveMember" name="mb_shelveMember">
                         </div>
 
@@ -181,7 +189,7 @@ $page_title = '新增資料';
                         </div>
                         <div class="from-group">
                             <label for="mb_remarks" class="update_label">備註</label>
-                            <textarea class="update form-control" name="mb_remarks" id="mb_remarks" cols="30" rows="10" style="width:700px;height:130px;resize:none"></textarea>
+                            <textarea class="update form-control" name="mb_remarks" id="mb_remarks" cols="30" rows="10" style="width:700px;height:50px;resize:none"></textarea>
                         </div>
                     </section>
                 </section>
@@ -297,20 +305,19 @@ $page_title = '新增資料';
                     return response.json();
                 })
                 .then(json => {
-                    console.log(json);
                     success_bar.style.display = 'block';
                     info_bar.innerHTML = json.info;
                     if (json.success) {
-
-                    } else {
                         
+                    } else {
+
                     }
                 });
-            } else {
-            
+        } else {
+
         }
         return false;
-    }
+    };
 </script>
 
 </div>
