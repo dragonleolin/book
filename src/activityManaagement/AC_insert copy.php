@@ -1,7 +1,7 @@
 <?php
 require __DIR__. '/AC__connect_db.php';
 $page_name = 'AC_date_list';
-$page_title = '活動資料修改'
+$page_title = '活動資料新增'
 
 ?>
 <?php include __DIR__ . '/../../pbook_index/__html_head.php' ?>

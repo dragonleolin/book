@@ -4,7 +4,7 @@ require __DIR__. '/AC__connect_db.php';
 $result = [
     'success' => false,
     'code' => 400, 
-    'info' => '輸入不正確',
+    'info' => '沒有輸入姓名',
     'post' => $_POST,
 ];
 
@@ -31,14 +31,17 @@ $stmt->execute([
         // $_POST['AC_created_at'],
 ]);
 
-echo $stmt->rowCount();
-// if($stmt->rowCount()==1){
-//     $result['success'] = true;
-//     $result['code'] = 200;
-//     $result['info'] = '新增成功';
-// } else {
-//     $result['code'] = 420;
-//     $result['info'] = '新增失敗';
-// }
+// echo $stmt->rowCount();
 
-// echo json_encode($result, JSON_UNESCAPED_UNICODE);
+if($stmt->rowCount()==1){
+    $result['success'] = true;
+    $result['code'] = 200;
+    $result['info'] = '新增成功';
+} else {
+    $result['code'] = 420;
+    $result['info'] = '新增失敗';
+};
+
+
+
+echo json_encode($result, JSON_UNESCAPED_UNICODE);
