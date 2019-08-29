@@ -115,12 +115,14 @@ $my_categories = empty($_POST['categories']) ? 0 : intval($_POST['categories']);
                         </div>
                     </div>
 
+
                     <div class="form-group" style="margin:-30px 0px 0px 0px">
                         <label for="categories" class="update_label">・分類</label>
                         <div class="d-flex flex-wrap">
                             <?php foreach ($new_row as $k => $v) : ?>
                                 <div class="form-check" style="margin:0px 20px 10px 0px">
-                                    <input class="form-check-input" type="radio" name="categories" id="categories<?= $k ?>" value="<?= $k ?>" <?= $my_categories == 0 ? 'checked' : '' ?>>
+                                    <input class="form-check-input" type="radio" name="categories" id="categories<?= $k ?>" value="<?= $k ?>" 
+                                    <?= $my_categories==$k ? 'checked' : '' ?>>
                                     <label class="form-check-label" for="categories<?= $k ?>"><?= $v ?></label>
                                 </div>
                             <?php endforeach; ?>
@@ -131,7 +133,7 @@ $my_categories = empty($_POST['categories']) ? 0 : intval($_POST['categories']);
                         <label for="introduction" class="update_label">・書籍簡介</label>
                         <span style="margin:0px 20px" class="my_text_blacktea_fifty">限制200字以內</span>
                         <span style="margin:0px -10px;color:red" id="introductionHelp"></span>
-                        <textarea class="update form-control" id="introduction" rows="3" style="width:700px;height:200px;resize:none" name="introduction"></textarea>
+                        <textarea class="update form-control" id="introduction" rows="3" style="width:700px;height:200px;resize:none"></textarea>
                     </div>
 
                     <div>
@@ -250,7 +252,7 @@ $my_categories = empty($_POST['categories']) ? 0 : intval($_POST['categories']);
             },
             {
                 id: 'introduction',
-                pattern: /\S{0,200}$/,
+                pattern: /^\S{0,200}$/,
                 info: '超過字數限制,請重新輸入'
             },
         ];
