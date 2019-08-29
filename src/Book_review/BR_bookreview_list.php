@@ -2,7 +2,27 @@
 $page_name = 'BR_bookreview_list';
 $page_title = '書評列表';
 
-$sql= "SELECT * FROM `br_list` ";
+$page = isset($_GET['page']) ? intval($_GET['page']) : 1;
+$page_list = 10;
+
+$p_list = " SELECT COUNT(10) FROM `br_list`";
+
+$total_list = $pdo->query($p_list)->fetch(PDO::FETCH_NUM)[0];
+$total_page = ceil($total_list / $page_list);
+
+if ($page < 1) {
+    header('Location: BR_bookreview_list.php');
+    exit;
+};
+
+if ($page > $total_page) {
+    header('Location: BR_bookreview_list.php?page=' . $total_page);
+    exit;
+};
+
+
+
+$sql = sprintf("SELECT * FROM `br_list` LIMIT %s , %s", ($page - 1) * $page_list, $page_list);
 $stmt = $pdo->query($sql);
 $row = $stmt->fetchAll();
 
@@ -45,7 +65,7 @@ $row = $stmt->fetchAll();
                     <li class="nav-item">
                         <div style="padding: 0.375rem 0.75rem;">
                             <i class="fas fa-check"></i>
-                            目前總計?筆資料
+                            目前總計<?= $total_list ?>筆資料
                         </div>
                     </li>
                     <li class="nav-item" style="flex-grow: 1">
@@ -67,6 +87,7 @@ $row = $stmt->fetchAll();
                             <th scope="col">#</th>
                             <th scope="col">書評標題</th>
                             <th scope="col">書評資料</th>
+                            <th scope="col">書評圖片</th>
                             <th scope="col">書評發表時間</th>
                             <th scope="col">書評發表人</th>
                         </tr>
@@ -77,6 +98,7 @@ $row = $stmt->fetchAll();
                                 <td><?= $value['BR_sid'] ?></td>
                                 <td><?= htmlentities($value['BR_title']) ?></td>
                                 <td><?= htmlentities($value['BR_data']) ?></td>
+                                <td><?= $value['BR_image'] ?></td> 
                                 <td><?= $value['BR_release_time'] ?></td>
                                 <td><?= htmlentities($value['BR_publisher']) ?></td>
                                 <!-- <td><a href="BR_update.php?sid=<?= $value['sid'] ?>">
@@ -94,7 +116,7 @@ $row = $stmt->fetchAll();
             </div>
 
             <!-- 我是分頁按鈕列 請自取並調整頁面擺放位置 -->
-            <!-- <nav aria-label="Page navigation example" class="d-flex justify-content-center">
+            <nav aria-label="Page navigation example" class="d-flex justify-content-center">
                 <ul class="pagination">
                     <li class="page-item">
                         <a class="page-link" href="?page=<?= $page - 1 ?>" aria-label="Previous">
@@ -103,7 +125,8 @@ $row = $stmt->fetchAll();
                     </li>
                     <?php for ($i = 1; $i <= $total_page; $i++) : ?>
                         <li class="page-item">
-                            <a class="page-link" style="<?= $i == $page ? 'background: rgba(156, 197, 161, 0.5) ;color: #ffffff;' : '' ?>" href="?page=<?= $i ?>"><?= $i ?>
+                            <a class="page-link" style="<?= $i ==
+                                                                $page ? 'background: rgba(156, 197, 161, 0.5) ;color: #ffffff;' : '' ?>" href="?page=<?= $i ?>"><?= $i ?>
                             </a>
                         </li>
                     <?php endfor; ?>
@@ -113,7 +136,7 @@ $row = $stmt->fetchAll();
                         </a>
                     </li>
                 </ul>
-            </nav> -->
+            </nav>
 
 
             <!-- 刪除提示框 -->

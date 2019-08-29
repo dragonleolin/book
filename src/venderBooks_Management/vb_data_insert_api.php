@@ -13,6 +13,9 @@ $exts = [
     'image/jpeg' => '.jpg',
 ];
 
+$new_filename = '';
+$new_ext = '';
+
 if(!empty($_FILES['pic'])){ //檔案有沒有上傳
     if(in_array($_FILES['pic']['type'],$allowed_types)){  //上傳檔案類型是否符合
 
@@ -36,8 +39,8 @@ if(empty($_POST['name'])){
     exit;
 };
 
-$sql = "INSERT INTO `vb_books`(`isbn`, `name`, `author`, `publishing`, `publish_date`, `version`, `fixed_price`, `stock`, `page`, `pic`, `created_at`) 
-        VALUES (?,?,?,?,?,?,?,?,?,?,NOW())";
+$sql = "INSERT INTO `vb_books`(`isbn`, `name`, `author`, `publishing`, `publish_date`, `version`, `fixed_price`, `stock`, `page`, `pic`, `categories`, `introduction`, `created_at`) 
+        VALUES (?,?,?,?,?,?,?,?,?,?,?,?,NOW())";
 
 $stmt = $pdo -> prepare($sql);
 
@@ -52,6 +55,8 @@ $stmt -> execute([
     $_POST['stock'],
     $_POST['page'],
     $new_filename.$new_ext,
+    $_POST['categories'],
+    $_POST['introduction'],
 ]);
 
 

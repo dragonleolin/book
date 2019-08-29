@@ -43,7 +43,7 @@ if (!isset($_SESSION)) {
                         <a class="dropdown-item" href="logout.php">登出</a>
                     </div>
                 </li>
-                <?php else : ?>
+            <?php else : ?>
                 <li class="nav-item">
                     <a class="nav-link my_text_blacktea nav_text" href="login.php">登入</a>
                 </li>
@@ -85,11 +85,11 @@ if (!isset($_SESSION)) {
                         </div>
                     </button>
                     <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
-                        <button type="button" class="btn btn-light sub_aside_text">
+                        <button type="button" class="btn btn-light sub_aside_text" onclick="vb_data_list()">
                             <i class="fas fa-caret-right"></i>
                             <span>出版社書籍總表</span>
                         </button>
-                        <button type="button" class="btn btn-light sub_aside_text">
+                        <button type="button" class="btn btn-light sub_aside_text" onclick="vb_data_insert()">
                             <i class="fas fa-caret-right"></i>
                             <span>新增出版社書籍</span>
                         </button>
@@ -233,6 +233,12 @@ if (!isset($_SESSION)) {
     <script>
         function CP_data_list() {
             location = "../src/company_Management/CP_data_list.php";
+        }
+        function vb_data_list() {
+            location = "../venderBooks_Management/vb_data_list.php";
+        }
+        function vb_data_insert() {
+            location = "../venderBooks_Management/vb_data_insert.php";
         }
     </script>
     <?php include __DIR__ . '/__html_foot.php' ?>
