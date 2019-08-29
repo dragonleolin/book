@@ -120,7 +120,7 @@ $t_stmt = $pdo->query($page_sql);
                         <td><?= htmlentities($r['mb_savingStatus']) ?></td>
                         <td><?= htmlentities($r['mb_shelveMember']) ?></td>
                         <td><?= htmlentities($r['mb_shelveDate']) ?></td>
-                        <td><a href="#"><i class="fas fa-edit"></i></a></td>
+                        <td><a href="MB_update.php?mb_sid=<?= $r['mb_sid'] ?>"><i class="fas fa-edit"></i></a></td>
                         <td><a href="#"><i class="fas fa-trash-alt"></i></a></td>
                     </tr>
                     <?php } ?>
