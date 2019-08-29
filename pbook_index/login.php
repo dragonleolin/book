@@ -67,7 +67,7 @@ $page_title = '登入';
     </style>
     <?php include __DIR__ . '/__html_body.php' ?>
     <nav class="navbar justify-content-between my_bg_seasongreen">
-        <a class="navbar-brand" href="_index.php">
+        <a class="navbar-brand" href="../_index.php">
             <img class="book_logo" src="../images/icon_logo.svg" alt="">
         </a>
         <ul class="nav justify-content-between">
@@ -166,7 +166,7 @@ $page_title = '登入';
                         if (json.success) {
                             info_position.style.display = 'block';
                             setTimeout(function() {
-                                location.href = '_index.php';
+                                location.href = '../_index.php';
                             }, 1000);
                         } else {
                             info_position2.style.display = 'block';

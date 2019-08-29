@@ -4,7 +4,8 @@ if (!isset($_SESSION)) {
 }
 $page_title = '品書';
 ?>
-<?php include __DIR__ . '__html_head.php' ?>
+<?php include __DIR__ . '/__html_head.php' ?>
+
 <style>
     body {
         background: url(../../images/bg.png) repeat center top;
