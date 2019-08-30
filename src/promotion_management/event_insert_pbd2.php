@@ -63,7 +63,7 @@ foreach ($temp_cp_row as $r => $s){
 
                                         <div class="row border-bottom mt-2">
                                             <div class="form-group col-md-6">
-                                                <label for="cp_group_set">選擇分類方式</label>
+                                                <label for="cp_group_set">選擇廠商</label>
                                                 <select class="form-control" id="cp_group_set" name="cp_group_set"
                                                         onchange="cp_group_display()">
                                                     <option selected value="0">所有廠商</option>

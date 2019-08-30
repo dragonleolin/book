@@ -147,12 +147,25 @@ $user_level_const = [
                     </td>
                     <td>
                         <!-- Button trigger modal -->
-                        <button type="button" class="btn btn-outline-primary" data-toggle="modal"
-                                data-target="#groupModal<?= $r['sid']; ?>">
-                            <i class="fas fa-plus-circle"></i>
-                            顯示
-                        </button>
-
+                        <?php
+                        if(!empty($r['group_type'])) {
+                            $sql = "SELECT bg.* 
+                                            FROM `pm_books_group` bg JOIN `pm_event` e ON 
+                                            bg.`event_id` = e.`sid` WHERE e.`sid` = {$r['sid']}";
+                            $book_group = $pdo->query($sql)->fetchAll();
+                        }
+                        else{
+                            $book_group = 0;
+                        }
+                        if (empty($book_group)):?>
+                            全館適用
+                        <?php else: ?>
+                            <button type="button" class="btn btn-outline-primary" data-toggle="modal"
+                                    data-target="#groupModal<?= $r['sid']; ?>">
+                                <i class="fas fa-plus-circle"></i>
+                                顯示
+                            </button>
+                        <?php endif; ?>
                         <!-- Modal -->
                         <div class="modal fade" id="groupModal<?= $r['sid']; ?>" tabindex="-1" role="dialog"
                              aria-labelledby="groupModalLabel<?= $r['sid']; ?>" aria-hidden="true">
@@ -178,18 +191,11 @@ $user_level_const = [
                                     </div>
                                     <div class="modal-body">
                                         <?php
-                                        $sql = "SELECT bg.* 
-                                            FROM `pm_books_group` bg JOIN `pm_event` e ON 
-                                            bg.`event_id` = e.`sid` WHERE e.`sid` = {$r['sid']}";
-                                        $book_group = $pdo->query($sql)->fetchAll();
-                                        if(empty($book_group)){
-                                            echo '全館適用';
+
+                                        foreach ($book_group as $k => $v) {
+                                            echo $cate_const[$v['categories_id']]['name'] . '<br>';
                                         }
-                                        else if($r['group_type']==1){
-                                            foreach ($book_group as $k => $v){
-                                                echo $cate_const[$v['categories_id']]['name'].'<br>';
-                                            }
-                                        }
+
                                         ?>
                                     </div>
                                     <div class="modal-footer">
