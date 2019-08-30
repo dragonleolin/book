@@ -1,4 +1,6 @@
 <?php
+require __DIR__ . '/__admin_required.php';
+
 require __DIR__ . '/__connect_db.php';
 $page_name = 'MB_data_list';
 
@@ -66,7 +68,7 @@ $t_stmt = $pdo->query($page_sql);
                     </div>
                 </li>
                 <li class="nav-item" style="margin: 0px 10px">
-                    <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">
+                    <button class="btn btn-outline-primary my-2 my-sm-0" type="submit" onclick="data_insert()">
                         <i class="fas fa-plus-circle"></i>
                         新增會員書籍
                     </button>
@@ -88,8 +90,9 @@ $t_stmt = $pdo->query($page_sql);
                 <thead>
                     <tr>
                         <th scope="col">sid</th>
-                        <th scope="col">isbn</th>
-                        <th scope="col">書名</th>
+                        <th scope="col">ISBN</th>
+                        <th scope="col">書籍名稱</th>
+                        <th scope="col">書籍圖片</th>
                         <th scope="col">分類</th>
                         <th scope="col">作者</th>
                         <th scope="col">出版社</th>
@@ -110,6 +113,33 @@ $t_stmt = $pdo->query($page_sql);
                             <td><?= $r['mb_sid'] ?></td>
                             <td><?= htmlentities($r['mb_isbn']) ?></td>
                             <td><?= htmlentities($r['mb_name']) ?></td>
+                            <td>
+                                <button type="button" class="btn btn-outline-primary" data-toggle="modal" data-target="#<?= 'book' . $r['mb_sid']; ?>">
+                                    <i class="fas fa-plus-circle"></i>
+                                    顯示
+                                </button>
+                                <div class="modal fade" id="<?= 'book' . $r['mb_sid']; ?>" tabindex="-1" role="dialog" aria-labelledby="<?= 'book' . $r['mb_sid']; ?>Title" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="<?= 'book' . $r['mb_sid']; ?>Title"><?= $r['mb_name']; ?></h5>
+
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body" style="width:450px;width:450px;margin:0 auto">
+                                                <img style="object-fit: contain;width: 100%;height: 100%;" src="<?= 'mb_images/'.$r['mb_pic']; ?>" alt="">
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                                                <button type="button" class="btn btn-primary" onclick="change_img(<?= $r['mb_sid'] ?>)">修改圖片</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                            
                             <td><?= htmlentities($r['mb_categories']) ?></td>
                             <td><?= htmlentities($r['mb_author']) ?></td>
                             <td><?= htmlentities($r['mb_publishing']) ?></td>
@@ -129,9 +159,14 @@ $t_stmt = $pdo->query($page_sql);
             <!-- 我是分頁按鈕列 請自取並調整頁面擺放位置 -->
             <nav aria-label="Page navigation example">
                 <ul class="pagination page-position">
+                <li class="page-item">
+                    <a class="page-link" href="?page=1" aria-label="Previous">
+                        <i class="fas fa-angle-double-left"></i>
+                    </a>
+                </li>
                     <li class="page-item">
                         <a class="page-link" href="?page=<?= $page - 1 ?>" aria-label="Previous">
-                            <span aria-hidden="true">&laquo;</span>
+                        <i class="fas fa-angle-left"></i>
                         </a>
                     </li>
                     <?php
@@ -158,9 +193,14 @@ $t_stmt = $pdo->query($page_sql);
                     <?php endif; ?>
                     <li class="page-item">
                         <a class="page-link" href="?page=<?= $page + 1 ?>" aria-label="Next">
-                            <span aria-hidden="true">&raquo;</span>
+                        <i class="fas fa-angle-right"></i>
                         </a>
                     </li>
+                    <li class="page-item">
+                    <a class="page-link" href="?page=<?= $totalPages ?>" aria-label="Next">
+                        <i class="fas fa-angle-double-right"></i>
+                    </a>
+                </li>
                 </ul>
             </nav>
 
@@ -181,6 +221,15 @@ $t_stmt = $pdo->query($page_sql);
     let deleteType = document.querySelector('#deleteType');
     let confirm = document.querySelector('#confirm');
     let cancel = document.querySelector('#cancel');
+
+    function data_insert(){
+        location = "MB_insert.php";
+    }
+
+    function change_img(mb_sid) {
+        let b = mb_sid;
+        location = 'MB_update.php?mb_sid=' + b;
+    }
 
     function delete_one(mb_sid) {
 

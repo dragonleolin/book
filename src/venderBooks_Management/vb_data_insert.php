@@ -1,4 +1,5 @@
 <?php
+require __DIR__ . '/__admin_required.php';
 require __DIR__ . '/__connect_db.php';
 $page_name = 'vb_data_insert';
 $page_title = '新增出版社書籍';
@@ -16,6 +17,18 @@ foreach ($row as $r => $s) {
 }
 
 $my_categories = empty($_POST['categories']) ? 0 : intval($_POST['categories']);
+
+// $total_page_sql = "SELECT * FROM `vb_books` WHERE 1 ORDER BY `sid` DESC"; 
+// $total_page_stmt = $pdo->query($total_page_sql);
+// $total_page_row = $total_page_stmt -> fetchAll();
+
+$page = isset($_GET['page']) ? intval($_GET['page']) : 1; //用戶選取的頁數
+$per_page = 10; //每頁幾筆資料
+
+$t_sql = "SELECT COUNT(1) FROM `vb_books` ";
+$totalRows = $pdo->query($t_sql)->fetch(PDO::FETCH_NUM)[0]; // 拿到總筆數
+$totalPages = ceil($totalRows / $per_page); //取得總頁數
+
 
 ?>
 
@@ -37,6 +50,14 @@ $my_categories = empty($_POST['categories']) ? 0 : intval($_POST['categories']);
             <h4>新增出版社書籍</h4>
             <div class="title_line"></div>
         </div>
+        <ul class="nav justify-content-between">
+            <li class="nav-item" style="margin: 0px 10px">
+                <button class="btn btn-outline-primary my-2 my-sm-0" type="button" onclick="preceding_page()">
+                    <i class="fas fa-arrow-circle-left"></i>
+                    回到上一頁
+                </button>
+            </li>
+        </ul>
     </nav>
 
     <!-- 每個人填資料的區塊 -->
@@ -106,9 +127,13 @@ $my_categories = empty($_POST['categories']) ? 0 : intval($_POST['categories']);
                     </div>
 
                     <div class="form-group d-flex">
-                        <div>
-                            <label for="pic" style="font-size: 20px;margin:0px 0px 15px 0px">・請選擇書籍封面照片</label>
-                            <input type="file" class="form-control-file" id="pic" name="pic">
+                        <div class="col-lg-5">
+                            <label for="pic" style="font-size: 20px">・請選擇書籍封面照片</label>
+                            <input type="file" class="form-control-file" id="pic" name="pic" style="display:none">
+                            <br>
+                            <button class="btn btn-outline-primary my-2 my-sm-0" type="button" onclick="selUpload()">
+                                <i class="fas fa-plus-circle" style="margin-right:5px"></i>選擇檔案
+                            </button>
                         </div>
                         <div style="height: 230px;width: 230px;border: 1px solid #ddd">
                             <img style="object-fit: contain;width: 100%;height: 100%" id="demo"/>
@@ -161,6 +186,14 @@ $my_categories = empty($_POST['categories']) ? 0 : intval($_POST['categories']);
 </div>
 
 <script>
+    function selUpload() {
+        document.querySelector('#pic').click();
+    }
+
+    function preceding_page() {
+        location.href = document.referrer;
+    }
+
     $('#pic').change(function() {
         var file = $('#pic')[0].files[0];
         var reader = new FileReader;
@@ -301,7 +334,7 @@ $my_categories = empty($_POST['categories']) ? 0 : intval($_POST['categories']);
                         success.style.display = 'block';
                         container2.style.display = 'none';
                         setTimeout(function() {
-                            location.href = document.referrer;
+                            location.href = 'vb_data_list.php?page=' + <?= $totalPages ?>;
                         }, 1000)
                     } else {
                         my_false.style.display = 'block';

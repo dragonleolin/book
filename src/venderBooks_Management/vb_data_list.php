@@ -1,11 +1,22 @@
 <?php
+require __DIR__. '/__admin_required.php';
 require __DIR__ . '/__connect_db.php';
 $page_name = 'vb_data_list';
 $page_title = '出版社書籍總表';
 $page = isset($_GET['page']) ? intval($_GET['page']) : 1; //用戶選取的頁數
 $per_page = 10; //每頁幾筆資料
 
-$t_sql = "SELECT COUNT(1) FROM `vb_books` ";
+$search = isset($_GET['search']) ? $_GET['search'] : '';
+
+$params = [];
+$where = ' WHERE 1 ';
+if (!empty($search)) {
+    $params['search'] = $search;
+    $search = $pdo->quote("%$search%");
+    $where .= " AND (`isbn` LIKE $search OR `vb_books`.`name` LIKE $search OR `publishing` LIKE $search) ";
+}
+
+$t_sql = "SELECT COUNT(1) FROM `vb_books` $where";
 $totalRows = $pdo->query($t_sql)->fetch(PDO::FETCH_NUM)[0]; // 拿到總筆數
 $totalPages = ceil($totalRows / $per_page); //取得總頁數
 
@@ -19,12 +30,9 @@ if ($page > $totalPages) {
 };
 
 
-$categories_sql = sprintf(
-    "SELECT `vb_books`.*, `vb_categories`.`name` categories_name 
-    FROM `vb_books` LEFT JOIN `vb_categories` ON `vb_books`.`categories` = `vb_categories`.`sid` ORDER BY `sid` ASC LIMIT %s, %s",
-    ($page - 1) * $per_page,
-    $per_page
-);
+$categories_sql = "SELECT `vb_books`.*, `vb_categories`.`name` categories_name 
+                    FROM `vb_books`  LEFT JOIN `vb_categories` ON `vb_books`.`categories` = `vb_categories`.`sid` $where
+                    ORDER BY `sid` ASC LIMIT " . (($page - 1) * $per_page) . "," . $per_page;
 
 $stmt = $pdo->query($categories_sql);
 
@@ -73,9 +81,9 @@ $stmt = $pdo->query($categories_sql);
                     </button>
                 </li>
                 <li class="nav-item" style="flex-grow: 1">
-                    <form class="form-inline my-2 my-lg-0">
-                        <input class="search form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-                        <button class="btn btn-outline-warning my-2 my-sm-0" type="submit">
+                    <form name="form2" class="form-inline my-2 my-lg-0">
+                        <input class="search form-control mr-sm-2" id="search" name="search" type="search" placeholder="Search" aria-label="Search">
+                        <button class="btn btn-outline-warning my-2 my-sm-0" type="submit" onclick="search_text()">
                             <i class="fas fa-search"></i>
                         </button>
                     </form>
@@ -132,11 +140,13 @@ $stmt = $pdo->query($categories_sql);
                                             </div>
                                             <div class="modal-footer">
                                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
-                                                <button type="button" class="btn btn-primary" onclick="vb_data_update()">修改圖片</button>
+                                                <button type="button" class="btn btn-primary" onclick="change_img(<?= $row[$i]['sid'] ?>)">修改圖片</button>
+                                                <!-- <a id="a" style="display:none" type="button" class="btn btn-primary" href="vb_data_update.php?sid=<?= $row[$i]['sid'] ?>">修改圖片</a> -->
                                             </div>
                                         </div>
                                     </div>
                                 </div>
+                            </td>
                             <td><?= $row[$i]['categories_name']; ?></td>
                             <td><?= $row[$i]['author']; ?></td>
                             <td><?= $row[$i]['publishing']; ?></td>
@@ -180,13 +190,13 @@ $stmt = $pdo->query($categories_sql);
                     $i = $p_start;
                     $i <= $p_end;
                     $i++
-                ) :
+                ) : $params['page'] = $i;
                     // if ($i < 1 or $i > $totalPages) {
                     //     continue;
                     // }
                     ?>
                     <li class="page-item <?= $page == $i ? 'active' : '' ?>">
-                        <a class="page-link" href="?page=<?= $i ?>"><?= $i < 10 ? '0' . $i : $i ?></a>
+                        <a class="page-link" href="?<?= http_build_query($params) ?>"><?= $i < 10 ? '0' . $i : $i ?></a>
                     </li>
                 <?php endfor; ?>
                 <li class="page-item">
@@ -209,15 +219,24 @@ $stmt = $pdo->query($categories_sql);
     </div>
 </section>
 <script>
+
     function vb_data_insert() {
         location = "vb_data_insert.php";
     }
 
+    let b;
+
+    function change_img(sid) {
+        b = sid;
+        location = 'vb_data_update.php?sid=' + b;
+    }
+
     let a;
+
     function delete_one(sid) {
         a = sid;
         let my_delete = document.querySelector('#my_delete');
-        my_delete.style.display = 'block';      
+        my_delete.style.display = 'block';
     }
 
     function delete_yes() {
@@ -227,8 +246,5 @@ $stmt = $pdo->query($categories_sql);
     function delete_no() {
         location.href = 'vb_data_list.php?page=' + <?= $page ?>;
     }
-
-
-
 </script>
 <?php include __DIR__ . '/../../pbook_index/__html_foot.php' ?>

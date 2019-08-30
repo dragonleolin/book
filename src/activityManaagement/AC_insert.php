@@ -1,7 +1,7 @@
 <?php
 require __DIR__. '/AC__connect_db.php';
 $page_name = 'AC_date_insert';
-$page_title = '活動資料新增'
+$page_title = '品書 - 活動新增';
 
 ?>
 <?php include __DIR__ . '/../../pbook_index/__html_head.php' ?>
@@ -9,22 +9,14 @@ $page_title = '活動資料新增'
     body {
         background: url(../../images/bg.png) repeat center top;
     }
-    /* small.form-text {
-        color: red;
-    } */
 </style>
+
 <?php include __DIR__ . '/../../pbook_index/__html_body.php' ?>
 <?php include __DIR__ . '/AC__navbar.php' ?>
+
     <!-- 右邊section資料欄位 -->
     <section>
         <div class="container">
-        
-        <!-- <div class="row">
-            <div class="col">
-                <div class="alert alert-primary" role="alert" id="success" style="display: none"></div>
-            </div>
-        </div> -->
-
             <nav class="navbar justify-content-between" style="padding: 0px;width: 80vw;">
                 <div>
                     <h4>新增活動</h4>
@@ -40,39 +32,40 @@ $page_title = '活動資料新增'
                         <form style="width:800px;margin:-15px 50px;" name="form1" onsubmit="return checkForm()">
                             <div class="form-group">
                                 <label for="AC_name" class="update_label">申請人</label>
-                                <!-- <span style="margin:0px 10px;color:red">示意:錯誤顯示訊息</span> -->
+                                <span id="AC_nameHelp" style="margin:0px 10px; color:red"></span>
                                 <input type="text" class="update form-control" id="AC_name" name="AC_name" value="">
                             </div>
                             <div class="form-group">
                                 <label for="AC_title" class="update_label">標題</label>
-                                <!-- <span style="margin:0px 10px;color:red">示意:錯誤顯示訊息</span> -->
-                                <input type="text" class="update form-control" id="AC_title" name="AC_title" value="test">
+                                <span id="AC_titleHelp" style="margin:0px 10px; color:red"></span>
+                                <input type="text" class="update form-control" id="AC_title" name="AC_title" value="">
                             </div>
                             <div class="form-group">
                                 <label for="AC_type" class="update_label">活動類型</label>
-                                <!-- <span style="margin:0px 10px;color:red">示意:錯誤顯示訊息</span> -->
-                                <input type="text" class="update form-control" id="AC_type" name="AC_type" value="test">
+                                <span id="AC_typeHelp" style="margin:0px 10px; color:red"></span>
+                                <input type="text" class="update form-control" id="AC_type" name="AC_type" value="">
                                 
                             </div>
                             <div class="form-group">
-                                <label for="AC_date" class="update_label">日期</label>
-                                <!-- <span style="margin:0px 10px;color:red">示意:錯誤顯示訊息</span> -->
-                                <input type="text" class="update form-control" id="AC_date" name="AC_date" value="2019-10-10">
+                                <label for="AC_date" class="update_label">活動開始日期</label>
+                                <span style="color:#ccc; margin:0 20px">年-月-日</span>
+                                <span id="AC_dateHelp" style="margin:0px 10px; color:red"></span>
+                                <input type="text" class="update form-control" id="AC_date" name="AC_date" value="">
                             </div>
                             <div class="form-group">
                                 <label for="AC_eventArea" class="update_label">地點</label >
-                                <!-- <span style="margin:0px 10px;color:red">示意:錯誤顯示訊息</span> -->
-                                <input type="text" class="update form-control" id="AC_eventArea" name="AC_eventArea" value="test">
+                                <span id="AC_eventAreaHelp" style="margin:0px 10px; color:red"></span>
+                                <input type="text" class="update form-control" id="AC_eventArea" name="AC_eventArea" value="">
                             </div>
                             <div class="form-group">
-                                <label for="AC_mobile" class="update_label">連絡電話</label>
-                                <!-- <span style="margin:0px 10px;color:red">示意:錯誤顯示訊息</span> -->
-                                <input type="text" class="update form-control" id="AC_mobile" name="AC_mobile" value="0912666888">
+                                <label for="AC_mobile" class="update_label">手機號碼</label>
+                                <span id="AC_mobileHelp" style="margin:0px 10px; color:red"></span>
+                                <input type="text" class="update form-control" id="AC_mobile" name="AC_mobile" value="">
                             </div>
                             <div class="form-group">
                                 <label for="AC_organizer" class="update_label">主辦方</label>
-                                <!-- <span style="margin:0px 10px;color:red">示意:錯誤顯示訊息</span> -->
-                                <input type="text" class="update form-control" id="AC_organizer" name="AC_organizer" value="test">
+                                <span id="AC_organizerHelp" style="margin:0px 10px; color:red"></span>
+                                <input type="text" class="update form-control" id="AC_organizer" name="AC_organizer" value="">
                             </div>
                             <!-- <div class="form-group">
                                 <label for="AC_price" class="update_label">參加費</label>
@@ -80,12 +73,9 @@ $page_title = '活動資料新增'
                                 <input type="text" class="update form-control" id="AC_price" name="AC_price">
                             </div> -->
 
-                            
-
                             <div style="position:absolute;left:900px;">
                                 <button type="submit" class="btn btn-warning" id="success">&nbsp;確&nbsp;認&nbsp;新&nbsp;增&nbsp;</button>
                             </div>
-
                         </form>
                     </div>
 
@@ -148,9 +138,69 @@ $page_title = '活動資料新增'
         let success = document.querySelector('#submit_btn');
         let my_false = document.querySelector('#my_false');
         let main_datalist_hidden = document.querySelector('#main_datalist');
-    
-       function checkForm(){
+        // 檢查有沒有輸入----------------------------------------------
+        let i, s, item;
+
+        const error_text = [{
+                id: 'AC_name',
+                checker: /^\S{2,}/,
+                info: '請輸入正確姓名格式'
+            },{
+            id: 'AC_title',
+                checker: /^\S{2,}/,
+                info: '請輸入正確活動格式'
+            },{
+            id: 'AC_type',
+                checker: /^\S{2,}/,
+                info: '請輸入正確類型格式'
+            },{
+            id: 'AC_date',
+                checker: /^20\d{2}\-?\d{1,2}\-?\d{2}$/,
+                info: '請輸入正確活動開始日期'
+            },{
+            id: 'AC_eventArea',
+                checker: /.+/,
+                info: '請輸入活動地點'
+            },{
+                id: 'AC_mobile',
+                checker: /^09\d{2}\-?\d{3}\-?\d{3}$/,
+                info: '請輸入正確手機格式'
+            },{
+            id: 'AC_organizer',
+                checker: /.+/,
+                info: '請輸入主辦單位'
+            },
+            ];
+        
+            for (i in error_text) {
+                item = error_text[i];
+                item.el = document.querySelector('#' + item.id);
+                item.error_info = document.querySelector('#' + item.id + 'Help');
+            }
+
+            function checkForm() {
             let fd = new FormData(document.form1);
+
+            for (i in error_text) {
+                item = error_text[i];
+                item.el.style.border = '1px solid #cccccc';
+                item.error_info.innerHTML = '';
+            }
+
+            let passcheck = true;
+            for (i in error_text) {
+                item = error_text[i];
+
+                if (!item.checker.test(item.el.value)) {
+                    item.el.style.border = '1px solid red';
+                    item.error_info.style.color = 'red';
+                    item.error_info.innerHTML = item.info;
+                    passcheck = false;
+                }
+            }   
+
+        // 輸入成功或失敗，跳出圖片及轉向----------------------------------------------
+       
 
                 fetch('AC_insert_api.php', {
                     method: 'POST',
@@ -175,8 +225,8 @@ $page_title = '活動資料新增'
                         my_false.style.display = 'block';
                         main_datalist_hidden.style.visibility = 'hidden';
                         setTimeout(function(){
-                            location.href = document.referrer;
-                        },1000)
+                            location.href = 'AC_insert.php';
+                        },500)
                     }
                 });
                    

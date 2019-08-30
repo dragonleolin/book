@@ -5,6 +5,6 @@
     }
 
     if(!isset($_SESSION['loginUser'])){
-        header('Location: ../../pbook_index/_login.php');
+        header('Location: ../../pbook_index/login.php');
         exit;
     }

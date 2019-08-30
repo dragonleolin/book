@@ -1,5 +1,5 @@
 <?php
-require __DIR__. '/__admin_required.php';
+require __DIR__ . '/__admin_required.php';
 require __DIR__ . '/__connect_db.php';
 $page_title = '新增出版社';
 $form_data1 = [
@@ -8,13 +8,12 @@ $form_data1 = [
     '電話' => 'cp_phone',
     '電子郵件' => 'cp_email',
     '地址' => 'cp_address',
+    '統一編號' => 'cp_tax_id',
 ];
 $form_data2 = [
-    '統一編號' => 'cp_tax_id',
     '書籍庫存' => 'cp_stock',
     '帳號' => 'cp_account',
     '密碼' => 'cp_password',
-    'logo' => 'cp_logo',
 ];
 ?>
 <?php include __DIR__ . '/../../pbook_index/__html_head.php' ?>
@@ -24,6 +23,11 @@ $form_data2 = [
     }
 
     #info_position {
+        left: calc(50% - 350px);
+        top: 30%;
+    }
+
+    #info_position2 {
         left: calc(50% - 350px);
         top: 30%;
     }
@@ -54,29 +58,36 @@ $form_data2 = [
                     <div class="form-group d-flex">
                         <div class="container">
                             <?php foreach ($form_data1 as $k => $v) : ?>
-                            <label for="<?= $v ?>" class="update_label pt-3"><?= $k ?></label>
-                            <?php if ($v == 'cp_password') { ?>
-                            <!-- 密碼用password type -->
-                            <input type="password" class="update form-control" id="cp_password" name="cp_password" autocomplete="new-password">
-                            <small id="cp_passwordHelp" class="update form-text"></small>
-                            <?php } else { ?>
-                            <input type="text" class="update form-control" id="<?= $v ?>" name="<?= $v ?>">
-                            <small id="<?= $v ?>Help" class="update form-text"></small>
-                            <?php }
-                            endforeach; ?>
+                                <label for="<?= $v ?>" class="update_label pt-3"><?= $k ?></label>
+                                <input type="text" class="update form-control" id="<?= $v ?>" name="<?= $v ?>">
+                                <small id="<?= $v ?>Help" class="update form-text"></small>
+                            <?php endforeach; ?>
                         </div>
                         <div class="container">
                             <?php foreach ($form_data2 as $k => $v) : ?>
-                            <label for="<?= $v ?>" class="update_label pt-3"><?= $k ?></label>
-                            <?php if ($v == 'cp_password') { ?>
-                            <!-- 密碼用password type -->
-                            <input type="password" class="update form-control" id="cp_password" name="cp_password" autocomplete="new-password">
-                            <small id="cp_passwordHelp" class="update form-text"></small>
-                            <?php } else { ?>
-                            <input type="text" class="update form-control" id="<?= $v ?>" name="<?= $v ?>">
-                            <small id="<?= $v ?>Help" class="update form-text"></small>
+                                <label for="<?= $v ?>" class="update_label pt-3"><?= $k ?></label>
+                                <?php if ($v == 'cp_password') { ?>
+                                    <!-- 密碼用password type -->
+                                    <input type="password" class="update form-control" id="cp_password" name="cp_password" autocomplete="new-password">
+                                    <small id="cp_passwordHelp" class="update form-text"></small>
+                                <?php } else { ?>
+                                    <input type="text" class="update form-control" id="<?= $v ?>" name="<?= $v ?>">
+                                    <small id="<?= $v ?>Help" class="update form-text"></small>
                             <?php }
                             endforeach; ?>
+                            <div class="form-group d-flex mt-5">
+                                <div class="col-lg-5">
+                                    <label for="cp_logo" style="font-size: 20px">請選擇logo照片</label>
+                                    <input type="file" class="form-control-file" id="cp_logo" name="cp_logo" style="display:none">
+                                    <br>
+                                    <button class="btn btn-outline-primary my-2 my-sm-0" type="button" onclick="selUpload()">
+                                        <i class="fas fa-plus-circle" style="margin-right:5px"></i>選擇檔案
+                                    </button>
+                                </div>
+                                <div style="height: 230px;width: 230px;border: 1px solid #ddd">
+                                    <img style="object-fit: contain;width: 100%;height: 100%" id="demo">
+                                </div>
+                            </div>
                         </div>
                     </div>
 
@@ -94,10 +105,28 @@ $form_data2 = [
             <label class="success_text" id="info_bar"></label>
             <div><img class="success_img" src="../../images/icon_checked.svg"></div>
         </div>
-    </div>  
+    </div>
+    <div class="success update card position-absolute" id="info_position2" style="display:none; background:#2d3a3a;box-shadow: 0px 0px 10px red;">
+        <div class="success card-body">
+            <label class="success_text" id="info_bar2" style="color: #fff;  background:#2d3a3a"></label>
+            <div><img class="success_img" src="../../images/icon_false.svg"></div>
+        </div>
+    </div>
 </section>
 </div>
 <script>
+    function selUpload() {
+        document.querySelector('#cp_logo').click();
+    }
+    $('#cp_logo').change(function() {
+        var file = $('#cp_logo')[0].files[0];
+        var reader = new FileReader;
+        reader.onload = function(e) {
+            $('#demo').attr('src', e.target.result);
+        };
+        reader.readAsDataURL(file);
+    });
+
     function getRandom(min, max) {
         return Math.floor(Math.random() * (max - min + 1)) + min;
     };
@@ -179,7 +208,9 @@ $form_data2 = [
         document.querySelector('#cp_password').value = rand_pass;
     }
     let info_bar = document.querySelector('#info_bar');
+    let info_bar2 = document.querySelector('#info_bar2');
     let info_position = document.querySelector('#info_position');
+    let info_position2 = document.querySelector('#info_position2');
     const required_fields = [{
             id: 'cp_name',
             pattern: /^\S{2,}/,
@@ -225,11 +256,6 @@ $form_data2 = [
             pattern: /^\w{6,}$/,
             info: '請輸入正確密碼',
         },
-        {
-            id: 'cp_logo',
-            pattern: /\S{1,}/i,
-            info: '請輸入正確logo',
-        },
     ]
     let s, item;
     for (s in required_fields) {
@@ -266,13 +292,17 @@ $form_data2 = [
                     console.log(json);
                     info_position.style.display = 'block';
                     info_bar.innerHTML = json.info;
+                    info_bar2.innerHTML = json.info;
                     if (json.success) {
                         info_position.style.display = 'block';
                         setTimeout(function() {
                             location.href = 'CP_data_list.php';
                         }, 1000);
                     } else {
-                        info_position.style.display = 'none';
+                        info_position2.style.display = 'block';
+                        setTimeout(function() {
+                            location.href = 'CP_data_insert.php';
+                        }, 1000);
                     }
                 });
         }
