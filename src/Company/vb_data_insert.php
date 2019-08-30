@@ -36,8 +36,8 @@ $totalPages = ceil($totalRows / $per_page); //取得總頁數
     }
 </style>
 
-<?php include __DIR__ . '/../../pbook_index/__html_body.php' ?>
-<?php include __DIR__ . '/../../pbook_index/__navbar.php' ?>
+<?php include __DIR__ . '/__html_body.php' ?>
+<?php include __DIR__ . '/__navbar.php' ?>
 <!-- 右邊section資料欄位 -->
 
 <div class="container">
@@ -347,4 +347,4 @@ $totalPages = ceil($totalRows / $per_page); //取得總頁數
     }
 </script>
 
-<?php include __DIR__ . '/../../pbook_index/__html_foot.php' ?>
+<?php include __DIR__ . '/__html_foot.php' ?>
