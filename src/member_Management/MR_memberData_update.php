@@ -165,7 +165,7 @@ if (empty($row)) {
                     <div class="form-group ">
                         <label for="birthday">生日</label>
                         <div class="d-flex">
-                            <input type="text" class="form-control input_width" id="birthday" name="birthday" value="<?= $row['MR_birthday'] ?>">
+                            <input type="date" class="form-control input_width" id="birthday" name="birthday" value="<?= $row['MR_birthday'] ?>">
                         </div>
                     </div>
 
@@ -194,7 +194,7 @@ if (empty($row)) {
                                     <?= $row['MR_imageloactionY'] ?>px, 0)">
                             </figure>
                             <input type="file" class="form-control-file" id="pic" name="pic">
-                            <input type="hidden" class="form-control-file" id="pic" name="pic1" value="<?= $row['MR_pic'] ?>">
+                            <input type="hidden" class="form-control-file" id="pic1" name="pic1" value="<?= $row['MR_pic'] ?>">
                             <input type="hidden" name="imageLocationX" id="imageLocationX" value="0">
                             <input type="hidden" name="imageLocationY" id="imageLocationY" value="0">
                         </div>
