@@ -73,7 +73,7 @@ foreach ($cates as $r) {
 <?php include __DIR__ . '/__html_body.php' ?>
 <?php include __DIR__ . '/__navbar.php' ?>
 <!-- 右邊section資料欄位 -->
-<section>
+<div>
     <div class="container">
         <nav class="navbar justify-content-between" style="padding: 0px;width: 80vw;">
             <div>
@@ -229,7 +229,7 @@ foreach ($cates as $r) {
             </div>
         </div>
     </div>
-</section>
+</div>
 <script>
     function vb_data_insert() {
         location = "vb_data_insert.php";
