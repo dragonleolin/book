@@ -132,11 +132,13 @@ $stmt = $pdo->query($categories_sql);
                                             </div>
                                             <div class="modal-footer">
                                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
-                                                <button type="button" class="btn btn-primary" onclick="vb_data_update()">修改圖片</button>
+                                                <button type="button" class="btn btn-primary" onclick="change_img()">修改圖片</button>
+                                                <a id="a" style="display:none" type="button" class="btn btn-primary" href="vb_data_update.php?sid=<?= $row[$i]['sid'] ?>">修改圖片</a>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
+                            </td>
                             <td><?= $row[$i]['categories_name']; ?></td>
                             <td><?= $row[$i]['author']; ?></td>
                             <td><?= $row[$i]['publishing']; ?></td>
@@ -213,11 +215,16 @@ $stmt = $pdo->query($categories_sql);
         location = "vb_data_insert.php";
     }
 
+    function change_img(){
+        document.querySelector('#a').click();
+    }
+
     let a;
+
     function delete_one(sid) {
         a = sid;
         let my_delete = document.querySelector('#my_delete');
-        my_delete.style.display = 'block';      
+        my_delete.style.display = 'block';
     }
 
     function delete_yes() {
@@ -227,8 +234,5 @@ $stmt = $pdo->query($categories_sql);
     function delete_no() {
         location.href = 'vb_data_list.php?page=' + <?= $page ?>;
     }
-
-
-
 </script>
 <?php include __DIR__ . '/../../pbook_index/__html_foot.php' ?>

@@ -17,6 +17,18 @@ foreach ($row as $r => $s) {
 
 $my_categories = empty($_POST['categories']) ? 0 : intval($_POST['categories']);
 
+// $total_page_sql = "SELECT * FROM `vb_books` WHERE 1 ORDER BY `sid` DESC"; 
+// $total_page_stmt = $pdo->query($total_page_sql);
+// $total_page_row = $total_page_stmt -> fetchAll();
+
+$page = isset($_GET['page']) ? intval($_GET['page']) : 1; //用戶選取的頁數
+$per_page = 10; //每頁幾筆資料
+
+$t_sql = "SELECT COUNT(1) FROM `vb_books` ";
+$totalRows = $pdo->query($t_sql)->fetch(PDO::FETCH_NUM)[0]; // 拿到總筆數
+$totalPages = ceil($totalRows / $per_page); //取得總頁數
+
+
 ?>
 
 <?php include __DIR__ . '/../../pbook_index/__html_head.php' ?>
@@ -124,7 +136,8 @@ $my_categories = empty($_POST['categories']) ? 0 : intval($_POST['categories']);
                         <div class="d-flex flex-wrap">
                             <?php foreach ($new_row as $k => $v) : ?>
                                 <div class="form-check" style="margin:0px 20px 10px 0px">
-                                    <input class="form-check-input" type="radio" name="categories" id="categories<?= $k ?>" value="<?= $k ?>" <?= $my_categories == 0 ? 'checked' : '' ?>>
+                                    <input class="form-check-input" type="radio" name="categories" id="categories<?= $k ?>" value="<?= $k ?>" 
+                                    <?= $my_categories == 0 ? 'checked' : '' ?>>
                                     <label class="form-check-label" for="categories<?= $k ?>"><?= $v ?></label>
                                 </div>
                             <?php endforeach; ?>
@@ -309,7 +322,7 @@ $my_categories = empty($_POST['categories']) ? 0 : intval($_POST['categories']);
                         success.style.display = 'block';
                         container2.style.display = 'none';
                         setTimeout(function() {
-                            location.href = document.referrer;
+                            location.href = 'vb_data_list.php?page=' + <?= $totalPages ?>;
                         }, 1000)
                     } else {
                         my_false.style.display = 'block';
