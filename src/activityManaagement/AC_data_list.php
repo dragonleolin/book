@@ -37,7 +37,7 @@ $stmt = $pdo->query($sql);
     }
 </style>
 <?php include __DIR__ . '/../../pbook_index/__html_body.php' ?>
-<?php include __DIR__ . '/AC__navbar.php' ?>
+<?php include __DIR__ . '/../../pbook_index/__navbar.php' ?>
 
 
 

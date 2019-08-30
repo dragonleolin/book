@@ -26,7 +26,7 @@ if(empty($row)) {
 </style>
 
 <?php include __DIR__ . '/../../pbook_index/__html_body.php' ?>
-<?php include __DIR__ . '/AC__navbar.php' ?>
+<?php include __DIR__ . '/../../pbook_index/__navbar.php' ?>
 
     <!-- 右邊section資料欄位 -->
     <section>
@@ -137,11 +137,11 @@ if(empty($row)) {
         </div>
 
         <!-- 以下為新增失敗才會跳出來的顯示框 --> 
-        <!-- <div class="success update card" id="my_false" style="box-shadow:0px 0px 10px red; display:none; position:absolute;top:300px; left:500px;">
+        <div class="success update card" id="my_false" style="box-shadow:0px 0px 10px red; display:none; position:absolute;top:300px; left:500px;">
             <div class="success card-body">
-            <label class="success_text" style="background:transparent;color:rgb(228, 63, 63)">新增失敗!</label>
+            <label class="success_text" style="background:transparent;color:rgb(228, 63, 63)">尚未修改!</label>
             <div><img class="success_img" src="../../images/icon_false.svg"></div>
-        </div> -->
+        </div>
 </div>
         
     </section>
@@ -237,15 +237,15 @@ if(empty($row)) {
                         setTimeout(function(){
                         location.href = 'AC_data_list.php';
                         },1000)
-                    };
-                    // else {
-                    //     my_false.style.display = 'block';
-                    //     main_datalist_hidden.style.visibility = 'hidden';
-                    //     setTimeout(function(){
-                    //         location.href = 'AC_update.php';
-                    //     },500)
-                    // }
-                });   
+                    }
+                    else {
+                        my_false.style.display = 'block';
+                        main_datalist_hidden.style.visibility = 'hidden';
+                        setTimeout(function(){
+                        location.href = document.referrer;
+                        },1000)
+                    }
+                });  
              } 
                    
             return false; // 表單不出用傳統的 post 方式送出

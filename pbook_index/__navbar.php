@@ -149,11 +149,11 @@
                     </div>
                 </button>
                 <div id="collapseSix" class="collapse" aria-labelledby="headingSix" data-parent="#accordion">
-                    <button type="button" class="btn btn-light sub_aside_text">
+                    <button type="button" class="btn btn-light sub_aside_text" onclick="location.href='../activityManaagement/AC_data_list.php'">
                         <i class="fas fa-caret-right"></i>
                         <span>品書官方活動總表</span>
                     </button>
-                    <button type="button" class="btn btn-light sub_aside_text">
+                    <button type="button" class="btn btn-light sub_aside_text" onclick="location.href='../activityManaagement/AC_data_list.php'">
                         <i class="fas fa-caret-right"></i>
                         <span>出版社主辦活動總表</span>
                     </button>
