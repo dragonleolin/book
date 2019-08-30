@@ -131,7 +131,7 @@ $t_stmt = $pdo->query($page_sql);
                                             </div>
                                             <div class="modal-footer">
                                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
-                                                <button type="button" class="btn btn-primary" onclick="MB_update()">修改圖片</button>
+                                                <button type="button" class="btn btn-primary" onclick="change_img(<?= $r['mb_sid'] ?>)">修改圖片</button>
                                             </div>
                                         </div>
                                     </div>
@@ -222,6 +222,11 @@ $t_stmt = $pdo->query($page_sql);
 
     function data_insert(){
         location = "MB_insert.php";
+    }
+
+    function change_img(mb_sid) {
+        let b = mb_sid;
+        location = 'MB_update.php?mb_sid=' + b;
     }
 
     function delete_one(mb_sid) {
