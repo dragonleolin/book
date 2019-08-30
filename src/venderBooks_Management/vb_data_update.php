@@ -30,7 +30,7 @@ foreach ($row as $r => $s) {
 }
 
 
-$my_categories = empty($_POST['categories']) ? 0 : intval($_POST['categories']);
+// $my_categories = empty($_POST['categories']) ? 0 : intval($_POST['categories']);
 
 ?>
 
@@ -311,7 +311,7 @@ $my_categories = empty($_POST['categories']) ? 0 : intval($_POST['categories']);
 
         if (isPass) {
             let fd = new FormData(document.form1);
-            fetch('vb_data_insert_api.php', {
+            fetch('vb_data_update_api.php', {
                     method: 'POST',
                     body: fd,
                 })
@@ -326,9 +326,9 @@ $my_categories = empty($_POST['categories']) ? 0 : intval($_POST['categories']);
                     if (json.success) {
                         success.style.display = 'block';
                         container2.style.display = 'none';
-                        setTimeout(function() {
-                            location.href = document.referrer;
-                        }, 1000)
+                        // setTimeout(function() {
+                        //     location.href = document.referrer;
+                        // }, 1000)
                     } else {
                         my_false.style.display = 'block';
                         container2.style.display = 'none';
