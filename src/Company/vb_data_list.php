@@ -149,7 +149,7 @@ foreach ($cates as $r) {
                                                 </button>
                                             </div>
                                             <div class="modal-body" style="width:450px;width:450px;margin:0 auto">
-                                                <img style="object-fit: contain;width: 100%;height: 100%;" src="<?= 'vb_images/' . $row[$i]['pic']; ?>" alt="">
+                                                <img style="object-fit: contain;width: 100%;height: 100%;" src="<?= '../venderBooks_Management/vb_images/' . $row[$i]['pic']; ?>" alt="">
                                             </div>
                                             <div class="modal-footer">
                                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>

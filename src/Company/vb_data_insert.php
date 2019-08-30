@@ -36,8 +36,8 @@ $totalPages = ceil($totalRows / $per_page); //取得總頁數
     }
 </style>
 
-<?php include __DIR__ . '/../../pbook_index/__html_body.php' ?>
-<?php include __DIR__ . '/../../pbook_index/__navbar.php' ?>
+<?php include __DIR__ . '/__html_body.php' ?>
+<?php include __DIR__ . '/__navbar.php' ?>
 <!-- 右邊section資料欄位 -->
 
 <div class="container">
@@ -81,12 +81,6 @@ $totalPages = ceil($totalRows / $per_page); //取得總頁數
                     </div>
 
                     <div class="form-group">
-                        <label for="publishing" class="update_label">・出版社</label>
-                        <span style="margin:0px 20px;color:red" id="publishingHelp"></span>
-                        <input type="text" class="update form-control" id="publishing" name="publishing">
-                    </div>
-
-                    <div class="form-group">
                         <label for="publish_date" class="update_label">・出版日期</label>
                         <span style="margin:0px 20px" class="my_text_blacktea_fifty">格式:2000-01-01</span>
                         <span style="margin:0px -10px;color:red" id="publish_dateHelp"></span>
@@ -105,15 +99,13 @@ $totalPages = ceil($totalRows / $per_page); //取得總頁數
                         <span style="margin:0px -10px;color:red" id="fixed_priceHelp"></span>
                         <input type="text" class="update form-control" id="fixed_price" name="fixed_price">
                     </div>
+
                     <div class="form-group">
                         <label for="page" class="update_label">・頁數</label>
                         <span style="margin:0px 20px" class="my_text_blacktea_fifty">請填寫阿拉伯數字</span>
                         <span style="margin:0px -10px;color:red" id="pageHelp"></span>
                         <input type="text" class="update form-control" id="page" name="page">
                     </div>
-                </div>
-
-                <div style="min-width:700px;margin:0px 30px">
 
                     <div class="form-group">
                         <label for="stock" class="update_label">・庫存</label>
@@ -121,7 +113,9 @@ $totalPages = ceil($totalRows / $per_page); //取得總頁數
                         <span style="margin:0px -10px;color:red" id="stockHelp"></span>
                         <input type="text" class="update form-control" id="stock" name="stock">
                     </div>
+                </div>
 
+                <div style="min-width:700px;margin:0px 30px">
                     <div class="form-group d-flex">
                         <div class="col-lg-5">
                             <label for="pic" style="font-size: 20px">・請選擇書籍封面照片</label>
@@ -152,7 +146,7 @@ $totalPages = ceil($totalRows / $per_page); //取得總頁數
                         <label for="introduction" class="update_label">・書籍簡介</label>
                         <span style="margin:0px 20px" class="my_text_blacktea_fifty">限制200字以內</span>
                         <span style="margin:0px -10px;color:red" id="introductionHelp"></span>
-                        <textarea class="update form-control" id="introduction" rows="3" style="width:700px;height:200px;resize:none" name="introduction"></textarea>
+                        <textarea class="update form-control" id="introduction" rows="3" style="width:700px;height:290px;resize:none" name="introduction"></textarea>
                     </div>
 
                     <div>
@@ -200,9 +194,8 @@ $totalPages = ceil($totalRows / $per_page); //取得總頁數
     });
 
     function checkForm() {
-        // 判斷書籍名稱,作者,出版社,版次是否有填寫
+        // 判斷書籍名稱,作者,版次是否有填寫
         let name = document.querySelector('#name');
-        let publishing = document.querySelector('#publishing');
         let author = document.querySelector('#author');
         let version = document.querySelector('#version');
 
@@ -214,16 +207,6 @@ $totalPages = ceil($totalRows / $per_page); //取得總頁數
         } else {
             name.style.border = '1px solid #CCCCCC';
             document.querySelector('#nameHelp').innerHTML = '';
-            isPass = true;
-        };
-
-        if (publishing.value.length < 1) {
-            publishing.style.border = '1px solid red';
-            document.querySelector('#publishingHelp').innerHTML = '請填寫出版社名稱';
-            isPass = false;
-        } else {
-            publishing.style.border = '1px solid #CCCCCC';
-            document.querySelector('#publishingHelp').innerHTML = '';
             isPass = true;
         };
 
@@ -347,4 +330,4 @@ $totalPages = ceil($totalRows / $per_page); //取得總頁數
     }
 </script>
 
-<?php include __DIR__ . '/../../pbook_index/__html_foot.php' ?>
+<?php include __DIR__ . '/__html_foot.php' ?>
