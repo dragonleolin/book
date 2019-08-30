@@ -12,7 +12,7 @@ $page_title = '品書 - 活動新增';
 </style>
 
 <?php include __DIR__ . '/../../pbook_index/__html_body.php' ?>
-<?php include __DIR__ . '/AC__navbar.php' ?>
+<?php include __DIR__ . '/../../pbook_index/__navbar.php' ?>
 
     <!-- 右邊section資料欄位 -->
     <section>
@@ -29,7 +29,7 @@ $page_title = '品書 - 活動新增';
                 <section class="d-flex" style="min-width:600px;">
                     <div class="card-body d-flex">
                                                                 <!-- action="AC_insert_api.php" method="post"-->
-                        <form style="width:800px;margin:-15px 50px;" name="form1" onsubmit="return checkForm()">
+                        <form style="width:800px;margin:10px 50px;" name="form1" onsubmit="return checkForm()">
                             <div class="form-group">
                                 <label for="AC_name" class="update_label">申請人</label>
                                 <span id="AC_nameHelp" style="margin:0px 10px; color:red"></span>
@@ -47,8 +47,8 @@ $page_title = '品書 - 活動新增';
                                 
                             </div>
                             <div class="form-group">
-                                <label for="AC_date" class="update_label">活動開始日期</label>
-                                <span style="color:#ccc; margin:0 20px">年-月-日</span>
+                                <label for="AC_date" class="update_label">開始日期</label>
+                                <span style="color:#999; margin:0 20px">格式: 2000-01-01</span>
                                 <span id="AC_dateHelp" style="margin:0px 10px; color:red"></span>
                                 <input type="text" class="update form-control" id="AC_date" name="AC_date" value="">
                             </div>
@@ -63,7 +63,7 @@ $page_title = '品書 - 活動新增';
                                 <input type="text" class="update form-control" id="AC_mobile" name="AC_mobile" value="">
                             </div>
                             <div class="form-group">
-                                <label for="AC_organizer" class="update_label">主辦方</label>
+                                <label for="AC_organizer" class="update_label">主辦單位</label>
                                 <span id="AC_organizerHelp" style="margin:0px 10px; color:red"></span>
                                 <input type="text" class="update form-control" id="AC_organizer" name="AC_organizer" value="">
                             </div>
@@ -73,41 +73,57 @@ $page_title = '品書 - 活動新增';
                                 <input type="text" class="update form-control" id="AC_price" name="AC_price">
                             </div> -->
 
-                            <div style="position:absolute;left:900px;">
-                                <button type="submit" class="btn btn-warning" id="success">&nbsp;確&nbsp;認&nbsp;新&nbsp;增&nbsp;</button>
+                            <div style="position:absolute;left:900px; margin:20px 0;">
+                                <button type="submit" class="btn btn-warning" id="success">&nbsp;新&nbsp;增&nbsp;活&nbsp;動&nbsp;</button>
                             </div>
                         </form>
                     </div>
 
                     <div >
-                        <div class="form-group" style="">
-                            <label for="categories" class="update_label">活動介紹</label>
+                        <div class="form-group" style="margin:30px 0 0 0;">
+                            <label for="categories" class="update_label">・活動簡介</label>
+                            <span style="color:#999;">&nbsp;限制100字以內</span>
                             <textarea class="update form-control" id="exampleFormControlTextarea1" rows="3"
                             style="width:500px;height:165px;resize:none"></textarea>
                         </div>
 
                         <div class="form-group" style="margin:20px 0;">
-                            <label for="exampleFormControlFile1"><h4>上傳活動封面</h4></label>
-                            
-                            <form action="/somewhere/to/upload" enctype="multipart/form-data">
-                                <input style="margin:0px" type="file" onchange="readURL(this)" targetID="AC_img" accept="image/gif, image/jpeg, image/png"/ >
-                                <img style="margin:10px 0; width:500px; background-size:cover;" id="AC_img" src="" />
-                            </form>
+                        <div class="col-lg-5 ">
+                            <div>
+                            <label for="pic" style="font-size: 20px;">・活動封面</label>
+                            <input type="file" class="form-control-file" id="pic" name="pic" style="display:none">
+                            </div>
+                            <div>
+                            <button class="btn btn-outline-primary my-2 my-sm-0" type="button" onclick="selUpload()">
+                                <i class="fas fa-plus-circle" style="width:30px;"></i>上傳圖片檔案
+                            </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="width: 500px;">
+                            <img style="object-fit: contain;width: 100%;height: 100%" id="demo"/>
+                    </div>
+                        
                         </div>
 
                         <script>
-                            function readURL(input){
-                              if(input.files && input.files[0]){
-                                var imageTagID = input.getAttribute("targetID");
-                                var reader = new FileReader();
-                                reader.onload = function (e) {
-                                   var img = document.getElementById(imageTagID);
-                                   img.setAttribute("src", e.target.result)
-                                }
-                                reader.readAsDataURL(input.files[0]);
-                              }
+                            function selUpload() {
+                                document.querySelector('#pic').click();
                             }
-                        </script>         
+                        
+                            function preceding_page() {
+                                location.href = document.referrer;
+                            }
+                        
+                            $('#pic').change(function() {
+                                var file = $('#pic')[0].files[0];
+                                var reader = new FileReader;
+                                reader.onload = function(e) {
+                                    $('#demo').attr('src', e.target.result);
+                                };
+                                reader.readAsDataURL(file);
+                            });
+                        </script>
                     </div>
                 </section>  
              </div>

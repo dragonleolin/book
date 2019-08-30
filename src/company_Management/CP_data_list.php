@@ -5,7 +5,14 @@ $page_title = '出版社總表';
 $page = isset($_GET['page']) ? intval($_GET['page']) : 1;
 $search = isset($_GET['search']) ? $_GET['search'] : '';
 $per_page = 8;    //一頁10筆
-$totalRows = $pdo->query("SELECT COUNT(1) FROM `cp_data_list`")->fetch(PDO::FETCH_NUM)[0];    // 拿到總筆數
+$params = [];
+$where = ' WHERE 1 ';
+if (!empty($search)) {
+    $params['search'] = $search;
+    $search = $pdo->quote("%$search%");
+    $where .= " AND (`cp_name` LIKE $search OR `cp_contact_p` LIKE $search OR `cp_phone` LIKE $search OR `cp_email` LIKE $search OR `cp_address` LIKE $search OR `cp_account` LIKE $search) ";
+}
+$totalRows = $pdo->query("SELECT COUNT(1) FROM `cp_data_list` $where ")->fetch(PDO::FETCH_NUM)[0];    // 拿到總筆數
 $totalPages = ceil($totalRows / $per_page);    //算總頁數
 if ($page < 1) {
     header('Location: CP_data_list.php');
@@ -15,17 +22,14 @@ if ($page > $totalPages) {
     header('Location: CP_data_list.php?page=' . $totalPages);
     exit;
 }
-$params = [];
-$where = ' WHERE 1 ';
-if(! empty($search)){
-    $params['search'] = $search;
-    $search = $pdo->quote("%$search%");
-    $where .= " AND (`cp_name` LIKE $search OR `cp_contact_p` LIKE $search OR `cp_phone` LIKE $search OR `cp_email` LIKE $search OR `cp_address` LIKE $search OR `cp_account` LIKE $search) ";
-}
 
-$sql = "SELECT * FROM `cp_data_list` $where ORDER BY `sid` LIMIT ". ($page - 1) * $per_page .",". $per_page;
+$sql = "SELECT * FROM `cp_data_list` $where ORDER BY `sid` LIMIT " . ($page - 1) * $per_page . "," . $per_page;
 $stmt = $pdo->query($sql);
 $rows = $stmt->fetchAll();
+foreach ($rows as $r) {
+    $every_sid = $r['sid'];
+    $stock[$r['sid']] = $pdo->query("SELECT SUM(`vb_books`.`stock`) FROM `vb_books` JOIN `cp_data_list` ON  $every_sid = `vb_books`.`publishing` AND  $every_sid = `cp_data_list`.`sid`")->fetch();
+}
 ?>
 <?php include __DIR__ . '/../../pbook_index/__html_head.php' ?>
 <style>
@@ -38,11 +42,29 @@ $rows = $stmt->fetchAll();
         bottom: 3%;
         left: 50%;
     }
+
+    .vertical td {
+        vertical-align: middle;
+    }
+    
+    .test::after {
+    content: "";
+    background: url(../../images/admin_bg.png) no-repeat;
+    width: calc(100vw - 280px);
+    object-fit: contain;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    position: absolute;
+    z-index: -1;   
+    opacity: 0.05   ;
+}
 </style>
 <?php include __DIR__ . '/../../pbook_index/__html_body.php' ?>
 <?php include __DIR__ . '/../../pbook_index/__navbar.php' ?>
 <!-- 右邊section資料欄位 -->
-<section class="position-relative">
+<section class="position-relative test">
     <div class="container">
         <nav class="navbar justify-content-between" style="padding: 0px;width: 80vw;">
             <div>
@@ -64,7 +86,7 @@ $rows = $stmt->fetchAll();
                 </li>
                 <li class="nav-item" style="flex-grow: 1">
                     <form class="form-inline my-2 my-lg-0" name="form1">
-                        <input class="search form-control mr-sm-2" type="search" autocomplete="off" placeholder="Search" aria-label="Search" id="search" name="search" >
+                        <input class="search form-control mr-sm-2" type="search" autocomplete="off" placeholder="Search" aria-label="Search" id="search" name="search">
                         <button class="btn btn-outline-warning my-2 my-sm-0" type="submit">
                             <i class="fas fa-search"></i>
                         </button>
@@ -85,16 +107,16 @@ $rows = $stmt->fetchAll();
                         <th scope="col">電子郵件</th>
                         <th scope="col">地址</th>
                         <th scope="col">統一編號</th>
-                        <th scope="col">書籍庫存</th>
+                        <th scope="col">庫存</th>
                         <th scope="col">帳號</th>
                         <th scope="col">密碼</th>
-                        <th scope="col">logo</th>
                         <th scope="col">註冊日期</th>
+                        <th scope="col">logo</th>
                         <th scope="col">修改</th>
                         <th scope="col">刪除</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody class="vertical">
                     <?php foreach ($rows as $r) : ?>
                         <tr>
                             <td><?= $r['sid'] ?></td>
@@ -104,13 +126,45 @@ $rows = $stmt->fetchAll();
                             <td><?= htmlentities($r['cp_email']) ?></td>
                             <td><?= htmlentities($r['cp_address']) ?></td>
                             <td><?= htmlentities($r['cp_tax_id']) ?></td>
-                            <td><?= htmlentities($r['cp_stock']) ?></td>
+                            <td style="width:3vw"><?= htmlentities($stock[$r['sid']]["SUM(`vb_books`.`stock`)"]) ?></td>
                             <td><?= htmlentities($r['cp_account']) ?></td>
                             <td><?= htmlentities($r['cp_password']) ?></td>
-                            <td><?= htmlentities($r['cp_logo']) ?></td>
                             <td><?= htmlentities($r['cp_created_date']) ?></td>
-                            <td><a href="CP_data_edit.php?sid=<?= $r['sid'] ?>"><i class="fas fa-edit"></i></a></td>
-                            <td><a href="javascript:delete_one(<?= $r['sid'] ?>)"><i class="fas fa-trash-alt"></i></a></td>
+                            <td style="width:5.3vw">
+                                <button type="button" class="btn btn-outline-primary" data-toggle="modal" data-target="#<?= 'logo' .  $r['sid']; ?>">
+                                    <i class="fas fa-plus-circle"></i>
+                                    顯示
+                                </button>
+                                <div class="modal fade" id="<?= 'logo' . $r['sid']; ?>" tabindex="-1" role="dialog" aria-labelledby="<?= 'logo' .  $r['sid']; ?>Title" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="<?= $r['cp_name']; ?>Title"><?= $r['cp_name']; ?></h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body" style="width:450px;width:450px;margin:0 auto">
+                                                <img style="object-fit: contain;width: 100%;height: 100%;" src="<?= 'logo/' . $r['cp_logo']; ?>" alt="">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <a href="CP_data_edit.php?sid=<?= $r['sid'] ?>">
+                                    <button type="button" class="btn btn-outline-primary">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                </a>
+                            </td>
+                            <td>
+                                <a href="javascript:delete_one(<?= $r['sid'] ?>)">
+                                    <button type="button" class="btn btn-outline-primary">
+                                        <i class="fas fa-trash-alt"></i>
+                                    </button>
+                                </a>
+                            </td>
                         </tr>
                     <?php endforeach; ?>
                 </tbody>
@@ -193,11 +247,6 @@ $rows = $stmt->fetchAll();
 </section>
 </div>
 <script>
-    // function data_search() {
-    //    if(empty(search.value)){
-    //        location ="CP_data_list.php";
-    //    }
-    // }
     function data_insert() {
         location = "CP_data_insert.php";
     }

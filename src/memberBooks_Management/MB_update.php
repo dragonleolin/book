@@ -1,4 +1,5 @@
 <?php
+require __DIR__ . '/__admin_required.php';
 require __DIR__ . '/__connect_db.php';
 $page_name = 'data_edit';
 $page_title = '編輯資料';
@@ -15,6 +16,31 @@ if (empty($row)) {
     header('Location: MB_data_list.php');
     exit;
 }
+
+$categories_data = [
+    1 => '文學小說',
+    2 => '商業理財',
+    3 => '藝術設計',
+    4 => '人文史地',
+    5 => '社會科學',
+    6 => '自然科普',
+    7 => '心理勵志',
+    8 => '醫療保健',
+    9 => '飲食',
+    10 => '生活風格',
+    11 => '旅遊',
+    12 => '宗教命理',
+    13 => '親子教養',
+    14 => '童書/青少年文學',
+    15 => '輕小說',
+    16 => '漫畫',
+    17 => '語言學習',
+    18 => '考試用書',
+    19 => '電腦資訊',
+    20 => '專業/教科書/政府出版品',
+];
+
+$sel_id = empty($_POST['mb_categories']) ? 0 : intval($_POST['mb_categories']);
 
 $page = isset($_GET['page']) ? intval($_GET['page']) : 1;
 $per_page = 10;
@@ -95,15 +121,13 @@ $totalPages = ceil($totalRows / $per_page);
                             <span id="mb_fixedPriceHelp" style="margin:0px 10px;color:red"></span>
                             <input type="text" class="form-control" id="mb_fixedPrice" name="mb_fixedPrice" value="<?= htmlentities($row['mb_fixedPrice']) ?>">
                         </div>
-
-                    </section>
-                    <section style="min-width:700px;margin:0px 30px">
-
                         <div class="form-group">
                             <label for="mb_page">頁數</label>
                             <span id="mb_pageHelp" style="margin:0px 10px;color:red"></span>
                             <input type="text" class="form-control" id="mb_page" name="mb_page" value="<?= htmlentities($row['mb_page']) ?>">
                         </div>
+                    </section>
+                    <section style="min-width:700px;margin:0px 30px">
                         <div class="form-group">
                             <label for="mb_savingStatus">書況</label>
                             <span id="mb_savingStatusHelp" style="margin:0px 10px;color:red"></span>
@@ -115,107 +139,46 @@ $totalPages = ceil($totalRows / $per_page);
                             <input type="text" class="form-control" id="mb_shelveMember" name="mb_shelveMember" value="<?= htmlentities($row['mb_shelveMember']) ?>">
                         </div>
 
-                        <div class="form-group">
-                            <label for="mb_pic">Example file input</label>
-                            <input type="file" class="form-control-file" id="mb_pic" name="mb_pic">
+                        <div class="form-group d-flex">
+                            <div class="col-lg-5">
+                                <label for="mb_pic" style="font-size: 20px">・請選擇書籍照片</label>
+                                <input type="file" class="form-control-file" id="mb_pic" name="mb_pic" style="display:none">
+                                <br>
+                                <button class="btn btn-outline-primary my-2 my-sm-0" type="button" onclick="uploadFile()">
+                                    <i class="fas fa-plus-circle" style="margin-right:5px"></i>選擇檔案
+                                </button>
+                            </div>
+                            <div style="height: 230px;width: 230px;border: 1px solid #ddd">
+                                <img style="object-fit: contain;width: 100%;height: 100%" src="./mb_images/<?= htmlentities($row['mb_pic']) ?>" id="demo" />
+                            </div>
                         </div>
-                        <div class="form-group">
+                       
+                        <div class="form-group" style="margin: -50px -20px 10px 0px; padding: 20px 50px 20px 30px;">
                             <label for="mb_categories" class="update_label">分類</label>
-                            <div class="form-check d-flex" style="background:#ddd;margin:0px 0px 20px 0px">
-                                <div style="width:100px">
-                                    <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1">
-                                    <label class="form-check-label" for="inlineCheckbox1">文學小說</label>
-                                </div>
-                                <div style="width:100px">
-                                    <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1">
-                                    <label class="form-check-label" for="inlineCheckbox1">文學小說</label>
-                                </div>
-                                <div style="width:100px">
-                                    <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1">
-                                    <label class="form-check-label" for="inlineCheckbox1">文學小說</label>
-                                </div>
-                                <div style="width:100px">
-                                    <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1">
-                                    <label class="form-check-label" for="inlineCheckbox1">文學小說</label>
-                                </div>
-                                <div style="width:100px">
-                                    <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1">
-                                    <label class="form-check-label" for="inlineCheckbox1">文學小說</label>
-                                </div>
-                                <div style="width:100px">
-                                    <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1">
-                                    <label class="form-check-label" for="inlineCheckbox1">文學小說</label>
-                                </div>
-                                <div style="width:100px">
-                                    <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1">
-                                    <label class="form-check-label" for="inlineCheckbox1">文學小說</label>
-                                </div>
-                            </div>
-                            <div class="form-check d-flex" style="background:#ddd;margin:0px 0px 20px 0px">
-                                <div style="width:100px">
-                                    <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1">
-                                    <label class="form-check-label" for="inlineCheckbox1">文學小說</label>
-                                </div>
-                                <div style="width:100px">
-                                    <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1">
-                                    <label class="form-check-label" for="inlineCheckbox1">文學小說</label>
-                                </div>
-                                <div style="width:100px">
-                                    <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1">
-                                    <label class="form-check-label" for="inlineCheckbox1">文學小說</label>
-                                </div>
-                                <div style="width:100px">
-                                    <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1">
-                                    <label class="form-check-label" for="inlineCheckbox1">文學小說</label>
-                                </div>
-                                <div style="width:100px">
-                                    <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1">
-                                    <label class="form-check-label" for="inlineCheckbox1">文學小說</label>
-                                </div>
-                                <div style="width:100px">
-                                    <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1">
-                                    <label class="form-check-label" for="inlineCheckbox1">文學小說</label>
-                                </div>
-                                <div style="width:100px">
-                                    <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1">
-                                    <label class="form-check-label" for="inlineCheckbox1">文學小說</label>
-                                </div>
-                            </div>
-                            <div class="form-check d-flex" style="background:#ddd;margin:0px 0px 20px 0px">
-                                <div style="width:100px">
-                                    <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1">
-                                    <label class="form-check-label" for="inlineCheckbox1">文學小說</label>
-                                </div>
-                                <div style="width:100px">
-                                    <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1">
-                                    <label class="form-check-label" for="inlineCheckbox1">文學小說</label>
-                                </div>
-                                <div style="width:100px">
-                                    <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1">
-                                    <label class="form-check-label" for="inlineCheckbox1">文學小說</label>
-                                </div>
-                                <div style="width:100px;background:#ddaaad">
-                                    <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1">
-                                    <label class="form-check-label" for="inlineCheckbox1">文學小說</label>
-                                </div>
-                                <div style="width:100px">
-                                    <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1">
-                                    <label class="form-check-label" for="inlineCheckbox1">文學小說</label>
-                                </div>
-                                <div style="width:100px">
-                                    <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1">
-                                    <label class="form-check-label" for="inlineCheckbox1">文學小說</label>
-                                </div>
+                            <div class="d-flex flex-wrap" style="padding-left: 20px;">
+                                <?php
+                                foreach ($categories_data as $k => $v) :
+                                    ?>
+                                    <div style="width:150px">
+                                        <input class="form-check-input"  type="radio" name="mb_categories" id="mb_categories<?= $k ?>" value="<?= $k ?>" <?= ($row['mb_categories'] == $k ) ? 'checked' : '' ?>>
+                                        <label class="form-check-label" for="mb_categories<?= $k ?>"><?= $v ?></label>
+                                        
+                                    </div>
+                                <?php endforeach ?>   
                             </div>
                         </div>
-                        <div class="from-group">
+
+                        <div class="from-group" style="margin: -70px -20px 10px 0px; padding: 20px 50px 20px 30px;">
                             <label for="mb_remarks" class="update_label">備註</label>
-                            <textarea class="update form-control" name="mb_remarks" id="mb_remarks" cols="30" rows="10" style="width:700px;height:50px;resize:none"></textarea>
+                            <span style="margin:0px 20px" class="my_text_blacktea_fifty"></span>
+                            <span style="margin:0px -10px;color:red" id="introductionHelp"></span>
+                            <textarea class="update form-control" name="mb_remarks" id="mb_remarks" rows="5" style="width:700px;height:90px;resize:none"><?= htmlentities($row['mb_remarks']) ?>
+                            </textarea>
                         </div>
                     </section>
                 </section>
-                <div class="" style="text-align: center">
-                    <button type="submit" class="btn btn-warning " id="submit_btn">&nbsp;修&nbsp;改&nbsp;</button>
+                <div class="d-flex justify-content-end" style="text-align: center;">
+                    <button type="submit" class="btn btn-warning " id="submit_btn" style="width: 200px;">&nbsp;修&nbsp;改&nbsp;</button>
                 </div>
             </form>
         </div>
@@ -235,6 +198,21 @@ $totalPages = ceil($totalRows / $per_page);
     let success_bar = document.querySelector('#success_bar')
     const submit_btn = document.querySelector('#submit_btn');
     let i, s, item;
+
+    //檔案上傳
+    function uploadFile() {
+        document.querySelector('#mb_pic').click();
+
+    }
+
+    $('#mb_pic').change(function() {
+        var file = $('#mb_pic')[0].files[0];
+        var reader = new FileReader;
+        reader.onload = function(e) {
+            $('#demo').attr('src', e.target.result);
+        }
+        reader.readAsDataURL(file);
+    })
 
     const require_fields = [{
             id: 'mb_isbn',
@@ -331,7 +309,7 @@ $totalPages = ceil($totalRows / $per_page);
                     if (json.success) {
                         setTimeout(function() {
                             success_bar.style.display = 'block';
-                            location.href = 'MB_data_list.php?page=<?= $totalPages ?>';
+                            location.href = document.referrer;
                         }, 1000);
                     } else {
                         success_bar.style.display = 'none'

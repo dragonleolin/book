@@ -20,19 +20,18 @@ $form_data1 = [
     '電話' => 'cp_phone',
     '電子郵件' => 'cp_email',
     '地址' => 'cp_address',
+    '統一編號' => 'cp_tax_id',
 ];
 $form_data2 = [
-    '統一編號' => 'cp_tax_id',
     '書籍庫存' => 'cp_stock',
     '帳號' => 'cp_account',
     '密碼' => 'cp_password',
-    'logo' => 'cp_logo',
 ];
 
 $seq = "SELECT  1 + (SELECT count(*) FROM `cp_data_list` where `sid` < $sid)  FROM `cp_data_list` limit 1"; //拿到第幾筆
 $stmt2 = $pdo->query($seq)->fetch();
 foreach ($stmt2 as $k => $v) {
-    $previous_page = intval($v / 8) + 1;
+    $previous_page = intval(($v - 1) / 8) + 1;
 }
 ?>
 
@@ -61,21 +60,15 @@ foreach ($stmt2 as $k => $v) {
         <!-- 每個人填資料的區塊 -->
         <div class="container position-relative" style="margin-left:calc( 50% - 314px)">
             <div class="row">
-                <form name="form1" style="width:1000px" onsubmit="return checkForm()">
+                <form name="form1" id="form1" style="width:1000px" onsubmit="return checkForm()">
                     <input type="hidden" name="sid" value="<?= $row['sid'] ?>">
                     <div class="form-group d-flex">
                         <div class="container">
                             <?php foreach ($form_data1 as $k => $v) : ?>
                             <label for="<?= $v ?>" class="update_label pt-3"><?= $k ?></label>
-                            <?php if ($v == 'cp_password') { ?>
-                            <!-- 密碼用password type -->
-                            <input type="password" class="update form-control" id="cp_password" name="cp_password" autocomplete="new-password" value="<?= htmlentities($row[$v]) ?>">
-                            <small id="cp_passwordHelp" class="update form-text"></small>
-                            <?php } else { ?>
                             <input type="text" class="update form-control" id="<?= $v ?>" name="<?= $v ?>" value="<?= htmlentities($row[$v]) ?>">
                             <small id="<?= $v ?>Help" class="update form-text"></small>
-                            <?php }
-                            endforeach; ?>
+                            <?php endforeach; ?>
                         </div>
                         <div class="container">
                             <?php foreach ($form_data2 as $k => $v) : ?>
@@ -89,9 +82,23 @@ foreach ($stmt2 as $k => $v) {
                             <small id="<?= $v ?>Help" class="update form-text"></small>
                             <?php }
                             endforeach; ?>
+                            <div class="form-group d-flex mt-5">
+                                <div class="col-lg-5">
+                                    <label for="cp_logo" style="font-size: 20px">請選擇logo照片</label>
+                                    <input type="file" class="form-control-file" id="cp_logo" name="cp_logo" style="display:none">
+                                    <br>
+                                    <button class="btn btn-outline-primary my-2 my-sm-0" type="button" onclick="selUpload()">
+                                        <i class="fas fa-plus-circle" style="margin-right:5px"></i>選擇檔案
+                                    </button>
+                                </div>
+                                <div style="height: 230px;width: 230px;border: 1px solid #ddd">
+                                    <img style="object-fit: contain;width: 100%;height: 100%"src="./logo/<?= htmlentities($row['cp_logo']) ?>"  id="demo">
+                                </div>
+                            </div>
+                        </div>
                         </div>
                     </div>
-                    <div style="text-align: center">
+                    <div style="text-align: center" id="btn1">
                         <button type="submit" class="btn btn-warning" id="submit_btn">&nbsp;確&nbsp;認&nbsp;修&nbsp;改&nbsp;</button>
                     </div>
                 </form>
@@ -109,6 +116,19 @@ foreach ($stmt2 as $k => $v) {
 </section>
 </div>
 <script>
+    function selUpload() {
+        document.querySelector('#cp_logo').click();
+    }
+    $('#cp_logo').change(function() {
+        var file = $('#cp_logo')[0].files[0];
+        var reader = new FileReader;
+        reader.onload = function(e) {
+            $('#demo').attr('src', e.target.result);
+        };
+        reader.readAsDataURL(file);
+    });
+    let btn1 = document.querySelector('#btn1');
+    let form1 = document.querySelector('#form1');
     let info_bar = document.querySelector('#info_bar');
     let info_position = document.querySelector('#info_position');
     const required_fields = [{
@@ -156,11 +176,6 @@ foreach ($stmt2 as $k => $v) {
             pattern: /^\w{6,}$/,
             info: '請輸入正確密碼',
         },
-        {
-            id: 'cp_logo',
-            pattern: /\S{1,}/i,
-            info: '請輸入正確logo',
-        },
     ]
     let s, item;
     for (s in required_fields) {
@@ -199,6 +214,8 @@ foreach ($stmt2 as $k => $v) {
                     info_bar.innerHTML = json.info;
                     if (json.success) {
                         info_position.style.display = 'block';
+                        btn1.style.display = 'none';
+                        form1.style.display = 'none';
                         setTimeout(function(){
                                 location.href = 'CP_data_list.php?page=<?= $previous_page ?>';
                         }, 1000);

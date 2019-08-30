@@ -1,3 +1,4 @@
+<?php require __DIR__ . '/__admin_required.php' ?>
 <?php require  'MR_db_connect.php' ?>
 <?php
 
@@ -27,9 +28,9 @@ $a_level = [
 <?php include '../../pbook_index/__html_head.php' ?>
 <link rel="stylesheet" href="lib/memberlist.css">
 <style>
- body {
-            background: url(../../images/bg.png) repeat center top;
-        }
+    body {
+        background: url(../../images/bg.png) repeat center top;
+    }
 </style>
 <?php include '../../pbook_index/__html_body.php' ?>
 <?php include '../../pbook_index/__navbar.php' ?>
@@ -37,14 +38,20 @@ $a_level = [
 
 </div>
 <section class="p-4 container-fluid">
-    <div>
-        <h4>新增會員資料
-            <a href="<?= $_SERVER['HTTP_REFERER'] ?>" class="back_arrow">
-                <i class="arrow fas fa-chevron-left">&nbsp返回</i>
-            </a>
-        </h4>
-        <div class="title_line"></div>
-    </div>
+    <nav class="navbar justify-content-between" style="padding: 0px;width: 80vw;">
+        <div>
+            <h4>新增會員資料</h4>
+            <div class="title_line"></div>
+        </div>
+        <ul class="nav justify-content-between">
+            <li class="nav-item" style="margin: 0px 10px">
+                <button class="btn btn-outline-primary my-2 my-sm-0" type="button" onclick="history.back()">
+                    <i class="fas fa-arrow-circle-left"></i>
+                    回到上一頁
+                </button>
+            </li>
+        </ul>
+    </nav>
     <div class=" ">
         <div class="row mt-3 ">
             <div class="col-md-6">
@@ -148,8 +155,11 @@ $a_level = [
                         <label for="address">地址</label>
                         <input type="text" class="form-control input_width2" id="address" name="address">
                     </div>
-
-                    <button type="submit" class="btn btn-primary" id="submit_btn">新增</button>
+                    <div>
+                        <button style="width:130px" type="submit" class="btn btn-warning" id="submit_btn">
+                            &nbsp;確&nbsp;認&nbsp;新&nbsp;增&nbsp;
+                        </button>
+                    </div>
                 </div>
                 <div class="">
                     <div class="">
@@ -159,6 +169,8 @@ $a_level = [
                                 <img src="" alt="" id="demo">
                             </figure>
                             <input type="file" class="form-control-file" id="pic" name="pic">
+                            <input type="hidden" name="imageLocationX" id="imageLocationX" value="0">
+                            <input type="hidden" name="imageLocationY" id="imageLocationY" value="0">
                         </div>
                     </div>
                 </div>
@@ -217,8 +229,8 @@ $a_level = [
     eye1.addEventListener('click', showPassword);
     eye2.addEventListener('click', showPassword);
 
+    //頭像預覽
     let pic = document.querySelector('#pic');
-
     $(pic).change(function() {
         var file = $('#pic')[0].files[0];
         var reader = new FileReader;
@@ -227,6 +239,56 @@ $a_level = [
         };
         reader.readAsDataURL(file);
     });
+
+    //頭像圖片移動
+    var active = false;
+    var currentX = 0,
+        currentY = 0,
+        initialX = 0,
+        initialY = 0;
+    xOffset = 0;
+    yOffset = 0;
+    let demo = document.querySelector('#demo');
+    let demo_fig = document.querySelector('#demo-fig');
+    let imageLocationX = document.querySelector('#imageLocationX');
+    let imageLocationY = document.querySelector('#imageLocationY');
+    demo_fig.addEventListener('mousedown', dragStart);
+    demo_fig.addEventListener('mousemove', drag);
+    demo_fig.addEventListener('mouseup', dragEnd);
+
+    function dragStart(event) {
+
+        initialX = event.clientX - xOffset;
+        initialY = event.clientY - yOffset;
+        if (event.target === demo) {
+            active = true;
+        }
+    }
+
+    function drag(event) {
+        if (active) {
+            event.preventDefault();
+            currentX = event.clientX - initialX;
+            currentY = event.clientY - initialY;
+            xOffset = currentX;
+            yOffset = currentY;
+            setTranslate(currentX, currentY, demo);
+        }
+    }
+
+    function setTranslate(xPos, yPos, el) {
+        el.style.transform = "translate3d(" + xPos + "px, " + yPos + "px, 0)";
+        imageLocationX.value = xOffset;
+        imageLocationY.value = yOffset;
+        console.log(imageLocationX.value, imageLocationY.value);
+    }
+
+    function dragEnd(event) {
+        initialX = currentX;
+        initialY = currentY;
+        active = false;
+
+    }
 
 
     function checkForm() {
@@ -268,7 +330,7 @@ $a_level = [
                         info_bar.className = 'alert alert-success';
                         setTimeout(() => {
                             location.href = 'MR_memberDataList.php';
-                        }, 1000);
+                        }, 1500);
                     } else {
                         info_bar.className = "alert alert-danger";
                     }

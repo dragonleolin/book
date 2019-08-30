@@ -105,13 +105,13 @@ if (!isset($_SESSION)) {
                         </div>
                     </button>
                     <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordion">
-                        <button type="button" class="btn btn-light sub_aside_text" onclick="location.href='src/member_Management/MR_memberDataList.php'">
+                        <button type="button" class="btn btn-light sub_aside_text" onclick="location='src/member_Management/MR_memberDataList.php'">
                             <i class="fas fa-caret-right"></i>
                             <span>品書會員列表</span>
                         </button>
-                        <button type="button" class="btn btn-light sub_aside_text">
+                        <button type="button" class="btn btn-light sub_aside_text" onclick="location='src/member_Management/MR_levelList.php'">
                             <i class="fas fa-caret-right"></i>
-                            <span>會員等級</span>
+                            <span>品書會員等級</span>
                         </button>
                     </div>
                 </div>
@@ -145,21 +145,21 @@ if (!isset($_SESSION)) {
                         </div>
                     </button>
                     <div id="collapseFive" class="collapse" aria-labelledby="headingFive" data-parent="#accordion">
-                        <button type="button" class="btn btn-light sub_aside_text">
+                        <button type="button" class="btn btn-light sub_aside_text" onclick="location.href='src/Book_review/BR_data_list.php'">
                             <i class="fas fa-caret-right"></i>
                             <span>書評人總表</span>
                         </button>
-                        <button type="button" class="btn btn-light sub_aside_text">
+                        <button type="button" class="btn btn-light sub_aside_text" onclick="location.href='src/Book_review/BR_insert.php'">
                             <i class="fas fa-caret-right"></i>
                             <span>新增書評人</span>
                         </button>
-                        <button type="button" class="btn btn-light sub_aside_text">
+                        <button type="button" class="btn btn-light sub_aside_text" onclick="location.href='src/Book_review/BR_bookreview_list.php'">
                             <i class="fas fa-caret-right"></i>
-                            <span>書評人書評總表</span>
+                            <span>書評列表</span>
                         </button>
                         <button type="button" class="btn btn-light sub_aside_text">
                             <i class="fas fa-caret-right"></i>
-                            <span>書評人影片總表</span>
+                            <span>影片列表</span>
                         </button>
                     </div>
                 </div>
@@ -173,13 +173,13 @@ if (!isset($_SESSION)) {
                         </div>
                     </button>
                     <div id="collapseSix" class="collapse" aria-labelledby="headingSix" data-parent="#accordion">
-                        <button type="button" class="btn btn-light sub_aside_text">
+                        <button type="button" class="btn btn-light sub_aside_text" onclick="location.href='src/activityManaagement/AC_data_list.php'">
                             <i class="fas fa-caret-right"></i>
-                            <span>品書官方活動總表</span>
+                            <span>品書活動總表</span>
                         </button>
-                        <button type="button" class="btn btn-light sub_aside_text">
+                        <button type="button" class="btn btn-light sub_aside_text" onclick="location.href='src/activityManaagement/AC_insert.php'">
                             <i class="fas fa-caret-right"></i>
-                            <span>出版社主辦活動總表</span>
+                            <span>新增活動</span>
                         </button>
                     </div>
                 </div>
@@ -219,7 +219,7 @@ if (!isset($_SESSION)) {
         </aside>
         <!-- 右邊section資料欄位 -->
         <section style="width: calc(100vw - 280px);">
-            <img src="images/admin_bg.png" alt="" style="height: 100%;object-fit: contain;width:100%">
+            <img src="images/admin_bg.png" alt="" style="height: 100%;object-fit: contain;width:100%;">
         </section>
     </div>
     <script>

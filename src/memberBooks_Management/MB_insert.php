@@ -1,4 +1,5 @@
 <?php
+require __DIR__ . '/__admin_required.php';
 require __DIR__ . '/__connect_db.php';
 $page_name = 'MB_data_list';
 $page_title = '新增資料';
@@ -164,8 +165,8 @@ $totalPages = ceil($totalRows / $per_page);
                         </div>
                     </section>
                 </section>
-                <div class="" style="text-align: center">
-                    <button type="submit" class="btn btn-warning " id="submit_btn">&nbsp;新&nbsp;增&nbsp;</button>
+                <div class="d-flex justify-content-end" style="text-align: center;">
+                    <button type="submit" class="btn btn-warning " id="submit_btn" style="width: 200px;">&nbsp;新&nbsp;增&nbsp;</button>
                 </div>
             </form>
         </div>
@@ -186,7 +187,7 @@ $totalPages = ceil($totalRows / $per_page);
     const submit_btn = document.querySelector('#submit_btn');
     let i, s, item;
 
-
+    //檔案上傳
     function uploadFile() {
         document.querySelector('#mb_pic').click();
 

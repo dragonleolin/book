@@ -1,4 +1,5 @@
 <?php
+require __DIR__ . '/__admin_required.php';
 require __DIR__ . '/__connect_db.php';
 $page_name = 'vb_data_insert';
 $page_title = '新增出版社書籍';
@@ -16,10 +17,6 @@ foreach ($row as $r => $s) {
 }
 
 $my_categories = empty($_POST['categories']) ? 0 : intval($_POST['categories']);
-
-// $total_page_sql = "SELECT * FROM `vb_books` WHERE 1 ORDER BY `sid` DESC"; 
-// $total_page_stmt = $pdo->query($total_page_sql);
-// $total_page_row = $total_page_stmt -> fetchAll();
 
 $page = isset($_GET['page']) ? intval($_GET['page']) : 1; //用戶選取的頁數
 $per_page = 10; //每頁幾筆資料
@@ -49,6 +46,14 @@ $totalPages = ceil($totalRows / $per_page); //取得總頁數
             <h4>新增出版社書籍</h4>
             <div class="title_line"></div>
         </div>
+        <ul class="nav justify-content-between">
+            <li class="nav-item" style="margin: 0px 10px">
+                <button class="btn btn-outline-primary my-2 my-sm-0" type="button" onclick="preceding_page()">
+                    <i class="fas fa-arrow-circle-left"></i>
+                    回到上一頁
+                </button>
+            </li>
+        </ul>
     </nav>
 
     <!-- 每個人填資料的區塊 -->
@@ -127,7 +132,7 @@ $totalPages = ceil($totalRows / $per_page); //取得總頁數
                             </button>
                         </div>
                         <div style="height: 230px;width: 230px;border: 1px solid #ddd">
-                            <img style="object-fit: contain;width: 100%;height: 100%" id="demo" />
+                            <img style="object-fit: contain;width: 100%;height: 100%" id="demo"/>
                         </div>
                     </div>
 
@@ -136,8 +141,7 @@ $totalPages = ceil($totalRows / $per_page); //取得總頁數
                         <div class="d-flex flex-wrap">
                             <?php foreach ($new_row as $k => $v) : ?>
                                 <div class="form-check" style="margin:0px 20px 10px 0px">
-                                    <input class="form-check-input" type="radio" name="categories" id="categories<?= $k ?>" value="<?= $k ?>" 
-                                    <?= $my_categories == 0 ? 'checked' : '' ?>>
+                                    <input class="form-check-input" type="radio" name="categories" id="categories<?= $k ?>" value="<?= $k ?>" <?= $my_categories == 0 ? 'checked' : '' ?>>
                                     <label class="form-check-label" for="categories<?= $k ?>"><?= $v ?></label>
                                 </div>
                             <?php endforeach; ?>
@@ -178,8 +182,12 @@ $totalPages = ceil($totalRows / $per_page); //取得總頁數
 </div>
 
 <script>
-    function selUpload(){
+    function selUpload() {
         document.querySelector('#pic').click();
+    }
+
+    function preceding_page() {
+        location.href = document.referrer;
     }
 
     $('#pic').change(function() {
