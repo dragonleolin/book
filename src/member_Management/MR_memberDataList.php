@@ -1,3 +1,4 @@
+<?php require __DIR__ . '/__admin_required.php' ?>
 <?php require  'MR_db_connect.php' ?>
 <?php
 $thead_item = [

@@ -77,8 +77,8 @@ $page_title = '登入';
         </ul>
     </nav>
 
-    <div class="wrapper">
-        <div class="border_dot">
+    <div class="wrapper" >
+        <div class="border_dot" >
             <h5 class="card-title">品書網管理者登入</h5>
             <form name="form1" onsubmit="return checkForm()">
                 <div class="form-group">

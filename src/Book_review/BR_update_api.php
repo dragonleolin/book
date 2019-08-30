@@ -17,6 +17,7 @@ if(empty($_POST['BR_name']) or empty($_POST['sid'])){
 $sql = "UPDATE `br_create` 
 SET 
 `BR_name`=?,
+`BR_password`=sha1(?),
 `BR_phone`=?,
 `BR_email`=?,
 `BR_address`=?,
@@ -29,6 +30,7 @@ $stmt=$pdo->prepare($sql);
 
 $stmt->execute([
     $_POST['BR_name'],
+    $_POST['BR_password'],
     $_POST['BR_phone'],
     $_POST['BR_email'],
     $_POST['BR_address'],
