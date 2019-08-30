@@ -12,6 +12,32 @@ if (empty($_POST['cp_name']) or empty($_POST['sid'])) {
     echo json_encode($result, JSON_UNESCAPED_UNICODE);
     exit;
 }
+$upload_dir = __DIR__ . '/logo/';
+$allowed_types = [
+    'image/png',
+    'image/jpeg',
+    'image/svg+xml',
+];
+$exts = [
+    'image/png' => '.png',
+    'image/jpeg' => '.jpg',
+    'image/svg+xml' => '.svg',
+];
+$new_filename = '';
+$new_ext = '';
+
+$pic_sql = sprintf("SELECT `cp_logo` FROM `cp_data_list` WHERE `sid` = %s", $_POST['sid']);
+$pic_stmt = $pdo->query($pic_sql);
+$new_filename = $pic_stmt->fetch()['cp_logo'];
+
+if (!empty($_FILES['cp_logo'])) { //檔案有上傳
+    if (in_array($_FILES['cp_logo']['type'], $allowed_types)) {  //上傳檔案類型是否符合
+        $new_filename = sha1(uniqid() . $_FILES['cp_logo']['name']); //為了避免檔案重名(因為重名新的會覆蓋掉舊的),所以將上傳檔案重新命名
+        $new_ext = $exts[$_FILES['cp_logo']['type']];
+        move_uploaded_file($_FILES['cp_logo']['tmp_name'], $upload_dir . $new_filename . $new_ext);
+    }
+}
+
 $sql = "UPDATE `cp_data_list` SET 
     `cp_name` = ?,
     `cp_contact_p` = ?,
@@ -35,7 +61,7 @@ $stmt->execute([
     $_POST['cp_stock'],
     $_POST['cp_account'],
     $_POST['cp_password'],
-    $_POST['cp_logo'],
+    $new_filename . $new_ext,
     $_POST['sid'],
 ]);
 // echo $stmt->rowCount();         //上傳幾筆
