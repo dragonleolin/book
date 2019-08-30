@@ -9,10 +9,10 @@ exit;
 // 地點`AC_eventArea`
 // 聯絡電話`AC_mobile`
 // 主辦單位`AC_organizer`
-// 參加費用`AC_price`
+// 活動簡介`AC_brief`
 // 建立時間`AC_created_at`
 // ---------------------------------------------------
-// INSERT INTO `ac_pbook` (`AC_sid`, `AC_name`, `AC_title`, `AC_type`, `AC_date`, `AC_eventArea`, `AC_mobile`, `AC_organizer`, `AC_price`, `AC_created_at`) 
+// INSERT INTO `ac_pbook` (`AC_sid`, `AC_name`, `AC_title`, `AC_type`, `AC_date`, `AC_eventArea`, `AC_mobile`, `AC_organizer`, `AC_brief`, `AC_created_at`) 
 // VALUES 
 // (NULL, '肥宅小編', '肚子好餓', '新書發表', '2019-06-21', '台北市中山區', '0982116999', '肥宅書紡', '500','2019-08-26 00:00:00'),
 // (NULL, '林小編', '歡慶夏日、感恩回饋', '新書發表', '2019-06-21', '台北市信義區', '0982116888', '林小編書房', '250','2019-08-27 00:00:00'),
@@ -32,7 +32,7 @@ require __DIR__. '/AC__connect_db.php';
 
 for($k=1; $k<100; $k++){
     $s = "INSERT INTO `ac_pbook`
-            (`AC_name`, `AC_title`, `AC_type`, `AC_date`, `AC_eventArea`, `AC_mobile`, `AC_organizer`, `AC_price`, `AC_created_at`)
+            (`AC_name`, `AC_title`, `AC_type`, `AC_date`, `AC_eventArea`, `AC_mobile`, `AC_organizer`, `AC_brief`, `AC_created_at`)
              VALUES
               ('假的實體活動{$k}', '123@gmail.com', '0982333666', '1990-10-10', '台北市', '2019-08-27 12:00:00') ";
 //    echo $s;

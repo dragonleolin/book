@@ -100,7 +100,7 @@ $totalPages = ceil($totalRows / $per_page);
                             <input type="text" class="form-control" id="mb_publishDate" name="mb_publishDate">
                         </div>
                         <div class="form-group">
-                            <label for="mb_version" class="update_label">版本</label>
+                            <label for="mb_version">版本</label>
                             <span id="mb_mb_versionHelp" style="margin:0px 10px;color:red"></span>
                             <input type="text" class="form-control" id="mb_version" name="mb_version">
                         </div>
@@ -142,13 +142,14 @@ $totalPages = ceil($totalRows / $per_page);
                         </div>
                         <div class="form-group" style="margin: -50px -20px 10px 0px; padding: 20px 50px 20px 30px;">
                             <label for="mb_categories" class="update_label">分類</label>
+                            <span id="mb_categoriesHelp" style="margin:0px 10px;color:red"></span>
                             <div class="d-flex flex-wrap" style="padding-left: 20px;">
                                 <?php
                                 $i = 0;
                                 foreach ($categories_data as $k => $v) :
                                     ?>
                                     <div style="width:150px">
-                                        <input class="form-check-input"  type="radio" name="mb_categories" id="mb_categories" value="<?= $k ?>">
+                                        <input class="form-check-input"  type="radio" name="mb_categories" id="mb_categories" value="<?= $k ?>" <?= $k == 1 ? 'checked' : '' ?>>
                                         <label class="form-check-label" for="mb_categories"><?= $v ?></label>
                                         
                                     </div>
@@ -246,6 +247,11 @@ $totalPages = ceil($totalRows / $per_page);
             id: 'mb_shelveMember',
             pattern: /^\w\d{2,}/,
             info: '請輸入正確的會員編號',
+        },
+        {
+            id: 'mb_categories',
+            pattern: /\d{1,}/,
+            info: '請選擇類別',
         },
 
     ];

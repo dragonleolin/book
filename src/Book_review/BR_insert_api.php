@@ -57,7 +57,7 @@ $stmt->execute([
     $_POST['BR_address'],
     $_POST['BR_gender'],
     $_POST['BR_birthday'],
-    $new_filename . $new_ext,
+    $new_filename.$new_ext,
     $_POST['BR_job'],
 ]);
 

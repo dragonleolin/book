@@ -2,7 +2,7 @@
 <?php require  'MR_db_connect.php' ?>
 <?php
 $thead_item = [
-    '#', '編號', '等級', '姓名', '密碼', '電子信箱', '性別', '生日', '手機',
+    '#', '編號', '等級', '姓名', '暱稱', '電子信箱', '性別', '生日', '手機',
 ];
 
 $page_title = '資料列表';
@@ -39,11 +39,16 @@ if ($page > $totalPage) {
 $sql = "SELECT * FROM `mr_information` $where ORDER BY `sid` LIMIT " . ($page - 1) * $per_page . "," . $per_page;
 $stmt = $pdo->query($sql);
 $rows = $stmt->fetchAll();
+
 ?>
 <?php include '../../pbook_index/__html_head.php' ?>
 <style>
     body {
         background: url(../../images/bg.png) repeat center top;
+    }
+
+    ul li {
+        list-style-type: none;
     }
 </style>
 <?php include '../../pbook_index/__html_body.php' ?>
@@ -70,9 +75,8 @@ $rows = $stmt->fetchAll();
                         </button>
                     </li>
                     <li class="nav-item" style="flex-grow: 1">
-                        <form name="form2" class="form-inline my-2 my-lg-0" >
-                            <input class="search form-control mr-sm-2" id="search_bar" name="search" value="<?= $search?>"
-                             type="search" placeholder="Search" aria-label="Search">
+                        <form name="form2" class="form-inline my-2 my-lg-0">
+                            <input class="search form-control mr-sm-2" id="search_bar" name="search" value="<?= $search ?>" type="search" placeholder="Search" aria-label="Search">
                             <button class="btn btn-outline-warning my-2 my-sm-0" type="submit">
                                 <i class="fas fa-search"></i>
                             </button>
@@ -98,20 +102,23 @@ $rows = $stmt->fetchAll();
                 </thead>
                 <tbody>
 
-                    <?php foreach ($rows as $a) : ?>
+                    <?php foreach ($rows as $a) :  ?>
                         <tr>
                             <td><?= $a['sid'] ?></td>
                             <td><?= htmlentities($a['MR_number']) ?></td>
                             <td><?= htmlentities($a['MR_personLevel']) ?></td>
                             <td><?= htmlentities($a['MR_name']) ?></td>
-                            <td><?= htmlentities($a['MR_password']) ?></td>
+                            <td><?= htmlentities($a['MR_nickname']) ?></td>
                             <td><?= htmlentities($a['MR_email']) ?></td>
                             <td><?= (htmlentities($a['MR_gender'])) ? '男' : '女' ?></td>
                             <td><?= htmlentities($a['MR_birthday']) ?></td>
                             <td><?= htmlentities($a['MR_mobile']) ?></td>
-                            <td><a href="#"><i class="fas fa-file-alt"></i></i></a></td>
+                            <td><a href="" data-toggle="modal" data-target="#exampleModalCenter">
+                                    <i class="fas fa-file-alt"></i>
+                                </a></td>
                             <td><a href="MR_memberData_update.php?sid=<?= $a['sid'] ?>"><i class="fas fa-edit"></i></a></td>
                             <td><a href="javascript:delete_one(<?= $a['sid'] ?>)"><i class="fas fa-trash-alt"></i></a></td>
+                            <input type="hidden" id=`tdsid<?= $a['sid'] ?>` value="<?= $a['sid'] ?>">
                         </tr>
                     <?php endforeach ?>
                 </tbody>
@@ -154,6 +161,41 @@ $rows = $stmt->fetchAll();
                 </li>
             </ul>
         </nav>
+        <div>
+            <pre>
+                    <?php print_r($rows); ?>
+                    </pre>
+        </div>
+
+        <!-- Modal -->
+        <?php for ($i = 0; $i < count($rows); $i++) : ?>
+            <?php $details = $rows[$i]; ?>
+            <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document" style="max-width:1200px">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalCenterTitle">會員資料</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body" style="min-height:500px">
+                            <?php foreach ($details as $k => $v) : ?>
+                                <ul class="d-flex">
+                                    <li><?= strlen($k)>3 ? substr($k, 3, strlen($k) - 3): $k?> : </li>
+                                    <li><?= $v ?></li>
+                                </ul>
+                            <?php endforeach ?>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="location.href='MR_memberData_update.php'">修改內容</button>
+                            <button type="button" class="btn btn-primary" data-dismiss="modal" aria-label="Close">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        <?php endfor ?>
         <!-- 刪除提示框 -->
         <div class="delete update card" id="delete_confirm" style="display:none">
             <div class="delete card-body">
@@ -175,7 +217,7 @@ $rows = $stmt->fetchAll();
         let s = document.querySelector('#search_bar').value;
 
         // let fd2 = new FormData(document.form1);
-        
+
         // fetch(`MR_searchAPI.php?s=${s}`)
         //     .then(Response => {
         //         return Response.json();

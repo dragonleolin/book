@@ -49,8 +49,14 @@ $row = $t_stmt->fetchAll();
     }
 
     .page-position {
-        display: flex;
-        justify-content: center;
+        position: absolute;
+        bottom: 3%;
+        left: 50%;
+    }
+    .textHidden{
+        overflow:hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
     }
 </style>
 <?php include __DIR__ . '/../../pbook_index/__html_body.php' ?>
@@ -101,13 +107,13 @@ $row = $t_stmt->fetchAll();
                         <th scope="col">出版社</th>
                         <th scope="col">出版日期</th>
                         <th scope="col">版次</th>
-                        <th scope="col">定價</th>
-                        <th scope="col">頁數</th>
+                        <th scope="col" class="textHidden">定價</th>
+                        <th scope="col" class="textHidden">頁數</th>
                         <th scope="col">狀況</th>
                         <th scope="col">上架會員</th>
                         <th scope="col">上架時間</th>
-                        <th scope="col">修改</th>
-                        <th scope="col">刪除</th>
+                        <th scope="col" class="textHidden">修改</th>
+                        <th scope="col" class="textHidden">刪除</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -115,9 +121,9 @@ $row = $t_stmt->fetchAll();
                         <tr>
                             <td><?= $r['mb_sid'] ?></td>
                             <td><?= htmlentities($r['mb_isbn']) ?></td>
-                            <td><?= htmlentities($r['mb_name']) ?></td>
+                            <td class="textHidden"><?= htmlentities($r['mb_name']) ?></td>
                             <td>
-                                <button type="button" class="btn btn-outline-primary" data-toggle="modal" data-target="#<?= 'book' . $r['mb_sid']; ?>">
+                                <button type="button" class="btn btn-outline-primary textHidden" data-toggle="modal" data-target="#<?= 'book' . $r['mb_sid']; ?>">
                                     <i class="fas fa-plus-circle"></i>
                                     顯示
                                 </button>
@@ -143,16 +149,16 @@ $row = $t_stmt->fetchAll();
                                 </div>
                             </td>
 
-                            <td><?= htmlentities($r['categories_name']) ?></td>
-                            <td><?= htmlentities($r['mb_author']) ?></td>
-                            <td><?= htmlentities($r['mb_publishing']) ?></td>
-                            <td><?= htmlentities($r['mb_publishDate']) ?></td>
-                            <td><?= htmlentities($r['mb_version']) ?></td>
+                            <td class="textHidden"><?= htmlentities($r['categories_name']) ?></td>
+                            <td class="textHidden"><?= htmlentities($r['mb_author']) ?></td>
+                            <td class="textHidden"><?= htmlentities($r['mb_publishing']) ?></td>
+                            <td class="textHidden"><?= htmlentities($r['mb_publishDate']) ?></td>
+                            <td class="textHidden"><?= htmlentities($r['mb_version']) ?></td>
                             <td><?= htmlentities($r['mb_fixedPrice']) ?></td>
                             <td><?= htmlentities($r['mb_page']) ?></td>
-                            <td><?= htmlentities($r['mb_savingStatus']) ?></td>
-                            <td><?= htmlentities($r['mb_shelveMember']) ?></td>
-                            <td><?= htmlentities($r['mb_shelveDate']) ?></td>
+                            <td class="textHidden"><?= htmlentities($r['mb_savingStatus']) ?></td>
+                            <td class="textHidden"><?= htmlentities($r['mb_shelveMember']) ?></td>
+                            <td class="textHidden"><?= htmlentities($r['mb_shelveDate']) ?></td>
                             <td><a href="MB_update.php?mb_sid=<?= $r['mb_sid'] ?>"><i class="fas fa-edit"></i></a></td>
                             <td><a href="javascript:delete_one(<?= $r['mb_sid'] ?>)"><i class="fas fa-trash-alt"></i></a></td>
                         </tr>

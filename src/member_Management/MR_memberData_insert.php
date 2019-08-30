@@ -143,7 +143,7 @@ $a_level = [
                     <div class="form-group ">
                         <label for="birthday">生日</label>
                         <div class="d-flex">
-                            <input type="text" class="form-control input_width" id="birthday" name="birthday">
+                            <input type="date" class="form-control input_width" id="birthday" name="birthday">
                         </div>
                     </div>
 
