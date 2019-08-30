@@ -70,21 +70,20 @@
                             <div style="position:absolute;left:900px;">
                                 <button type="submit" class="btn btn-warning" id="insert_btn">&nbsp;確&nbsp;認&nbsp;新&nbsp;增&nbsp;</button>
                             </div>
-
-                        </form>
-                        <div class="form-group d-flex ">
-                            <div class="col-lg-8">
-                                <label for="BR_photo" style="font-size: 20px">&nbsp;&nbsp;請選擇大頭貼</label>
-                                <input type="file" class="form-control-file" id="BR_photo" name="BR_photo" style="display:none">
-                                <div style="height: 200px;width: 230px; #ddd; padding: 5px;">
-                                    <img style="object-fit: contain;width: 100%;height: 100%" id="demo" />
+                            <div class="form-group d-flex ">
+                                <div class="col-lg-8">
+                                    <label for="BR_photo" style="font-size: 20px">&nbsp;&nbsp;請選擇大頭貼</label>
+                                    <input type="file" class="form-control-file" id="BR_photo" name="BR_photo" style="display:none">
+                                    <div style="height: 200px;width: 230px; #ddd; padding: 5px;">
+                                        <img style="object-fit: contain;width: 100%;height: 100%" id="demo" />
+                                    </div>
+                                    <button class="btn btn-outline-primary my-2 my-sm-0" type="button" onclick="selUpload()">
+                                        <i class="fas fa-plus-circle" style="margin-right:5px"></i>選擇檔案
+                                    </button>
                                 </div>
-                                <button class="btn btn-outline-primary my-2 my-sm-0" type="button" onclick="selUpload()">
-                                    <i class="fas fa-plus-circle" style="margin-right:5px"></i>選擇檔案
-                                </button>
                             </div>
+                        </form>
 
-                        </div>
                 </section>
                 <form>
 
@@ -109,6 +108,8 @@
         function selUpload() {
             document.querySelector('#BR_photo').click();
         }
+
+
 
         $('#BR_photo').change(function() {
             var file = $('#BR_photo')[0].files[0];
