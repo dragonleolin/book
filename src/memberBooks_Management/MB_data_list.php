@@ -1,4 +1,6 @@
 <?php
+require __DIR__ . '/__admin_required.php';
+
 require __DIR__ . '/__connect_db.php';
 $page_name = 'MB_data_list';
 
