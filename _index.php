@@ -219,7 +219,7 @@ if (!isset($_SESSION)) {
         </aside>
         <!-- 右邊section資料欄位 -->
         <section style="width: calc(100vw - 280px);">
-            <img src="images/admin_bg.png" alt="" style="height: 100%;object-fit: contain;width:100%">
+            <img src="images/admin_bg.png" alt="" style="height: 100%;object-fit: contain;width:100%;">
         </section>
     </div>
     <script>

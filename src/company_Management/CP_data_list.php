@@ -42,14 +42,29 @@ foreach ($rows as $r) {
         bottom: 3%;
         left: 50%;
     }
-    .vertical td{
-        vertical-align:middle;
+
+    .vertical td {
+        vertical-align: middle;
     }
+    
+    .test::after {
+    content: "";
+    background: url(../../images/admin_bg.png) no-repeat;
+    width: calc(100vw - 280px);
+    object-fit: contain;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    position: absolute;
+    z-index: -1;   
+    opacity: 0.1;
+}
 </style>
 <?php include __DIR__ . '/../../pbook_index/__html_body.php' ?>
 <?php include __DIR__ . '/../../pbook_index/__navbar.php' ?>
 <!-- 右邊section資料欄位 -->
-<section class="position-relative">
+<section class="position-relative test">
     <div class="container">
         <nav class="navbar justify-content-between" style="padding: 0px;width: 80vw;">
             <div>
