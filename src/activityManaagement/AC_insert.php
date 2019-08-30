@@ -48,7 +48,7 @@ $page_title = '品書 - 活動新增';
                             </div>
                             <div class="form-group">
                                 <label for="AC_date" class="update_label">活動開始日期</label>
-                                <span style="color:#ccc; margin:0 20px">年-月-日</span>
+                                <span style="color:#999; margin:0 20px">格式: 2000-01-01</span>
                                 <span id="AC_dateHelp" style="margin:0px 10px; color:red"></span>
                                 <input type="text" class="update form-control" id="AC_date" name="AC_date" value="">
                             </div>
@@ -82,21 +82,48 @@ $page_title = '品書 - 活動新增';
                     <div >
                         <div class="form-group" style="">
                             <label for="categories" class="update_label">活動介紹</label>
+                            <span style="color:#999;">　限200字</span>
                             <textarea class="update form-control" id="exampleFormControlTextarea1" rows="3"
                             style="width:500px;height:165px;resize:none"></textarea>
                         </div>
 
                         <div class="form-group" style="margin:20px 0;">
-                            <label for="exampleFormControlFile1"><h4>上傳活動封面</h4></label>
-                            
-                            <form action="/somewhere/to/upload" enctype="multipart/form-data">
-                                <input style="margin:0px" type="file" onchange="readURL(this)" targetID="AC_img" accept="image/gif, image/jpeg, image/png"/ >
-                                <img style="margin:10px 0; width:500px; background-size:cover;" id="AC_img" src="" />
-                            </form>
+                        <div class="col-lg-5 ">
+                            <div>
+                            <label for="pic" style="font-size: 20px;">・上傳活動封面</label>
+                            <input type="file" class="form-control-file" id="pic" name="pic" style="display:none">
+                            </div>
+                            <div>
+                            <button class="btn btn-outline-primary my-2 my-sm-0" type="button" onclick="selUpload()">
+                                <i class="fas fa-plus-circle" style="width:30px;"></i>選擇檔案
+                            </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="width: 500px;">
+                            <img style="object-fit: contain;width: 100%;height: 100%" id="demo"/>
+                        </div>
+                        
                         </div>
 
                         <script>
+                            function selUpload() {
+                                document.querySelector('#pic').click();
+                            }
                         
+                            function preceding_page() {
+                                location.href = document.referrer;
+                            }
+                        
+                            $('#pic').change(function() {
+                                var file = $('#pic')[0].files[0];
+                                var reader = new FileReader;
+                                reader.onload = function(e) {
+                                    $('#demo').attr('src', e.target.result);
+                                };
+                                reader.readAsDataURL(file);
+                            });
+
                             function readURL(input){
                               if(input.files && input.files[0]){
                                 var imageTagID = input.getAttribute("targetID");
