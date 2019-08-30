@@ -12,7 +12,7 @@ $page_title = '品書 - 活動新增';
 </style>
 
 <?php include __DIR__ . '/../../pbook_index/__html_body.php' ?>
-<?php include __DIR__ . '/AC__navbar.php' ?>
+<?php include __DIR__ . '/../../pbook_index/__navbar.php' ?>
 
     <!-- 右邊section資料欄位 -->
     <section>
@@ -96,6 +96,7 @@ $page_title = '品書 - 活動新增';
                         </div>
 
                         <script>
+                        
                             function readURL(input){
                               if(input.files && input.files[0]){
                                 var imageTagID = input.getAttribute("targetID");

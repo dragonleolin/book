@@ -170,24 +170,27 @@ foreach ($row as $r => $s) {
             </div>
         </form>
     </div>
-</div>
 
-<!-- 以下為新增成功才會跳出來的顯示框 -->
-<div class="success update card" id="success" style="display:none">
-    <div class="success card-body">
-        <label class="success_text" style="background:transparent">修改成功</label>
-        <div><img class="success_img" src="../../images/icon_checked.svg"></div>
+    <!-- 以下為新增成功才會跳出來的顯示框 -->
+    <div class="success update card" id="success" style="display:none">
+        <div class="success card-body">
+            <label class="success_text" style="background:transparent">修改成功</label>
+            <div><img class="success_img" src="../../images/icon_checked.svg"></div>
+        </div>
     </div>
-</div>
 
-<!-- 以下為新增失敗才會跳出來的顯示框 -->
-<div class="success update card" id="my_false" style="box-shadow:0px 0px 10px red;display:none">
-    <div class="success card-body">
-        <label class="success_text" style="background:transparent;color:rgb(228, 63, 63)">修改失敗,不可以偷偷來喔!</label>
+    <!-- 以下為新增失敗才會跳出來的顯示框 -->
+    <div class="success update card" id="my_false" style="box-shadow:0px 0px 10px red;display:none">
+        <div class="success card-body">
+            <label class="success_text" style="background:transparent;color:rgb(228, 63, 63)">修改失敗,不可以偷偷來喔!</label>
+        </div>
     </div>
-</div>
+
 </div>
 
+
+
+</div>
 <script>
     function selUpload() {
         document.querySelector('#pic').click();

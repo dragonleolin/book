@@ -57,8 +57,8 @@ $stmt = $pdo->query($categories_sql);
         border-color: transparent;
     }
 </style>
-<?php include __DIR__ . '/../../pbook_index/__html_body.php' ?>
-<?php include __DIR__ . '/../../pbook_index/__navbar.php' ?>
+<?php include __DIR__ . '/__html_body.php' ?>
+<?php include __DIR__ . '/__navbar.php' ?>
 <!-- 右邊section資料欄位 -->
 <section>
     <div class="container">
@@ -247,4 +247,4 @@ $stmt = $pdo->query($categories_sql);
         location.href = 'vb_data_list.php?page=' + <?= $page ?>;
     }
 </script>
-<?php include __DIR__ . '/../../pbook_index/__html_foot.php' ?>
+<?php include __DIR__ . '/__html_foot.php' ?>
