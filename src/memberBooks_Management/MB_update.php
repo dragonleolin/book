@@ -309,7 +309,7 @@ $totalPages = ceil($totalRows / $per_page);
                     if (json.success) {
                         setTimeout(function() {
                             success_bar.style.display = 'block';
-                            location.href = 'MB_data_list.php?page=<?= $totalPages ?>';
+                            location.href = document.referrer;
                         }, 1000);
                     } else {
                         success_bar.style.display = 'none'
