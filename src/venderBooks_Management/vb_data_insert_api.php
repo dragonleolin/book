@@ -16,6 +16,7 @@ $exts = [
 $new_filename = '';
 $new_ext = '';
 
+
 if(!empty($_FILES['pic'])){ //檔案有沒有上傳
     if(in_array($_FILES['pic']['type'],$allowed_types)){  //上傳檔案類型是否符合
 
