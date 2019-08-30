@@ -145,15 +145,15 @@ if (!isset($_SESSION)) {
                         </div>
                     </button>
                     <div id="collapseFive" class="collapse" aria-labelledby="headingFive" data-parent="#accordion">
-                        <button type="button" class="btn btn-light sub_aside_text" onclick="location.href='../Book_review/BR_data_list.php'">
+                        <button type="button" class="btn btn-light sub_aside_text" onclick="location.href='src/Book_review/BR_data_list.php'">
                             <i class="fas fa-caret-right"></i>
                             <span>書評人總表</span>
                         </button>
-                        <button type="button" class="btn btn-light sub_aside_text" onclick="location.href='../Book_review/BR_insert.php'">
+                        <button type="button" class="btn btn-light sub_aside_text" onclick="location.href='src/Book_review/BR_insert.php'">
                             <i class="fas fa-caret-right"></i>
                             <span>新增書評人</span>
                         </button>
-                        <button type="button" class="btn btn-light sub_aside_text" onclick="location.href='../Book_review/BR_bookreview_list.php'">
+                        <button type="button" class="btn btn-light sub_aside_text" onclick="location.href='src/Book_review/BR_bookreview_list.php'">
                             <i class="fas fa-caret-right"></i>
                             <span>書評列表</span>
                         </button>
