@@ -18,6 +18,10 @@ $exts = [
 $new_filename = '';
 $new_ext ='';
 
+$pic_sql = sprintf("SELECT `mb_pic` FROM `mb_books` WHERE `mb_sid` = %s", $_POST['mb_sid']);
+$pic_stmt = $pdo->query($pic_sql);
+$new_filename = $pic_stmt->fetch()['mb_pic'];
+
 if(!empty($_FILES['mb_pic'])){ //檔案有沒有上傳
     if(in_array($_FILES['mb_pic']['type'],$allowed_types)){  //上傳檔案類型是否符合
 
@@ -42,13 +46,23 @@ if(empty($_POST['mb_name'])){
     exit;
 }
 
-$sql = "INSERT INTO `mb_books`(
-    `mb_isbn`, `mb_name`, `mb_author`, `mb_publishing`, 
-    `mb_publishDate`, `mb_version`, `mb_fixedPrice`, 
-    `mb_page`, `mb_savingStatus`, `mb_shelveMember`, 
-    `mb_pic`, `mb_categories`, `mb_remarks`, `mb_shelveDate`) 
-    VALUES (
-    ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())";
+$sql = "UPDATE `mb_books` 
+SET 
+`mb_isbn`=?,
+`mb_name`=?,
+`mb_author`=?,
+`mb_publishing`=?,
+`mb_publishDate`=?,
+`mb_version`=?,
+`mb_fixedPrice`=?,
+`mb_page`=?,
+`mb_savingStatus`=?,
+`mb_shelveMember`=?,
+`mb_pic`=?,
+`mb_categories`=?,
+`mb_remarks`=?,
+`mb_shelveDate`= NOW()
+WHERE `mb_sid`=?";
 
 $stmt = $pdo->prepare($sql); 
 
@@ -66,6 +80,7 @@ $stmt->execute([
     $new_filename.$new_ext,
     $_POST['mb_categories'],
     $_POST['mb_remarks'],
+    $_POST['mb_sid'],
 ]);
 
 if($stmt->rowCount()==1){
