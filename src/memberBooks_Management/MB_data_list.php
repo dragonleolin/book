@@ -88,8 +88,9 @@ $t_stmt = $pdo->query($page_sql);
                 <thead>
                     <tr>
                         <th scope="col">sid</th>
-                        <th scope="col">isbn</th>
-                        <th scope="col">書名</th>
+                        <th scope="col">ISBN</th>
+                        <th scope="col">書籍名稱</th>
+                        <th scope="col">書籍圖片</th>
                         <th scope="col">分類</th>
                         <th scope="col">作者</th>
                         <th scope="col">出版社</th>
@@ -110,6 +111,33 @@ $t_stmt = $pdo->query($page_sql);
                             <td><?= $r['mb_sid'] ?></td>
                             <td><?= htmlentities($r['mb_isbn']) ?></td>
                             <td><?= htmlentities($r['mb_name']) ?></td>
+                            <td>
+                                <button type="button" class="btn btn-outline-primary" data-toggle="modal" data-target="#<?= 'book' . $r['mb_sid']; ?>">
+                                    <i class="fas fa-plus-circle"></i>
+                                    顯示
+                                </button>
+                                <div class="modal fade" id="<?= 'book' . $r['mb_sid']; ?>" tabindex="-1" role="dialog" aria-labelledby="<?= 'book' . $r['mb_sid']; ?>Title" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="<?= 'book' . $r['mb_sid']; ?>Title"><?= $r['mb_name']; ?></h5>
+
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body" style="width:450px;width:450px;margin:0 auto">
+                                                <img style="object-fit: contain;width: 100%;height: 100%;" src="<?= 'mb_images/'.$r['mb_pic']; ?>" alt="">
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                                                <button type="button" class="btn btn-primary" onclick="MB_update()">修改圖片</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                            
                             <td><?= htmlentities($r['mb_categories']) ?></td>
                             <td><?= htmlentities($r['mb_author']) ?></td>
                             <td><?= htmlentities($r['mb_publishing']) ?></td>
