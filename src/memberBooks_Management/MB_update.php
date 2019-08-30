@@ -177,8 +177,8 @@ $totalPages = ceil($totalRows / $per_page);
                         </div>
                     </section>
                 </section>
-                <div class="" style="text-align: center">
-                    <button type="submit" class="btn btn-warning " id="submit_btn">&nbsp;修&nbsp;改&nbsp;</button>
+                <div class="d-flex justify-content-end" style="text-align: center;">
+                    <button type="submit" class="btn btn-warning " id="submit_btn" style="width: 200px;">&nbsp;修&nbsp;改&nbsp;</button>
                 </div>
             </form>
         </div>
