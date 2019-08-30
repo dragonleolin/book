@@ -1,7 +1,7 @@
 <?php
 
 $db_host='192.168.27.186';
-$db_name='book_review';
+$db_name='pbook';
 $db_user='shan';
 $db_password='opcp2428';
 

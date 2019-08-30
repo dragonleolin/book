@@ -22,9 +22,14 @@ if ($page > $totalPages) {
     header('Location: CP_data_list.php?page=' . $totalPages);
     exit;
 }
+
 $sql = "SELECT * FROM `cp_data_list` $where ORDER BY `sid` LIMIT " . ($page - 1) * $per_page . "," . $per_page;
 $stmt = $pdo->query($sql);
 $rows = $stmt->fetchAll();
+foreach ($rows as $r) {
+    $every_sid = $r['sid'];
+    $stock[$r['sid']] = $pdo->query("SELECT SUM(`vb_books`.`stock`) FROM `vb_books` JOIN `cp_data_list` ON  $every_sid = `vb_books`.`publishing` AND  $every_sid = `cp_data_list`.`sid`")->fetch();
+}
 ?>
 <?php include __DIR__ . '/../../pbook_index/__html_head.php' ?>
 <style>
@@ -84,7 +89,7 @@ $rows = $stmt->fetchAll();
                         <th scope="col">電子郵件</th>
                         <th scope="col">地址</th>
                         <th scope="col">統一編號</th>
-                        <th scope="col">書籍庫存</th>
+                        <th scope="col">庫存</th>
                         <th scope="col">帳號</th>
                         <th scope="col">密碼</th>
                         <th scope="col">註冊日期</th>
@@ -103,7 +108,7 @@ $rows = $stmt->fetchAll();
                             <td><?= htmlentities($r['cp_email']) ?></td>
                             <td><?= htmlentities($r['cp_address']) ?></td>
                             <td><?= htmlentities($r['cp_tax_id']) ?></td>
-                            <td><?= htmlentities($r['cp_stock']) ?></td>
+                            <td style="width:3vw"><?= htmlentities($stock[$r['sid']]["SUM(`vb_books`.`stock`)"]) ?></td>
                             <td><?= htmlentities($r['cp_account']) ?></td>
                             <td><?= htmlentities($r['cp_password']) ?></td>
                             <td><?= htmlentities($r['cp_created_date']) ?></td>
@@ -116,6 +121,7 @@ $rows = $stmt->fetchAll();
                                     <div class="modal-dialog modal-dialog-centered" role="document">
                                         <div class="modal-content">
                                             <div class="modal-header">
+                                                <h5 class="modal-title" id="<?= $r['cp_name']; ?>Title"><?= $r['cp_name']; ?></h5>
                                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                     <span aria-hidden="true">&times;</span>
                                                 </button>
