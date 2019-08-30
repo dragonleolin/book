@@ -83,9 +83,9 @@ if(empty($row)) {
                                 <input type="text" class="update form-control" id="AC_organizer" name="AC_organizer" value="<?= htmlentities($row['AC_organizer']) ?>">
                             </div>
                             <!-- <div class="form-group">
-                                <label for="AC_price" class="update_label">參加費</label>
+                                <label for="AC_brief" class="update_label">活動簡介</label>
                                 <span style="margin:0px 10px;color:red">示意:錯誤顯示訊息</span>
-                                <input type="text" class="update form-control" id="AC_price" name="AC_price">
+                                <input type="text" class="update form-control" id="AC_brief" name="AC_brief">
                             </div> -->
 
                             <div style="position:absolute;left:900px; margin:20px 0;">
