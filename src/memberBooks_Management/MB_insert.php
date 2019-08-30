@@ -1,32 +1,42 @@
 <?php
+require __DIR__ . '/__admin_required.php';
 require __DIR__ . '/__connect_db.php';
 $page_name = 'MB_data_list';
 $page_title = '新增資料';
 
 $categories_data = [
-    '1' => '文學小說',
-    '2' => '商業理財',
-    '3' => '藝術設計',
-    '4' => '人文史地',
-    '5' => '社會科學',
-    '6' => '自然科普',
-    '7' => '心理勵志',
-    '8' => '醫療保健',
-    '9' => '飲食',
-    '10' => '生活風格',
-    '11' => '旅遊',
-    '12' => '宗教命理',
-    '13' => '親子教養',
-    '14' => '童書/青少年文學',
-    '15' => '輕小說',
-    '16' => '漫畫',
-    '17' => '語言學習',
-    '18' => '考試用書',
-    '19' => '電腦資訊',
-    '20' => '專業/教科書/政府出版品',
+    1 => '文學小說',
+    2 => '商業理財',
+    3 => '藝術設計',
+    4 => '人文史地',
+    5 => '社會科學',
+    6 => '自然科普',
+    7 => '心理勵志',
+    8 => '醫療保健',
+    9 => '飲食',
+    10 => '生活風格',
+    11 => '旅遊',
+    12 => '宗教命理',
+    13 => '親子教養',
+    14 => '童書/青少年文學',
+    15 => '輕小說',
+    16 => '漫畫',
+    17 => '語言學習',
+    18 => '考試用書',
+    19 => '電腦資訊',
+    20 => '專業/教科書/政府出版品',
 ];
 
 $sel_id = empty($_POST['mb_categories']) ? 0 : intval($_POST['mb_categories']);
+
+$page = isset($_GET['page']) ? intval($_GET['page']) : 1;
+$per_page = 10;
+
+$t_sql = "SELECT COUNT(1) FROM `mb_books`";
+
+$totalRows = $pdo->query($t_sql)->fetch(PDO::FETCH_NUM)[0];
+$totalPages = ceil($totalRows / $per_page);
+
 
 ?>
 <?php include __DIR__ . '/../../pbook_index/__html_head.php' ?>
@@ -90,7 +100,7 @@ $sel_id = empty($_POST['mb_categories']) ? 0 : intval($_POST['mb_categories']);
                             <input type="text" class="form-control" id="mb_publishDate" name="mb_publishDate">
                         </div>
                         <div class="form-group">
-                            <label for="mb_version" class="update_label">版本</label>
+                            <label for="mb_version">版本</label>
                             <span id="mb_mb_versionHelp" style="margin:0px 10px;color:red"></span>
                             <input type="text" class="form-control" id="mb_version" name="mb_version">
                         </div>
@@ -132,18 +142,20 @@ $sel_id = empty($_POST['mb_categories']) ? 0 : intval($_POST['mb_categories']);
                         </div>
                         <div class="form-group" style="margin: -50px -20px 10px 0px; padding: 20px 50px 20px 30px;">
                             <label for="mb_categories" class="update_label">分類</label>
+                            <span id="mb_categoriesHelp" style="margin:0px 10px;color:red"></span>
                             <div class="d-flex flex-wrap" style="padding-left: 20px;">
                                 <?php
                                 $i = 0;
                                 foreach ($categories_data as $k => $v) :
                                     ?>
                                     <div style="width:150px">
-                                        <input class="form-check-input" checked type="radio" name="sel_id" id="sel_id-<?= $k ?>" value="<?= $k ?>" <?= $sel_id == $k ? 'checked' : '' ?>>
-                                        <label class="form-check-label" for="sel_id-<?= $k ?>"><?= $v ?></label>
+                                        <input class="form-check-input"  type="radio" name="mb_categories" id="mb_categories" value="<?= $k ?>" <?= $k == 1 ? 'checked' : '' ?>>
+                                        <label class="form-check-label" for="mb_categories"><?= $v ?></label>
+                                        
                                     </div>
                                 <?php
                                     $i++;
-                                endforeach ?>
+                                endforeach ?>   
                             </div>
                         </div>
                         <div class="from-group" style="margin: -70px -20px 10px 0px; padding: 20px 50px 20px 30px;">
@@ -154,8 +166,8 @@ $sel_id = empty($_POST['mb_categories']) ? 0 : intval($_POST['mb_categories']);
                         </div>
                     </section>
                 </section>
-                <div class="" style="text-align: center">
-                    <button type="submit" class="btn btn-warning " id="submit_btn">&nbsp;新&nbsp;增&nbsp;</button>
+                <div class="d-flex justify-content-end" style="text-align: center;">
+                    <button type="submit" class="btn btn-warning " id="submit_btn" style="width: 200px;">&nbsp;新&nbsp;增&nbsp;</button>
                 </div>
             </form>
         </div>
@@ -174,21 +186,10 @@ $sel_id = empty($_POST['mb_categories']) ? 0 : intval($_POST['mb_categories']);
     let info_bar = document.querySelector('#info-bar');
     let success_bar = document.querySelector('#success_bar')
     const submit_btn = document.querySelector('#submit_btn');
-    // const mb_pic = document.querySelector('#mb_pic')
     let i, s, item;
 
-
+    //檔案上傳
     function uploadFile() {
-        // mb_pic.addEventListener('click', function(){
-        //     $('mb_pic').change(function(){
-        //         var file = $('#mb_pic')[0].files[0];
-        //         var reader = new FileReader;
-        //         reader.onload =function(e){
-        //             $('#demo').attr('src', e.target.result);
-        //         }
-        //         reader.readAsDataURL(file);
-        //     })
-        // })
         document.querySelector('#mb_pic').click();
 
     }
@@ -247,6 +248,11 @@ $sel_id = empty($_POST['mb_categories']) ? 0 : intval($_POST['mb_categories']);
             pattern: /^\w\d{2,}/,
             info: '請輸入正確的會員編號',
         },
+        {
+            id: 'mb_categories',
+            pattern: /\d{1,}/,
+            info: '請選擇類別',
+        },
 
     ];
 
@@ -296,7 +302,7 @@ $sel_id = empty($_POST['mb_categories']) ? 0 : intval($_POST['mb_categories']);
                     info_bar.innerHTML = json.info;
                     if (json.success) {
                         setTimeout(function() {
-                            location.href = 'MB_data_list.php';
+                            location.href = 'MB_data_list.php?page=<?= $totalPages ?>';
                         }, 1000);
                     } else {
                         success_bar.style.display = 'none'

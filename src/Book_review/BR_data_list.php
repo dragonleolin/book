@@ -63,7 +63,7 @@ $row = $stmt->fetchAll();
                         <form class="form-inline my-2 my-lg-0">
                             <input class="search form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
                             <button class="btn btn-outline-warning my-2 my-sm-0" type="submit">
-                                <i class="fas fa-search"  name="Submit" value="提交"></i>
+                                <i class="fas fa-search" name="Submit" value="提交"></i>
                             </button>
                         </form>
                     </li>
@@ -76,7 +76,9 @@ $row = $stmt->fetchAll();
                     <thead>
                         <tr>
                             <th scope="col">#</th>
+                            <th scope="col">大頭貼</th>
                             <th scope="col">姓名</th>
+                            <th scope="col">密碼</th>
                             <th scope="col">電話</th>
                             <th scope="col">信箱</th>
                             <th scope="col">地址</th>
@@ -89,24 +91,26 @@ $row = $stmt->fetchAll();
                     </thead>
                     <tbody>
                         <?php foreach ($row as $value) : ?>
-                        <tr>
-                            <td><?= $value['sid'] ?></td>
-                            <td><?= htmlentities($value['BR_name']) ?></td>
-                            <td><?= htmlentities($value['BR_phone']) ?></td>
-                            <td><?= htmlentities($value['BR_email']) ?></td>
-                            <td><?= htmlentities($value['BR_address']) ?></td>
-                            <td><?= htmlentities($value['BR_gender']) ?></td>
-                            <td><?= htmlentities($value['BR_birthday']) ?></td>
-                            <td><?= htmlentities($value['BR_job']) ?></td>
-                            <td><a href="BR_update.php?sid=<?= $value['sid'] ?>">
-                                    <i class="fas fa-edit"></i>
-                                </a>
-                            </td>
-                            <td><a href="javascript:delete_doublecheck(<?= $value['sid'] ?>)">
-                                    <i class="fas fa-trash-alt"></i>
-                                </a>
-                            </td>
-                        </tr>
+                            <tr>
+                                <td><?= $value['sid'] ?></td>
+                                <td><?= $value['BR_photo'] ?></td>
+                                <td><?= htmlentities($value['BR_name']) ?></td>
+                                <td><?= htmlentities($value['BR_password']) ?></td>
+                                <td><?= htmlentities($value['BR_phone']) ?></td>
+                                <td><?= htmlentities($value['BR_email']) ?></td>
+                                <td><?= htmlentities($value['BR_address']) ?></td>
+                                <td><?= htmlentities($value['BR_gender']) ?></td>
+                                <td><?= htmlentities($value['BR_birthday']) ?></td>
+                                <td><?= htmlentities($value['BR_job']) ?></td>
+                                <td><a href="BR_update.php?sid=<?= $value['sid'] ?>">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+                                </td>
+                                <td><a href="javascript:delete_doublecheck(<?= $value['sid'] ?>)">
+                                        <i class="fas fa-trash-alt"></i>
+                                    </a>
+                                </td>
+                            </tr>
                         <?php endforeach; ?>
                     </tbody>
                 </table>
@@ -121,16 +125,17 @@ $row = $stmt->fetchAll();
                         </a>
                     </li>
                     <?php for ($i = 1; $i <= $total_page; $i++) : ?>
-                    <li class="page-item">
-                        <a class="page-link" style="<?= $i == $page ? 'background: rgba(156, 197, 161, 0.5) ;color: #ffffff;' : '' ?>" href="?page=<?= $i ?>"><?= $i ?>
-                        </a>
-                    </li>
+                        <li class="page-item">
+                            <a class="page-link" style="<?= $i == $page ? 'background: rgba(156, 197, 161, 0.5) ;color: #ffffff;' : '' ?>" href="?page=<?= $i ?>"><?= $i ?>
+                            </a>
+                        </li>
                     <?php endfor; ?>
                     <li class="page-item">
                         <a class="page-link" aria-label="Next" href="?page=<?= $page + 1 ?>">
                             <span aria-hidden="true">&raquo;</span>
                         </a>
                     </li>
+                    
                 </ul>
             </nav>
 
@@ -140,7 +145,7 @@ $row = $stmt->fetchAll();
                 <div class="delete card-body">
                     <label class="delete_text">您確認要刪除資料嗎?</label>
                     <div>
-                        <button type="button" class="delete btn btn-danger"  onclick="delete_enter()"> 確認</button>
+                        <button type="button" class="delete btn btn-danger" onclick="delete_enter()"> 確認</button>
                         <button type="button" class="delete btn btn-warning" onclick="delete_cancel()">取消</button>
                         <!-- <a href="BR_delete.php?sid=<?= $value['sid'] ?>"></a>  -->
                     </div>
@@ -153,14 +158,17 @@ $row = $stmt->fetchAll();
 <script>
     let delete_window = document.querySelector('#d_window');
     let d;
+
     function delete_doublecheck(sid) {
         d = sid;
         delete_window.style.display = 'block';
     };
-    function delete_enter(){
+
+    function delete_enter() {
         location.href = 'BR_delete.php?sid=' + d;
     }
-    function delete_cancel(){
+
+    function delete_cancel() {
         location.href = window.location.href;
     }
 </script>

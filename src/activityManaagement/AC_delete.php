@@ -7,7 +7,7 @@ $page_title = '刪除資料';
 $sid = isset($_GET['sid']) ? intval($_GET['sid']) : 0;
 
 if(! empty($sid)) {
-    $sql = "DELETE FROM `AC_pbook` WHERE `AC_sid`=$sid";
+    $sql = "DELETE FROM `ac_pbook` WHERE `AC_sid`=$sid";
     $pdo->query($sql);
 }
 

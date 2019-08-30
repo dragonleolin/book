@@ -15,6 +15,15 @@ if (empty($row)) {
     header('Location: BR_data_list.php');
     exit;
 }
+
+$new_row = [];
+
+foreach ($row as $r => $s) {
+    foreach ($s as $k => $v) {
+        $new_row[$r] = $v;
+    }
+}
+
 ?>
 <style>
     body {
@@ -45,6 +54,11 @@ if (empty($row)) {
                                 <label for="BR_name" class="update_label">書評人姓名</label>
                                 <span id="BR_nameHelp" style="margin:0px 10px;color:red"></span>
                                 <input type="text" class="form-control" id="BR_name" name="BR_name" value="<?= htmlentities($row['BR_name']) ?>">
+                            </div>
+                            <div class="form-group">
+                                <label for="BR_password" class="update_label">書評人密碼</label>
+                                <span id="BR_passwordHelp" style="margin:0px 10px;color:red"></span>
+                                <input type="text" class="form-control" id="BR_password" name="BR_password" value="<?= htmlentities($row['BR_password']) ?>">
                             </div>
                             <div class="form-group">
                                 <label for="BR_phone" class="update_label">書評人電話</label>
@@ -80,6 +94,19 @@ if (empty($row)) {
                                 <label for="BR_job" class="update_label">書評人工作</label>
                                 <input type="text" class="form-control" id="BR_job" name="BR_job" value="<?= htmlentities($row['BR_job']) ?>">
                             </div>
+                            <div class="form-group d-flex">
+                                <div class="col-lg-5">
+                                    <label for="BR_photo" style="font-size: 20px">・請選擇大頭貼</label>
+                                    <input type="file" class="form-control-file" id="BR_photo" name="BR_photo" style="display:none">
+                                    <br>
+                                    <button class="btn btn-outline-primary my-2 my-sm-0" type="button" onclick="selUpload()">
+                                        <i class="fas fa-plus-circle" style="margin-right:5px"></i>選擇檔案
+                                    </button>
+                                </div>
+                                <div style="height: 230px;width: 230px;border: 1px solid #ddd">
+                                    <img style="object-fit: contain;width: 100%;height: 100%" src="./BR_images/<?= htmlentities($row['BR_photo']) ?>" id="demo" />
+                                </div>
+                            </div>
                             <button type="submit" class="btn btn-primary" id="update_btn">修改</button>
                         </form>
                     </div>
@@ -97,6 +124,20 @@ if (empty($row)) {
             </div>
     </section>
     <script>
+        function selUpload() {
+            document.querySelector('#BR_photo').click();
+        }
+
+        $('#BR_photo').change(function() {
+            var file = $('#BR_photo')[0].files[0];
+            var reader = new FileReader;
+            reader.onload = function(e) {
+                $('#demo').attr('src', e.target.result);
+            };
+            reader.readAsDataURL(file);
+        });
+
+
         let insert_info = document.querySelector('#success_update');
         let main_datalist_hidden = document.querySelector('#main_datalist');
         let update_btn = document.querySelector('#update_btn');
@@ -107,6 +148,11 @@ if (empty($row)) {
                 id: 'BR_name',
                 checker: /^\S{2,}/,
                 info: '請輸入正確姓名格式'
+            },
+            {
+                id: 'BR_password',
+                checker: /\w{8}/,
+                info: '請輸入正確密碼格式'
             },
             {
                 id: 'BR_phone',
@@ -189,7 +235,6 @@ if (empty($row)) {
 
             return false;
         }
-
     </script>
 </div>
 <?php include __DIR__ . '/__html_foot.php' ?>

@@ -39,7 +39,7 @@
                     </div>
                 </button>
                 <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
-                    <button type="button" class="btn btn-light sub_aside_text" onclick="CP_data_list()">
+                    <button type="button" class="btn btn-light sub_aside_text" onclick="location.href='../company_Management/CP_data_list.php'">
                         <i class="fas fa-caret-right"></i>
                         <span>出版社總表</span>
                     </button>
@@ -59,11 +59,11 @@
                     </div>
                 </button>
                 <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
-                    <button type="button" class="btn btn-light sub_aside_text" onclick="vb_data_list()">
+                    <button type="button" class="btn btn-light sub_aside_text" onclick="location.href='../venderBooks_Management/vb_data_list.php'">
                         <i class="fas fa-caret-right"></i>
                         <span>出版社書籍總表</span>
                     </button>
-                    <button type="button" class="btn btn-light sub_aside_text" onclick="vb_data_insert()">
+                    <button type="button" class="btn btn-light sub_aside_text" onclick="location.href='../venderBooks_Management/vb_data_insert.php'">
                         <i class="fas fa-caret-right"></i>
                         <span>新增出版社書籍</span>
                     </button>
@@ -79,18 +79,16 @@
                     </div>
                 </button>
                 <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordion">
-                    <button type="button" class="btn btn-light sub_aside_text" 
-                    onclick="javascript:location.href='../src/member_Management/MR_memberDataList.php'" >
-                        <i class="fas fa-caret-right"></i>
-                        <span>會員列表</span>
-                    </button>
-                    <button type="button" class="btn btn-light sub_aside_text">
-                        <i class="fas fa-caret-right"></i>
-                        <span>會員等級</span>
-                    </button>
-
-                </div>
-            </div>
+                        <button type="button" class="btn btn-light sub_aside_text" onclick="location='../member_Management/MR_memberDataList.php'">
+                            <i class="fas fa-caret-right"></i>
+                            <span>品書會員列表</span>
+                        </button>
+                        <button type="button" class="btn btn-light sub_aside_text" onclick="location='../member_Management/MR_levelList.php'">
+                            <i class="fas fa-caret-right"></i>
+                            <span>品書會員等級</span>
+                        </button>
+                    </div>
+                            </div>
 
             <div class="aside card">
                 <button type="button" class="aside card-header btn btn-info" id="headingFour">
@@ -101,11 +99,11 @@
                     </div>
                 </button>
                 <div id="collapseFour" class="collapse" aria-labelledby="headingFour" data-parent="#accordion">
-                    <button type="button" class="btn btn-light sub_aside_text">
+                    <button type="button" class="btn btn-light sub_aside_text" onclick="location.href='../memberBooks_Management/MB_data_list.php'">
                         <i class="fas fa-caret-right"></i>
                         <span>會員書籍總表</span>
                     </button>
-                    <button type="button" class="btn btn-light sub_aside_text">
+                    <button type="button" class="btn btn-light sub_aside_text" onclick="location.href='../memberBooks_Management/MB_insert.php'">
                         <i class="fas fa-caret-right"></i>
                         <span>新增會員書籍</span>
                     </button>
@@ -149,13 +147,13 @@
                     </div>
                 </button>
                 <div id="collapseSix" class="collapse" aria-labelledby="headingSix" data-parent="#accordion">
-                    <button type="button" class="btn btn-light sub_aside_text">
+                    <button type="button" class="btn btn-light sub_aside_text" onclick="location.href='../activityManaagement/AC_data_list.php'">
                         <i class="fas fa-caret-right"></i>
-                        <span>品書官方活動總表</span>
+                        <span>品書活動總表</span>
                     </button>
-                    <button type="button" class="btn btn-light sub_aside_text">
+                    <button type="button" class="btn btn-light sub_aside_text" onclick="location.href='../activityManaagement/AC_insert.php'">
                         <i class="fas fa-caret-right"></i>
-                        <span>出版社主辦活動總表</span>
+                        <span>新增活動</span>
                     </button>
                 </div>
             </div>
@@ -173,7 +171,7 @@
                         <i class="fas fa-caret-right"></i>
                         <span>P幣系統</span>
                     </button>
-                    <button type="button" class="btn btn-light sub_aside_text">
+                    <button type="button" class="btn btn-light sub_aside_text" onclick="location.href='../promotion_management/event_list.php'">
                         <i class="fas fa-caret-right"></i>
                         <span>折扣系統</span>
                     </button>
@@ -193,14 +191,3 @@
             </div>
         </div>
     </aside>
-    <script>
-        function CP_data_list() {
-            location = "../company_Management/CP_data_list.php";
-        }
-        function vb_data_list() {
-            location = "../venderBooks_Management/vb_data_list.php";
-        }
-        function vb_data_insert() {
-            location = "../venderBooks_Management/vb_data_insert.php";
-        }
-    </script>

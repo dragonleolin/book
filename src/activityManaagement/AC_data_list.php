@@ -3,6 +3,34 @@ require __DIR__. '/AC__connect_db.php';
 $page_name = 'AC_date_list';
 $page_title = '品書 - 活動總表';
 
+//移動上傳的圖檔到指定資料夾
+$upload_dir = __DIR__. '/AC_pic/';
+$allowed_types = [
+    'image/png',
+    'image/jpeg',
+];
+
+$exts = [
+    'image/png' => '.png',
+    'image/jpeg' => '.jpg',
+];
+
+$new_filename = '';
+$new_ext = '';
+
+
+if(!empty($_FILES['AC_pic'])){ //檔案有沒有上傳
+    if(in_array($_FILES['AC_pic']['type'],$allowed_types)){  //上傳檔案類型是否符合
+
+        $new_filename = sha1(uniqid(). $_FILES['AC_pic']['name']); //為了避免檔案重名(因為重名新的會覆蓋掉舊的),所以將上傳檔案重新命名
+        $new_ext = $exts[$_FILES['AC_pic']['type']];
+
+        move_uploaded_file($_FILES['AC_pic']['tmp_name'], $upload_dir. $new_filename. $new_ext);
+        //函式 : move_uploaded_file(要移动的文件名稱,移動文件的新位置。);
+    }
+}
+
+// ---------------------------------------------------------------
 $page = isset($_GET['page']) ? intval($_GET['page']) : 1; //用戶選頁
 
 $per_page = 10; //每筆顯示頁數
@@ -37,7 +65,7 @@ $stmt = $pdo->query($sql);
     }
 </style>
 <?php include __DIR__ . '/../../pbook_index/__html_body.php' ?>
-<?php include __DIR__ . '/AC__navbar.php' ?>
+<?php include __DIR__ . '/../../pbook_index/__navbar.php' ?>
 
 
 
@@ -86,7 +114,7 @@ $stmt = $pdo->query($sql);
                             <th scope="col">地點</th>
                             <th scope="col">聯絡電話</th>
                             <th scope="col">主辦單位</th>
-                            <th scope="col">參加費用</th>
+                            <th scope="col">活動簡介</th>
                             <th scope="col">建立時間</th>
                             <th scope="col">修改</th>
                             <th scope="col">刪除</th>
@@ -104,9 +132,9 @@ $stmt = $pdo->query($sql);
                             <td><?= htmlentities($r['AC_eventArea']) ?></td>
                             <td><?= htmlentities($r['AC_mobile']) ?></td>
                             <td><?= htmlentities($r['AC_organizer']) ?></td>
-                            <td><?= htmlentities($r['AC_price']) ?></td>
+                            <td><?= htmlentities($r['AC_brief']) ?></td>
                             <td><?= htmlentities($r['AC_created_at']) ?></td>
-                            <td><a href="AC_update.php?sid=<?= $r['AC_sid'] ?>"><i class="fas fa-edit"></i></a>
+                            <td><a href="AC_update.php?AC_sid=<?= $r['AC_sid'] ?>"><i class="fas fa-edit"></i></a>
                             <td><a href="javascript:delete_one(<?= $r['AC_sid'] ?>)"><i class="fas fa-trash-alt"></i></a></td>
                         </tr>
                         <?php } ?>

@@ -1,4 +1,5 @@
 <?php
+require __DIR__ . '/__admin_required.php';
 require __DIR__ . '/__connect_db.php';
 $page_name = 'vb_data_update';
 $page_title = '修改出版社書籍';
@@ -29,9 +30,6 @@ foreach ($row as $r => $s) {
     }
 }
 
-
-$my_categories = empty($_POST['categories']) ? 0 : intval($_POST['categories']);
-
 ?>
 
 <?php include __DIR__ . '/../../pbook_index/__html_head.php' ?>
@@ -52,6 +50,14 @@ $my_categories = empty($_POST['categories']) ? 0 : intval($_POST['categories']);
             <h4>修改出版社書籍</h4>
             <div class="title_line"></div>
         </div>
+        <ul class="nav justify-content-between">
+            <li class="nav-item" style="margin: 0px 10px">
+                <button class="btn btn-outline-primary my-2 my-sm-0" type="button" onclick="preceding_page()">
+                    <i class="fas fa-arrow-circle-left"></i>
+                    回到上一頁
+                </button>
+            </li>
+        </ul>
     </nav>
 
     <!-- 每個人填資料的區塊 -->
@@ -140,7 +146,7 @@ $my_categories = empty($_POST['categories']) ? 0 : intval($_POST['categories']);
                         <div class="d-flex flex-wrap">
                             <?php foreach ($new_row as $k => $v) : ?>
                                 <div class="form-check" style="margin:0px 20px 10px 0px">
-                                    <input class="form-check-input" type="radio" name="categories" id="categories<?= $k ?>" <?= ($update_row['categories'] == $k ) ? 'checked' : '' ?>>
+                                    <input class="form-check-input" type="radio" name="categories" id="categories<?= $k ?>" value="<?= $k ?>" <?= ($update_row['categories'] == $k) ? 'checked' : '' ?>>
                                     <label class="form-check-label" for="categories<?= $k ?>"><?= $v ?></label>
                                 </div>
                             <?php endforeach; ?>
@@ -154,7 +160,6 @@ $my_categories = empty($_POST['categories']) ? 0 : intval($_POST['categories']);
                         <textarea class="update form-control" id="introduction" rows="3" style="width:700px;height:200px;resize:none" name="introduction" placeholder="<?= htmlentities($update_row['introduction']) ?>"></textarea>
                     </div>
 
-                    
 
                     <div>
                         <button style="margin:5px 0px 0px -80px" type="submit" class="btn btn-warning" id="submit_btn">
@@ -162,29 +167,37 @@ $my_categories = empty($_POST['categories']) ? 0 : intval($_POST['categories']);
                         </button>
                     </div>
                 </div>
+            </div>
         </form>
     </div>
-</div>
 
-<!-- 以下為新增成功才會跳出來的顯示框 -->
-<div class="success update card" id="success" style="display:none">
-    <div class="success card-body">
-        <label class="success_text" style="background:transparent">修改成功</label>
-        <div><img class="success_img" src="../../images/icon_checked.svg"></div>
+    <!-- 以下為新增成功才會跳出來的顯示框 -->
+    <div class="success update card" id="success" style="display:none">
+        <div class="success card-body">
+            <label class="success_text" style="background:transparent">修改成功</label>
+            <div><img class="success_img" src="../../images/icon_checked.svg"></div>
+        </div>
     </div>
-</div>
 
-<!-- 以下為新增失敗才會跳出來的顯示框 -->
-<div class="success update card" id="my_false" style="box-shadow:0px 0px 10px red;display:none">
-    <div class="success card-body">
-        <label class="success_text" style="background:transparent;color:rgb(228, 63, 63)">修改失敗,不可以偷偷來喔!</label>
+    <!-- 以下為新增失敗才會跳出來的顯示框 -->
+    <div class="success update card" id="my_false" style="box-shadow:0px 0px 10px red;display:none">
+        <div class="success card-body">
+            <label class="success_text" style="background:transparent;color:rgb(228, 63, 63)">修改失敗,不可以偷偷來喔!</label>
+        </div>
     </div>
-</div>
+
 </div>
 
+
+
+</div>
 <script>
     function selUpload() {
         document.querySelector('#pic').click();
+    }
+
+    function preceding_page() {
+        location.href = document.referrer;
     }
 
     $('#pic').change(function() {
@@ -311,7 +324,7 @@ $my_categories = empty($_POST['categories']) ? 0 : intval($_POST['categories']);
 
         if (isPass) {
             let fd = new FormData(document.form1);
-            fetch('vb_data_insert_api.php', {
+            fetch('vb_data_update_api.php', {
                     method: 'POST',
                     body: fd,
                 })
@@ -319,8 +332,8 @@ $my_categories = empty($_POST['categories']) ? 0 : intval($_POST['categories']);
                 .then(response => {
                     return response.json();
                 })
-                // 收到後台回傳的新增判斷(是否成功,然後顯示到前台讓用戶知道)
-                // 新增成功跳回出版社書籍的datalist,失敗就回到上一層
+                // 收到後台回傳的修改判斷(是否成功,然後顯示到前台讓用戶知道)
+                // 修改成功跳回出版社書籍的datalist,失敗就回到上一層
                 .then(json => {
                     console.log(json);
                     if (json.success) {

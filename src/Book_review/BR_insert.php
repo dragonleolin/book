@@ -6,7 +6,7 @@
 </style>
 <?php include __DIR__ . '/__html_head.php' ?>
 <?php include __DIR__ . '/__html_body.php' ?>
-<?php include '../../pbook_index/__navbar.php'?>
+<?php include '../../pbook_index/__navbar.php' ?>
 
 <div class="d-flex flex-row my_content">
     <!-- 右邊section資料欄位 -->
@@ -29,6 +29,11 @@
                                 <input type="text" class="form-control" id="BR_name" name="BR_name" placeholder="請輸入姓名">
                             </div>
                             <div class="form-group">
+                                <label for="BR_password" class="update_label">書評人密碼</label>
+                                <span id="BR_passwordHelp" style="margin:0px 10px;color:red"></span>
+                                <input type="password" class="form-control" id="BR_password" name="BR_password" placeholder="請輸入密碼">
+                            </div>
+                            <div class="form-group">
                                 <label for="BR_phone" class="update_label">書評人電話</label>
                                 <span id="BR_phoneHelp" style="margin:0px 10px;color:red"></span>
                                 <input type="text" class="form-control" id="BR_phone" name="BR_phone" placeholder="請輸入電話">
@@ -37,11 +42,6 @@
                                 <label for="BR_email" class="update_label">書評人信箱</label>
                                 <span id="BR_emailHelp" style="margin:0px 10px;color:red"></span>
                                 <input type="text" class="form-control" id="BR_email" name="BR_email" placeholder="請輸入信箱">
-                            </div>
-                            <div class="form-group">
-                                <label for="BR_password" class="update_label">書評人密碼</label>
-                                <span id="BR_passwordHelp" style="margin:0px 10px;color:red"></span>
-                                <input type="password" class="form-control" id="BR_password" name="BR_password" placeholder="請輸入密碼">
                             </div>
                             <div class="form-group">
                                 <label for="BR_address" class="update_label">書評人地址</label>
@@ -67,25 +67,61 @@
                                 <label for="BR_job" class="update_label">書評人工作</label>
                                 <input type="text" class="form-control" id="BR_job" name="BR_job" placeholder="請輸入目前工作">
                             </div>
-                            <button type="submit" class="btn btn-primary" id="insert_btn">新增</button>
+                            <div style="position:absolute;left:900px;">
+                                <button type="submit" class="btn btn-warning" id="insert_btn">&nbsp;確&nbsp;認&nbsp;新&nbsp;增&nbsp;</button>
+                            </div>
+                            <div class="form-group d-flex ">
+                                <div class="col-lg-8">
+                                    <label for="BR_photo" style="font-size: 20px">&nbsp;&nbsp;請選擇大頭貼</label>
+                                    <input type="file" class="form-control-file" id="BR_photo" name="BR_photo" style="display:none">
+                                    <div style="height: 200px;width: 230px; #ddd; padding: 5px;">
+                                        <img style="object-fit: contain;width: 100%;height: 100%" id="demo" />
+                                    </div>
+                                    <button class="btn btn-outline-primary my-2 my-sm-0" type="button" onclick="selUpload()">
+                                        <i class="fas fa-plus-circle" style="margin-right:5px"></i>選擇檔案
+                                    </button>
+                                </div>
+                            </div>
                         </form>
+
                 </section>
+                <form>
 
 
 
-                <!-- 以下為修改或新增成功才會跳出來的顯示框 -->
-                <div class="success update card" style="display:none; transform: translate(170px,-55vh)" id="success_insert">
-                    <div class="success card-body">
-                        <label class="success_text">新增成功</label>
-                        <div>
-                            <img class="success_img" src="../../images/icon_checked.svg">
+                    <!-- 以下為修改或新增成功才會跳出來的顯示框 -->
+                    <div class="success update card" style="display:none; transform: translate(170px,-55vh)" id="success_insert">
+                        <div class="success card-body">
+                            <label class="success_text">新增成功</label>
+                            <div>
+                                <img class="success_img" src="../../images/icon_checked.svg">
+                            </div>
                         </div>
                     </div>
-                </div>
             </div>
         </div>
     </section>
+
+
+
     <script>
+        function selUpload() {
+            document.querySelector('#BR_photo').click();
+        }
+
+
+
+        $('#BR_photo').change(function() {
+            var file = $('#BR_photo')[0].files[0];
+            var reader = new FileReader;
+            reader.onload = function(e) {
+                $('#demo').attr('src', e.target.result);
+            };
+            reader.readAsDataURL(file);
+        });
+
+
+
         let insert_info = document.querySelector('#success_insert');
         let main_datalist_hidden = document.querySelector('#main_datalist');
         let insert_btn = document.querySelector('#insert_btn');
