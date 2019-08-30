@@ -4,29 +4,38 @@ $page_name = 'MB_data_list';
 $page_title = '新增資料';
 
 $categories_data = [
-    '1' => '文學小說',
-    '2' => '商業理財',
-    '3' => '藝術設計',
-    '4' => '人文史地',
-    '5' => '社會科學',
-    '6' => '自然科普',
-    '7' => '心理勵志',
-    '8' => '醫療保健',
-    '9' => '飲食',
-    '10' => '生活風格',
-    '11' => '旅遊',
-    '12' => '宗教命理',
-    '13' => '親子教養',
-    '14' => '童書/青少年文學',
-    '15' => '輕小說',
-    '16' => '漫畫',
-    '17' => '語言學習',
-    '18' => '考試用書',
-    '19' => '電腦資訊',
-    '20' => '專業/教科書/政府出版品',
+    1 => '文學小說',
+    2 => '商業理財',
+    3 => '藝術設計',
+    4 => '人文史地',
+    5 => '社會科學',
+    6 => '自然科普',
+    7 => '心理勵志',
+    8 => '醫療保健',
+    9 => '飲食',
+    10 => '生活風格',
+    11 => '旅遊',
+    12 => '宗教命理',
+    13 => '親子教養',
+    14 => '童書/青少年文學',
+    15 => '輕小說',
+    16 => '漫畫',
+    17 => '語言學習',
+    18 => '考試用書',
+    19 => '電腦資訊',
+    20 => '專業/教科書/政府出版品',
 ];
 
 $sel_id = empty($_POST['mb_categories']) ? 0 : intval($_POST['mb_categories']);
+
+$page = isset($_GET['page']) ? intval($_GET['page']) : 1;
+$per_page = 10;
+
+$t_sql = "SELECT COUNT(1) FROM `mb_books`";
+
+$totalRows = $pdo->query($t_sql)->fetch(PDO::FETCH_NUM)[0];
+$totalPages = ceil($totalRows / $per_page);
+
 
 ?>
 <?php include __DIR__ . '/../../pbook_index/__html_head.php' ?>
@@ -138,12 +147,13 @@ $sel_id = empty($_POST['mb_categories']) ? 0 : intval($_POST['mb_categories']);
                                 foreach ($categories_data as $k => $v) :
                                     ?>
                                     <div style="width:150px">
-                                        <input class="form-check-input" checked type="radio" name="sel_id" id="sel_id-<?= $k ?>" value="<?= $k ?>" <?= $sel_id == $k ? 'checked' : '' ?>>
-                                        <label class="form-check-label" for="sel_id-<?= $k ?>"><?= $v ?></label>
+                                        <input class="form-check-input"  type="radio" name="mb_categories" id="mb_categories" value="<?= $k ?>">
+                                        <label class="form-check-label" for="mb_categories"><?= $v ?></label>
+                                        
                                     </div>
                                 <?php
                                     $i++;
-                                endforeach ?>
+                                endforeach ?>   
                             </div>
                         </div>
                         <div class="from-group" style="margin: -70px -20px 10px 0px; padding: 20px 50px 20px 30px;">
@@ -174,21 +184,10 @@ $sel_id = empty($_POST['mb_categories']) ? 0 : intval($_POST['mb_categories']);
     let info_bar = document.querySelector('#info-bar');
     let success_bar = document.querySelector('#success_bar')
     const submit_btn = document.querySelector('#submit_btn');
-    // const mb_pic = document.querySelector('#mb_pic')
     let i, s, item;
 
 
     function uploadFile() {
-        // mb_pic.addEventListener('click', function(){
-        //     $('mb_pic').change(function(){
-        //         var file = $('#mb_pic')[0].files[0];
-        //         var reader = new FileReader;
-        //         reader.onload =function(e){
-        //             $('#demo').attr('src', e.target.result);
-        //         }
-        //         reader.readAsDataURL(file);
-        //     })
-        // })
         document.querySelector('#mb_pic').click();
 
     }
@@ -296,7 +295,7 @@ $sel_id = empty($_POST['mb_categories']) ? 0 : intval($_POST['mb_categories']);
                     info_bar.innerHTML = json.info;
                     if (json.success) {
                         setTimeout(function() {
-                            location.href = 'MB_data_list.php';
+                            location.href = 'MB_data_list.php?page=<?= $totalPages ?>';
                         }, 1000);
                     } else {
                         success_bar.style.display = 'none'
