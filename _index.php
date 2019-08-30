@@ -109,9 +109,9 @@ if (!isset($_SESSION)) {
                             <i class="fas fa-caret-right"></i>
                             <span>品書會員列表</span>
                         </button>
-                        <button type="button" class="btn btn-light sub_aside_text">
+                        <button type="button" class="btn btn-light sub_aside_text" onclick="location='src/member_Management/MR_levelList.php'">
                             <i class="fas fa-caret-right"></i>
-                            <span>會員等級</span>
+                            <span>品書會員等級</span>
                         </button>
                     </div>
                 </div>

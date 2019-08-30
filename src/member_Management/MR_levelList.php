@@ -1,7 +1,8 @@
+<?php require __DIR__ . '/__admin_required.php' ?>
 <?php require  'MR_db_connect.php' ?>
 <?php
 $thead_item = [
-    '#', '等級', '等級名稱', '特殊功能', '發表文章數', '折扣',
+    '#', '會員等級', '等級名稱', '特殊功能', '發表文章數', '折扣',
 ];
 $function_item = [
     0 => '品書會員',
@@ -41,6 +42,11 @@ $rows = $stmt->fetchAll();
 ?>
 
 <?php include '../../pbook_index/__html_head.php' ?>
+<style>
+    body {
+        background: url(../../images/bg.png) repeat center top;
+    }
+</style>
 <?php include '../../pbook_index/__html_body.php' ?>
 <?php include '../../pbook_index/__navbar.php' ?>
 
@@ -61,7 +67,7 @@ $rows = $stmt->fetchAll();
                 <li class="nav-item" style="margin: 0px 10px">
                     <button class="btn btn-outline-primary my-2 my-sm-0" onclick="location.href='MR_memberData_insert.php'">
                         <i class="fas fa-plus-circle"></i>
-                        新增等級
+                        新增等級分類
                     </button>
                 </li>
                 <li class="nav-item" style="flex-grow: 1">

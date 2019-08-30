@@ -1,5 +1,5 @@
 <?php
-require __DIR__. '/__admin_required.php';
+require __DIR__ . '/__admin_required.php';
 require __DIR__ . '/__connect_db.php';
 $page_name = 'vb_data_list';
 $page_title = '出版社書籍總表';
@@ -29,12 +29,20 @@ if ($page > $totalPages) {
     header('Location: vb_data_list.php?page=' . $totalPages);
 };
 
+$books_sql = "SELECT `vb_books`.*, `cp_data_list`.`cp_name` publishing
+                    FROM `vb_books`  LEFT JOIN `cp_data_list` ON `vb_books`.`publishing` = `cp_data_list`.`sid` $where
+                    ORDER BY `vb_books`.`sid` ASC LIMIT " . (($page - 1) * $per_page) . "," . $per_page;
 
-$categories_sql = "SELECT `vb_books`.*, `vb_categories`.`name` categories_name 
-                    FROM `vb_books`  LEFT JOIN `vb_categories` ON `vb_books`.`categories` = `vb_categories`.`sid` $where
-                    ORDER BY `sid` ASC LIMIT " . (($page - 1) * $per_page) . "," . $per_page;
+$books_stmt = $pdo->query($books_sql);
 
-$stmt = $pdo->query($categories_sql);
+
+$cat_sql = "SELECT * FROM `vb_categories` ";
+$cates = $pdo->query($cat_sql)->fetchAll();
+$cate_dict = [];
+foreach ($cates as $r) {
+    $cate_dict[$r['sid']] = $r['name'];
+}
+
 
 ?>
 
@@ -114,7 +122,7 @@ $stmt = $pdo->query($categories_sql);
                 </thead>
                 <tbody>
                     <?php
-                    $row = $stmt->fetchAll();
+                    $row = $books_stmt->fetchAll();
                     for ($i = 0; $i < count($row); $i++) : ?>
                         <tr>
                             <td><?= $row[$i]['sid']; ?></td>
@@ -141,13 +149,12 @@ $stmt = $pdo->query($categories_sql);
                                             <div class="modal-footer">
                                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
                                                 <button type="button" class="btn btn-primary" onclick="change_img(<?= $row[$i]['sid'] ?>)">修改圖片</button>
-                                                <!-- <a id="a" style="display:none" type="button" class="btn btn-primary" href="vb_data_update.php?sid=<?= $row[$i]['sid'] ?>">修改圖片</a> -->
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </td>
-                            <td><?= $row[$i]['categories_name']; ?></td>
+                            <td><?= $cate_dict[$row[$i]['categories']]; ?></td>
                             <td><?= $row[$i]['author']; ?></td>
                             <td><?= $row[$i]['publishing']; ?></td>
                             <td><?= $row[$i]['publish_date']; ?></td>
@@ -219,7 +226,6 @@ $stmt = $pdo->query($categories_sql);
     </div>
 </section>
 <script>
-
     function vb_data_insert() {
         location = "vb_data_insert.php";
     }

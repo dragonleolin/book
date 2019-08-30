@@ -1,3 +1,4 @@
+<?php require __DIR__ . '/__admin_required.php' ?>
 <?php require  'MR_db_connect.php' ?>
 <?php
 
@@ -37,15 +38,20 @@ $a_level = [
 
 </div>
 <section class="p-4 container-fluid">
-    <div>
-        <div class="d-flex justify-content-between">
-            <h4>新增會員資料 </h4>
-            <button class="btn btn-outline-primary my-2 my-sm-0" onclick="location.href='<?= $_SERVER['HTTP_REFERER'] ?>'">
-                <i class="fas fa-plus-circle">返回上一頁</i>
-            </button>
+    <nav class="navbar justify-content-between" style="padding: 0px;width: 80vw;">
+        <div>
+            <h4>新增會員資料</h4>
+            <div class="title_line"></div>
         </div>
-        <div class="title_line"></div>
-    </div>
+        <ul class="nav justify-content-between">
+            <li class="nav-item" style="margin: 0px 10px">
+                <button class="btn btn-outline-primary my-2 my-sm-0" type="button" onclick="history.back()">
+                    <i class="fas fa-arrow-circle-left"></i>
+                    回到上一頁
+                </button>
+            </li>
+        </ul>
+    </nav>
     <div class=" ">
         <div class="row mt-3 ">
             <div class="col-md-6">
@@ -149,8 +155,11 @@ $a_level = [
                         <label for="address">地址</label>
                         <input type="text" class="form-control input_width2" id="address" name="address">
                     </div>
-
-                    <button type="submit" class="btn btn-primary" id="submit_btn">新增</button>
+                    <div>
+                        <button style="width:130px" type="submit" class="btn btn-warning" id="submit_btn">
+                            &nbsp;確&nbsp;認&nbsp;新&nbsp;增&nbsp;
+                        </button>
+                    </div>
                 </div>
                 <div class="">
                     <div class="">
@@ -265,8 +274,6 @@ $a_level = [
             yOffset = currentY;
             setTranslate(currentX, currentY, demo);
         }
-
-        demo.addEventListener('mouseup', dragEnd);
     }
 
     function setTranslate(xPos, yPos, el) {
