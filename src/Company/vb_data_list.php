@@ -8,12 +8,15 @@ $per_page = 10; //每頁幾筆資料
 
 $search = isset($_GET['search']) ? $_GET['search'] : '';
 $allow = $_SESSION['loginUser2']['sid'] ;
+
 $params = [];
 $where = ' WHERE 1 ';
+$where .= "  AND( `vb_books`.`publishing` = $allow )";
 if (!empty($search)) {
     $params['search'] = $search;
     $search = $pdo->quote("%$search%");
-    $where .= " AND (`isbn` LIKE $search OR `vb_books`.`name` LIKE $search OR `publishing` LIKE $search OR `vb_books`.`publishing` = $allow) ";
+    $where .= "AND (`isbn` LIKE $search OR `vb_books`.`name` LIKE $search OR `publishing` LIKE $search )";
+    
 }
 
 $t_sql = "SELECT COUNT(1) FROM `vb_books` $where";
@@ -33,7 +36,9 @@ $books_sql = "SELECT `vb_books`.*, `cp_data_list`.`cp_name` publishing
                     FROM `vb_books`  LEFT JOIN `cp_data_list` ON `vb_books`.`publishing` = `cp_data_list`.`sid` $where
                     ORDER BY `vb_books`.`sid` ASC LIMIT " . (($page - 1) * $per_page) . "," . $per_page;
 
+
 $books_stmt = $pdo->query($books_sql);
+
 
 
 $cat_sql = "SELECT * FROM `vb_categories` ";
