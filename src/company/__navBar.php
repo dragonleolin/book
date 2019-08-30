@@ -5,7 +5,7 @@
     <ul class="nav justify-content-between">
     <?php if (isset($_SESSION['loginUser2'])) : ?>
         <li class="nav-item">
-            <a class="nav-link my_text_blacktea nav_text">「<?= $_SESSION['loginUser2']['cp_name'] ?>」, 您好</a>
+            <a class="nav-link my_text_blacktea nav_text">「<?= $_SESSION['loginUser2']['cp_name'] ?>」出版社, 您好</a>
         </li>
         <li class="nav-item dropdown">
             <a style="display: inline" class="nav-link dropdown-toggle my_text_yellow" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
