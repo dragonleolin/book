@@ -136,7 +136,7 @@ $totalPages = ceil($totalRows / $per_page); //取得總頁數
                             </button>
                         </div>
                         <div style="height: 230px;width: 230px;border: 1px solid #ddd">
-                            <img style="object-fit: contain;width: 100%;height: 100%" id="demo" />
+                            <img style="object-fit: contain;width: 100%;height: 100%" id="demo"/>
                         </div>
                     </div>
 
