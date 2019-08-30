@@ -101,18 +101,18 @@ foreach ($rows as $r) {
                 <tbody>
                     <?php foreach ($rows as $r) : ?>
                         <tr>
-                            <td><?= $r['sid'] ?></td>
-                            <td><?= htmlentities($r['cp_name']) ?></td>
-                            <td><?= htmlentities($r['cp_contact_p']) ?></td>
-                            <td><?= htmlentities($r['cp_phone']) ?></td>
-                            <td><?= htmlentities($r['cp_email']) ?></td>
-                            <td><?= htmlentities($r['cp_address']) ?></td>
-                            <td><?= htmlentities($r['cp_tax_id']) ?></td>
-                            <td style="width:3vw"><?= htmlentities($stock[$r['sid']]["SUM(`vb_books`.`stock`)"]) ?></td>
-                            <td><?= htmlentities($r['cp_account']) ?></td>
-                            <td><?= htmlentities($r['cp_password']) ?></td>
-                            <td><?= htmlentities($r['cp_created_date']) ?></td>
-                            <td style="width:5.3vw">
+                            <td style="vertical-align:middle;"><?= $r['sid'] ?></td>
+                            <td style="vertical-align:middle;"><?= htmlentities($r['cp_name']) ?></td>
+                            <td style="vertical-align:middle;"><?= htmlentities($r['cp_contact_p']) ?></td>
+                            <td style="vertical-align:middle;"><?= htmlentities($r['cp_phone']) ?></td>
+                            <td style="vertical-align:middle;"><?= htmlentities($r['cp_email']) ?></td>
+                            <td style="vertical-align:middle;"><?= htmlentities($r['cp_address']) ?></td>
+                            <td style="vertical-align:middle;"><?= htmlentities($r['cp_tax_id']) ?></td>
+                            <td style="vertical-align:middle; width:3vw"><?= htmlentities($stock[$r['sid']]["SUM(`vb_books`.`stock`)"]) ?></td>
+                            <td style="vertical-align:middle;"><?= htmlentities($r['cp_account']) ?></td>
+                            <td style="vertical-align:middle;"><?= htmlentities($r['cp_password']) ?></td>
+                            <td style="vertical-align:middle;"><?= htmlentities($r['cp_created_date']) ?></td>
+                            <td style="vertical-align:middle; width:5.3vw">
                                 <button type="button" class="btn btn-outline-primary" data-toggle="modal" data-target="#<?= 'logo' .  $r['sid']; ?>">
                                     <i class="fas fa-plus-circle"></i>
                                     顯示
