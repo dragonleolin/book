@@ -33,11 +33,20 @@ $form_data2 = [
     .data {
         border-radius: 20px;
         margin: 2rem 0px 0px 4rem;
-        width: 58vw;
-        /* background-color: #9cc5a1; */
-        /* padding: 0 10px 10px 0; */
+        width: 62vw;
+        border: none;
     }
-
+    .card_shad{
+        border-radius: 20px;
+        margin: 2rem 0px 0px 4rem;
+        width: 62vw;
+        height: 80vh;
+        left: -2.5vw;
+        top: -1vh;
+        background-color: #9cc5a1;
+        z-index: -1;
+        
+    }
     .data_head {
         font-size: 2rem;
         color: #fff;
@@ -51,7 +60,7 @@ $form_data2 = [
     .logo2 {
         height: 70px;
         position: absolute;
-        bottom: 10vh;
+        top: 10vh;
         right: -5vh;
     }
 </style>
@@ -87,26 +96,16 @@ $form_data2 = [
                         <div>
                             <div class="pt-3 data_head mb-5">・logo</div>
                             <div class="ml-5" style="height: 230px;width: 230px;border: 1px solid #ddd;background-color:#fff">
-                                <img style="object-fit: contain;width: 100%;height: 100%" src="./logo/<?= htmlentities($row['cp_logo']) ?>" id="demo">
+                                <img style="object-fit: contain;width: 100%;height: 100%" src="../company_Management/logo/<?= htmlentities($row['cp_logo']) ?>" id="demo">
                             </div>
                         </div>
                     </div>
                 </div>
-                <div>
-
-                </div>
+                <div class="card position-absolute card_shad"></div>
             </div>
             <div>
                 <img class="logo2" src="../../images/icon_logo2.svg" alt="">
             </div>
-            <!-- <div class="container position-relative" style="margin-left:calc( 50% - 314px)">
-            
-            <div class="row">
-                <div class="form-group d-flex">
-                    
-                </div>
-            </div>
-        </div> -->
         </div>
 </section>
 </div>
