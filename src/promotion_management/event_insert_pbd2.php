@@ -19,6 +19,14 @@ foreach ($temp_row as $r => $s) {
     }
 }
 
+$sql = "SELECT `sid`,`cp_name` FROM `cp_data_list` WHERE 1";
+$temp_cp_row = $pdo->query($sql)->fetchAll(PDO::FETCH_UNIQUE);
+$cp_row=[];
+foreach ($temp_cp_row as $r => $s){
+    $cp_row[$r] = $s['cp_name'];
+}
+
+
 ?>
     <style>
         small.form-text {
@@ -28,58 +36,156 @@ foreach ($temp_row as $r => $s) {
 
     <div class="container-fluid pt-3">
         <div class="row">
-            <div class="col-md-2"></div>
-            <div class="col-md-8">
+            <div class="col-md-1"></div>
+            <div class="col-md-9">
                 <div class="alert alert-primary" role="alert" id="info_bar" style="display: none"></div>
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">選擇適用商品</h5>
-                        <form name="form2" onsubmit="return checkForm()" method="POST" action="event_insert_pbd_api.php">
-                            <div class="row border-bottom">
-                                <div id="categories_block" class="form-group col-md-12">
-                                    <label for="categories" class="update_label">使用分類</label>
-                                    <div class="d-flex mt-2 mb-2">
-                                        <button type="button" class="btn btn-info btn-sm mr-2" onclick="checkAll(true)">全選</button>
-                                        <button type="button" class="btn btn-info btn-sm" onclick="checkAll(false)">全部取消</button>
-                                    </div>
-                                    <div class="d-flex flex-wrap">
-                                        <?php foreach ($cate_row as $k => $v) : ?>
-                                            <div class="form-check" style="margin:0px 20px 10px 0px">
-                                                <input class="form-check-input" type="checkbox" name="categories[]"
-                                                       id="categories<?= $k ?>" value="<?= $k ?>">
-                                                <label class="form-check-label"
-                                                       for="categories<?= $k ?>"><?= $v ?></label>
+                <div class="card-body">
+                    <h5 class="card-title">選擇適用範圍</h5>
+                    <form name="form2" onsubmit="return checkForm()" method="POST"
+                          action="event_insert_pbd_api.php">
+
+
+                        <div class="accordion" id="accordionExample">
+                            <div class="card">
+                                <div class="card-header" id="headingOne">
+                                    <h2 class="mb-0">
+                                        <button class="btn btn-link btn-block" type="button" data-toggle="collapse"
+                                                data-target="#collapseOne" aria-expanded="true"
+                                                aria-controls="collapseOne">
+                                            1.選擇參與廠商
+                                        </button>
+                                    </h2>
+                                </div>
+
+                                <div id="collapseOne" class="collapse show" aria-labelledby="headingOne"
+                                     data-parent="#accordionExample">
+                                    <div class="card-body">
+
+                                        <div class="row border-bottom mt-2">
+                                            <div class="form-group col-md-6">
+                                                <label for="cp_group_set">選擇分類方式</label>
+                                                <select class="form-control" id="cp_group_set" name="cp_group_set"
+                                                        onchange="cp_group_display()">
+                                                    <option selected value="0">所有廠商</option>
+                                                    <option value="1">選擇廠商</option>
+                                                </select>
+                                                <small class="form-text"></small>
                                             </div>
-                                        <?php endforeach; ?>
+                                        </div>
+                                        <div id="checkboxes_block1" class="row border-bottom" style="display: none">
+                                            <div class="form-group col-md-12">
+                                                <label for="cp_group" class="update_label">使用分類</label>
+                                                <div class="d-flex mt-2 mb-2">
+                                                    <button type="button" class="btn btn-info btn-sm mr-2"
+                                                            onclick="checkAll(1,true)">
+                                                        全選
+                                                    </button>
+                                                    <button type="button" class="btn btn-info btn-sm"
+                                                            onclick="checkAll(1,false)">
+                                                        全部取消
+                                                    </button>
+                                                </div>
+                                                <div class="d-flex flex-wrap">
+                                                    <?php foreach ($cp_row as $k => $v) : ?>
+                                                        <div class="form-check" style="margin:0px 20px 10px 0px">
+                                                            <input class="form-check-input" type="checkbox"
+                                                                   name="cp_group[]"
+                                                                   id="cp_group<?= $k ?>" value="<?= $k ?>">
+                                                            <label class="form-check-label"
+                                                                   for="cp_group<?= $k ?>"><?= $v ?></label>
+                                                        </div>
+                                                    <?php endforeach; ?>
+                                                </div>
+                                            </div>
+                                        </div>
+
+
                                     </div>
                                 </div>
                             </div>
+                            <div class="card">
+                                <div class="card-header" id="headingTwo">
+                                    <h2 class="mb-0">
+                                        <button class="btn btn-link collapsed btn-block" type="button"
+                                                data-toggle="collapse"
+                                                data-target="#collapseTwo" aria-expanded="false"
+                                                aria-controls="collapseTwo">
+                                            2.選擇適用書籍
+                                        </button>
+                                    </h2>
+                                </div>
+                                <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo"
+                                     data-parent="#accordionExample">
+                                    <div class="card-body">
 
-                            <div class="row mt-2">
-                                <div class="form-group col-md-4">
-                                    <label for="book_id_type">新增品項</label>
-                                    <select class="form-control" id="book_id_type" name="book_id_type">
-                                        <option value="1">ISBN</option>
-                                        <option value="2">書籍編號</option>
-                                    </select>
-                                    <small class="form-text"></small>
+
+                                        <div class="row border-bottom mt-2">
+                                            <div class="form-group col-md-6">
+                                                <label for="group_type">選擇分類方式</label>
+                                                <select class="form-control" id="group_type" name="group_type"
+                                                        onchange="group_type_display()">
+                                                    <option selected value="0">全站適用</option>
+                                                    <option value="1">書籍分類</option>
+                                                    <option value="2">自訂群組</option>
+                                                </select>
+                                                <small class="form-text"></small>
+                                            </div>
+                                        </div>
+
+                                        <div id="checkboxes_block2" class="row border-bottom" style="display: none">
+                                            <div class="form-group col-md-12">
+                                                <label for="categories" class="update_label">使用分類</label>
+                                                <div class="d-flex mt-2 mb-2">
+                                                    <button type="button" class="btn btn-info btn-sm mr-2"
+                                                            onclick="checkAll(2,true)">
+                                                        全選
+                                                    </button>
+                                                    <button type="button" class="btn btn-info btn-sm"
+                                                            onclick="checkAll(2,false)">
+                                                        全部取消
+                                                    </button>
+                                                </div>
+                                                <div class="d-flex flex-wrap">
+                                                    <?php foreach ($cate_row as $k => $v) : ?>
+                                                        <div class="form-check" style="margin:0px 20px 10px 0px">
+                                                            <input class="form-check-input" type="checkbox"
+                                                                   name="categories[]"
+                                                                   id="categories<?= $k ?>" value="<?= $k ?>">
+                                                            <label class="form-check-label"
+                                                                   for="categories<?= $k ?>"><?= $v ?></label>
+                                                        </div>
+                                                    <?php endforeach; ?>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div id="book_id_block" class="row mt-2" style="display: none;">
+                                            <div class="form-group col-md-4">
+                                                <label for="book_id_type">新增品項</label>
+                                                <select class="form-control" id="book_id_type" name="book_id_type">
+                                                    <option value="1">ISBN</option>
+                                                    <option value="2">書籍編號</option>
+                                                </select>
+                                                <small class="form-text"></small>
+                                            </div>
+                                            <div class="form-group col-md-8">
+                                                <label for="book_id[]">　</label>
+                                                <input type="text" class="form-control" id="book_id[]"
+                                                       name="book_id[]">
+                                                <small class="form-text"></small>
+                                            </div>
+                                        </div>
+
+
+                                    </div>
                                 </div>
-                                <div class="form-group col-md-8">
-                                    <label for="book_id">　</label>
-                                    <input type="text" class="form-control" id="book_id" name="book_id">
-                                    <small class="form-text"></small>
-                                </div>
+                                <button id="submit_btn" type="submit" class="btn btn-primary m-3">完成</button>
                             </div>
-
-                    </div>
-
-                    <button id="submit_btn" type="submit" class="btn btn-primary mr-3 ml-3 mb-3">完成</button>
-
+                        </div>
                     </form>
                 </div>
             </div>
         </div>
-    </div>
     </div>
 
     <script>
@@ -169,10 +275,37 @@ foreach ($temp_row as $r => $s) {
         }
 
 
-        function checkAll(k) {
-            let cate_boxes = document.querySelectorAll('#categories_block input');
-            for (let i = 0; i < cate_boxes.length; i++){
-                cate_boxes[i].checked = k;
+        function checkAll(k, bool) {
+            let checkboxes = document.querySelectorAll('#checkboxes_block'+ k +' input');
+            for (let i = 0; i < checkboxes.length; i++) {
+                checkboxes[i].checked = bool;
+            }
+        }
+
+
+        function cp_group_display() {
+            let cp_group_set = document.querySelector('#cp_group_set');
+            let cp_block = document.querySelector('#checkboxes_block1');
+            if (cp_group_set.value == 1) {
+                cp_block.style.display = 'flex';
+            }else{
+                cp_block.style.display = 'none';
+            }
+        }
+
+        function group_type_display() {
+            let group_type = document.querySelector('#group_type');
+            let categories_block = document.querySelector('#checkboxes_block2');
+            let book_id_block = document.querySelector('#book_id_block');
+            if (group_type.value == 0) {
+                categories_block.style.display = 'none';
+                book_id_block.style.display = 'none';
+            } else if (group_type.value == 1) {
+                categories_block.style.display = 'flex';
+                book_id_block.style.display = 'none';
+            } else {
+                categories_block.style.display = 'none';
+                book_id_block.style.display = 'flex';
             }
         }
 

@@ -173,7 +173,7 @@
                         <i class="fas fa-caret-right"></i>
                         <span>P幣系統</span>
                     </button>
-                    <button type="button" class="btn btn-light sub_aside_text">
+                    <button type="button" class="btn btn-light sub_aside_text" onclick="location.href='../promotion_management/event_list.php'">
                         <i class="fas fa-caret-right"></i>
                         <span>折扣系統</span>
                     </button>

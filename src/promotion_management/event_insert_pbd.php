@@ -29,6 +29,18 @@ include __DIR__ . '/../../pbook_index/__navbar.php';
                                     <input type="text" class="form-control" id="event_name" name="event_name">
                                     <small class="form-text"></small>
                                 </div>
+                                <div class="form-group col-md-6">
+                                    <label for="user_level">會員等級限制</label>
+                                    <select class="form-control" id="user_level" name="user_level"">
+                                    <option value="0">無限制</option>
+                                    <option value="1">品書會員</option>
+                                    <option value="2">品書學徒</option>
+                                    <option value="3">品書專家</option>
+                                    <option value="4">品書大師</option>
+                                    <option value="5">品書至尊</option>
+                                    </select>
+                                    <small class="form-text"></small>
+                                </div>
                             </div>
                             <div class="row justify-content-around border-bottom">
                                 <div class="form-group col-md-6">
@@ -121,7 +133,8 @@ include __DIR__ . '/../../pbook_index/__navbar.php';
 
 
                             </div>
-                            <button style="display: none" id="addStageBtn" class="btn btn-outline-primary my-2 my-sm-0" type="button"
+                            <button style="display: none" id="addStageBtn" class="btn btn-outline-primary my-2 my-sm-0"
+                                    type="button"
                                     onclick="addStage()">
                                 <i class="fas fa-plus-circle"></i>新增階段
                             </button>
@@ -241,13 +254,12 @@ include __DIR__ . '/../../pbook_index/__navbar.php';
         const addStageBtn = document.querySelector('#addStageBtn');
         let stage = 1;
 
-        event_pbd_type.addEventListener('change',()=>{
-            if(event_pbd_type.value == 4){
+        event_pbd_type.addEventListener('change', () => {
+            if (event_pbd_type.value == 4) {
                 addStageBtn.style.display = 'inline-block';
-            }
-            else{
+            } else {
                 addStageBtn.style.display = 'none';
-                for(let i = 1; i < 3; i++){
+                for (let i = 2; i <= 3; i++) {
                     let priceStage = document.querySelector('#priceStage' + i);
                     priceStage.style.display = 'none';
                 }
@@ -265,10 +277,10 @@ include __DIR__ . '/../../pbook_index/__navbar.php';
         }
 
         function sel_type(sel_id) {
-                let sel = document.querySelectorAll('.sel_discount_type');
-                for(let i = 0; i < 3; i++){
-                    sel[i].value = sel[sel_id].value;
-                }
+            let sel = document.querySelectorAll('.sel_discount_type');
+            for (let i = 0; i < 3; i++) {
+                sel[i].value = sel[sel_id].value;
+            }
         }
 
     </script>
