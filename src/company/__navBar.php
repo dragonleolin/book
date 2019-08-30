@@ -58,7 +58,7 @@
                         </div>
                     </button>
                     <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
-                        <button type="button" class="btn btn-light sub_aside_text">
+                        <button type="button" class="btn btn-light sub_aside_text" onclick="location.href='vb_data_list.php'">
                             <i class="fas fa-caret-right"></i>
                             <span>書籍總表</span>
                         </button>

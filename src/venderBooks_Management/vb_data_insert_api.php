@@ -1,4 +1,5 @@
 <?php
+require __DIR__. '/__admin_required.php';
 require __DIR__. '/__connect_db.php';
 
 //移動上傳的圖檔到指定資料夾

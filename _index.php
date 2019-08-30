@@ -105,7 +105,7 @@ if (!isset($_SESSION)) {
                         </div>
                     </button>
                     <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordion">
-                        <button type="button" class="btn btn-light sub_aside_text" onclick="location.href='src/member_Management/MR_memberDataList.php'">
+                        <button type="button" class="btn btn-light sub_aside_text" onclick="location='src/member_Management/MR_memberDataList.php'">
                             <i class="fas fa-caret-right"></i>
                             <span>品書會員列表</span>
                         </button>

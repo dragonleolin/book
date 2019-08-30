@@ -59,7 +59,7 @@
                     </div>
                 </button>
                 <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
-                    <button type="button" class="btn btn-light sub_aside_text"onclick="location.href='../venderBooks_Management/vb_data_list.php'">
+                    <button type="button" class="btn btn-light sub_aside_text" onclick="location.href='../venderBooks_Management/vb_data_list.php'">
                         <i class="fas fa-caret-right"></i>
                         <span>出版社書籍總表</span>
                     </button>
@@ -101,11 +101,11 @@
                     </div>
                 </button>
                 <div id="collapseFour" class="collapse" aria-labelledby="headingFour" data-parent="#accordion">
-                    <button type="button" class="btn btn-light sub_aside_text">
+                    <button type="button" class="btn btn-light sub_aside_text" onclick="location.href='../memberBooks_Management/MB_data_list.php'">
                         <i class="fas fa-caret-right"></i>
                         <span>會員書籍總表</span>
                     </button>
-                    <button type="button" class="btn btn-light sub_aside_text">
+                    <button type="button" class="btn btn-light sub_aside_text" onclick="location.href='../memberBooks_Management/MB_insert.php'">
                         <i class="fas fa-caret-right"></i>
                         <span>新增會員書籍</span>
                     </button>
