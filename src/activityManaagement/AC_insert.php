@@ -81,8 +81,8 @@ $page_title = '品書 - 活動新增';
 
                     <div >
                         <div class="form-group" style="margin:30px 0 0 0;">
-                            <label for="categories" class="update_label">活動介紹</label>
-                            <span style="color:#999;">&nbsp;限100字</span>
+                            <label for="categories" class="update_label">・活動簡介</label>
+                            <span style="color:#999;">&nbsp;限制100字以內</span>
                             <textarea class="update form-control" id="exampleFormControlTextarea1" rows="3"
                             style="width:500px;height:165px;resize:none"></textarea>
                         </div>
@@ -102,7 +102,7 @@ $page_title = '品書 - 活動新增';
                     </div>
                     <div style="width: 500px;">
                             <img style="object-fit: contain;width: 100%;height: 100%" id="demo"/>
-                        </div>
+                    </div>
                         
                         </div>
 
