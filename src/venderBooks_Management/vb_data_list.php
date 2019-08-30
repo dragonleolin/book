@@ -1,4 +1,5 @@
 <?php
+require __DIR__. '/__admin_required.php';
 require __DIR__ . '/__connect_db.php';
 $page_name = 'vb_data_list';
 $page_title = '出版社書籍總表';
@@ -218,10 +219,6 @@ $stmt = $pdo->query($categories_sql);
     </div>
 </section>
 <script>
-    function search_text(){
-           
-    }
-
 
     function vb_data_insert() {
         location = "vb_data_insert.php";

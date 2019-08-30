@@ -1,4 +1,5 @@
 <?php
+require __DIR__. '/__admin_required.php';
 require __DIR__ . '/__connect_db.php';
 
 if (empty($_POST['name']) or empty($_POST['sid'])) {

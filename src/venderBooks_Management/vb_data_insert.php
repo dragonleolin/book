@@ -1,4 +1,5 @@
 <?php
+require __DIR__ . '/__admin_required.php';
 require __DIR__ . '/__connect_db.php';
 $page_name = 'vb_data_insert';
 $page_title = '新增出版社書籍';
@@ -49,6 +50,14 @@ $totalPages = ceil($totalRows / $per_page); //取得總頁數
             <h4>新增出版社書籍</h4>
             <div class="title_line"></div>
         </div>
+        <ul class="nav justify-content-between">
+            <li class="nav-item" style="margin: 0px 10px">
+                <button class="btn btn-outline-primary my-2 my-sm-0" type="button" onclick="preceding_page()">
+                    <i class="fas fa-arrow-circle-left"></i>
+                    回到上一頁
+                </button>
+            </li>
+        </ul>
     </nav>
 
     <!-- 每個人填資料的區塊 -->
@@ -136,8 +145,7 @@ $totalPages = ceil($totalRows / $per_page); //取得總頁數
                         <div class="d-flex flex-wrap">
                             <?php foreach ($new_row as $k => $v) : ?>
                                 <div class="form-check" style="margin:0px 20px 10px 0px">
-                                    <input class="form-check-input" type="radio" name="categories" id="categories<?= $k ?>" value="<?= $k ?>" 
-                                    <?= $my_categories == 0 ? 'checked' : '' ?>>
+                                    <input class="form-check-input" type="radio" name="categories" id="categories<?= $k ?>" value="<?= $k ?>" <?= $my_categories == 0 ? 'checked' : '' ?>>
                                     <label class="form-check-label" for="categories<?= $k ?>"><?= $v ?></label>
                                 </div>
                             <?php endforeach; ?>
@@ -178,8 +186,12 @@ $totalPages = ceil($totalRows / $per_page); //取得總頁數
 </div>
 
 <script>
-    function selUpload(){
+    function selUpload() {
         document.querySelector('#pic').click();
+    }
+
+    function preceding_page() {
+        location.href = document.referrer;
     }
 
     $('#pic').change(function() {
