@@ -129,9 +129,14 @@ $t_stmt = $pdo->query($page_sql);
             <!-- 我是分頁按鈕列 請自取並調整頁面擺放位置 -->
             <nav aria-label="Page navigation example">
                 <ul class="pagination page-position">
+                <li class="page-item">
+                    <a class="page-link" href="?page=1" aria-label="Previous">
+                        <i class="fas fa-angle-double-left"></i>
+                    </a>
+                </li>
                     <li class="page-item">
                         <a class="page-link" href="?page=<?= $page - 1 ?>" aria-label="Previous">
-                            <span aria-hidden="true">&laquo;</span>
+                        <i class="fas fa-angle-left"></i>
                         </a>
                     </li>
                     <?php
@@ -158,9 +163,14 @@ $t_stmt = $pdo->query($page_sql);
                     <?php endif; ?>
                     <li class="page-item">
                         <a class="page-link" href="?page=<?= $page + 1 ?>" aria-label="Next">
-                            <span aria-hidden="true">&raquo;</span>
+                        <i class="fas fa-angle-right"></i>
                         </a>
                     </li>
+                    <li class="page-item">
+                    <a class="page-link" href="?page=<?= $totalPages ?>" aria-label="Next">
+                        <i class="fas fa-angle-double-right"></i>
+                    </a>
+                </li>
                 </ul>
             </nav>
 
