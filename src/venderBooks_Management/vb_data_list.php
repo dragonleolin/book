@@ -18,14 +18,28 @@ if ($page > $totalPages) {
     header('Location: vb_data_list.php?page=' . $totalPages);
 };
 
+$search = isset($_GET['search']) ? $_GET['search'] : '';
 
-$categories_sql = sprintf(
-    "SELECT `vb_books`.*, `vb_categories`.`name` categories_name 
-    FROM `vb_books` LEFT JOIN `vb_categories` ON `vb_books`.`categories` = `vb_categories`.`sid` ORDER BY `sid` ASC LIMIT %s, %s",
-    ($page - 1) * $per_page,
-    $per_page
-);
+$params = [];
+$where = ' WHERE 1 ';
+if (!empty($search)) {
+    $params['search'] = $search;
+    $search = $pdo->quote("%$search%");
+    $where .= " AND (`isbn` LIKE $search OR `vb_books`.`name` LIKE $search OR `publishing` LIKE $search) ";
+}
+// $search_sql = "SELECT * FROM `vb_books` $where ORDER BY `sid` LIMIT " . ($page - 1) * $per_page . "," . $per_page;
+$categories_sql = "SELECT `vb_books`.*, `vb_categories`.`name` categories_name 
+                    FROM `vb_books`  LEFT JOIN `vb_categories` ON `vb_books`.`categories` = `vb_categories`.`sid` $where
+                    ORDER BY `sid` ASC LIMIT " . (($page - 1) * $per_page) . "," . $per_page;
 
+
+
+// $categories_sql = sprintf(
+//     "SELECT `vb_books`.*, `vb_categories`.`name` categories_name 
+//     FROM `vb_books` LEFT JOIN `vb_categories` ON `vb_books`.`categories` = `vb_categories`.`sid`ORDER BY `sid` ASC LIMIT %s, %s",
+//     ($page - 1) * $per_page,
+//     $per_page
+// );
 $stmt = $pdo->query($categories_sql);
 
 ?>
@@ -73,8 +87,8 @@ $stmt = $pdo->query($categories_sql);
                     </button>
                 </li>
                 <li class="nav-item" style="flex-grow: 1">
-                    <form class="form-inline my-2 my-lg-0">
-                        <input class="search form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+                    <form name="form2" class="form-inline my-2 my-lg-0">
+                        <input class="search form-control mr-sm-2" id="search" name="search" type="search" placeholder="Search" aria-label="Search">
                         <button class="btn btn-outline-warning my-2 my-sm-0" type="submit">
                             <i class="fas fa-search"></i>
                         </button>
@@ -182,13 +196,13 @@ $stmt = $pdo->query($categories_sql);
                     $i = $p_start;
                     $i <= $p_end;
                     $i++
-                ) :
+                ) : $params['page'] = $i;
                     // if ($i < 1 or $i > $totalPages) {
                     //     continue;
                     // }
                     ?>
                     <li class="page-item <?= $page == $i ? 'active' : '' ?>">
-                        <a class="page-link" href="?page=<?= $i ?>"><?= $i < 10 ? '0' . $i : $i ?></a>
+                        <a class="page-link" href="?<?= http_build_query($params) ?>"><?= $i < 10 ? '0' . $i : $i ?></a>
                     </li>
                 <?php endfor; ?>
                 <li class="page-item">
@@ -216,12 +230,14 @@ $stmt = $pdo->query($categories_sql);
     }
 
     let b;
-    function change_img(sid){
+
+    function change_img(sid) {
         b = sid;
         location = 'vb_data_update.php?sid=' + b;
     }
 
     let a;
+
     function delete_one(sid) {
         a = sid;
         let my_delete = document.querySelector('#my_delete');
