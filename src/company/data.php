@@ -12,11 +12,10 @@ $form_data1 = [
     '電話' => 'cp_phone',
     '電子郵件' => 'cp_email',
     '地址' => 'cp_address',
+    '統一編號' => 'cp_tax_id',
 ];
 $form_data2 = [
-    '統一編號' => 'cp_tax_id',
     '書籍庫存' => 'cp_stock',
-    'logo' => 'cp_logo',
     '建立日期' => 'cp_created_date',
 ];
 ?>
@@ -50,7 +49,7 @@ $form_data2 = [
     }
 
     .logo2 {
-        height:     70px;
+        height: 70px;
         position: absolute;
         bottom: 10vh;
         right: -5vh;
@@ -85,10 +84,16 @@ $form_data2 = [
                             <div class="pt-3 data_head">・<?= $k ?></div>
                             <div class="px-5 pt-3 data_body"><?= $row[$v] ?></div>
                         <?php endforeach; ?>
+                        <div>
+                            <div class="pt-3 data_head mb-5">・logo</div>
+                            <div class="ml-5" style="height: 230px;width: 230px;border: 1px solid #ddd;background-color:#fff">
+                                <img style="object-fit: contain;width: 100%;height: 100%" src="./logo/<?= htmlentities($row['cp_logo']) ?>" id="demo">
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div>
-                    
+
                 </div>
             </div>
             <div>
