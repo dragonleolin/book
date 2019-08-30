@@ -17,13 +17,13 @@ if ($page > $totalPages) {
 }
 $params = [];
 $where = ' WHERE 1 ';
-if(! empty($search)){
+if (!empty($search)) {
     $params['search'] = $search;
     $search = $pdo->quote("%$search%");
     $where .= " AND (`cp_name` LIKE $search OR `cp_contact_p` LIKE $search OR `cp_phone` LIKE $search OR `cp_email` LIKE $search OR `cp_address` LIKE $search OR `cp_account` LIKE $search) ";
 }
 
-$sql = "SELECT * FROM `cp_data_list` $where ORDER BY `sid` LIMIT ". ($page - 1) * $per_page .",". $per_page;
+$sql = "SELECT * FROM `cp_data_list` $where ORDER BY `sid` LIMIT " . ($page - 1) * $per_page . "," . $per_page;
 $stmt = $pdo->query($sql);
 $rows = $stmt->fetchAll();
 ?>
@@ -63,8 +63,8 @@ $rows = $stmt->fetchAll();
                     </button>
                 </li>
                 <li class="nav-item" style="flex-grow: 1">
-                    <form class="form-inline my-2 my-lg-0" name="form1">
-                        <input class="search form-control mr-sm-2" type="search" autocomplete="off" placeholder="Search" aria-label="Search" id="search" name="search" >
+                    <form class="form-inline my-2 my-lg-0" name="form1" >
+                        <input class="search form-control mr-sm-2" type="search" autocomplete="off" placeholder="Search" aria-label="Search" id="search" name="search">
                         <button class="btn btn-outline-warning my-2 my-sm-0" type="submit">
                             <i class="fas fa-search"></i>
                         </button>
@@ -88,8 +88,8 @@ $rows = $stmt->fetchAll();
                         <th scope="col">書籍庫存</th>
                         <th scope="col">帳號</th>
                         <th scope="col">密碼</th>
-                        <th scope="col">logo</th>
                         <th scope="col">註冊日期</th>
+                        <th scope="col">logo</th>
                         <th scope="col">修改</th>
                         <th scope="col">刪除</th>
                     </tr>
@@ -107,10 +107,41 @@ $rows = $stmt->fetchAll();
                             <td><?= htmlentities($r['cp_stock']) ?></td>
                             <td><?= htmlentities($r['cp_account']) ?></td>
                             <td><?= htmlentities($r['cp_password']) ?></td>
-                            <td><?= htmlentities($r['cp_logo']) ?></td>
                             <td><?= htmlentities($r['cp_created_date']) ?></td>
-                            <td><a href="CP_data_edit.php?sid=<?= $r['sid'] ?>"><i class="fas fa-edit"></i></a></td>
-                            <td><a href="javascript:delete_one(<?= $r['sid'] ?>)"><i class="fas fa-trash-alt"></i></a></td>
+                            <td style="width:5.3vw">
+                                <button type="button" class="btn btn-outline-primary" data-toggle="modal" data-target="#<?= 'logo' .  $r['sid']; ?>">
+                                    <i class="fas fa-plus-circle"></i>
+                                    顯示
+                                </button>
+                                <div class="modal fade" id="<?= 'logo' . $r['sid']; ?>" tabindex="-1" role="dialog" aria-labelledby="<?= 'logo' .  $r['sid']; ?>Title" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body" style="width:450px;width:450px;margin:0 auto">
+                                                <img style="object-fit: contain;width: 100%;height: 100%;" src="<?= 'logo/' . $r['cp_logo']; ?>" alt="">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <a href="CP_data_edit.php?sid=<?= $r['sid'] ?>">
+                                    <button type="button" class="btn btn-outline-primary">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                </a>
+                            </td>
+                            <td>
+                                <a href="javascript:delete_one(<?= $r['sid'] ?>)">
+                                    <button type="button" class="btn btn-outline-primary">
+                                        <i class="fas fa-trash-alt"></i>
+                                    </button>
+                                </a>
+                            </td>
                         </tr>
                     <?php endforeach; ?>
                 </tbody>
@@ -193,11 +224,6 @@ $rows = $stmt->fetchAll();
 </section>
 </div>
 <script>
-    // function data_search() {
-    //    if(empty(search.value)){
-    //        location ="CP_data_list.php";
-    //    }
-    // }
     function data_insert() {
         location = "CP_data_insert.php";
     }
