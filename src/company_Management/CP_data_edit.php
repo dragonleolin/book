@@ -31,7 +31,7 @@ $form_data2 = [
 $seq = "SELECT  1 + (SELECT count(*) FROM `cp_data_list` where `sid` < $sid)  FROM `cp_data_list` limit 1"; //拿到第幾筆
 $stmt2 = $pdo->query($seq)->fetch();
 foreach ($stmt2 as $k => $v) {
-    $previous_page = intval($v / 8) + 1;
+    $previous_page = intval(($v - 1) / 8) + 1;
 }
 ?>
 
