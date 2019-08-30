@@ -5,7 +5,17 @@ $page_title = '出版社書籍總表';
 $page = isset($_GET['page']) ? intval($_GET['page']) : 1; //用戶選取的頁數
 $per_page = 10; //每頁幾筆資料
 
-$t_sql = "SELECT COUNT(1) FROM `vb_books`";
+$search = isset($_GET['search']) ? $_GET['search'] : '';
+
+$params = [];
+$where = ' WHERE 1 ';
+if (!empty($search)) {
+    $params['search'] = $search;
+    $search = $pdo->quote("%$search%");
+    $where .= " AND (`isbn` LIKE $search OR `vb_books`.`name` LIKE $search OR `publishing` LIKE $search) ";
+}
+
+$t_sql = "SELECT COUNT(1) FROM `vb_books` $where";
 $totalRows = $pdo->query($t_sql)->fetch(PDO::FETCH_NUM)[0]; // 拿到總筆數
 $totalPages = ceil($totalRows / $per_page); //取得總頁數
 
@@ -18,28 +28,11 @@ if ($page > $totalPages) {
     header('Location: vb_data_list.php?page=' . $totalPages);
 };
 
-$search = isset($_GET['search']) ? $_GET['search'] : '';
 
-$params = [];
-$where = ' WHERE 1 ';
-if (!empty($search)) {
-    $params['search'] = $search;
-    $search = $pdo->quote("%$search%");
-    $where .= " AND (`isbn` LIKE $search OR `vb_books`.`name` LIKE $search OR `publishing` LIKE $search) ";
-}
-// $search_sql = "SELECT * FROM `vb_books` $where ORDER BY `sid` LIMIT " . ($page - 1) * $per_page . "," . $per_page;
 $categories_sql = "SELECT `vb_books`.*, `vb_categories`.`name` categories_name 
                     FROM `vb_books`  LEFT JOIN `vb_categories` ON `vb_books`.`categories` = `vb_categories`.`sid` $where
                     ORDER BY `sid` ASC LIMIT " . (($page - 1) * $per_page) . "," . $per_page;
 
-
-
-// $categories_sql = sprintf(
-//     "SELECT `vb_books`.*, `vb_categories`.`name` categories_name 
-//     FROM `vb_books` LEFT JOIN `vb_categories` ON `vb_books`.`categories` = `vb_categories`.`sid`ORDER BY `sid` ASC LIMIT %s, %s",
-//     ($page - 1) * $per_page,
-//     $per_page
-// );
 $stmt = $pdo->query($categories_sql);
 
 ?>
@@ -89,7 +82,7 @@ $stmt = $pdo->query($categories_sql);
                 <li class="nav-item" style="flex-grow: 1">
                     <form name="form2" class="form-inline my-2 my-lg-0">
                         <input class="search form-control mr-sm-2" id="search" name="search" type="search" placeholder="Search" aria-label="Search">
-                        <button class="btn btn-outline-warning my-2 my-sm-0" type="submit">
+                        <button class="btn btn-outline-warning my-2 my-sm-0" type="submit" onclick="search_text()">
                             <i class="fas fa-search"></i>
                         </button>
                     </form>
@@ -225,6 +218,11 @@ $stmt = $pdo->query($categories_sql);
     </div>
 </section>
 <script>
+    function search_text(){
+           
+    }
+
+
     function vb_data_insert() {
         location = "vb_data_insert.php";
     }
