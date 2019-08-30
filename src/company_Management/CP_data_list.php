@@ -58,7 +58,7 @@ foreach ($rows as $r) {
     right: 0;
     position: absolute;
     z-index: -1;   
-    opacity: 0.05   ;
+    opacity: 0.05;
 }
 </style>
 <?php include __DIR__ . '/../../pbook_index/__html_body.php' ?>
