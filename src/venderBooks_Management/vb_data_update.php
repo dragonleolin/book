@@ -29,9 +29,6 @@ foreach ($row as $r => $s) {
     }
 }
 
-
-// $my_categories = empty($_POST['categories']) ? 0 : intval($_POST['categories']);
-
 ?>
 
 <?php include __DIR__ . '/../../pbook_index/__html_head.php' ?>
@@ -140,7 +137,7 @@ foreach ($row as $r => $s) {
                         <div class="d-flex flex-wrap">
                             <?php foreach ($new_row as $k => $v) : ?>
                                 <div class="form-check" style="margin:0px 20px 10px 0px">
-                                    <input class="form-check-input" type="radio" name="categories" id="categories<?= $k ?>" <?= ($update_row['categories'] == $k ) ? 'checked' : '' ?>>
+                                    <input class="form-check-input" type="radio" name="categories" id="categories<?= $k ?>" value="<?= $k ?>" <?= ($update_row['categories'] == $k ) ? 'checked' : '' ?>>
                                     <label class="form-check-label" for="categories<?= $k ?>"><?= $v ?></label>
                                 </div>
                             <?php endforeach; ?>
@@ -319,16 +316,16 @@ foreach ($row as $r => $s) {
                 .then(response => {
                     return response.json();
                 })
-                // 收到後台回傳的新增判斷(是否成功,然後顯示到前台讓用戶知道)
-                // 新增成功跳回出版社書籍的datalist,失敗就回到上一層
+                // 收到後台回傳的修改判斷(是否成功,然後顯示到前台讓用戶知道)
+                // 修改成功跳回出版社書籍的datalist,失敗就回到上一層
                 .then(json => {
                     console.log(json);
                     if (json.success) {
                         success.style.display = 'block';
                         container2.style.display = 'none';
-                        // setTimeout(function() {
-                        //     location.href = document.referrer;
-                        // }, 1000)
+                        setTimeout(function() {
+                            location.href = document.referrer;
+                        }, 1000)
                     } else {
                         my_false.style.display = 'block';
                         container2.style.display = 'none';

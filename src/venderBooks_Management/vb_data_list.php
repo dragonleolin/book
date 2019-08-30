@@ -5,7 +5,7 @@ $page_title = '出版社書籍總表';
 $page = isset($_GET['page']) ? intval($_GET['page']) : 1; //用戶選取的頁數
 $per_page = 10; //每頁幾筆資料
 
-$t_sql = "SELECT COUNT(1) FROM `vb_books` ";
+$t_sql = "SELECT COUNT(1) FROM `vb_books`";
 $totalRows = $pdo->query($t_sql)->fetch(PDO::FETCH_NUM)[0]; // 拿到總筆數
 $totalPages = ceil($totalRows / $per_page); //取得總頁數
 
@@ -132,8 +132,8 @@ $stmt = $pdo->query($categories_sql);
                                             </div>
                                             <div class="modal-footer">
                                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
-                                                <button type="button" class="btn btn-primary" onclick="change_img()">修改圖片</button>
-                                                <a id="a" style="display:none" type="button" class="btn btn-primary" href="vb_data_update.php?sid=<?= $row[$i]['sid'] ?>">修改圖片</a>
+                                                <button type="button" class="btn btn-primary" onclick="change_img(<?= $row[$i]['sid'] ?>)">修改圖片</button>
+                                                <!-- <a id="a" style="display:none" type="button" class="btn btn-primary" href="vb_data_update.php?sid=<?= $row[$i]['sid'] ?>">修改圖片</a> -->
                                             </div>
                                         </div>
                                     </div>
@@ -215,12 +215,13 @@ $stmt = $pdo->query($categories_sql);
         location = "vb_data_insert.php";
     }
 
-    function change_img(){
-        document.querySelector('#a').click();
+    let b;
+    function change_img(sid){
+        b = sid;
+        location = 'vb_data_update.php?sid=' + b;
     }
 
     let a;
-
     function delete_one(sid) {
         a = sid;
         let my_delete = document.querySelector('#my_delete');
