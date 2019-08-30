@@ -38,7 +38,7 @@ $stmt = $pdo->query($categories_sql);
 
 ?>
 
-<?php include __DIR__ . '/../../pbook_index/__html_head.php' ?>
+<?php include __DIR__ . '/__html_head.php' ?>
 <style>
     body {
         background: url(../../images/bg.png) repeat center top;

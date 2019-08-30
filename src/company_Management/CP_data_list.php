@@ -5,7 +5,14 @@ $page_title = '出版社總表';
 $page = isset($_GET['page']) ? intval($_GET['page']) : 1;
 $search = isset($_GET['search']) ? $_GET['search'] : '';
 $per_page = 8;    //一頁10筆
-$totalRows = $pdo->query("SELECT COUNT(1) FROM `cp_data_list`")->fetch(PDO::FETCH_NUM)[0];    // 拿到總筆數
+$params = [];
+$where = ' WHERE 1 ';
+if (!empty($search)) {
+    $params['search'] = $search;
+    $search = $pdo->quote("%$search%");
+    $where .= " AND (`cp_name` LIKE $search OR `cp_contact_p` LIKE $search OR `cp_phone` LIKE $search OR `cp_email` LIKE $search OR `cp_address` LIKE $search OR `cp_account` LIKE $search) ";
+}
+$totalRows = $pdo->query("SELECT COUNT(1) FROM `cp_data_list` $where ")->fetch(PDO::FETCH_NUM)[0];    // 拿到總筆數
 $totalPages = ceil($totalRows / $per_page);    //算總頁數
 if ($page < 1) {
     header('Location: CP_data_list.php');
@@ -15,14 +22,6 @@ if ($page > $totalPages) {
     header('Location: CP_data_list.php?page=' . $totalPages);
     exit;
 }
-$params = [];
-$where = ' WHERE 1 ';
-if (!empty($search)) {
-    $params['search'] = $search;
-    $search = $pdo->quote("%$search%");
-    $where .= " AND (`cp_name` LIKE $search OR `cp_contact_p` LIKE $search OR `cp_phone` LIKE $search OR `cp_email` LIKE $search OR `cp_address` LIKE $search OR `cp_account` LIKE $search) ";
-}
-
 $sql = "SELECT * FROM `cp_data_list` $where ORDER BY `sid` LIMIT " . ($page - 1) * $per_page . "," . $per_page;
 $stmt = $pdo->query($sql);
 $rows = $stmt->fetchAll();
@@ -63,7 +62,7 @@ $rows = $stmt->fetchAll();
                     </button>
                 </li>
                 <li class="nav-item" style="flex-grow: 1">
-                    <form class="form-inline my-2 my-lg-0" name="form1" >
+                    <form class="form-inline my-2 my-lg-0" name="form1">
                         <input class="search form-control mr-sm-2" type="search" autocomplete="off" placeholder="Search" aria-label="Search" id="search" name="search">
                         <button class="btn btn-outline-warning my-2 my-sm-0" type="submit">
                             <i class="fas fa-search"></i>
