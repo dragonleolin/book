@@ -42,6 +42,9 @@ foreach ($rows as $r) {
         bottom: 3%;
         left: 50%;
     }
+    .vertical td{
+        vertical-align:middle;
+    }
 </style>
 <?php include __DIR__ . '/../../pbook_index/__html_body.php' ?>
 <?php include __DIR__ . '/../../pbook_index/__navbar.php' ?>
@@ -98,21 +101,21 @@ foreach ($rows as $r) {
                         <th scope="col">刪除</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody class="vertical">
                     <?php foreach ($rows as $r) : ?>
                         <tr>
-                            <td style="vertical-align:middle;"><?= $r['sid'] ?></td>
-                            <td style="vertical-align:middle;"><?= htmlentities($r['cp_name']) ?></td>
-                            <td style="vertical-align:middle;"><?= htmlentities($r['cp_contact_p']) ?></td>
-                            <td style="vertical-align:middle;"><?= htmlentities($r['cp_phone']) ?></td>
-                            <td style="vertical-align:middle;"><?= htmlentities($r['cp_email']) ?></td>
-                            <td style="vertical-align:middle;"><?= htmlentities($r['cp_address']) ?></td>
-                            <td style="vertical-align:middle;"><?= htmlentities($r['cp_tax_id']) ?></td>
-                            <td style="vertical-align:middle; width:3vw"><?= htmlentities($stock[$r['sid']]["SUM(`vb_books`.`stock`)"]) ?></td>
-                            <td style="vertical-align:middle;"><?= htmlentities($r['cp_account']) ?></td>
-                            <td style="vertical-align:middle;"><?= htmlentities($r['cp_password']) ?></td>
-                            <td style="vertical-align:middle;"><?= htmlentities($r['cp_created_date']) ?></td>
-                            <td style="vertical-align:middle; width:5.3vw">
+                            <td><?= $r['sid'] ?></td>
+                            <td><?= htmlentities($r['cp_name']) ?></td>
+                            <td><?= htmlentities($r['cp_contact_p']) ?></td>
+                            <td><?= htmlentities($r['cp_phone']) ?></td>
+                            <td><?= htmlentities($r['cp_email']) ?></td>
+                            <td><?= htmlentities($r['cp_address']) ?></td>
+                            <td><?= htmlentities($r['cp_tax_id']) ?></td>
+                            <td style="width:3vw"><?= htmlentities($stock[$r['sid']]["SUM(`vb_books`.`stock`)"]) ?></td>
+                            <td><?= htmlentities($r['cp_account']) ?></td>
+                            <td><?= htmlentities($r['cp_password']) ?></td>
+                            <td><?= htmlentities($r['cp_created_date']) ?></td>
+                            <td style="width:5.3vw">
                                 <button type="button" class="btn btn-outline-primary" data-toggle="modal" data-target="#<?= 'logo' .  $r['sid']; ?>">
                                     <i class="fas fa-plus-circle"></i>
                                     顯示
