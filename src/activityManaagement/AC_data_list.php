@@ -37,7 +37,7 @@ $stmt = $pdo->query($sql);
     }
 </style>
 <?php include __DIR__ . '/../../pbook_index/__html_body.php' ?>
-<?php include __DIR__ . '/AC__navbar.php' ?>
+<?php include __DIR__ . '/../../pbook_index/__navbar.php' ?>
 
 
 
@@ -106,7 +106,7 @@ $stmt = $pdo->query($sql);
                             <td><?= htmlentities($r['AC_organizer']) ?></td>
                             <td><?= htmlentities($r['AC_price']) ?></td>
                             <td><?= htmlentities($r['AC_created_at']) ?></td>
-                            <td><a href="AC_update.php?sid=<?= $r['AC_sid'] ?>"><i class="fas fa-edit"></i></a>
+                            <td><a href="AC_update.php?AC_sid=<?= $r['AC_sid'] ?>"><i class="fas fa-edit"></i></a>
                             <td><a href="javascript:delete_one(<?= $r['AC_sid'] ?>)"><i class="fas fa-trash-alt"></i></a></td>
                         </tr>
                         <?php } ?>
