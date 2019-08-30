@@ -15,10 +15,9 @@ $params = [];
 $where = ' WHERE 1 ';
 if (!empty($search)) {
     $params['search'] = $search;
-    $search = $pdo->quote("%$search%");
-    $where .= " AND (`MR_name` LIKE $search OR `MR_email` LIKE $search OR `MR_mobile` LIKE $search) ";
+    $search1 = $pdo->quote("%$search%");
+    $where .= " AND (`MR_name` LIKE $search1 OR `MR_email` LIKE $search1 OR `MR_mobile` LIKE $search1) ";
 }
-
 
 $count = "SELECT COUNT(1) FROM `mr_information` $where"; //用count計算出總筆數
 
@@ -70,8 +69,9 @@ $rows = $stmt->fetchAll();
                         </button>
                     </li>
                     <li class="nav-item" style="flex-grow: 1">
-                        <form name="form2" class="form-inline my-2 my-lg-0" onsubmit="return checkForm2()">
-                            <input class="search form-control mr-sm-2" id="search_bar" name="search_bar" type="search" placeholder="Search" aria-label="Search">
+                        <form name="form2" class="form-inline my-2 my-lg-0" >
+                            <input class="search form-control mr-sm-2" id="search_bar" name="search" value="<?= $search?>"
+                             type="search" placeholder="Search" aria-label="Search">
                             <button class="btn btn-outline-warning my-2 my-sm-0" type="submit">
                                 <i class="fas fa-search"></i>
                             </button>
@@ -171,17 +171,18 @@ $rows = $stmt->fetchAll();
 
 
     function checkForm2() {
-        let fd2 = new FormData(document.form1);
         let s = document.querySelector('#search_bar').value;
 
-        fetch(`MR_searchAPI.php?s=${s}`)
-            .then(Response => {
-                return Response.json();
-            })
-            .then(json => {
-                console.log(json);
-            });
-        return false;
+        // let fd2 = new FormData(document.form1);
+        
+        // fetch(`MR_searchAPI.php?s=${s}`)
+        //     .then(Response => {
+        //         return Response.json();
+        //     })
+        //     .then(json => {
+        //         console.log(json);
+        //     });
+        // return false;
     }
 
     function delete_one(sid) {

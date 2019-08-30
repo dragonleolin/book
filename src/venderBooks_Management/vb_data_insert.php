@@ -111,7 +111,7 @@ $my_categories = empty($_POST['categories']) ? 0 : intval($_POST['categories']);
                             <input type="file" class="form-control-file" id="pic" name="pic">
                         </div>
                         <div style="height: 230px;width: 230px;border: 1px solid #ddd">
-                            <img style="object-fit: contain;width: 100%;height: 100%" id="demo" />
+                            <img style="object-fit: contain;width: 100%;height: 100%" id="demo"/>
                         </div>
                     </div>
 
