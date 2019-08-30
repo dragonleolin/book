@@ -30,6 +30,31 @@ $form_data2 = [
         right: 10%;
         top: 0;
     }
+
+    .data {
+        border-radius: 20px;
+        margin: 2rem 0px 0px 4rem;
+        width: 58vw;
+        /* background-color: #9cc5a1; */
+        /* padding: 0 10px 10px 0; */
+    }
+
+    .data_head {
+        font-size: 2rem;
+        color: #fff;
+    }
+
+    .data_body {
+        font-size: 1.2rem;
+        color: #fff;
+    }
+
+    .logo2 {
+        height:     70px;
+        position: absolute;
+        bottom: 10vh;
+        right: -5vh;
+    }
 </style>
 <?php include __DIR__ . '/__html_body.php' ?>
 <?php include __DIR__ . '/__navbar.php' ?>
@@ -44,24 +69,30 @@ $form_data2 = [
         </nav>
 
         <div class="container position-relative">
-            <div style="text-align: center">
+            <!-- <div style="text-align: center">
                 <button type="button" class="btn btn-warning position-absolute rand_button">修改資料</button>
-            </div>
-            <div class="data card mx-auto">
-                <div class="card-body d-flex pl-5" >
-                    <div class="container ">
+            </div> -->
+            <div class="card data">
+                <div class="card-body d-flex pl-5 pb-5" style="background:#2d3a3a;border-radius: 20px;">
+                    <div class="container">
                         <?php foreach ($form_data1 as $k => $v) : ?>
-                            <div class="pt-3" style="font-size:2rem">・<?= $k ?></div>
-                            <div class="px-5 py-1" style="font-size:1.2rem ;color:#2d3a3aaf"><?= $row[$v] ?></div>
+                            <div class="pt-3 data_head">・<?= $k ?></div>
+                            <div class="px-5 pt-3 data_body"><?= $row[$v] ?></div>
                         <?php endforeach; ?>
                     </div>
                     <div class="container pl-5">
                         <?php foreach ($form_data2 as $k => $v) : ?>
-                            <div class="pt-3" style="font-size:2rem">・<?= $k ?></div>
-                            <div class="px-5 py-1" style="font-size:1.2rem ;color:#2d3a3aaf"><?= $row[$v] ?></div>
+                            <div class="pt-3 data_head">・<?= $k ?></div>
+                            <div class="px-5 pt-3 data_body"><?= $row[$v] ?></div>
                         <?php endforeach; ?>
                     </div>
                 </div>
+                <div>
+                    
+                </div>
+            </div>
+            <div>
+                <img class="logo2" src="../../images/icon_logo2.svg" alt="">
             </div>
             <!-- <div class="container position-relative" style="margin-left:calc( 50% - 314px)">
             
