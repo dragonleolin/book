@@ -23,6 +23,7 @@ $page_title = '登入';
         body {
             background: url(../images/bg.png) repeat center top;
         }
+
         .wrapper {
             width: 600px;
             background: #2d3a3a;
@@ -57,12 +58,13 @@ $page_title = '登入';
         }
 
         #info_position {
-            left: -26%;
-            top: 6%;
+            left: 26.5%;
+            top: 36%;
         }
+
         #info_position2 {
-            left: -26%;
-            top: 6%;
+            left: 26.5%;
+            top: 36%;
         }
     </style>
     <?php include __DIR__ . '/__html_body.php' ?>
@@ -77,13 +79,13 @@ $page_title = '登入';
         </ul>
     </nav>
 
-    <div class="wrapper" >
-        <div class="border_dot" >
+    <div class="wrapper" id="wrapper">
+        <div class="border_dot">
             <h5 class="card-title">品書網管理者登入</h5>
             <form name="form1" onsubmit="return checkForm()">
                 <div class="form-group">
                     <label for="account">帳號</label>
-                    <input type="text" class="form-control" id="account" name="account" >
+                    <input type="text" class="form-control" id="account" name="account">
                     <small id="accountHelp" class="form-text"></small>
                 </div>
                 <div class="form-group">
@@ -95,22 +97,23 @@ $page_title = '登入';
                     <button type="submit" class="btn btn-warning" id="submit_btn">&nbsp;登&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;入&nbsp;</button>
                 </div>
             </form>
-            <div class="success update card position-absolute" id="info_position" style="display:none; background:#fff">
-                <div class="success card-body">
-                    <label class="success_text" id="info_bar"></label>
-                    <div><img class="success_img" src="../images/icon_checked.svg"></div>
-                </div>
-            </div>
-            <div class="success update card position-absolute" id="info_position2" style="display:none; background:#2d3a3a;box-shadow: 0px 0px 10px red;">
-                <div class="success card-body">
-                    <label class="success_text" id="info_bar2" style="color: #fff;  background:#2d3a3a"></label>
-                    <div><img class="success_img" src="../images/icon_false.svg"></div>
-                </div>
-            </div>
+        </div>
+    </div>
+    <div class="success update card position-absolute" id="info_position" style="display:none; background:#fff">
+        <div class="success card-body">
+            <label class="success_text" id="info_bar"></label>
+            <div><img class="success_img" src="../images/icon_checked.svg"></div>
+        </div>
+    </div>
+    <div class="success update card position-absolute" id="info_position2" style="display:none; background:#2d3a3a;box-shadow: 0px 0px 10px red;">
+        <div class="success card-body">
+            <label class="success_text" id="info_bar2" style="color: #fff;  background:#2d3a3a"></label>
+            <div><img class="success_img" src="../images/icon_false.svg"></div>
         </div>
     </div>
     <script>
-         let info_bar = document.querySelector('#info_bar');
+        let wrapper = document.querySelector('#wrapper');
+        let info_bar = document.querySelector('#info_bar');
         let info_bar2 = document.querySelector('#info_bar2');
         let info_position = document.querySelector('#info_position');
         let info_position2 = document.querySelector('#info_position2');
@@ -165,11 +168,13 @@ $page_title = '登入';
                         info_bar2.innerHTML = json.info;
                         if (json.success) {
                             info_position.style.display = 'block';
+                            wrapper.style.display = 'none';
                             setTimeout(function() {
                                 location.href = '../_index.php';
                             }, 1000);
                         } else {
                             info_position2.style.display = 'block';
+                            wrapper.style.display = 'none'; 
                             setTimeout(function() {
                                 location.href = window.location.href;
                             }, 1000);

@@ -125,10 +125,10 @@ foreach ($cates as $r) {
                     $row = $books_stmt->fetchAll();
                     for ($i = 0; $i < count($row); $i++) : ?>
                         <tr>
-                            <td><?= $row[$i]['sid']; ?></td>
-                            <td><?= $row[$i]['isbn']; ?></td>
-                            <td><?= $row[$i]['name']; ?></td>
-                            <td>
+                            <td style="vertical-align:middle;"><?= $row[$i]['sid']; ?></td>
+                            <td style="vertical-align:middle;"><?= $row[$i]['isbn']; ?></td>
+                            <td style="vertical-align:middle;"><?= $row[$i]['name']; ?></td>
+                            <td style="vertical-align:middle;">
                                 <button type="button" class="btn btn-outline-primary" data-toggle="modal" data-target="#<?= 'book' . $row[$i]['sid']; ?>">
                                     <i class="fas fa-plus-circle"></i>
                                     顯示
@@ -154,16 +154,16 @@ foreach ($cates as $r) {
                                     </div>
                                 </div>
                             </td>
-                            <td><?= $cate_dict[$row[$i]['categories']]; ?></td>
-                            <td><?= $row[$i]['author']; ?></td>
-                            <td><?= $row[$i]['publishing']; ?></td>
-                            <td><?= $row[$i]['publish_date']; ?></td>
-                            <td><?= $row[$i]['version']; ?></td>
-                            <td><?= $row[$i]['fixed_price']; ?></td>
-                            <td><?= $row[$i]['page']; ?></td>
-                            <td><?= $row[$i]['stock']; ?></td>
-                            <td><a href="vb_data_update.php?sid=<?= $row[$i]['sid'] ?>"><i class="fas fa-edit"></i></a></td>
-                            <td><a href="#" onclick="delete_one(<?= $row[$i]['sid'] ?>)" id="btn_delete"><i class="fas fa-trash-alt"></i></a></td>
+                            <td style="vertical-align:middle;"><?= $cate_dict[$row[$i]['categories']]; ?></td>
+                            <td style="vertical-align:middle;"><?= $row[$i]['author']; ?></td>
+                            <td style="vertical-align:middle;"><?= $row[$i]['publishing']; ?></td>
+                            <td style="vertical-align:middle;"><?= $row[$i]['publish_date']; ?></td>
+                            <td style="vertical-align:middle;"><?= $row[$i]['version']; ?></td>
+                            <td style="vertical-align:middle;"><?= $row[$i]['fixed_price']; ?></td>
+                            <td style="vertical-align:middle;"><?= $row[$i]['page']; ?></td>
+                            <td style="vertical-align:middle;"><?= $row[$i]['stock']; ?></td>
+                            <td style="vertical-align:middle;"><a href="vb_data_update.php?sid=<?= $row[$i]['sid'] ?>"><i class="fas fa-edit"></i></a></td>
+                            <td style="vertical-align:middle;"><a href="#" onclick="delete_one(<?= $row[$i]['sid'] ?>)" id="btn_delete"><i class="fas fa-trash-alt"></i></a></td>
                         </tr>
                     <?php endfor; ?>
                 </tbody>

@@ -1,17 +1,13 @@
 <?php
 require __DIR__. '/__admin_required.php';
 require __DIR__ . '/__connect_db.php';
-$page_title = '資料修改';
 
-$sid = isset($_GET['sid']) ? intval($_GET['sid']) : 0;
-if (empty($sid)) {
-    header('Location: CP_data_list.php');
-    exit;
-}
+$page_title = '資料修改';
+$sid = $_SESSION['loginUser2']['sid'];
 $sql = "SELECT * FROM `cp_data_list` WHERE `sid` = $sid";
 $row = $pdo->query($sql)->fetch();
 if (empty($row)) {
-    header('Location: CP_data_list.php');
+    header('Location:data.php');
     exit;
 }
 $form_data1 = [
@@ -19,23 +15,14 @@ $form_data1 = [
     '聯絡人' => 'cp_contact_p',
     '電話' => 'cp_phone',
     '電子郵件' => 'cp_email',
+];
+$form_data2 = [
     '地址' => 'cp_address',
     '統一編號' => 'cp_tax_id',
 ];
-$form_data2 = [
-    '書籍庫存' => 'cp_stock',
-    '帳號' => 'cp_account',
-    '密碼' => 'cp_password',
-];
-
-$seq = "SELECT  1 + (SELECT count(*) FROM `cp_data_list` where `sid` < $sid)  FROM `cp_data_list` limit 1"; //拿到第幾筆
-$stmt2 = $pdo->query($seq)->fetch();
-foreach ($stmt2 as $k => $v) {
-    $previous_page = intval(($v - 1) / 8) + 1;
-}
 ?>
 
-<?php include __DIR__ . '/../../pbook_index/__html_head.php' ?>
+<?php include __DIR__ . '/__html_head.php' ?>
 <style>
     body {
         background: url(../../images/bg.png) repeat center top;
@@ -46,8 +33,8 @@ foreach ($stmt2 as $k => $v) {
         top: 30%;
     }
 </style>
-<?php include __DIR__ . '/../../pbook_index/__html_body.php' ?>
-<?php include __DIR__ . '/../../pbook_index/__navbar.php' ?>
+<?php include __DIR__ . '/__html_body.php' ?>
+<?php include __DIR__ . '/__navbar.php' ?>
 <!-- 右邊section資料欄位 -->
 <section class="p-4 container-fluid">
     <div class="container">
@@ -60,7 +47,7 @@ foreach ($stmt2 as $k => $v) {
         <!-- 每個人填資料的區塊 -->
         <div class="container position-relative" style="margin-left:calc( 50% - 314px)">
             <div class="row">
-                <form name="form1" id="form1" style="width:1000px" onsubmit="return checkForm()">
+                <form id="form1" name="form1" style="width:1000px" onsubmit="return checkForm()">
                     <input type="hidden" name="sid" value="<?= $row['sid'] ?>">
                     <div class="form-group d-flex">
                         <div class="container">
@@ -92,7 +79,7 @@ foreach ($stmt2 as $k => $v) {
                                     </button>
                                 </div>
                                 <div style="height: 230px;width: 230px;border: 1px solid #ddd">
-                                    <img style="object-fit: contain;width: 100%;height: 100%"src="./logo/<?= htmlentities($row['cp_logo']) ?>"  id="demo">
+                                    <img style="object-fit: contain;width: 100%;height: 100%"src="../company_Management/logo/<?= htmlentities($row['cp_logo']) ?>"  id="demo">
                                 </div>
                             </div>
                         </div>
@@ -161,21 +148,6 @@ foreach ($stmt2 as $k => $v) {
             pattern: /^\d{8}$/,
             info: '請輸入正確統一編號',
         },
-        {
-            id: 'cp_stock',
-            pattern: /^\d{1,3}$/,
-            info: '請輸入正確庫存',
-        },
-        {
-            id: 'cp_account',
-            pattern: /^\w{6,}$/,
-            info: '請輸入正確帳號',
-        },
-        {
-            id: 'cp_password',
-            pattern: /^\w{6,}$/,
-            info: '請輸入正確密碼',
-        },
     ]
     let s, item;
     for (s in required_fields) {
@@ -201,7 +173,7 @@ foreach ($stmt2 as $k => $v) {
         }
         let fd = new FormData(document.form1);
         if (isPass) {
-            fetch('CP_data_edit_api.php', {
+            fetch('data_edit_api.php', {
                     method: 'POST',
                     body: fd,
                 })
@@ -217,7 +189,7 @@ foreach ($stmt2 as $k => $v) {
                         btn1.style.display = 'none';
                         form1.style.display = 'none';
                         setTimeout(function(){
-                                location.href = 'CP_data_list.php?page=<?= $previous_page ?>';
+                                location.href = 'data.php';
                         }, 1000);
                     } else {
                         info_position.style.display = 'none';
@@ -227,4 +199,4 @@ foreach ($stmt2 as $k => $v) {
         return false;
     }
 </script>
-<?php include __DIR__ . '/../../pbook_index/__html_foot.php' ?>
+<?php include __DIR__ . '/__html_foot.php' ?>
