@@ -92,7 +92,7 @@ foreach ($stmt2 as $k => $v) {
                                     </button>
                                 </div>
                                 <div style="height: 230px;width: 230px;border: 1px solid #ddd">
-                                    <img style="object-fit: contain;width: 100%;height: 100%" id="demo">
+                                    <img style="object-fit: contain;width: 100%;height: 100%"src="./logo/<?= htmlentities($row['cp_logo']) ?>"  id="demo">
                                 </div>
                             </div>
                         </div>
@@ -173,11 +173,6 @@ foreach ($stmt2 as $k => $v) {
             id: 'cp_password',
             pattern: /^\w{6,}$/,
             info: '請輸入正確密碼',
-        },
-        {
-            id: 'cp_logo',
-            pattern: /\S{1,}/i,
-            info: '請輸入正確logo',
         },
     ]
     let s, item;

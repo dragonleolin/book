@@ -47,6 +47,11 @@ if (empty($row)) {
                                 <input type="text" class="form-control" id="BR_name" name="BR_name" value="<?= htmlentities($row['BR_name']) ?>">
                             </div>
                             <div class="form-group">
+                                <label for="BR_password" class="update_label">書評人密碼</label>
+                                <span id="BR_passwordHelp" style="margin:0px 10px;color:red"></span>
+                                <input type="text" class="form-control" id="BR_password" name="BR_password" value="<?= htmlentities($row['BR_password']) ?>">
+                            </div>
+                            <div class="form-group">
                                 <label for="BR_phone" class="update_label">書評人電話</label>
                                 <span id="BR_phoneHelp" style="margin:0px 10px;color:red"></span>
                                 <input type="text" class="form-control" id="BR_phone" name="BR_phone" value="<?= htmlentities($row['BR_phone']) ?>">
@@ -107,6 +112,11 @@ if (empty($row)) {
                 id: 'BR_name',
                 checker: /^\S{2,}/,
                 info: '請輸入正確姓名格式'
+            },
+            {
+                id: 'BR_password',
+                checker: /\w{8}/,
+                info: '請輸入正確密碼格式'
             },
             {
                 id: 'BR_phone',
@@ -189,7 +199,6 @@ if (empty($row)) {
 
             return false;
         }
-
     </script>
 </div>
 <?php include __DIR__ . '/__html_foot.php' ?>

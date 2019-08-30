@@ -21,6 +21,7 @@ if (!empty($_FILES['pic']['name'])) { // 有沒有上傳
 
         move_uploaded_file($_FILES['pic']['tmp_name'], $upload_dir . $new_filename . $new_exts);
         //  move_uploaded_file(暫存檔案路徑檔名,目標檔案路徑檔名)
+        unlink($upload_dir.$_POST['pic1']);
         $new_picName = $new_filename . $new_exts;
        
     }
@@ -81,7 +82,7 @@ if ($stmt->rowCount() == 1) {
     $result['info'] = '修改成功';
 } else {
     $result['code'] = 420;
-    $result['info'] = '請更改資料或返回';
+    $result['info'] = '請更改資料或返回上一頁';
 }
 
 echo json_encode($result, JSON_UNESCAPED_UNICODE);
