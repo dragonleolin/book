@@ -27,32 +27,20 @@ $form_data2 = [
         background: url(../../images/bg.png) repeat center top;
     }
 
-    .rand_button {
-        right: 10%;
-        top: 0;
+    .edit_button {
+        right: -13%;
+        top: -6%; 
     }
 
     .data {
         border-radius: 20px;
-        margin: 2rem 0px 0px 4rem;
+        margin: 0px 0px 0px 4rem;
         width: 62vw;
         border: none;
     }
 
-    .card_shad {
-        border-radius: 20px;
-        margin: 2rem 0px 0px 4rem;
-        width: 62vw;
-        height: 80vh;
-        left: -2.5vw;
-        top: -1vh;
-        background-color: #9cc5a1;
-        z-index: -1;
-
-    }
-
     .data_head {
-        font-size: 2rem;
+        font-size: 1.5rem;
         color: #fff;
     }
 
@@ -60,7 +48,18 @@ $form_data2 = [
         font-size: 1.2rem;
         color: #fff;
     }
+    
+    .card_shad {
+        border-radius: 20px;
+        margin: 2rem 0px 0px 4rem;
+        width: 62vw;
+        height: 72vh;
+        left: -2.5vw;
+        top: -1vh;
+        background-color: #9cc5a1;
+        z-index: -1;
 
+    }
     /* .logo2 {
         height: 70px;
         position: absolute;
@@ -81,9 +80,12 @@ $form_data2 = [
         </nav>
 
         <div class="container position-relative">
-            <!-- <div style="text-align: center">
-                <button type="button" class="btn btn-warning position-absolute rand_button">修改資料</button>
-            </div> -->
+            <div style="text-align: center;">
+                <button type="button" class="btn btn-outline-primary position-absolute edit_button" onclick="location.href='data_edit.php'">
+                <i class="fas fa-edit"style="font-size:1.5rem;"></i>
+                <span style="font-size:1.5rem;">修改資料</span>
+                </button>
+            </div>
             <div class="card data">
                 <div class="card-body d-flex pl-5 pb-5" style="background:#2d3a3a;border-radius: 20px;">
                     <div class="container">
