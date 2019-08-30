@@ -12,6 +12,17 @@ if (empty($_POST['cp_name']) or empty($_POST['sid'])) {
     echo json_encode($result, JSON_UNESCAPED_UNICODE);
     exit;
 }
+$upload_dir = __DIR__ . '/logo/';
+$allowed_types = [
+    'image/png',
+    'image/jpeg',
+    'image/svg+xml',
+];
+$exts = [
+    'image/png' => '.png',
+    'image/jpeg' => '.jpg',
+    'image/svg+xml' => '.svg',
+];
 $sql = "UPDATE `cp_data_list` SET 
     `cp_name` = ?,
     `cp_contact_p` = ?,
