@@ -51,10 +51,10 @@ $form_data2 = [
         <!-- 每個人填資料的區塊 -->
         <div class="container position-relative" style="margin-left:calc( 50% - 314px)">
             <div style="text-align: center">
-                <button type="button" class="btn btn-warning position-absolute rand_button" onclick="rand_data()">隨機產生</button>
+                <button type="button" id="btn2" class="btn btn-warning position-absolute rand_button" onclick="rand_data()">隨機產生</button>
             </div>
             <div class="row">
-                <form name="form1" style="width:1000px" onsubmit="return checkForm()">
+                <form name="form1" id="form1" style="width:1000px" onsubmit="return checkForm()">
                     <div class="form-group d-flex">
                         <div class="container">
                             <?php foreach ($form_data1 as $k => $v) : ?>
@@ -91,7 +91,7 @@ $form_data2 = [
                         </div>
                     </div>
 
-                    <div style="text-align: center">
+                    <div style="text-align: center" id="btn1">
                         <button type="submit" class="btn btn-warning" id="submit_btn">&nbsp;確&nbsp;認&nbsp;新&nbsp;增&nbsp;</button>
                     </div>
                 </form>
@@ -211,6 +211,9 @@ $form_data2 = [
     let info_bar2 = document.querySelector('#info_bar2');
     let info_position = document.querySelector('#info_position');
     let info_position2 = document.querySelector('#info_position2');
+    let btn1 = document.querySelector('#btn1');
+    let btn2 = document.querySelector('#btn2');
+    let form1 = document.querySelector('#form1');
     const required_fields = [{
             id: 'cp_name',
             pattern: /^\S{2,}/,
@@ -295,6 +298,9 @@ $form_data2 = [
                     info_bar2.innerHTML = json.info;
                     if (json.success) {
                         info_position.style.display = 'block';
+                        btn1.style.display = 'none';
+                        btn2.style.display = 'none';
+                        form1.style.display = 'none';
                         setTimeout(function() {
                             location.href = 'CP_data_list.php';
                         }, 1000);
