@@ -16,7 +16,7 @@ $exts = [
 
 $new_filename = '';
 $new_ext ='';
-$a[]="";
+// $a[]="";
 $fileCount = count($_FILES['mb_pic']['name']);
 
 for($i=0;$i<$fileCount;$i++){
@@ -27,12 +27,12 @@ for($i=0;$i<$fileCount;$i++){
                 $new_ext = $exts[$_FILES['mb_pic']['type'][$i]];
                 move_uploaded_file($_FILES['mb_pic']['tmp_name'][$i], $upload_dir. $new_filename. $new_ext);
                 //函式 : move_uploaded_file(要移动的文件名稱,移動文件的新位置。);
-                var_dump($fileCount);
-                $a[]=$new_filename.$new_ext[$i];
+                // var_dump($fileCount);
+                // $a[]=$new_filename.$new_ext[$i];
         }
     }
 }
-print_r($_FILES);
+// print_r($_FILES);
 
 $result = [
     'success'=> false,
