@@ -1,4 +1,7 @@
 <?php
+require __DIR__.'/../../vendor/autoload.php';
+use Tracy\Debugger;
+Debugger::enable();
 
 $page_name = 'event_list';
 $page_title = '活動列表';

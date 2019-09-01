@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<input id="isbn" type="text">
+<button onclick="isbn_test()">測試</button>
+
+
+<script>
+
+    function isbn_test(){
+        let isbn = document.querySelector('#isbn').value;
+        let test = 0;
+        let isPass = false;
+        isbn = isbn.trim();
+
+        if(isbn.length == 10){
+            for(let i=0; i<9; i++){
+                test += isbn[i]*(10-i);
+            }
+            test = 11 - test%11;
+            test = test==10? 'X':test;
+            isPass = isbn[9]==test? 'true':'false';
+        }
+        else if(isbn.length == 13){
+            for(let i=0; i<12; i++){
+                let weighting = (i%2)? 3:1;
+                test += isbn[i]*weighting;
+            }
+
+            test = 10 - test%10;
+            isPass = isbn[12]==test? 'true':'false';
+        }
+        else if(isbn.length == 8){
+            for(let i=0; i<7; i++){
+                test += isbn[i]*(8-i);
+            }
+            test = 11 - test%11;
+            test = test==10? 'X':test;
+            isPass = isbn[7]==test? 'true':'false';
+        }
+        else{
+            console.log('格式錯誤');
+        }
+        console.log(isPass);
+        return isPass;
+    }
+
+
+</script>
+
+</body>
+</html>

@@ -1,4 +1,5 @@
 <?php
+
 $page_name = 'event_insert_pbd';
 $page_title = '新增滿減促銷活動';
 require __DIR__ . '/__connect_db.php';
@@ -79,13 +80,13 @@ include __DIR__ . '/../../pbook_index/__navbar.php';
                                         <div class="d-flex">
                                             <input type="text" class="form-control" id="discount_amount1"
                                                    name="discount_amount1">
-                                            <small class="form-text"></small>
                                             <select class="form-control sel_discount_type" name="discount_type"
                                                     id="discount_type" onchange="sel_type(0)">
                                                 <option value="1">元</option>
                                                 <option value="2">百分比</option>
                                             </select>
                                         </div>
+                                        <small class="form-text"></small>
                                     </div>
                                 </div>
                                 <div style="display: none" id="priceStage2"
@@ -101,12 +102,12 @@ include __DIR__ . '/../../pbook_index/__navbar.php';
                                         <div class="d-flex">
                                             <input type="text" class="form-control" id="discount_amount2"
                                                    name="discount_amount2">
-                                            <small class="form-text"></small>
                                             <select class="form-control sel_discount_type" onchange="sel_type(1)">
                                                 <option value="1">元</option>
                                                 <option value="2">百分比</option>
                                             </select>
                                         </div>
+                                        <small class="form-text"></small>
                                     </div>
                                 </div>
                                 <div style="display: none" id="priceStage3"
@@ -122,12 +123,12 @@ include __DIR__ . '/../../pbook_index/__navbar.php';
                                         <div class="d-flex">
                                             <input type="text" class="form-control" id="discount_amount3"
                                                    name="discount_amount3">
-                                            <small class="form-text"></small>
                                             <select class="form-control sel_discount_type" onchange="sel_type(2)">
                                                 <option value="1">元</option>
                                                 <option value="2">百分比</option>
                                             </select>
                                         </div>
+                                        <small class="form-text"></small>
                                     </div>
                                 </div>
 
@@ -151,85 +152,87 @@ include __DIR__ . '/../../pbook_index/__navbar.php';
 
     <script>
         "use strict";
-        //
-        //let item;
-        //const submit_btn = document.querySelector('#submit_btn');
-        //const coupon_limit = document.querySelector('#coupon_limit');
-        //let limit_const = <?//= json_encode($limit_const); ?>//;
-        //limit_const.forEach((val, ind) => {
-        //    let limit_opt = document.createElement('option');
-        //    limit_opt.value = val.sid;
-        //    limit_opt.innerHTML = val.description;
-        //    coupon_limit.appendChild(limit_opt);
-        //});
-        //
-        //const required_fields = [
-        //    {
-        //        id: 'coupon_content',
-        //        pattern: /^\S{2}/,
-        //        info: '請輸入正確活動名稱',
-        //    },
-        //    {
-        //        id: 'coupon_no',
-        //        pattern: /^\w{5}/,
-        //        info: '請輸入正確優惠券格式',
-        //    },
-        //    {
-        //        id: 'coupon_rule',
-        //        pattern: /^\d/,
-        //        info: '請輸入正確規則',
-        //    },
-        //    {
-        //        id: 'coupon_price',
-        //        pattern: /^\d/,
-        //        info: '請輸入正確金額',
-        //    },
-        //    {
-        //        id: 'coupon_send_type',
-        //        pattern: /^\d/,
-        //        info: '請輸入正確發送模式',
-        //    },
-        //    {
-        //        id: 'coupon_start_time',
-        //        pattern: /^\d{4}\-\d{2}\-\d{2}$/,
-        //        info: '請輸入正確時間格式',
-        //    },
-        //    {
-        //        id: 'coupon_end_time',
-        //        pattern: /^\d{4}\-\d{2}\-\d{2}$/,
-        //        info: '請輸入正確時間格式',
-        //    },
-        //];
-        //
-        //for (let s in required_fields) {
-        //    item = required_fields[s];
-        //    item.el = document.querySelector('#' + item.id);
-        //    item.infoEl = item.el.closest('.form-group').querySelector('small');
-        //}
+
+        let item;
+
+        const required_fields = [
+            {
+                id: 'event_name',
+                pattern: /^\S{2}/,
+                info: '請輸入正確活動名稱',
+            },
+            {
+                id: 'event_start_time',
+                pattern: /^\d{4}\-\d{2}\-\d{2}$/,
+                info: '請輸入正確時間格式',
+            },
+            {
+                id: 'event_end_time',
+                pattern: /^\d{4}\-\d{2}\-\d{2}$/,
+                info: '請輸入正確時間格式',
+            },
+            {
+                id: 'price_condition1',
+                pattern: /^\d{1,}/,
+                info: '請輸入正確金額',
+            },
+            {
+                id: 'discount_amount1',
+                pattern: /^\d{1,}/,
+                info: '請輸入正確金額',
+            },
+            {
+                id: 'price_condition2',
+                pattern: /\d{0,}/,
+                info: '請輸入正確金額',
+            },
+            {
+                id: 'discount_amount2',
+                pattern: /^\d{0,}/,
+                info: '請輸入正確金額',
+            },
+            {
+                id: 'price_condition3',
+                pattern: /\d{0,}/,
+                info: '請輸入正確金額',
+            },
+            {
+                id: 'discount_amount3',
+                pattern: /^\d{0,}/,
+                info: '請輸入正確金額',
+            },
+        ];
+
+        for (let s in required_fields) {
+            item = required_fields[s];
+            item.el = document.querySelector('#' + item.id);
+            item.infoEl = item.el.closest('.form-group').querySelector('small');
+        }
 
         function checkForm() {
             let isPass = true;
-            // submit_btn.style.display = 'none';
-            //
-            // for (let s in required_fields) {
-            //
-            //     //先重置
-            //     item = required_fields[s];
-            //     item.el.style.border = '1px solid #ccc';
-            //     item.infoEl.innerText = '';
-            //
-            //     //再檢查
-            //     if (!item.pattern.test(item.el.value)) {
-            //         item.el.style.border = '1px solid red';
-            //         item.infoEl.innerText = item.info;
-            //         isPass = false;
-            //     }
-            // }
+            submit_btn.style.display = 'none';
+
+            for (let s in required_fields) {
+
+                //先重置
+                item = required_fields[s];
+                item.el.style.border = '1px solid #ccc';
+                item.infoEl.innerText = '';
+
+                //再檢查
+                if (!item.pattern.test(item.el.value)) {
+                    item.el.style.border = '1px solid red';
+                    item.infoEl.innerText = item.info;
+                    isPass = false;
+                }
+            }
 
             if (isPass) {
 
                 return true;
             } else {
+                submit_btn.style.display = 'inline-block';
                 return false;
             }
         }
