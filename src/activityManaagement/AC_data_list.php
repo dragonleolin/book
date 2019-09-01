@@ -26,7 +26,7 @@ if(!empty($_FILES['AC_pic'])){ //檔案有沒有上傳
         $new_ext = $exts[$_FILES['AC_pic']['type']];
 
         move_uploaded_file($_FILES['AC_pic']['tmp_name'], $upload_dir. $new_filename. $new_ext);
-        //函式 : move_uploaded_file(要移动的文件名稱,移動文件的新位置。);
+        //函式 : move_uploaded_file(要移動的文件名稱,移動文件的新位置。);
     }
 }
 
@@ -67,7 +67,51 @@ $stmt = $pdo->query($sql);
 <?php include __DIR__ . '/../../pbook_index/__html_body.php' ?>
 <?php include __DIR__ . '/../../pbook_index/__navbar.php' ?>
 
+<!--Ajax搜尋功能---------------------------------------------------------->
+<script src="../../lib/jquery-3.4.1.js"></script>
+<script>
+function renderBooks(books){
+    var tbody = document.getElementById('books');
+    var html = '';
+    for(var i = 0; i < books.length; i++){
+        html += '<tr>';
+        html += '<td>' + books[i].AC_sid+'</td>';
+        html += '<td>' + books[i].AC_name+'</td>';
+        html += '<td>' + books[i].AC_title+'</td>';
+        html += '<td>' + books[i].AC_type+'</td>';
+        html += '<td>' + books[i].AC_date+'</td>';
+        html += '<td>' + books[i].AC_eventArea+'</td>';
+        html += '<td>' + books[i].AC_mobile+'</td>';
+        html += '<td>' + books[i].AC_organizer+'</td>';
+        html += '<td>' + books[i].AC_brief+'</td>';
+        html += '<td>' + books[i].AC_created_at+'</td>';
+        html += '<td><a href="AC_update.php?AC_sid='+books[i].AC_sid+'"><i class="fas fa-edit"></i></a></td>';
+        html += '<td><a href="javascript:delete_one('+books[i].AC_sid+')"><i class="fas fa-trash-alt"></i></a></td>';
+        html += '</tr>';
+    }
+    tbody.innerHTML = html;
+    return false;
+}
+// -----------------------------------------------------------------------
+function search(){
+    //取得搜尋字串
+    var searchItem = document.getElementById('AC_search'); //取ID
+    var value = searchItem.value; //取值
+    //ajax
+$.ajax({
+    method:"GET",
+    url:"./AC_search.php", //進api
+    data: {search: value}
+})
 
+.done(function(msg){
+    var books = JSON.parse(msg);
+    renderBooks(books);
+});
+    return false;
+}
+</script>
+<!--Ajax搜尋功能---------------------------------------------------------->
 
     <!-- 右邊section資料欄位 -->
     <section>
@@ -92,8 +136,9 @@ $stmt = $pdo->query($sql);
                     </li>
                     <li class="nav-item" style="flex-grow: 1">
                         <form class="form-inline my-2 my-lg-0">
-                            <input class="search form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-                            <button class="btn btn-outline-warning my-2 my-sm-0" type="submit">
+                            <!-- #AC_search -->
+                            <input id="AC_search" class="search form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+                            <button class="btn btn-outline-warning my-2 my-sm-0" type="button" onclick="search()">
                                 <i class="fas fa-search"></i>
                             </button>
                         </form>
@@ -120,8 +165,8 @@ $stmt = $pdo->query($sql);
                             <th scope="col">刪除</th>
                         </tr>
                     </thead>
-
-                    <tbody>
+                    <!-- #books -->
+                    <tbody id="books">
                         <?php while($r=$stmt->fetch()){ ?>
                         <tr>
                             <td><?= htmlentities($r['AC_sid']) ?></td>
