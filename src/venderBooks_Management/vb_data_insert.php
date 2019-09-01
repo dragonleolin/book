@@ -212,7 +212,7 @@ $totalPages = ceil($totalRows / $per_page); //取得總頁數
             }
             test = 11 - test % 11;
             test = test == 10 ? 'X' : test;
-            isPass = isbn[9] == test ? 'true' : 'false';
+            isPass = isbn[9] == test ? true : false;
         } else if (isbn.length == 13) {
             for (let i = 0; i < 12; i++) {
                 let weighting = (i % 2) ? 3 : 1;
@@ -220,24 +220,31 @@ $totalPages = ceil($totalRows / $per_page); //取得總頁數
             }
 
             test = 10 - test % 10;
-            isPass = isbn[12] == test ? 'true' : 'false';
+            isPass = isbn[12] == test ? true : false;
         } else if (isbn.length == 8) {
             for (let i = 0; i < 7; i++) {
                 test += isbn[i] * (8 - i);
             }
             test = 11 - test % 11;
             test = test == 10 ? 'X' : test;
-            isPass = isbn[7] == test ? 'true' : 'false';
+            isPass = isbn[7] == test ? true : false;
         } else {
             console.log('格式錯誤');
         }
-        setTimeout(function() {
-            document.querySelector('#isbnHelp').innerHTML = '請填寫正確isbn碼格式';
-        }, 2000)
+        console.log(isPass);
 
+        var isbn_border = document.querySelector('#isbn');
+        if (!isPass) {
+            setTimeout(function() {
+                isbn_border.style.border = '1px solid red';
+                document.querySelector('#isbnHelp').innerHTML = '請填寫正確isbn碼格式';
+            }, 500)
+        } else {
+            isbn_border.style.border = '1px solid #CCCCCC';
+            document.querySelector('#isbnHelp').innerHTML = '';
+        }
         return isPass;
     }
-
 
     function checkForm() {
         // 判斷書籍名稱,作者,出版社,版次是否有填寫
