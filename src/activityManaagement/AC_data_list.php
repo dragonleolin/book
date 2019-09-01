@@ -3,40 +3,12 @@ require __DIR__. '/AC__connect_db.php';
 $page_name = 'AC_date_list';
 $page_title = '品書 - 活動總表';
 
-//移動上傳的圖檔到指定資料夾
-$upload_dir = __DIR__. '/AC_pic/';
-$allowed_types = [
-    'image/png',
-    'image/jpeg',
-];
-
-$exts = [
-    'image/png' => '.png',
-    'image/jpeg' => '.jpg',
-];
-
-$new_filename = '';
-$new_ext = '';
-
-
-if(!empty($_FILES['AC_pic'])){ //檔案有沒有上傳
-    if(in_array($_FILES['AC_pic']['type'],$allowed_types)){  //上傳檔案類型是否符合
-
-        $new_filename = sha1(uniqid(). $_FILES['AC_pic']['name']); //為了避免檔案重名(因為重名新的會覆蓋掉舊的),所以將上傳檔案重新命名
-        $new_ext = $exts[$_FILES['AC_pic']['type']];
-
-        move_uploaded_file($_FILES['AC_pic']['tmp_name'], $upload_dir. $new_filename. $new_ext);
-        //函式 : move_uploaded_file(要移動的文件名稱,移動文件的新位置。);
-    }
-}
-
 // ---------------------------------------------------------------
 $page = isset($_GET['page']) ? intval($_GET['page']) : 1; //用戶選頁
 
 $per_page = 10; //每筆顯示頁數
 
 $ac_sql = "SELECT COUNT(1) FROM `ac_pbook`";
-
 $totalRows = $pdo->query($ac_sql)->fetch(PDO::FETCH_NUM)[0];//總筆數
 $totalPages = ceil($totalRows/$per_page);//總頁數
 
@@ -67,7 +39,8 @@ $stmt = $pdo->query($sql);
 <?php include __DIR__ . '/../../pbook_index/__html_body.php' ?>
 <?php include __DIR__ . '/../../pbook_index/__navbar.php' ?>
 
-<!--Ajax搜尋功能---------------------------------------------------------->
+
+<!--印出---------------------------------------------------------->
 <script src="../../lib/jquery-3.4.1.js"></script>
 <script>
 function renderBooks(books){
@@ -92,7 +65,18 @@ function renderBooks(books){
     tbody.innerHTML = html;
     return false;
 }
-// -----------------------------------------------------------------------
+
+//--Enter監聽測試---------------------------------------------------------------------------
+document.onkeypress = function(e){ //對整個頁面監聽 
+var keyNum = window.event ? e.keyCode :e.which; //獲取被按下的鍵值
+//判斷使用者按下Enter鍵 (監聽13）
+if(keyNum==13){  
+    search() ;
+    return false;
+}};
+
+
+//--Ajax搜尋功能---------------------------------------------------------------------------
 function search(){
     //取得搜尋字串
     var searchItem = document.getElementById('AC_search'); //取ID
@@ -111,7 +95,7 @@ $.ajax({
     return false;
 }
 </script>
-<!--Ajax搜尋功能---------------------------------------------------------->
+
 
     <!-- 右邊section資料欄位 -->
     <section>
@@ -125,7 +109,7 @@ $.ajax({
                     <li class="nav-item">
                         <div style="padding: 0.375rem 0.75rem;">
                             <i class="fas fa-check"></i>
-                            目前總計___筆資料
+                            目前總計<?= $totalRows ?>筆資料
                         </div>
                     </li>
                     <li class="nav-item" style="margin: 0px 10px">
