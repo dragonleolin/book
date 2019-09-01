@@ -65,7 +65,7 @@ $totalPages = ceil($totalRows / $per_page); //取得總頁數
                         <label for="isbn" class="update_label">・ISBN</label>
                         <span style="margin:0px 20px" class="my_text_blacktea_fifty">阿拉伯數字10碼或13碼</span>
                         <span style="margin:0px -10px;color:red" id="isbnHelp"></span>
-                        <input type="text" class="update form-control" id="isbn" name="isbn">
+                        <input type="text" class="update form-control" id="isbn" name="isbn" onchange="isbn_test()">
                     </div>
 
                     <div class="form-group">
@@ -192,6 +192,53 @@ $totalPages = ceil($totalRows / $per_page); //取得總頁數
         };
         reader.readAsDataURL(file);
     });
+
+    function isbn_test() {
+        let isbn = document.querySelector('#isbn').value;
+        let test = 0;
+        let isPass = false;
+        isbn = isbn.trim();
+
+        if (isbn.length == 10) {
+            for (let i = 0; i < 9; i++) {
+                test += isbn[i] * (10 - i);
+            }
+            test = 11 - test % 11;
+            test = test == 10 ? 'X' : test;
+            isPass = isbn[9] == test ? true : false;
+        } else if (isbn.length == 13) {
+            for (let i = 0; i < 12; i++) {
+                let weighting = (i % 2) ? 3 : 1;
+                test += isbn[i] * weighting;
+            }
+
+            test = 10 - test % 10;
+            isPass = isbn[12] == test ? true : false;
+        } else if (isbn.length == 8) {
+            for (let i = 0; i < 7; i++) {
+                test += isbn[i] * (8 - i);
+            }
+            test = 11 - test % 11;
+            test = test == 10 ? 'X' : test;
+            isPass = isbn[7] == test ? true : false;
+        } else {
+            console.log('格式錯誤');
+        }
+        console.log(isPass);
+
+        var isbn_border = document.querySelector('#isbn');
+        if (!isPass) {
+            setTimeout(function() {
+                isbn_border.style.border = '1px solid red';
+                document.querySelector('#isbnHelp').innerHTML = '請填寫正確isbn碼格式';
+            }, 500)
+        } else {
+            isbn_border.style.border = '1px solid #CCCCCC';
+            document.querySelector('#isbnHelp').innerHTML = '';
+        }
+        return isPass;
+    }
+
 
     function checkForm() {
         // 判斷書籍名稱,作者,版次是否有填寫

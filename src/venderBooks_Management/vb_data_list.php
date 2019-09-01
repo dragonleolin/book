@@ -36,7 +36,7 @@ $books_sql = "SELECT `vb_books`.*, `cp_data_list`.`cp_name` publishing
 $books_stmt = $pdo->query($books_sql);
 
 
-$cat_sql = "SELECT * FROM `vb_categories` ";
+$cat_sql = "SELECT * FROM `vb_categories`";
 $cates = $pdo->query($cat_sql)->fetchAll();
 $cate_dict = [];
 foreach ($cates as $r) {

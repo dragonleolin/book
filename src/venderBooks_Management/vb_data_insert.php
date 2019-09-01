@@ -243,12 +243,8 @@ $totalPages = ceil($totalRows / $per_page); //取得總頁數
             isbn_border.style.border = '1px solid #CCCCCC';
             document.querySelector('#isbnHelp').innerHTML = '';
         }
-
-
-
         return isPass;
     }
-
 
     function checkForm() {
         // 判斷書籍名稱,作者,出版社,版次是否有填寫
