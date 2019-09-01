@@ -1,6 +1,7 @@
 <?php
-require __DIR__ . '/__admin_required.php';
+require __DIR__ . '/__admin_required.php';   
 require __DIR__ . '/__connect_db.php';
+
 $page_name = 'vb_data_list';
 $page_title = '出版社書籍總表';
 $page = isset($_GET['page']) ? intval($_GET['page']) : 1; //用戶選取的頁數
@@ -110,6 +111,7 @@ foreach ($cates as $r) {
                 <thead>
                     <tr>
                         <th scope="col">#</th>
+                        <th scope="col">編號</th>
                         <th scope="col">ISBN</th>
                         <th scope="col">書籍名稱</th>
                         <th scope="col">封面</th>
@@ -130,6 +132,7 @@ foreach ($cates as $r) {
                     $row = $books_stmt->fetchAll();
                     for ($i = 0; $i < count($row); $i++) : ?>
                         <tr>
+                            <td style="vertical-align:middle;"><?= (($page-1)*$per_page)+($i+1)?></td>
                             <td style="vertical-align:middle;"><?= $row[$i]['sid']; ?></td>
                             <td style="vertical-align:middle;"><?= $row[$i]['isbn']; ?></td>
                             <td style="vertical-align:middle;"><?= $row[$i]['name']; ?></td>

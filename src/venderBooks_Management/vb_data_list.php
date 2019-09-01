@@ -36,7 +36,7 @@ $books_sql = "SELECT `vb_books`.*, `cp_data_list`.`cp_name` publishing
 $books_stmt = $pdo->query($books_sql);
 
 
-$cat_sql = "SELECT * FROM `vb_categories` ";
+$cat_sql = "SELECT * FROM `vb_categories`";
 $cates = $pdo->query($cat_sql)->fetchAll();
 $cate_dict = [];
 foreach ($cates as $r) {
@@ -105,6 +105,7 @@ foreach ($cates as $r) {
                 <thead>
                     <tr>
                         <th scope="col">#</th>
+                        <th scope="col">編號</th>
                         <th scope="col">ISBN</th>
                         <th scope="col">書籍名稱</th>
                         <th scope="col">封面</th>
@@ -125,6 +126,7 @@ foreach ($cates as $r) {
                     $row = $books_stmt->fetchAll();
                     for ($i = 0; $i < count($row); $i++) : ?>
                         <tr>
+                            <td style="vertical-align:middle;"><?= (($page-1)*$per_page)+($i+1) ?></td>
                             <td style="vertical-align:middle;"><?= $row[$i]['sid']; ?></td>
                             <td style="vertical-align:middle;"><?= $row[$i]['isbn']; ?></td>
                             <td style="vertical-align:middle;"><?= $row[$i]['name']; ?></td>
