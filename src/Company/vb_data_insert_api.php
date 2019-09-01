@@ -41,8 +41,13 @@ if(empty($_POST['name'])){
     exit;
 };
 
-$sql = "INSERT INTO `vb_books`(`isbn`, `name`, `author`, `publishing`, `publish_date`, `version`, `fixed_price`, `stock`, `page`, `pic`, `categories`, `introduction`, `created_at`) 
-        VALUES (?,?,?,?,?,?,?,?,?,?,?,?,NOW())";
+$no_sql = "SELECT `no` FROM `vb_books` JOIN `cp_data_list` ON {$_SESSION['loginUser2']['sid']} = `vb_books`.`publishing` AND {$_SESSION['loginUser2']['sid']} = `cp_data_list`.`sid` ORDER BY `no` DESC";
+$no_stmt = $pdo -> query($no_sql);
+$no_row = $no_stmt->fetch();
+
+
+$sql = "INSERT INTO `vb_books`(`isbn`, `name`, `author`, `publishing`, `publish_date`, `version`, `fixed_price`, `stock`, `page`, `pic`, `categories`, `introduction`, `created_at`, `no`) 
+        VALUES (?,?,?,?,?,?,?,?,?,?,?,?,NOW(),{$no_row['no']}+1)";
 
 $stmt = $pdo -> prepare($sql);
 
