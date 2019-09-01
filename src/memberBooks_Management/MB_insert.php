@@ -37,6 +37,10 @@ $t_sql = "SELECT COUNT(1) FROM `mb_books`";
 $totalRows = $pdo->query($t_sql)->fetch(PDO::FETCH_NUM)[0];
 $totalPages = ceil($totalRows / $per_page);
 
+$mrNo_sql = "SELECT `MR_number` FROM `mr_information`";
+$mrNo_s = $pdo ->query($mrNo_sql);
+$mr_no = $mrNo_s -> fetchAll();
+
 
 ?>
 <?php include __DIR__ . '/../../pbook_index/__html_head.php' ?>
@@ -70,7 +74,7 @@ $totalPages = ceil($totalRows / $per_page);
 
         <div class="container" style="margin:15px 0px 0px 0px">
 
-            <form name="form1" onsubmit="return checkForm();" style="margin-top: 10px;">
+            <form name="form1" onsubmit="return checkForm();" enctype="multipart/form-data"  style="margin-top: 10px;">
 
                 <section name="" id="" class="d-flex">
                     <section style="min-width:700px;margin:0px 30px">
@@ -130,7 +134,7 @@ $totalPages = ceil($totalRows / $per_page);
                         <div class="form-group d-flex">
                             <div class="col-lg-5">
                                 <label for="mb_pic" style="font-size: 20px">・請選擇書籍照片</label>
-                                <input type="file" class="form-control-file" id="mb_pic" name="mb_pic" style="display:none">
+                                <input type="file" class="form-control-file" id="mb_pic" name="mb_pic[]" style="display:none" multiple>
                                 <br>
                                 <button class="btn btn-outline-primary my-2 my-sm-0" type="button" onclick="uploadFile()">
                                     <i class="fas fa-plus-circle" style="margin-right:5px"></i>選擇檔案
@@ -186,6 +190,7 @@ $totalPages = ceil($totalRows / $per_page);
     let info_bar = document.querySelector('#info-bar');
     let success_bar = document.querySelector('#success_bar')
     const submit_btn = document.querySelector('#submit_btn');
+    let mb_shelveMember = document.querySelector('#mb_shelveMember')    
     let i, s, item;
 
     //檔案上傳
@@ -201,7 +206,7 @@ $totalPages = ceil($totalRows / $per_page);
             $('#demo').attr('src', e.target.result);
         }
         reader.readAsDataURL(file);
-    })
+    })  
 
     const require_fields = [{
             id: 'mb_isbn',
@@ -263,7 +268,6 @@ $totalPages = ceil($totalRows / $per_page);
     }
 
 
-
     function checkForm() {
 
         for (s in require_fields) {
@@ -285,6 +289,23 @@ $totalPages = ceil($totalRows / $per_page);
                 item.infoEl.innerHTML = item.info;
                 isPass = false;
             }
+        }
+
+        let mr_no = '<?php 
+        foreach($mr_no as $r){
+            $num = $r['MR_number'];
+            echo  $num;
+        };       
+         ?>';
+    console.log("mr_no=" +mr_no);
+
+        if(!mb_shelveMember.value == mr_no){
+            item = require_fields['mb_shelveMember'];
+            item.el = document.querySelector('#' + item.id);
+            item.infoEl = document.querySelector('#' + item.id + 'Help');
+            item.el.style.border = '1px solid red';
+            item.infoEl.innerHTML = item.info;
+            isPass = false;
         }
 
         let fd = new FormData(document.form1);
