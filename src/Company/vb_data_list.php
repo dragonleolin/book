@@ -1,5 +1,5 @@
 <?php
-require __DIR__ . '/__admin_required.php';
+// require __DIR__ . '/__admin_required.php';   
 require __DIR__ . '/__connect_db.php';
 
 $page_name = 'vb_data_list';
@@ -111,6 +111,7 @@ foreach ($cates as $r) {
                 <thead>
                     <tr>
                         <th scope="col">#</th>
+                        <th scope="col">編號</th>
                         <th scope="col">ISBN</th>
                         <th scope="col">書籍名稱</th>
                         <th scope="col">封面</th>
@@ -131,7 +132,8 @@ foreach ($cates as $r) {
                     $row = $books_stmt->fetchAll();
                     for ($i = 0; $i < count($row); $i++) : ?>
                         <tr>
-                            <td style="vertical-align:middle;"><?= $row[$i]['no']; ?></td>
+                            <td style="vertical-align:middle;"><?= (($page-1)*$per_page)+($i+1)?></td>
+                            <td style="vertical-align:middle;"><?= $row[$i]['sid']; ?></td>
                             <td style="vertical-align:middle;"><?= $row[$i]['isbn']; ?></td>
                             <td style="vertical-align:middle;"><?= $row[$i]['name']; ?></td>
                             <td style="vertical-align:middle;">

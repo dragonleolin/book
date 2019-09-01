@@ -1,5 +1,5 @@
 <?php
-require __DIR__ . '/__admin_required.php';
+// require __DIR__ . '/__admin_required.php';
 require __DIR__ . '/__connect_db.php';
 $page_name = 'vb_data_insert';
 $page_title = '新增出版社書籍';
