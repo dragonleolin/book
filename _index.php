@@ -2,6 +2,7 @@
 if (!isset($_SESSION)) {
     session_start();
 }
+require __DIR__ . '/pbook_index/__admin_required.php';
 ?>
 <!DOCTYPE html>
 <html lang="en">
