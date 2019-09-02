@@ -5,6 +5,8 @@ $db_name = 'pbook';
 $db_user = 'weihsun';
 $db_pass = '841012';
 
+
+
 $dsn = "mysql:host={$db_host};dbname={$db_name}";
 
 $pdo_options = [

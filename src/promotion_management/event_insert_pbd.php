@@ -10,19 +10,38 @@ include __DIR__ . '/../../pbook_index/__navbar.php';
 
 ?>
     <style>
+        body {
+            background: url(../../images/bg.png) repeat center top;
+        }
         small.form-text {
             color: red;
         }
+
     </style>
 
-    <div class="container-fluid pt-3">
-        <div class="row">
-            <div class="col-md-2"></div>
-            <div class="col-md-8">
+    <div class="container-fluid pt-5">
+
+        <nav class="navbar justify-content-between">
+            <div>
+                <h4>新增滿額折價活動</h4>
+                <div class="title_line"></div>
+            </div>
+            <ul class="nav justify-content-between">
+                <li class="nav-item" style="margin: 0px 10px">
+                    <button class="btn btn-outline-primary my-2 my-sm-0" type="button" onclick="location.href = 'event_list.php'">
+                        <i class="fas fa-arrow-circle-left"></i>
+                        回到上一頁
+                    </button>
+                </li>
+            </ul>
+        </nav>
+
+
+        <div class="row mt-4 ml-auto">
+            <div class="col-md-9 m-auto">
                 <div class="alert alert-primary" role="alert" id="info_bar" style="display: none"></div>
-                <div class="card">
+                <div class="card mb-5 pl-5 pr-5 pt-3">
                     <div class="card-body">
-                        <h5 class="card-title">新增滿減促銷活動</h5>
                         <form name="form1" onsubmit="return checkForm()" method="POST" action="event_insert_pbd2.php">
                             <div class="row">
                                 <div class="form-group col-md-6">
@@ -71,14 +90,15 @@ include __DIR__ . '/../../pbook_index/__navbar.php';
                                 <div id="priceStage1" class="row border-bottom justify-content-between mt-2">
                                     <div class="form-group col-md-6">
                                         <label for="price_condition1">每滿(元)</label>
-                                        <input type="text" class="form-control" id="price_condition1"
+                                        <input type="text" class="form-control price_condition" id="price_condition1"
                                                name="price_condition1">
                                         <small class="form-text"></small>
                                     </div>
                                     <div class="form-group col-md-6">
                                         <label for="discount_amount1">減</label>
                                         <div class="d-flex">
-                                            <input type="text" class="form-control" id="discount_amount1"
+                                            <input type="text" class="form-control discount_amount"
+                                                   id="discount_amount1"
                                                    name="discount_amount1">
                                             <select class="form-control sel_discount_type" name="discount_type"
                                                     id="discount_type" onchange="sel_type(0)">
@@ -93,14 +113,15 @@ include __DIR__ . '/../../pbook_index/__navbar.php';
                                      class="row border-bottom justify-content-between mt-2">
                                     <div class="form-group col-md-6">
                                         <label for="price_condition2">每滿(元)</label>
-                                        <input type="text" class="form-control" id="price_condition2"
+                                        <input type="text" class="form-control price_condition" id="price_condition2"
                                                name="price_condition2">
                                         <small class="form-text"></small>
                                     </div>
                                     <div class="form-group col-md-6">
                                         <label for="discount_amount2">減</label>
                                         <div class="d-flex">
-                                            <input type="text" class="form-control" id="discount_amount2"
+                                            <input type="text" class="form-control discount_amount"
+                                                   id="discount_amount2"
                                                    name="discount_amount2">
                                             <select class="form-control sel_discount_type" onchange="sel_type(1)">
                                                 <option value="1">元</option>
@@ -114,14 +135,15 @@ include __DIR__ . '/../../pbook_index/__navbar.php';
                                      class="row border-bottom justify-content-between mt-2">
                                     <div class="form-group col-md-6">
                                         <label for="price_condition3">每滿(元)</label>
-                                        <input type="text" class="form-control" id="price_condition3"
+                                        <input type="text" class="form-control price_condition" id="price_condition3"
                                                name="price_condition3">
                                         <small class="form-text"></small>
                                     </div>
                                     <div class="form-group col-md-6">
                                         <label for="discount_amount3">減</label>
                                         <div class="d-flex">
-                                            <input type="text" class="form-control" id="discount_amount3"
+                                            <input type="text" class="form-control discount_amount"
+                                                   id="discount_amount3"
                                                    name="discount_amount3">
                                             <select class="form-control sel_discount_type" onchange="sel_type(2)">
                                                 <option value="1">元</option>
@@ -173,32 +195,32 @@ include __DIR__ . '/../../pbook_index/__navbar.php';
             },
             {
                 id: 'price_condition1',
-                pattern: /^\d{1,}/,
+                pattern: /^\d{1,}$/,
                 info: '請輸入正確金額',
             },
             {
                 id: 'discount_amount1',
-                pattern: /^\d{1,}/,
+                pattern: /^\d{1,}$/,
                 info: '請輸入正確金額',
             },
             {
                 id: 'price_condition2',
-                pattern: /\d{0,}/,
+                pattern: /^\d{0,}$/,
                 info: '請輸入正確金額',
             },
             {
                 id: 'discount_amount2',
-                pattern: /^\d{0,}/,
+                pattern: /^\d{0,}$/,
                 info: '請輸入正確金額',
             },
             {
                 id: 'price_condition3',
-                pattern: /\d{0,}/,
+                pattern: /^\d{0,}$/,
                 info: '請輸入正確金額',
             },
             {
                 id: 'discount_amount3',
-                pattern: /^\d{0,}/,
+                pattern: /^\d{0,}$/,
                 info: '請輸入正確金額',
             },
         ];
@@ -228,8 +250,26 @@ include __DIR__ . '/../../pbook_index/__navbar.php';
                 }
             }
 
+            //測試階梯減價是否符合邏輯
             if (isPass) {
+                let price_condition = document.querySelectorAll('.price_condition');
+                let discount_amount = document.querySelectorAll('.discount_amount');
+                let price_condition_ar = [];
+                let discount_ratio = [];
+                let i = 0;
+                while (i<3 && price_condition[i].value) {
+                    price_condition_ar[i] = 1*price_condition[i].value;
+                    discount_ratio[i] = discount_amount[i].value / price_condition[i].value;
+                    if( i>0 && (price_condition_ar[i]<price_condition_ar[i-1] || discount_ratio[i]<discount_ratio[i-1])){
+                        isPass = false;
+                        document.querySelector('#price_condition'+(i+1)+' ~ small').innerHTML = '階梯減價邏輯錯誤';
+                    }
+                    i++;
+                }
+            }
 
+
+            if (isPass) {
                 return true;
             } else {
                 submit_btn.style.display = 'inline-block';
@@ -264,6 +304,8 @@ include __DIR__ . '/../../pbook_index/__navbar.php';
                 addStageBtn.style.display = 'none';
                 for (let i = 2; i <= 3; i++) {
                     let priceStage = document.querySelector('#priceStage' + i);
+                    document.querySelector('#price_condition'+i).value = '';
+                    document.querySelector('#discount_amount'+i).value = '';
                     priceStage.style.display = 'none';
                 }
                 stage = 0;

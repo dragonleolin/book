@@ -1,6 +1,8 @@
 <?php
+
 require __DIR__ . '/__admin_required.php';
 require __DIR__ . '/__connect_db.php';
+
 $page_name = 'MB_data_list';
 $page_title = '新增資料';
 
@@ -27,6 +29,8 @@ $categories_data = [
     20 => '專業/教科書/政府出版品',
 ];
 
+$sjdi;
+
 $sel_id = empty($_POST['mb_categories']) ? 0 : intval($_POST['mb_categories']);
 
 $page = isset($_GET['page']) ? intval($_GET['page']) : 1;
@@ -36,6 +40,10 @@ $t_sql = "SELECT COUNT(1) FROM `mb_books`";
 
 $totalRows = $pdo->query($t_sql)->fetch(PDO::FETCH_NUM)[0];
 $totalPages = ceil($totalRows / $per_page);
+
+$mrNo_sql = "SELECT `MR_number` FROM `mr_information`";
+$mrNo_s = $pdo->query($mrNo_sql);
+$mr_no = $mrNo_s->fetchAll();
 
 
 ?>
@@ -70,7 +78,7 @@ $totalPages = ceil($totalRows / $per_page);
 
         <div class="container" style="margin:15px 0px 0px 0px">
 
-            <form name="form1" onsubmit="return checkForm();" style="margin-top: 10px;">
+            <form name="form1" onsubmit="return checkForm();" enctype="multipart/form-data" style="margin-top: 10px;">
 
                 <section name="" id="" class="d-flex">
                     <section style="min-width:700px;margin:0px 30px">
@@ -130,7 +138,7 @@ $totalPages = ceil($totalRows / $per_page);
                         <div class="form-group d-flex">
                             <div class="col-lg-5">
                                 <label for="mb_pic" style="font-size: 20px">・請選擇書籍照片</label>
-                                <input type="file" class="form-control-file" id="mb_pic" name="mb_pic" style="display:none">
+                                <input type="file" class="form-control-file" id="mb_pic" name="mb_pic[]" style="display:none" multiple>
                                 <br>
                                 <button class="btn btn-outline-primary my-2 my-sm-0" type="button" onclick="uploadFile()">
                                     <i class="fas fa-plus-circle" style="margin-right:5px"></i>選擇檔案
@@ -149,13 +157,13 @@ $totalPages = ceil($totalRows / $per_page);
                                 foreach ($categories_data as $k => $v) :
                                     ?>
                                     <div style="width:150px">
-                                        <input class="form-check-input"  type="radio" name="mb_categories" id="mb_categories" value="<?= $k ?>" <?= $k == 1 ? 'checked' : '' ?>>
+                                        <input class="form-check-input" type="radio" name="mb_categories" id="mb_categories" value="<?= $k ?>" <?= $k == 1 ? 'checked' : '' ?>>
                                         <label class="form-check-label" for="mb_categories"><?= $v ?></label>
-                                        
+
                                     </div>
                                 <?php
                                     $i++;
-                                endforeach ?>   
+                                endforeach ?>
                             </div>
                         </div>
                         <div class="from-group" style="margin: -70px -20px 10px 0px; padding: 20px 50px 20px 30px;">
@@ -186,6 +194,7 @@ $totalPages = ceil($totalRows / $per_page);
     let info_bar = document.querySelector('#info-bar');
     let success_bar = document.querySelector('#success_bar')
     const submit_btn = document.querySelector('#submit_btn');
+    let mb_shelveMember = document.querySelector('#mb_shelveMember')
     let i, s, item;
 
     //檔案上傳
@@ -263,7 +272,6 @@ $totalPages = ceil($totalRows / $per_page);
     }
 
 
-
     function checkForm() {
 
         for (s in require_fields) {
@@ -285,6 +293,27 @@ $totalPages = ceil($totalRows / $per_page);
                 item.infoEl.innerHTML = item.info;
                 isPass = false;
             }
+        }
+
+        //核對會員編號是否存在於資料庫
+        let mr_no = '<?php
+                        foreach ($mr_no as $r) {
+                            $num = $r['MR_number'];
+                            echo  $num;
+                        };
+                        ?>';
+        // console.log("mr_no=" + mr_no +'<br>');
+        // console.log("mb_shelveMember.value=" + mb_shelveMember.value);
+        item.el = document.querySelector('#mb_shelveMember');
+        item.infoEl = document.querySelector('#mb_shelveMemberHelp');
+        if (mr_no.indexOf(mb_shelveMember.value) == -1) {
+            item.el.style.border = '1px solid red';
+            item.infoEl.innerHTML = '沒有查到此會員編號';
+            isPass = false;
+        }else{
+            item.el.style.border = '1px solid #CCCCCC';
+            item.infoEl.innerHTML = '';
+            isPass = true;
         }
 
         let fd = new FormData(document.form1);

@@ -5,6 +5,11 @@ $db_name = 'pbook';
 $db_user = 'Luke';
 $db_pass = 'admin';
 
+// $db_host = 'localhost';
+// $db_name = 'pbook';
+// $db_user = 'root';
+// $db_pass = 'root';
+
 $dsn = "mysql:host={$db_host};dbname={$db_name}";
 
 $pdo_options = [
