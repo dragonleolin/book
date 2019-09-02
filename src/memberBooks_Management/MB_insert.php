@@ -191,11 +191,6 @@ $mr_no = $mrNo_s->fetchAll();
 
 </div>
 <script>
-    let info_bar = document.querySelector('#info-bar');
-    let success_bar = document.querySelector('#success_bar')
-    const submit_btn = document.querySelector('#submit_btn');
-    let mb_shelveMember = document.querySelector('#mb_shelveMember')
-    let i, s, item;
 
     //檔案上傳
     function uploadFile() {
@@ -212,10 +207,71 @@ $mr_no = $mrNo_s->fetchAll();
         reader.readAsDataURL(file);
     })
 
-    const require_fields = [{
+    function isbn_test() {
+        let mb_isbn = document.querySelector('#mb_isbn').value;
+        let test = 0;
+        let isPass = false;
+        mb_isbn = mb_isbn.trim();
+
+        if (mb_isbn.length == 10) {
+            for (let i = 0; i < 9; i++) {
+                test += isbn[i] * (10 - i);
+            }
+            test = 11 - test % 11;
+            test = test == 10 ? 'X' : test;
+            isPass = mb_isbn[9] == test ? true : false;
+        } else if (mb_isbn.length == 13) {
+            for (let i = 0; i < 12; i++) {
+                let weighting = (i % 2) ? 3 : 1;
+                test += mb_isbn[i] * weighting;
+            }
+
+            test = 10 - test % 10;
+            isPass = mb_isbn[12] == test ? true : false;
+        } else if (mb_isbn.length == 8) {
+            for (let i = 0; i < 7; i++) {
+                test += mb_isbn[i] * (8 - i);
+            }
+            test = 11 - test % 11;
+            test = test == 10 ? 'X' : test;
+            isPass = mb_isbn[7] == test ? true : false;
+        } else {
+            console.log('格式錯誤');
+        }
+        
+
+        var isbn_border = document.querySelector('#mb_isbn');
+        if (!isPass) {
+            setTimeout(function() {
+                isbn_border.style.border = '1px solid red';
+                document.querySelector('#mb_isbnHelp').innerHTML = '請填寫正確ISBN碼格式';
+            }, 500)
+
+        } else {
+            isbn_border.style.border = '1px solid #CCCCCC';
+            document.querySelector('#mb_isbnHelp').innerHTML = '';
+        }
+        // console.log("驗證ISBN="+isPass);
+        return isPass;
+    }
+
+  
+
+
+    function checkForm() {
+        let info_bar = document.querySelector('#info-bar');
+        let success_bar = document.querySelector('#success_bar')
+        const submit_btn = document.querySelector('#submit_btn');
+        let mb_shelveMember = document.querySelector('#mb_shelveMember')
+        let i, s, item;
+
+        let isPass = true;
+        
+        const require_fields = [
+        {
             id: 'mb_isbn',
-            pattern: /\d{6,13}/,
-            info: '請輸入正確的ISBN',
+            pattern: /(^\d{10}$)|(^\d{13}$)/,
+            info: '請填寫正確ISBN碼格式',
         },
         {
             id: 'mb_name',
@@ -265,14 +321,11 @@ $mr_no = $mrNo_s->fetchAll();
 
     ];
 
-    for (s in require_fields) {
-        item = require_fields[s];
-        item.el = document.querySelector('#' + item.id);
-        item.infoEl = document.querySelector('#' + item.id + 'Help');
-    }
-
-
-    function checkForm() {
+        for (s in require_fields) {
+            item = require_fields[s];
+            item.el = document.querySelector('#' + item.id);
+            item.infoEl = document.querySelector('#' + item.id + 'Help');
+        }
 
         for (s in require_fields) {
             item = require_fields[s];
@@ -282,9 +335,7 @@ $mr_no = $mrNo_s->fetchAll();
         // info_bar.style.display = 'none';
         // info_bar.innerHTML = '';
 
-        //TODO: 檢查必要欄位，欄位值的格式
-        let isPass = true;
-        //方法二
+
         for (s in require_fields) {
             item = require_fields[s];
 
@@ -297,24 +348,29 @@ $mr_no = $mrNo_s->fetchAll();
 
         //核對會員編號是否存在於資料庫
         let mr_no = '<?php
-                        foreach ($mr_no as $r) {
-                            $num = $r['MR_number'];
-                            echo  $num;
-                        };
-                        ?>';
+            foreach ($mr_no as $r) {
+                $num = $r['MR_number'];
+                echo  $num;
+                 };
+            ?>';
         // console.log("mr_no=" + mr_no +'<br>');
         // console.log("mb_shelveMember.value=" + mb_shelveMember.value);
-        item.el = document.querySelector('#mb_shelveMember');
-        item.infoEl = document.querySelector('#mb_shelveMemberHelp');
+        itemEl = document.querySelector('#mb_shelveMember');
+        itemInfoEl = document.querySelector('#mb_shelveMemberHelp');
         if (mr_no.indexOf(mb_shelveMember.value) == -1) {
-            item.el.style.border = '1px solid red';
-            item.infoEl.innerHTML = '沒有查到此會員編號';
+            itemEl.style.border = '1px solid red';
+            itemInfoEl.innerHTML = '沒有查到此會員編號';
             isPass = false;
+            
         }else{
-            item.el.style.border = '1px solid #CCCCCC';
-            item.infoEl.innerHTML = '';
+            itemEl.style.border = '1px solid #CCCCCC';
+            itemInfoEl.innerHTML = '';
             isPass = true;
         }
+        console.log('isPass=' + isPass)
+
+
+        isPass = isbn_test();
 
         let fd = new FormData(document.form1);
 

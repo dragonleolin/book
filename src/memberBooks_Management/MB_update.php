@@ -89,7 +89,7 @@ $totalPages = ceil($totalRows / $per_page);
                         <div class="form-group">
                             <label for="mb_isbn">ISBN</label>
                             <span id="mb_isbnHelp" style="margin:0px 10px;color:red"></span>
-                            <input type="text" class="form-control" id="mb_isbn" name="mb_isbn" value="<?= htmlentities($row['mb_isbn']) ?>">
+                            <input type="text" class="form-control" id="mb_isbn" name="mb_isbn" value="<?= htmlentities($row['mb_isbn']) ?>" readonly="readonly" />
                         </div>
                         <div class="form-group">
                             <label for="mb_name">書名</label>
@@ -136,7 +136,7 @@ $totalPages = ceil($totalRows / $per_page);
                         <div class="form-group">
                             <label for="mb_shelveMember">上架會員</label>
                             <span id="mb_shelveMemberHelp" style="margin:0px 10px;color:red"></span>
-                            <input type="text" class="form-control" id="mb_shelveMember" name="mb_shelveMember" value="<?= htmlentities($row['mb_shelveMember']) ?>">
+                            <input type="text" class="form-control" id="mb_shelveMember" name="mb_shelveMember" value="<?= htmlentities($row['mb_shelveMember']) ?>" readonly="readonly" />
                         </div>
 
                         <div class="form-group d-flex">
@@ -254,12 +254,6 @@ $totalPages = ceil($totalRows / $per_page);
             pattern: /\S{1,}/,
             info: '請輸入正確的書況',
         },
-        {
-            id: 'mb_shelveMember',
-            pattern: /^\w\d{2,}/,
-            info: '請輸入正確的會員編號',
-        },
-
     ];
 
     for (s in require_fields) {
