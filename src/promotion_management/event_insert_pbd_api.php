@@ -8,15 +8,13 @@ $result = [
     'post' => $_POST,
 ];
 
-if (empty($_POST) or empty($_SESSION)) {
+if (empty($_POST)) {
     echo json_encode($result);
     exit;
 }
 
-$fd = array_merge($_SESSION['event_insert_pbd2'], $_POST);
-unset($_SESSION['event_insert_pbd2']);
 echo '<pre>';
-print_r($fd);
+print_r($_POST);
 echo '</pre>';
 
 
@@ -27,14 +25,14 @@ VALUES
 (?,?,?,NOW(),?,?,?,?,?)";
 $stmt = $pdo->prepare($sql);
 $stmt->execute([
-    $fd['event_name'],
-    $fd['event_start_time'],
-    $fd['event_end_time'],
-    $fd['event_pbd_type'],
-    $fd['user_level'],
-    $fd['group_type'],
-    $fd['cp_group_set'],
-    0
+    $_POST['event_name'],
+    $_POST['event_start_time'],
+    $_POST['event_end_time'],
+    $_POST['event_pbd_type'],
+    $_POST['user_level_type'],
+    0,
+    0,
+    0,
 ]);
 if ($stmt->rowCount() == 1) {
     $result['success'] = true;
@@ -46,6 +44,7 @@ if ($stmt->rowCount() == 1) {
 $event_id = $pdo->lastInsertId();
 echo 'event_id:' . $event_id;
 
+//輸入折價條件
 $i = 1;
 do {
     $sql = "INSERT INTO `pm_price_break_discounts`
@@ -55,10 +54,10 @@ do {
     $stmt = $pdo->prepare($sql);
     $stmt->execute([
         $event_id,
-        $fd['event_pbd_type'],
-        $fd['price_condition' . $i],
-        $fd['discount_amount' . $i],
-        $fd['discount_type'],
+        $_POST['event_pbd_type'],
+        $_POST['price_condition' . $i],
+        $_POST['discount_amount' . $i],
+        $_POST['discount_type'],
     ]);
     if ($stmt->rowCount() == 1) {
         $result['success'] = true;
@@ -69,16 +68,15 @@ do {
         $result['info'] = '輸入失敗';
     }
     $i++;
-} while ($i <= 3 and $fd['event_pbd_type'] == 4 and !empty($fd['price_condition' . $i]));
+} while ($i <= 3 and $_POST['event_pbd_type'] == 4 and !empty($_POST['price_condition' . $i]));
 
 
-//輸入參與廠商
-if ($fd['cp_group_set'] == 1) {
-
+//輸入適用會員
+if ($_POST['user_level_type'] == 1) {
     $sql = "";
-    foreach ($fd['cp_group'] as $k => $v) {
+    foreach ($_POST['user_level'] as $k => $v) {
         $sql = $sql . "INSERT INTO `pm_condition`
-        (`event_id`, `cp_id`)
+        (`event_id`, `user_level`)
         VALUES 
         ({$event_id},{$v});";
     }
@@ -86,40 +84,9 @@ if ($fd['cp_group_set'] == 1) {
     if ($stmt->rowCount() == 1) {
         $result['success'] = true;
         $result['code'] = 220;
-        $result['info'] = '廠商輸入成功';
+        $result['info'] = '會員條件輸入成功';
     }
 }
 
 
-//輸入適用商品群組
-if ($fd['group_type'] == 1) {
-
-    $sql = "";
-    foreach ($fd['categories'] as $k => $v) {
-        $sql = $sql . "INSERT INTO `pm_books_group`
-        (`event_id`, `categories_id`)
-        VALUES 
-        ({$event_id},{$v});";
-    }
-    $stmt = $pdo->query($sql);
-    if ($stmt->rowCount() == 1) {
-        $result['success'] = true;
-        $result['code'] = 230;
-        $result['info'] = '商品群組輸入成功';
-    }
-} else if ($fd['group_type'] == 2) {
-    $sql = "";
-    foreach ($fd['book_id'] as $k => $v) {
-        $sql = $sql . "INSERT INTO `pm_books_group`
-        (`event_id`, `books_id`)
-        VALUES 
-        ({$event_id},{$v});";
-    }
-    $stmt = $pdo->query($sql);
-    if ($stmt->rowCount() == 1) {
-        $result['success'] = true;
-        $result['code'] = 240;
-        $result['info'] = '商品群組新增成功';
-    }
-}
 echo json_encode($result, JSON_UNESCAPED_UNICODE);
