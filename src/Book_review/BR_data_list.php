@@ -12,6 +12,11 @@ $p_list = " SELECT COUNT(10) FROM `br_create`";
 $total_list = $pdo->query($p_list)->fetch(PDO::FETCH_NUM)[0];
 $total_page = ceil($total_list / $page_list);
 
+//搜尋筆數
+// $count = $db->prepare("SELECT * FROM `br_create` WHERE (`BR_name` LIKE $search OR `sid` LIKE $search)");   
+// $count->execute();   
+// $no=$count->rowCount();
+
 if ($page < 1) {
     header('Location: BR_data_list.php');
     exit;
@@ -72,12 +77,12 @@ $row = $stmt->fetchAll();
 
             <!-- 每個人填資料的區塊 -->
             <div style="margin-top: 1rem">
+
                 <table class="table table-striped table-bordered" style="text-align: center ; width:80vw">
                     <thead>
                         <tr>
                             <th scope="col">#</th>
                             <th scope="col">姓名</th>
-                            <th scope="col">密碼</th>
                             <th scope="col">電話</th>
                             <th scope="col">信箱</th>
                             <th scope="col">地址</th>
@@ -93,7 +98,6 @@ $row = $stmt->fetchAll();
                             <tr>
                                 <td><?= $value['sid'] ?></td>
                                 <td><?= htmlentities($value['BR_name']) ?></td>
-                                <td><?= htmlentities($value['BR_password']) ?></td>
                                 <td><?= htmlentities($value['BR_phone']) ?></td>
                                 <td><?= htmlentities($value['BR_email']) ?></td>
                                 <td><?= htmlentities($value['BR_address']) ?></td>
@@ -145,7 +149,6 @@ $row = $stmt->fetchAll();
                     <div>
                         <button type="button" class="delete btn btn-danger" onclick="delete_enter()"> 確認</button>
                         <button type="button" class="delete btn btn-warning" onclick="delete_cancel()">取消</button>
-                        <!-- <a href="BR_delete.php?sid=<?= $value['sid'] ?>"></a>  -->
                     </div>
                 </div>
             </div>
@@ -184,7 +187,7 @@ $row = $stmt->fetchAll();
             html += '<td>' + books[i].BR_gender + '</td>';
             html += '<td>' + books[i].BR_birthday + '</td>';
             html += '<td>' + books[i].BR_job + '</td>';
-            html += '<td><a href="AC_update.php?sid=' + books[i].sid + '"><i class="fas fa-edit"></i></a></td>';
+            html += '<td><a href="BR_update.php?sid=' + books[i].sid + '"><i class="fas fa-edit"></i></a></td>';
             html += '<td><a href="javascript:delete_doublecheck(' + books[i].sid + ')"><i class="fas fa-trash-alt"></i></a></td>';
             html += '</tr>';
         }
