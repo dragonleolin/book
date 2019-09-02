@@ -363,9 +363,9 @@ $totalPages = ceil($totalRows / $per_page); //取得總頁數
                     if (json.success) {
                         success.style.display = 'block';
                         container2.style.display = 'none';
-                        // setTimeout(function() {
-                        //     location.href = 'vb_data_list.php?page=' + <?= $totalPages ?>;
-                        // }, 1000)
+                        setTimeout(function() {
+                            location.href = 'vb_data_list.php?page=' + <?= $totalPages ?>;
+                        }, 1000)
                     } else {
                         my_false.style.display = 'block';
                         container2.style.display = 'none';
