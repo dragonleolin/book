@@ -1,4 +1,5 @@
-<?php require __DIR__ . '/__admin_required.php' ?>
+<?php //require __DIR__ . '/__admin_required.php' 
+?>
 <?php require  'MR_db_connect.php' ?>
 <?php
 $thead_item = [
@@ -6,6 +7,32 @@ $thead_item = [
 ];
 
 $page_title = '資料列表';
+
+$item_switch = [
+    'sid' => 'SID',
+    'MR_number' => '會員編號',
+    'MR_name' => '會員姓名',
+    'MR_password' => '會員密碼',
+    'MR_nickname' => '暱&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp稱',
+    'MR_email' => '電子信箱',
+    'MR_gender' => '性&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp別',
+    'MR_birthday' => '生&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp日',
+    'MR_mobile' => '手&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp機',
+    'MR_career' => '職&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp業',
+    'MR_address' => '地&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp址',
+    'MR_pic' => '頭像路徑',
+    'MR_imageloactionX' => '頭像位置X',
+    'MR_imageloactionY' => '頭像位置Y',
+    'MR_personLevel' => '會員等級',
+    'MR_createdDate' => '創建日期'
+];
+$a_level = [
+    '品書會員',
+    '品書學徒',
+    '品書專家',
+    '品書大師',
+    '品書至尊',
+];
 
 $page = isset($_GET['page']) ? intval($_GET['page']) : 1;
 $search = isset($_GET['search']) ? $_GET['search'] : '';
@@ -102,11 +129,13 @@ $rows = $stmt->fetchAll();
                 </thead>
                 <tbody>
 
-                    <?php foreach ($rows as $a) :  ?>
+                    <?php $s = 0;
+                    $sid = [];
+                    foreach ($rows as $a) : $s++ ?>
                         <tr>
-                            <td><?= $a['sid'] ?></td>
+                            <td><?= $s ?></td>
                             <td><?= htmlentities($a['MR_number']) ?></td>
-                            <td><?= htmlentities($a['MR_personLevel']) ?></td>
+                            <td><?= htmlentities($a_level[$a['MR_personLevel'] - 1]) ?></td>
                             <td><?= htmlentities($a['MR_name']) ?></td>
                             <td><?= htmlentities($a['MR_nickname']) ?></td>
                             <td><?= htmlentities($a['MR_email']) ?></td>
@@ -119,8 +148,10 @@ $rows = $stmt->fetchAll();
                             <td><a href="MR_memberData_update.php?sid=<?= $a['sid'] ?>"><i class="fas fa-edit"></i></a></td>
                             <td><a href="javascript:delete_one(<?= $a['sid'] ?>)"><i class="fas fa-trash-alt"></i></a></td>
                             <input type="hidden" id=`tdsid<?= $a['sid'] ?>` value="<?= $a['sid'] ?>">
+
                         </tr>
-                    <?php endforeach ?>
+                    <?php $sid = $a['sid'];
+                    endforeach ?>
                 </tbody>
             </table>
         </div>
@@ -161,41 +192,62 @@ $rows = $stmt->fetchAll();
                 </li>
             </ul>
         </nav>
-        <div>
-            <pre>
-                    <?php print_r($rows); ?>
-                    </pre>
-        </div>
 
         <!-- Modal -->
-        <?php for ($i = 0; $i < count($rows); $i++) : ?>
-            <?php $details = $rows[$i]; ?>
-            <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered" role="document" style="max-width:1200px">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalCenterTitle">會員資料</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
+
+        <?php for ($i = 0; $i < count($rows); $i++) :
+            $details = $rows[$i];
+            echo $i;?>
+            <pre><?php print_r($details);?></pre>
+            
+        <?php endfor ?>
+        <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document" style="max-width:1200px">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalCenterTitle">會員資料 </h5>
+                        <div class="nav-item" style="margin: 0px 10px">
+                            <button class="btn btn-outline-primary my-2 my-sm-0" onclick="secondHandBook()">
+                                <i class="fas fa-arrow-circle-right"></i>
+                                會員二手書清單
                             </button>
                         </div>
-                        <div class="modal-body" style="min-height:500px">
-                            <?php foreach ($details as $k => $v) : ?>
-                                <ul class="d-flex">
-                                    <li><?= strlen($k)>3 ? substr($k, 3, strlen($k) - 3): $k?> : </li>
-                                    <li><?= $v ?></li>
-                                </ul>
-                            <?php endforeach ?>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="location.href='MR_memberData_update.php'">修改內容</button>
-                            <button type="button" class="btn btn-primary" data-dismiss="modal" aria-label="Close">Close</button>
-                        </div>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body" style="min-height:500px">
+                        <?= $i ?>
+                        <pre><?php print_r($details); ?></pre>
+                        <!-- body -->
+                        <?php foreach ($details as $k => $v) : ?>
+                            <ul class="d-flex">
+                                <li class="" style="text-align:right">
+                                    <h5><?= $item_switch[$k]; ?>
+                                        <?php
+                                            if ($k == 'MR_number') {
+                                                echo "<input type='hidden' value='${v}' id='hand2_number'>";
+                                            }
+                                            // strlen($k)>3 ? substr($k, 3, strlen($k) - 3): $k
+                                            ?> &nbsp : &nbsp </h5>
+                                </li>
+                                <li><?php if ($k == 'MR_gender') {
+                                            echo  $v == 1 ? '男' : '女';
+                                        } else {
+                                            echo $v;
+                                        }; ?></li>
+                            </ul>
+                        <?php endforeach ?>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="location.href='MR_memberData_update.php?sid=<?= $a['sid'] ?>'">修改內容</button>
+                        <button type="button" class="btn btn-primary" data-dismiss="modal" aria-label="Close">Close</button>
                     </div>
                 </div>
             </div>
+        </div>
 
-        <?php endfor ?>
+
         <!-- 刪除提示框 -->
         <div class="delete update card" id="delete_confirm" style="display:none">
             <div class="delete card-body">
@@ -244,6 +296,13 @@ $rows = $stmt->fetchAll();
 
     function delete_no() {
         delete_confirm.style.display = "none";
+    }
+    //二手書連結
+    let hand2_number = document.querySelector('#hand2_number');
+
+    function secondHandBook() {
+        let MR_number = hand2_number.value;
+        location.href = `MR_MBList.php?MR_number=${MR_number}`;
     }
 </script>
 

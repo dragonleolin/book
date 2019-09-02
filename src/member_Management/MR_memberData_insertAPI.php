@@ -40,6 +40,8 @@ if (!empty($_FILES['pic'])) { // 有沒有上傳
         //  move_uploaded_file(暫存檔案路徑檔名,目標檔案路徑檔名)
 
         $new_picName=$new_filename . $new_exts;
+    }else{
+        $new_picName=$new_filename . $new_exts;
     }
 } 
 

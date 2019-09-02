@@ -16,14 +16,20 @@ $data_item = [
     '地址' => 'address',
     '建立時間' => 'createdDate',
 ];
-$new_number = 'MR' . uniqid();
+
 $a_level = [
     '品書會員',
     '品書學徒',
     '品書專家',
     '品書大師',
     '品書至尊',
-]
+];
+
+$number_blank= 'MR00000';
+$count = "SELECT COUNT(1) FROM `mr_information`";
+$totalRows = $pdo->query($count)->fetch(PDO::FETCH_NUM)[0]+1;
+$new_number = substr( $number_blank ,0 , strlen($number_blank)-strlen( $totalRows)).$totalRows;
+
 ?>
 <?php include '../../pbook_index/__html_head.php' ?>
 <link rel="stylesheet" href="lib/memberlist.css">
