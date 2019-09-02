@@ -107,11 +107,11 @@ $user_level_const = [
                         if ($r['user_level'] == '1') {
                             $sql = "SELECT `user_level` FROM `pm_condition` WHERE `event_id` = {$r['sid']}";
                             $user_level_condition = $pdo->query($sql)->fetchAll();
-                            for($i = 0 ; $i < count($user_level_condition); $i++){
-                                echo $user_level_const[ $user_level_condition[$i]['user_level'] ];
+                            for ($i = 0; $i < count($user_level_condition); $i++) {
+                                echo $user_level_const[$user_level_condition[$i]['user_level']];
                                 echo '<br>';
                             }
-                        }else{
+                        } else {
                             echo $user_level_const[0];
                         }
                         ?>
@@ -206,11 +206,27 @@ $user_level_const = [
                                     </div>
                                     <div class="modal-body">
                                         <?php
+                                        if ($r['group_type'] == 1) {
+                                            foreach ($book_group as $k => $v) {
+                                                echo $k<9?'0'.($k+1):($k+1);
+                                                echo " &nbsp";
+                                                echo $cate_const[$v['categories_id']]['name'] . '<br>';
+                                            }
+                                        } elseif ($r['group_type'] == 2) {
+                                            $sql = "SELECT b.`name` FROM `vb_books` b JOIN `pm_books_group` g ON b.`sid` = g.`books_id` WHERE g.`event_id` = {$r['sid']}";
+                                            $book_group_data = $pdo->query($sql)->fetchAll(PDO::FETCH_COLUMN);
+                                            foreach ($book_group_data as $k => $v){
+                                                echo $k<9?'0'.($k+1):($k+1);
+                                                echo " &nbsp";
+                                                echo $v;
+                                                echo '<br>';
+                                            }
 
-                                        foreach ($book_group as $k => $v) {
-                                            echo $cate_const[$v['categories_id']]['name'] . '<br>';
+                                        } elseif ($r['group_type'] == 3) {
+                                            echo '活動廠商';
+                                        } else {
+                                            echo '錯誤';
                                         }
-
                                         ?>
                                     </div>
                                     <div class="modal-footer">
@@ -233,7 +249,7 @@ $user_level_const = [
                                             c.`event_id` = e.`sid` WHERE e.`sid` = {$r['sid']}";
                             $cp_group = $pdo->query($sql)->fetchAll(PDO::FETCH_COLUMN);
                             $sql = "SELECT `sid`,`cp_name` FROM `cp_data_list` WHERE 1 ";
-                            $cp_data_list = $pdo->query($sql)->fetchAll(PDO::FETCH_UNIQUE|PDO::FETCH_COLUMN);
+                            $cp_data_list = $pdo->query($sql)->fetchAll(PDO::FETCH_UNIQUE | PDO::FETCH_COLUMN);
                         } else {
                             $cp_group = 0;
                         }
@@ -263,7 +279,7 @@ $user_level_const = [
                                         <?php
 
                                         foreach ($cp_group as $k => $v) {
-                                            echo ($k<9?'0'.($k+1):($k+1))." &nbsp".$cp_data_list[$v] . '<br>';
+                                            echo ($k < 9 ? '0' . ($k + 1) : ($k + 1)) . " &nbsp" . $cp_data_list[$v] . '<br>';
                                         }
 
                                         ?>
