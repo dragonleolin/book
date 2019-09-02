@@ -1,7 +1,7 @@
 <?php
 
 // $db_host = '192.168.27.186';
-$db_host = 'localhost';
+$db_host = '192.168.27.186';
 $db_name = 'pbook';
 $db_user = 'Arwen';
 $db_pass = '4595';
