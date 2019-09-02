@@ -212,32 +212,32 @@ foreach ($cates as $r) {
                     <tr>
                         <th scope="col">#</th>
                         <th scope="col">
-                        <i class="fas fa-sort-amount-down-alt" style="<?= ($col == 'sid' &&  $ord =='ASC')?'display:inline-block;color:#ffc408':'display:none;'?>"></i>
-                        <i class="fas fa-sort-amount-down" style="<?= ($col == 'sid' && $ord =='DESC')?'display:inline-block;color:#ffc408':'display:none;'?>"></i>
-                        SID</th>
+                            <i class="fas fa-sort-amount-down-alt" style="<?= ($col == 'sid' &&  $ord == 'ASC') ? 'display:inline-block;color:#ffc408' : 'display:none;' ?>"></i>
+                            <i class="fas fa-sort-amount-down" style="<?= ($col == 'sid' && $ord == 'DESC') ? 'display:inline-block;color:#ffc408' : 'display:none;' ?>"></i>
+                            SID</th>
                         <th scope="col">ISBN</th>
                         <th scope="col">書籍名稱</th>
                         <th scope="col">封面</th>
                         <th scope="col">
-                        <i class="fas fa-sort-amount-down-alt" style="<?= ($col == 'categories' &&  $ord =='ASC')?'display:inline-block;;color:#ffc408':'display:none;'?>"></i>
-                        <i class="fas fa-sort-amount-down" style="<?= ($col == 'categories' && $ord =='DESC')?'display:inline-block;color:#ffc408':'display:none;'?>"></i>
-                        分類</th>
+                            <i class="fas fa-sort-amount-down-alt" style="<?= ($col == 'categories' &&  $ord == 'ASC') ? 'display:inline-block;;color:#ffc408' : 'display:none;' ?>"></i>
+                            <i class="fas fa-sort-amount-down" style="<?= ($col == 'categories' && $ord == 'DESC') ? 'display:inline-block;color:#ffc408' : 'display:none;' ?>"></i>
+                            分類</th>
                         <th scope="col">作者</th>
                         <th scope="col">出版社</th>
                         <th scope="col">
-                        <i class="fas fa-sort-amount-down-alt" style="<?= ($col == 'publish_date' &&  $ord =='ASC')?'display:inline-block;color:#ffc408':'display:none;'?>"></i>
-                        <i class="fas fa-sort-amount-down" style="<?= ($col == 'publish_date' && $ord =='DESC')?'display:inline-block;color:#ffc408':'display:none;'?>"></i>    
-                        出版日期</th>
+                            <i class="fas fa-sort-amount-down-alt" style="<?= ($col == 'publish_date' &&  $ord == 'ASC') ? 'display:inline-block;color:#ffc408' : 'display:none;' ?>"></i>
+                            <i class="fas fa-sort-amount-down" style="<?= ($col == 'publish_date' && $ord == 'DESC') ? 'display:inline-block;color:#ffc408' : 'display:none;' ?>"></i>
+                            出版日期</th>
                         <th scope="col">版次</th>
                         <th scope="col">
-                        <i class="fas fa-sort-amount-down-alt" style="<?= ($col == 'fixed_price' &&  $ord =='ASC')?'display:inline-block;color:#ffc408':'display:none;'?>"></i>
-                        <i class="fas fa-sort-amount-down" style="<?= ($col == 'fixed_price' && $ord =='DESC')?'display:inline-block;color:#ffc408':'display:none;'?>"></i>    
-                        定價</th>
+                            <i class="fas fa-sort-amount-down-alt" style="<?= ($col == 'fixed_price' &&  $ord == 'ASC') ? 'display:inline-block;color:#ffc408' : 'display:none;' ?>"></i>
+                            <i class="fas fa-sort-amount-down" style="<?= ($col == 'fixed_price' && $ord == 'DESC') ? 'display:inline-block;color:#ffc408' : 'display:none;' ?>"></i>
+                            定價</th>
                         <th scope="col">頁數</th>
                         <th scope="col">
-                        <i class="fas fa-sort-amount-down-alt" style="<?= ($col == 'stock' &&  $ord =='ASC')?'display:inline-block;color:#ffc408':'display:none;'?>"></i>
-                        <i class="fas fa-sort-amount-down" style="<?= ($col == 'stock' && $ord =='DESC')?'display:inline-block;color:#ffc408':'display:none;'?>"></i>
-                        庫存</th>
+                            <i class="fas fa-sort-amount-down-alt" style="<?= ($col == 'stock' &&  $ord == 'ASC') ? 'display:inline-block;color:#ffc408' : 'display:none;' ?>"></i>
+                            <i class="fas fa-sort-amount-down" style="<?= ($col == 'stock' && $ord == 'DESC') ? 'display:inline-block;color:#ffc408' : 'display:none;' ?>"></i>
+                            庫存</th>
                         <th scope="col">修改</th>
                         <th scope="col">刪除</th>
                     </tr>
@@ -326,7 +326,7 @@ foreach ($cates as $r) {
                     // }
                     ?>
                     <li class="page-item <?= $page == $i ? 'active' : '' ?>">
-                        <a class="page-link" href="?<?= http_build_query($params) ?>"><?= $i < 10 ? '0' . $i : $i ?></a>
+                        <a class="page-link" href="?<?php $params['col'] = 'sid';$params['ord'] = 'ASC';echo http_build_query($params) ?>"><?= $i < 10 ? '0' . $i : $i ?></a>
                     </li>
                 <?php endfor; ?>
                 <li class="page-item">
@@ -371,9 +371,9 @@ foreach ($cates as $r) {
     function delete_no() {
         location.href = 'vb_data_list.php?page=' + <?= $page ?>;
     }
-    
+
     function goto_orderby(str) {
-                location.href = '?' + str;
+        location.href = '?' + str;
     }
 </script>
 <?php include __DIR__ . '/__html_foot.php' ?>

@@ -341,7 +341,7 @@ foreach ($cates as $r) {
                     // }
                     ?>
                     <li class="page-item <?= $page == $i ? 'active' : '' ?>">
-                        <a class="page-link" href="?<?= http_build_query($params) ?>"><?= $i < 10 ? '0' . $i : $i ?></a>
+                        <a class="page-link" href="?<?php $params['col'] = 'sid';$params['ord'] = 'ASC';echo http_build_query($params) ?>"><?= $i < 10 ? '0' . $i : $i ?></a>
                     </li>
                 <?php endfor; ?>
                 <li class="page-item">
@@ -384,7 +384,7 @@ foreach ($cates as $r) {
     }
 
     function goto_orderby(str) {
-                location.href = '?' + str;
+        location.href = '?' + str;
     }
 
 </script>
