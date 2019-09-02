@@ -36,6 +36,14 @@ if(empty($row)) {
                     <h4>活動修改</h4>
                     <div class="title_line"></div>
                 </div>
+                <ul class="nav justify-content-between">
+                <li class="nav-item" style="margin: 0px 10px">
+                <button class="btn btn-outline-primary my-2 my-sm-0" type="button" onclick="preceding_page()">
+                    <i class="fas fa-arrow-circle-left"></i>
+                    回到上一頁
+                </button>
+            </li>
+        </ul>
             </nav>
 
             <!-- 每個人填資料的區塊 -->
