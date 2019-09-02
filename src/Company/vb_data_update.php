@@ -122,7 +122,7 @@ foreach ($row as $r => $s) {
 
                 <div style="min-width:700px;margin:0px 30px">
 
-                    
+
 
                     <div class="form-group d-flex">
                         <div class="col-lg-5">
@@ -169,17 +169,21 @@ foreach ($row as $r => $s) {
     </div>
 
     <!-- 以下為新增成功才會跳出來的顯示框 -->
-    <div class="success update card" id="success" style="display:none">
-        <div class="success card-body">
-            <label class="success_text" style="background:transparent">修改成功</label>
-            <div><img class="success_img" src="../../images/icon_checked.svg"></div>
+    <div style="padding:150px 100px 170px 180px">
+        <div class="success update card" id="success" style="display:none">
+            <div class="success card-body">
+                <label class="success_text" style="background:transparent">修改成功</label>
+                <div><img class="success_img" src="../../images/icon_checked.svg"></div>
+            </div>
         </div>
     </div>
 
     <!-- 以下為新增失敗才會跳出來的顯示框 -->
-    <div class="success update card" id="my_false" style="box-shadow:0px 0px 10px red;display:none">
-        <div class="success card-body">
-            <label class="success_text" style="background:transparent;color:rgb(228, 63, 63)">修改失敗,不可以偷偷來喔!</label>
+    <div style="padding:150px 100px 170px 180px">
+        <div class="success update card" id="my_false" style="box-shadow:0px 0px 10px red;display:none">
+            <div class="success card-body">
+                <label class="success_text" style="background:transparent;color:rgb(228, 63, 63)">修改失敗,不可以偷偷來喔!</label>
+            </div>
         </div>
     </div>
 

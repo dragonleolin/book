@@ -66,7 +66,7 @@ function renderBooks(books){
     return false;
 }
 
-//--Enter監聽測試---------------------------------------------------------------------------
+//--Enter監聽---------------------------------------------------------------------------
 document.onkeypress = function(e){ //對整個頁面監聽 
 var keyNum = window.event ? e.keyCode :e.which; //獲取被按下的鍵值
 //判斷使用者按下Enter鍵 (監聽13）
@@ -105,6 +105,7 @@ $.ajax({
                     <h4>品書官方 - 活動總表</h4>
                     <div class="title_line"></div>
                 </div>
+                
                 <ul class="nav justify-content-between">
                     <li class="nav-item">
                         <div style="padding: 0.375rem 0.75rem;">
@@ -163,6 +164,9 @@ $.ajax({
                             <td><?= htmlentities($r['AC_organizer']) ?></td>
                             <td><?= htmlentities($r['AC_brief']) ?></td>
                             <td><?= htmlentities($r['AC_created_at']) ?></td>
+                            <!-- 圖片 -->
+                            
+
                             <td><a href="AC_update.php?AC_sid=<?= $r['AC_sid'] ?>"><i class="fas fa-edit"></i></a>
                             <td><a href="javascript:delete_one(<?= $r['AC_sid'] ?>)"><i class="fas fa-trash-alt"></i></a></td>
                         </tr>

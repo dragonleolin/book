@@ -22,6 +22,14 @@ $page_title = '品書 - 活動新增';
                     <h4>新增活動</h4>
                     <div class="title_line"></div>
                 </div>
+                <ul class="nav justify-content-between">
+                <li class="nav-item" style="margin: 0px 10px">
+                <button class="btn btn-outline-primary my-2 my-sm-0" type="button" onclick="preceding_page()">
+                    <i class="fas fa-arrow-circle-left"></i>
+                    回到上一頁
+                </button>
+                </li>
+        </ul>
             </nav>
 
             <!-- 每個人填資料的區塊 -->
@@ -90,8 +98,8 @@ $page_title = '品書 - 活動新增';
                         <div class="form-group" style="margin:20px 0;">
                         <div class="col-lg-5 ">
                             <div>
-                            <label for="pic" style="font-size: 20px;">・活動封面</label>
-                            <input type="file" class="form-control-file" id="pic" name="pic" style="display:none">
+                            <label for="AC_pic" style="font-size: 20px;">・活動封面</label>
+                            <input type="file" class="form-control-file" id="AC_pic" name="AC_pic" style="display:none">
                             </div>
                             <div>
                             <button class="btn btn-outline-primary my-2 my-sm-0" type="button" onclick="selUpload()">
@@ -107,22 +115,24 @@ $page_title = '品書 - 活動新增';
                         </div>
 
                         <script>
-                            function selUpload() {
-                                document.querySelector('#pic').click();
-                            }
-                        
-                            function preceding_page() {
-                                location.href = document.referrer;
-                            }
-                        
-                            $('#pic').change(function() {
-                                var file = $('#pic')[0].files[0];
-                                var reader = new FileReader;
-                                reader.onload = function(e) {
-                                    $('#demo').attr('src', e.target.result);
-                                };
-                                reader.readAsDataURL(file);
-                            });
+                            // --圖片上傳--------------------------------------------------
+                             function selUpload() {
+                                 document.querySelector('#AC_pic').click();
+                             }
+                         
+                               function preceding_page() {
+                                  location.href = document.referrer;
+                              }
+                          
+                              $('#AC_pic').change(function() {
+                                   var file = $('#AC_pic')[0].files[0];
+                                   var reader = new FileReader;
+                                  reader.onload = function(e) {
+                                       $('#demo').attr('src', e.target.result);
+                                  };
+                                  reader.readAsDataURL(file);
+                             });
+                            // ----------------------------------------------------
                         </script>
                     </div>
                 </section>  
@@ -216,8 +226,6 @@ $page_title = '品書 - 活動新增';
             }   
 
         // 輸入成功或失敗，跳出圖片及轉向----------------------------------------------
-       
-
                 fetch('AC_insert_api.php', {
                     method: 'POST',
                     body: fd,
