@@ -108,7 +108,7 @@ foreach ($cates as $r) {
                 <li class="nav-item">
                     <div id="btnGroupDrop1" class="position-relative" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <button type="button" class="btn btn-outline-dark">
-                            <i class="fas fa-sort"></i>&nbsp;&nbsp;&nbsp;依編號
+                            <i class="fas fa-sort"></i>&nbsp;&nbsp;&nbsp;依SID
                         </button>
                         <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
                             <a class="dropdown-item" href="#" onclick="goto_orderby('<?php $params['col'] = 'sid';
@@ -214,7 +214,7 @@ foreach ($cates as $r) {
                         <th scope="col">
                         <i class="fas fa-sort-amount-down-alt" style="<?= ($col == 'sid' &&  $ord =='ASC')?'display:inline-block;color:#ffc408':'display:none;'?>"></i>
                         <i class="fas fa-sort-amount-down" style="<?= ($col == 'sid' && $ord =='DESC')?'display:inline-block;color:#ffc408':'display:none;'?>"></i>
-                        編號</th>
+                        SID</th>
                         <th scope="col">ISBN</th>
                         <th scope="col">書籍名稱</th>
                         <th scope="col">封面</th>
@@ -373,22 +373,7 @@ foreach ($cates as $r) {
     }
     
     function goto_orderby(str) {
-        // let my_sid = document.querySelector('#my_sid');
-        // let my_categories = document.querySelector('#my_categories');
-        // let my_sid = document.querySelector('#my_sid');
-        // let my_sid = document.querySelector('#my_sid');
-
-        // switch (str) {
-        //     case 'col=sid&ord=ASC':
                 location.href = '?' + str;
-                // my_sid.style.border = '1px solid red';  
-                // my_sid.style.display = "none";  
-        //         break;
-        //     case 'col=sid&ord=DESC':
-        //         location.href = '?' + str;
-        //         my_sid.style.border = '1px solid red';
-        //         break;
-        // }
     }
 </script>
 <?php include __DIR__ . '/__html_foot.php' ?>
