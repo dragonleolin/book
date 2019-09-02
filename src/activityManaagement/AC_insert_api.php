@@ -44,8 +44,8 @@ if (empty($_POST['AC_name'])) {
 }
 
 $sql = "INSERT INTO `AC_pbook`(
-    `AC_name`, `AC_title`,`AC_type`, `AC_date`, `AC_eventArea`, `AC_mobile`, `AC_organizer`, `AC_pic`
-    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+    `AC_name`, `AC_title`,`AC_type`, `AC_date`, `AC_eventArea`, `AC_mobile`, `AC_organizer`, `AC_pic`, `AC_introduction`, `AC_created_at`
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())";
 
 $stmt = $pdo->prepare($sql);
 
@@ -57,10 +57,8 @@ $stmt->execute([
         $_POST['AC_eventArea'],
         $_POST['AC_mobile'],
         $_POST['AC_organizer'],
-        // $_POST['AC_sid'],
         $new_filename.$new_ext,
-        // $_POST['AC_price'],
-        // $_POST['AC_created_at'],
+        $_POST['AC_introduction'],
 ]);
 
 if($stmt->rowCount()==1){

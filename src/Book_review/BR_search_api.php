@@ -14,5 +14,6 @@ $stmt = $pdo->prepare($sql);
 $stmt->execute();
 $row = $stmt->fetchAll();
 
+
 //回傳
 echo json_encode($row);
