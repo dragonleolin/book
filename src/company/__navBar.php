@@ -67,7 +67,7 @@
             <div class="aside card">
                 <button type="button" class="aside card-header btn btn-info" id="headingTwo">
                     <div class="aside_hover" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                        <img class="aside_logo" src="../../images/icon_VB_m.svg" alt="">
+                        <img class="aside_logo" src="../../images/icon_MR_m.svg" alt="">
                         <span class="aside_text">訂單管理</span>
                         <i class="fas fa-caret-down"></i>
                     </div>

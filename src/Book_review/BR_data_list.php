@@ -5,7 +5,7 @@ $page_title = '書評人資料總表';
 
 
 $page =  isset($_GET['page']) ? intval($_GET['page']) : 1;
-$page_list = 10;
+$page_list = 10; //每頁筆數
 
 $p_list = " SELECT COUNT(10) FROM `br_create`";
 
@@ -61,9 +61,9 @@ $row = $stmt->fetchAll();
                     </li>
                     <li class="nav-item" style="flex-grow: 1">
                         <form class="form-inline my-2 my-lg-0">
-                            <input class="search form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-                            <button class="btn btn-outline-warning my-2 my-sm-0" type="submit">
-                                <i class="fas fa-search" name="Submit" value="提交"></i>
+                            <input id="BR_search" class="search form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+                            <button class="btn btn-outline-warning my-2 my-sm-0" type="button" onclick="search()">
+                                <i class="fas fa-search"></i>
                             </button>
                         </form>
                     </li>
@@ -76,7 +76,6 @@ $row = $stmt->fetchAll();
                     <thead>
                         <tr>
                             <th scope="col">#</th>
-                            <th scope="col">大頭貼</th>
                             <th scope="col">姓名</th>
                             <th scope="col">密碼</th>
                             <th scope="col">電話</th>
@@ -89,11 +88,10 @@ $row = $stmt->fetchAll();
                             <th scope="col">刪除</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody id="books">
                         <?php foreach ($row as $value) : ?>
                             <tr>
                                 <td><?= $value['sid'] ?></td>
-                                <td><?= $value['BR_photo'] ?></td>
                                 <td><?= htmlentities($value['BR_name']) ?></td>
                                 <td><?= htmlentities($value['BR_password']) ?></td>
                                 <td><?= htmlentities($value['BR_phone']) ?></td>
@@ -135,7 +133,7 @@ $row = $stmt->fetchAll();
                             <span aria-hidden="true">&raquo;</span>
                         </a>
                     </li>
-                    
+
                 </ul>
             </nav>
 
@@ -170,6 +168,65 @@ $row = $stmt->fetchAll();
 
     function delete_cancel() {
         location.href = window.location.href;
+    }
+
+    function renderBooks(books) {
+        var tbody = document.getElementById('books');
+        var html = '';
+        for (var i = 0; i < books.length; i++) {
+            html += '<tr>';
+            html += '<td>' + books[i].sid + '</td>';
+            html += '<td>' + books[i].BR_name + '</td>';
+            html += '<td>' + books[i].BR_password + '</td>';
+            html += '<td>' + books[i].BR_phone + '</td>';
+            html += '<td>' + books[i].BR_email + '</td>';
+            html += '<td>' + books[i].BR_address + '</td>';
+            html += '<td>' + books[i].BR_gender + '</td>';
+            html += '<td>' + books[i].BR_birthday + '</td>';
+            html += '<td>' + books[i].BR_job + '</td>';
+            html += '<td><a href="AC_update.php?sid=' + books[i].sid + '"><i class="fas fa-edit"></i></a></td>';
+            html += '<td><a href="javascript:delete_doublecheck(' + books[i].sid + ')"><i class="fas fa-trash-alt"></i></a></td>';
+            html += '</tr>';
+        }
+        tbody.innerHTML = html;
+        return false;
+    }
+
+    //--Enter監聽---------------------------------------------------------------------------
+    document.onkeypress = function(e) { //對整個頁面監聽 
+        var keyNum = window.event ? e.keyCode : e.which; //獲取被按下的鍵值
+        //判斷使用者按下Enter鍵 (監聽13）
+        if (keyNum == '13') {
+            search();
+            return false;
+        }
+    };
+
+
+    //--Ajax搜尋功能---------------------------------------------------------------------------
+
+    var searchItem = document.querySelector('#BR_search'); //取ID
+    function search() {
+        //取得搜尋字串
+        if (searchItem.value != 0) {
+            $.ajax({
+                    method: "POST",
+                    url: "./BR_search_api.php", //進api
+                    data: {
+                        search: searchItem.value
+                    }
+                })
+
+                .done(function(msg) {
+                    var books = JSON.parse(msg);
+                    renderBooks(books);
+                });
+            return false;
+        }
+        //ajax
+        else {
+            return false;
+        }
     }
 </script>
 <?php require '__html_foot.php'; ?>

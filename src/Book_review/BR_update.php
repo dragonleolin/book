@@ -143,7 +143,7 @@ body {
                 <div class="success update card" style="display:none; transform: translate(170px,-55vh)"
                     id="success_update">
                     <div class="success card-body">
-                        <label class="success_text">修改成功</label>
+                        <label class="success_text" style="background:transparent">修改成功</label>
                         <div><img class="success_img" src="../../images/icon_checked.svg"></div>
                     </div>
                 </div>

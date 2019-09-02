@@ -115,7 +115,7 @@ body {
                 <div class="success update card" style="display:none; transform: translate(170px,-55vh)"
                     id="success_insert">
                     <div class="success card-body">
-                        <label class="success_text">新增成功</label>
+                        <label class="success_text" style="background:transparent">新增成功</label>
                         <div>
                             <img class="success_img" src="../../images/icon_checked.svg">
                         </div>
