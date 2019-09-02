@@ -1,40 +1,61 @@
-<?php require 'BR__connect_db.php';
+<?php require  'MR_db_connect.php';
+
 $page_name = 'BR_datalist';
-$page_title = '書評人資料總表';
+$page_title = '書評人資料列表';
 
 
+
+// 限制會員編號
+$MR_number = isset($_GET['MR_number']) ? $_GET['MR_number'] : '';
+$params = [];
+$where = ' WHERE 1 ';
+if (!empty($MR_number)) {
+    $params['MR_number'] = $MR_number;
+    $MR_number = $pdo->quote("$MR_number");
+    $JOIN_ON1 = "JOIN `mr_bookcriticsfans`ON `mr_bookcriticsfans`.`MR_mrNumber` = " . $MR_number;
+    $where .= " AND`BR_name`=`mr_bookcriticsfans`.`MR_BRName`";
+}
 
 $page =  isset($_GET['page']) ? intval($_GET['page']) : 1;
-$page_list = 10; //每頁筆數
+$page_list = 10;
 
-$p_list = " SELECT COUNT(10) FROM `br_create`";
-
-$total_list = $pdo->query($p_list)->fetch(PDO::FETCH_NUM)[0];
-$total_page = ceil($total_list / $page_list);
-
-if ($page < 1) {
-    header('Location: BR_data_list.php');
-    exit;
-}
-
-if ($page > $total_page) {
-    header('Location: BR_data_list.php?page=' . $total_page);
-    exit;
+$search = isset($_GET['search']) ? $_GET['search'] : '';
+if (!empty($search)) {
+    $params['search'] = $search;
+    $search1 = $pdo->quote("%$search%");
+    $where .= " AND (`BR_name` LIKE $search1 OR `BR_birthday` LIKE $search1  OR `BR_address` LIKE $search1 ) ";
 }
 
 
-$sql = sprintf("SELECT * FROM `br_create` LIMIT %s,%s", ($page - 1) * $page_list, $page_list);
+$count = "SELECT COUNT(1) FROM `br_create` $JOIN_ON1 $where"; //用count計算出總筆數
+
+
+$totalRows = $pdo->query($count)->fetch(PDO::FETCH_NUM)[0];
+$totalPage = ceil($totalRows / $page_list); //ceil()無條件進位
+
+// if ($page < 1) {
+//     header('Location: ../Book_review/BR_data_list.php');
+//     exit;
+// }
+
+// if ($page > $total_page) {
+//     header('Location: ../Book_review/BR_data_list.php?page=' . $total_page);
+//     exit;
+// }
+
+$sql = "SELECT `br_create`.* FROM `br_create` $JOIN_ON1 $where ORDER BY `sid` LIMIT " . (($page - 1) * $page_list) . "," . $page_list;
 $stmt = $pdo->query($sql);
 $row = $stmt->fetchAll();
 
 ?>
+
+<?php include '../../pbook_index/__html_head.php' ?>
 <style>
     body {
         background: url(../../images/bg.png) repeat center top;
     }
 </style>
-<?php require '__html_head.php'; ?>
-<?php include __DIR__ . '/__html_body.php' ?>
+<?php include '../../pbook_index/__html_body.php' ?>
 <?php include '../../pbook_index/__navbar.php' ?>
 
 <div class="d-flex flex-row my_content">
@@ -42,28 +63,38 @@ $row = $stmt->fetchAll();
     <section>
         <div class="container">
             <nav class="navbar justify-content-between" style="padding: 0px;width: 80vw;">
-                <div>
-                    <h4>書評人總表</h4>
-                    <div class="title_line"></div>
+                <div class="d-flex">
+                    <div>
+                        <h4>會員書籍列表</h4>
+                        <div class="title_line"></div>
+                    </div>
+                    <ul class="nav justify-content-between">
+                        <li class="nav-item" style="margin: 0px 10px">
+                            <button class="btn btn-outline-primary my-2 my-sm-0" type="button" onclick="history.back()">
+                                <i class="fas fa-arrow-circle-left"></i>
+                                會員列表
+                            </button>
+                        </li>
+                    </ul>
                 </div>
                 <ul class="nav justify-content-between">
                     <li class="nav-item">
                         <div style="padding: 0.375rem 0.75rem;">
                             <i class="fas fa-check"></i>
-                            目前總計<?= $total_list ?>筆資料
+                            總計<?= $totalRows ?>筆資料
                         </div>
                     </li>
                     <li class="nav-item" style="margin: 0px 10px">
-                        <button class="btn btn-outline-primary my-2 my-sm-0" type="submit" onclick="location.href='BR_insert.php'">
+                        <button class="btn btn-outline-primary my-2 my-sm-0" type="submit" onclick="location.href='../Book_review/BR_insert.php'">
                             <i class="fas fa-plus-circle"></i>
                             新增書評人
                         </button>
                     </li>
                     <li class="nav-item" style="flex-grow: 1">
-                        <form class="form-inline my-2 my-lg-0">
-                            <input id="BR_search" class="search form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-                            <button class="btn btn-outline-warning my-2 my-sm-0" type="button" onclick="search()">
-                                <i class="fas fa-search"></i>
+                        <form class="form-inline my-2 my-lg-0" name="form2">
+                            <input class="search form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+                            <button class="btn btn-outline-warning my-2 my-sm-0" type="submit">
+                                <i class="fas fa-search" name="Submit" value="提交"></i>
                             </button>
                         </form>
                     </li>
@@ -76,6 +107,7 @@ $row = $stmt->fetchAll();
                     <thead>
                         <tr>
                             <th scope="col">#</th>
+                            <th scope="col">大頭貼</th>
                             <th scope="col">姓名</th>
                             <th scope="col">密碼</th>
                             <th scope="col">電話</th>
@@ -88,10 +120,11 @@ $row = $stmt->fetchAll();
                             <th scope="col">刪除</th>
                         </tr>
                     </thead>
-                    <tbody id="books">
+                    <tbody>
                         <?php foreach ($row as $value) : ?>
                             <tr>
                                 <td><?= $value['sid'] ?></td>
+                                <td><?= $value['BR_photo'] ?></td>
                                 <td><?= htmlentities($value['BR_name']) ?></td>
                                 <td><?= htmlentities($value['BR_password']) ?></td>
                                 <td><?= htmlentities($value['BR_phone']) ?></td>
@@ -100,7 +133,7 @@ $row = $stmt->fetchAll();
                                 <td><?= htmlentities($value['BR_gender']) ?></td>
                                 <td><?= htmlentities($value['BR_birthday']) ?></td>
                                 <td><?= htmlentities($value['BR_job']) ?></td>
-                                <td><a href="BR_update.php?sid=<?= $value['sid'] ?>">
+                                <td><a href="../Book_review/BR_update.php?sid=<?= $value['sid'] ?>">
                                         <i class="fas fa-edit"></i>
                                     </a>
                                 </td>
@@ -122,7 +155,7 @@ $row = $stmt->fetchAll();
                             <span aria-hidden="true">&laquo;</span>
                         </a>
                     </li>
-                    <?php for ($i = 1; $i <= $total_page; $i++) : ?>
+                    <?php for ($i = 1; $i <= $totalPage; $i++) : ?>
                         <li class="page-item">
                             <a class="page-link" style="<?= $i == $page ? 'background: rgba(156, 197, 161, 0.5) ;color: #ffffff;' : '' ?>" href="?page=<?= $i ?>"><?= $i ?>
                             </a>
@@ -163,70 +196,11 @@ $row = $stmt->fetchAll();
     };
 
     function delete_enter() {
-        location.href = 'BR_delete.php?sid=' + d;
+        location.href = '../Book_review/BR_delete.php?sid=' + d;
     }
 
     function delete_cancel() {
         location.href = window.location.href;
     }
-
-    function renderBooks(books) {
-        var tbody = document.getElementById('books');
-        var html = '';
-        for (var i = 0; i < books.length; i++) {
-            html += '<tr>';
-            html += '<td>' + books[i].sid + '</td>';
-            html += '<td>' + books[i].BR_name + '</td>';
-            html += '<td>' + books[i].BR_password + '</td>';
-            html += '<td>' + books[i].BR_phone + '</td>';
-            html += '<td>' + books[i].BR_email + '</td>';
-            html += '<td>' + books[i].BR_address + '</td>';
-            html += '<td>' + books[i].BR_gender + '</td>';
-            html += '<td>' + books[i].BR_birthday + '</td>';
-            html += '<td>' + books[i].BR_job + '</td>';
-            html += '<td><a href="AC_update.php?sid=' + books[i].sid + '"><i class="fas fa-edit"></i></a></td>';
-            html += '<td><a href="javascript:delete_doublecheck(' + books[i].sid + ')"><i class="fas fa-trash-alt"></i></a></td>';
-            html += '</tr>';
-        }
-        tbody.innerHTML = html;
-        return false;
-    }
-
-    //--Enter監聽---------------------------------------------------------------------------
-    document.onkeypress = function(e) { //對整個頁面監聽 
-        var keyNum = window.event ? e.keyCode : e.which; //獲取被按下的鍵值
-        //判斷使用者按下Enter鍵 (監聽13）
-        if (keyNum == '13') {
-            search();
-            return false;
-        }
-    };
-
-
-    //--Ajax搜尋功能---------------------------------------------------------------------------
-
-    var searchItem = document.querySelector('#BR_search'); //取ID
-    function search() {
-        //取得搜尋字串
-        if (searchItem.value != 0) {
-            $.ajax({
-                    method: "POST",
-                    url: "./BR_search_api.php", //進api
-                    data: {
-                        search: searchItem.value
-                    }
-                })
-
-                .done(function(msg) {
-                    var books = JSON.parse(msg);
-                    renderBooks(books);
-                });
-            return false;
-        }
-        //ajax
-        else {
-            return false;
-        }
-    }
 </script>
-<?php require '__html_foot.php'; ?>
+<?php include '../../pbook_index/__html_foot.php' ?>

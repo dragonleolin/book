@@ -2,6 +2,7 @@
 if (!isset($_SESSION)) {
     session_start();
 }
+require __DIR__ . '/__admin_required.php';
 $page_title = '品書';
 ?>
 <?php include __DIR__ . '/__html_head.php' ?>

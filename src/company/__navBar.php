@@ -27,10 +27,10 @@
 
 <div class="d-flex flex-row my_content">
     <!-- 左邊aside選單欄位 -->
-    <aside class="d-flex aside_heigh">
+    <aside class="d-flex aside_heigh" >
         <div id="accordion">
             <div class="aside card">
-                <button type="button" class="aside card-header btn btn-info" id="headingOne">
+                <button type="button" class="aside card-header btn btn-info" id="headingOne" >
                     <div class="aside_hover" data-toggle="collapse" data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
                         <img class="aside_logo" src="../../images/icon_VD_m.svg" alt="">
                         <span class="aside_text">資料管理</span>
@@ -41,10 +41,6 @@
                     <button type="button" class="btn btn-light sub_aside_text" onclick="location.href='data.php'">
                         <i class="fas fa-caret-right"></i>
                         <span>基本資料</span>
-                    </button>
-                    <button type="button" class="btn btn-light sub_aside_text">
-                        <i class="fas fa-caret-right"></i>
-                        <span>訂單管理</span>
                     </button>
                 </div>
             </div>
@@ -68,7 +64,21 @@
                     </button>
                 </div>
             </div>
-
+            <div class="aside card">
+                <button type="button" class="aside card-header btn btn-info" id="headingTwo">
+                    <div class="aside_hover" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                        <img class="aside_logo" src="../../images/icon_MR_m.svg" alt="">
+                        <span class="aside_text">訂單管理</span>
+                        <i class="fas fa-caret-down"></i>
+                    </div>
+                </button>
+                <div id="collapseThree" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
+                    <button type="button" class="btn btn-light sub_aside_text" onclick="location.href=''">
+                        <i class="fas fa-caret-right"></i>
+                        <span>訂單總表</span>
+                    </button>
+                </div>
+            </div>
             <div class="aside card">
                 <button type="button" class="aside card-header btn btn-info" id="headingSix">
                     <div class="aside_hover" data-toggle="collapse" data-target="#collapseSix" aria-expanded="false" aria-controls="collapseSix">
