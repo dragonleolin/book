@@ -105,7 +105,7 @@ foreach ($rows as $r) {
                             <i class="fas fa-sort"></i>&nbsp;&nbsp;&nbsp;sid
                         </button>
                         <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-                            <a class="dropdown-item" href="#"  onclick="goto_orderby('<?php $params['col'] = 'sid';
+                            <a class="dropdown-item" href="#" onclick="goto_orderby('<?php $params['col'] = 'sid';
                                                                                         $params['ord'] = 'ASC';
                                                                                         echo http_build_query($params) ?>')">小→大</a>
                             <a class="dropdown-item" href="#" onclick="goto_orderby('<?php $params['col'] = 'sid';
@@ -124,21 +124,6 @@ foreach ($rows as $r) {
                                                                                         $params['ord'] = 'ASC';
                                                                                         echo http_build_query($params) ?>')">小→大</a>
                             <a class="dropdown-item" href="#" onclick="goto_orderby('<?php $params['col'] = 'cp_name';
-                                                                                        $params['ord'] = 'DESC';
-                                                                                        echo http_build_query($params) ?>')">大→小</a>
-                        </div>
-                    </div>
-                </li>
-                <li class="nav-item">
-                    <div id="btnGroupDrop1" class="position-relative" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <button type="button" class="btn btn-outline-dark">
-                            <i class="fas fa-sort"></i>&nbsp;&nbsp;&nbsp;庫存
-                        </button>
-                        <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-                            <a class="dropdown-item" href="#" onclick="goto_orderby('<?php $params['col'] = 'cp_stock';
-                                                                                        $params['ord'] = 'ASC';
-                                                                                        echo http_build_query($params) ?>')">小→大</a>
-                            <a class="dropdown-item" href="#" onclick="goto_orderby('<?php $params['col'] = 'cp_stock';
                                                                                         $params['ord'] = 'DESC';
                                                                                         echo http_build_query($params) ?>')">大→小</a>
                         </div>
@@ -190,28 +175,28 @@ foreach ($rows as $r) {
                 <thead>
                     <tr>
                         <th scope="col">
-                        <i class="fas fa-sort-amount-down-alt" style="<?= ($col == 'sid' &&  $ord =='ASC')?'display:inline-block;color:#ffc408':'display:none;'?>"></i>
-                        <i class="fas fa-sort-amount-down" style="<?= ($col == 'sid' && $ord =='DESC')?'display:inline-block;color:#ffc408':'display:none;'?>"></i>    
-                        #</th>
+                            <i class="fas fa-sort-amount-down-alt" style="<?= ($col == 'sid' &&  $ord == 'ASC') ? 'display:inline-block;color:#ffc408' : 'display:none;' ?>"></i>
+                            <i class="fas fa-sort-amount-down" style="<?= ($col == 'sid' && $ord == 'DESC') ? 'display:inline-block;color:#ffc408' : 'display:none;' ?>"></i>
+                            #</th>
                         <th scope="col">
-                        <i class="fas fa-sort-amount-down-alt" style="<?= ($col == 'cp_name' &&  $ord =='ASC')?'display:inline-block;color:#ffc408':'display:none;'?>"></i>
-                        <i class="fas fa-sort-amount-down" style="<?= ($col == 'cp_name' && $ord =='DESC')?'display:inline-block;color:#ffc408':'display:none;'?>"></i>
-                        出版社名</th>
+                            <i class="fas fa-sort-amount-down-alt" style="<?= ($col == 'cp_name' &&  $ord == 'ASC') ? 'display:inline-block;color:#ffc408' : 'display:none;' ?>"></i>
+                            <i class="fas fa-sort-amount-down" style="<?= ($col == 'cp_name' && $ord == 'DESC') ? 'display:inline-block;color:#ffc408' : 'display:none;' ?>"></i>
+                            出版社名</th>
                         <th scope="col">聯絡人</th>
                         <th scope="col">電話</th>
                         <th scope="col">電子郵件</th>
                         <th scope="col">地址</th>
                         <th scope="col">統一編號</th>
                         <th scope="col">
-                        <i class="fas fa-sort-amount-down-alt" style="<?= ($col == 'cp_stock' &&  $ord =='ASC')?'display:inline-block;color:#ffc408':'display:none;'?>"></i>
-                        <i class="fas fa-sort-amount-down" style="<?= ($col == 'cp_stock' && $ord =='DESC')?'display:inline-block;color:#ffc408':'display:none;'?>"></i>
-                        庫存</th>
+                            <i class="fas fa-sort-amount-down-alt" style="<?= ($col == 'cp_stock' &&  $ord == 'ASC') ? 'display:inline-block;color:#ffc408' : 'display:none;' ?>"></i>
+                            <i class="fas fa-sort-amount-down" style="<?= ($col == 'cp_stock' && $ord == 'DESC') ? 'display:inline-block;color:#ffc408' : 'display:none;' ?>"></i>
+                            庫存</th>
                         <th scope="col">帳號</th>
                         <th scope="col">密碼</th>
                         <th scope="col">
-                        <i class="fas fa-sort-amount-down-alt" style="<?= ($col == 'cp_created_date' &&  $ord =='ASC')?'display:inline-block;color:#ffc408':'display:none;'?>"></i>
-                        <i class="fas fa-sort-amount-down" style="<?= ($col == 'cp_created_date' && $ord =='DESC')?'display:inline-block;color:#ffc408':'display:none;'?>"></i>
-                        註冊日期</th>
+                            <i class="fas fa-sort-amount-down-alt" style="<?= ($col == 'cp_created_date' &&  $ord == 'ASC') ? 'display:inline-block;color:#ffc408' : 'display:none;' ?>"></i>
+                            <i class="fas fa-sort-amount-down" style="<?= ($col == 'cp_created_date' && $ord == 'DESC') ? 'display:inline-block;color:#ffc408' : 'display:none;' ?>"></i>
+                            註冊日期</th>
                         <th scope="col">logo</th>
                         <th scope="col">修改</th>
                         <th scope="col">刪除</th>
@@ -306,11 +291,37 @@ foreach ($rows as $r) {
                 ) : $params['page'] = $i;
                     ?>
                     <li class="page-item ">
-                        <a class="page-link" style="<?= $i == $page ? 'background: rgba(156, 197, 161, 0.5) ;color: #ffffff;' : '' ?>" href="?<?= http_build_query($params) ?>"><?= $i < 10 ? '0' . $i : $i ?></a>
+                        <a class="page-link" style="<?= $i == $page ? 'background: rgba(156, 197, 161, 0.5) ;color: #ffffff;' : '' ?>" href="?<?php
+                                                                                                                                                    switch ($col) {
+                                                                                                                                                        case 'sid':
+                                                                                                                                                            $params['col'] = 'sid';
+                                                                                                                                                            break;
+                                                                                                                                                        case 'cp_name':
+                                                                                                                                                            $params['col'] = 'cp_name';
+                                                                                                                                                            break;
+                                                                                                                                                        case 'created_date':
+                                                                                                                                                            $params['col'] = 'created_date';
+                                                                                                                                                            break;
+                                                                                                                                                        case '':
+                                                                                                                                                            $params['col'] = '';
+                                                                                                                                                            break;
+                                                                                                                                                    };
+                                                                                                                                                    switch ($ord) {
+                                                                                                                                                        case 'ASC':
+                                                                                                                                                            $params['ord'] = 'ASC';
+                                                                                                                                                            break;
+                                                                                                                                                        case 'DESC':
+                                                                                                                                                            $params['ord'] = 'DESC';
+                                                                                                                                                            break;
+                                                                                                                                                        case '':
+                                                                                                                                                            $params['ord'] = '';
+                                                                                                                                                            break;
+                                                                                                                                                    };
+                                                                                                                                                    echo http_build_query($params) ?>"><?= $i < 10 ? '0' . $i : $i ?></a>
                     </li>
                 <?php endfor; ?>
                 <li class="page-item">
-                    <a class="page-link" href="?page=<?= $page + 1 ?>" aria-label="Next">
+                    <a class="page-link" href="?page=<?= $page + 1 ?>" aria-label="Next" style="width:100%">
                         <i class="fas fa-angle-right"></i>
                     </a>
                 </li>
@@ -321,11 +332,6 @@ foreach ($rows as $r) {
                 </li>
             </ul>
         </nav>
-
-
-        <!-- 刪除提示框 -->
-
-
 </section>
 </div>
 <script>
@@ -347,6 +353,7 @@ foreach ($rows as $r) {
     function delete_no() {
         location.href = window.location.href;
     }
+
     function goto_orderby(str) {
         location.href = '?' + str;
     }
