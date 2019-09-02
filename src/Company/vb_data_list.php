@@ -1,5 +1,5 @@
 <?php
-require __DIR__ . '/__admin_required.php';   
+require __DIR__ . '/__admin_required.php';
 require __DIR__ . '/__connect_db.php';
 
 $page_name = 'vb_data_list';
@@ -8,7 +8,7 @@ $page = isset($_GET['page']) ? intval($_GET['page']) : 1; //用戶選取的頁�
 $per_page = 10; //每頁幾筆資料
 
 $search = isset($_GET['search']) ? $_GET['search'] : '';
-$allow = $_SESSION['loginUser2']['sid'] ;
+$allow = $_SESSION['loginUser2']['sid'];
 
 $params = [];
 $where = ' WHERE 1 ';
@@ -17,7 +17,6 @@ if (!empty($search)) {
     $params['search'] = $search;
     $search = $pdo->quote("%$search%");
     $where .= "AND (`isbn` LIKE $search OR `vb_books`.`name` LIKE $search OR `publishing` LIKE $search )";
-    
 }
 
 $t_sql = "SELECT COUNT(1) FROM `vb_books` $where";
@@ -88,7 +87,19 @@ foreach ($cates as $r) {
                         目前總計<?= $totalRows ?>筆資料
                     </div>
                 </li>
-                <li class="nav-item" style="margin: 0px 10px">
+                <li class="nav-item" style="margin-left:10px">
+                    <div id="btnGroupDrop1" class="position-relative" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >
+                        <button type="button" class="btn btn-outline-dark">
+                            <i class="fas fa-arrow-circle-down"></i>
+                            排序
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+                            <a class="dropdown-item" href="#">Dropdown link</a>
+                            <a class="dropdown-item" href="#">Dropdown link</a>
+                        </div>
+                    </div>
+                </li>
+                <li class="nav-item" style="margin-right:10px">
                     <button class="btn btn-outline-primary my-2 my-sm-0" type="button" onclick="vb_data_insert()">
                         <i class="fas fa-plus-circle"></i>
                         新增出版社書籍
@@ -132,7 +143,7 @@ foreach ($cates as $r) {
                     $row = $books_stmt->fetchAll();
                     for ($i = 0; $i < count($row); $i++) : ?>
                         <tr>
-                            <td style="vertical-align:middle;"><?= (($page-1)*$per_page)+($i+1)?></td>
+                            <td style="vertical-align:middle;"><?= (($page - 1) * $per_page) + ($i + 1) ?></td>
                             <td style="vertical-align:middle;"><?= $row[$i]['sid']; ?></td>
                             <td style="vertical-align:middle;"><?= $row[$i]['isbn']; ?></td>
                             <td style="vertical-align:middle;"><?= $row[$i]['name']; ?></td>
