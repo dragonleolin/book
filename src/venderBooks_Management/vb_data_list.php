@@ -7,6 +7,8 @@ $page = isset($_GET['page']) ? intval($_GET['page']) : 1; //用戶選取的頁�
 $per_page = 10; //每頁幾筆資料
 
 $search = isset($_GET['search']) ? $_GET['search'] : '';
+$col = isset($_GET['col']) ? $_GET['col'] : '';
+$ord = isset($_GET['ord']) ? $_GET['ord'] : '';
 
 $params = [];
 $where = ' WHERE 1 ';
@@ -14,6 +16,12 @@ if (!empty($search)) {
     $params['search'] = $search;
     $search = $pdo->quote("%$search%");
     $where .= " AND (`isbn` LIKE $search OR `vb_books`.`name` LIKE $search OR `publishing` LIKE $search) ";
+}
+$orderby = '';
+if (!empty($col)) {
+    $orderby = " ORDER BY `vb_books`.`$col` $ord ";
+    $params['col'] = $col;
+    $params['ord'] = $ord;
 }
 
 $t_sql = "SELECT COUNT(1) FROM `vb_books` $where";
@@ -31,7 +39,7 @@ if ($page > $totalPages) {
 
 $books_sql = "SELECT `vb_books`.*, `cp_data_list`.`cp_name` publishing
                     FROM `vb_books`  LEFT JOIN `cp_data_list` ON `vb_books`.`publishing` = `cp_data_list`.`sid` $where
-                    ORDER BY `vb_books`.`sid` ASC LIMIT " . (($page - 1) * $per_page) . "," . $per_page;
+                    $orderby LIMIT " . (($page - 1) * $per_page) . "," . $per_page;
 
 $books_stmt = $pdo->query($books_sql);
 
@@ -97,66 +105,90 @@ foreach ($cates as $r) {
                 <li class="nav-item">
                     <div id="btnGroupDrop1" class="position-relative" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <button type="button" class="btn btn-outline-dark">
-                        <i class="fas fa-sort"></i>&nbsp;&nbsp;&nbsp;依編號
+                            <i class="fas fa-sort"></i>&nbsp;&nbsp;&nbsp;依SID
                         </button>
                         <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-                            <a class="dropdown-item" href="#">大→小</a>
-                            <a class="dropdown-item" href="#">小→大</a>
+                            <a class="dropdown-item" href="#" onclick="goto_orderby('<?php $params['col'] = 'sid';
+                                                                                        $params['ord'] = 'ASC';
+                                                                                        echo http_build_query($params) ?>')">小→大</a>
+                            <a class="dropdown-item" href="#" onclick="goto_orderby('<?php $params['col'] = 'sid';
+                                                                                        $params['ord'] = 'DESC';
+                                                                                        echo http_build_query($params) ?>')">大→小</a>
                         </div>
                     </div>
                 </li>
                 <li class="nav-item">
                     <div id="btnGroupDrop1" class="position-relative" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <button type="button" class="btn btn-outline-dark">
-                        <i class="fas fa-sort"></i>&nbsp;&nbsp;&nbsp;依分類
+                            <i class="fas fa-sort"></i>&nbsp;&nbsp;&nbsp;依分類
                         </button>
                         <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-                            <a class="dropdown-item" href="#">大→小</a>
-                            <a class="dropdown-item" href="#">小→大</a>
+                            <a class="dropdown-item" href="#" onclick="goto_orderby('<?php $params['col'] = 'categories';
+                                                                                        $params['ord'] = 'ASC';
+                                                                                        echo http_build_query($params) ?>')">小→大</a>
+                            <a class="dropdown-item" href="#" onclick="goto_orderby('<?php $params['col'] = 'categories';
+                                                                                        $params['ord'] = 'DESC';
+                                                                                        echo http_build_query($params) ?>')">大→小</a>
                         </div>
                     </div>
                 </li>
                 <li class="nav-item">
                     <div id="btnGroupDrop1" class="position-relative" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <button type="button" class="btn btn-outline-dark">
-                        <i class="fas fa-sort"></i>&nbsp;&nbsp;&nbsp;依出版社
+                            <i class="fas fa-sort"></i>&nbsp;&nbsp;&nbsp;依出版社
                         </button>
                         <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-                            <a class="dropdown-item" href="#">大→小</a>
-                            <a class="dropdown-item" href="#">小→大</a>
+                            <a class="dropdown-item" href="#" onclick="goto_orderby('<?php $params['col'] = 'publishing';
+                                                                                        $params['ord'] = 'ASC';
+                                                                                        echo http_build_query($params) ?>')">小→大</a>
+                            <a class="dropdown-item" href="#" onclick="goto_orderby('<?php $params['col'] = 'publishing';
+                                                                                        $params['ord'] = 'DESC';
+                                                                                        echo http_build_query($params) ?>')">大→小</a>
                         </div>
                     </div>
                 </li>
                 <li class="nav-item">
                     <div id="btnGroupDrop1" class="position-relative" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <button type="button" class="btn btn-outline-dark">
-                        <i class="fas fa-sort"></i>&nbsp;&nbsp;&nbsp;依出版日期
+                            <i class="fas fa-sort"></i>&nbsp;&nbsp;&nbsp;依出版日期
                         </button>
                         <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-                            <a class="dropdown-item" href="#">大→小</a>
-                            <a class="dropdown-item" href="#">小→大</a>
+                            <a class="dropdown-item" href="#" onclick="goto_orderby('<?php $params['col'] = 'publish_date';
+                                                                                        $params['ord'] = 'ASC';
+                                                                                        echo http_build_query($params) ?>')">小→大</a>
+                            <a class="dropdown-item" href="#" onclick="goto_orderby('<?php $params['col'] = 'publish_date';
+                                                                                        $params['ord'] = 'DESC';
+                                                                                        echo http_build_query($params) ?>')">大→小</a>
                         </div>
                     </div>
                 </li>
                 <li class="nav-item">
                     <div id="btnGroupDrop1" class="position-relative" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <button type="button" class="btn btn-outline-dark">
-                        <i class="fas fa-sort"></i>&nbsp;&nbsp;&nbsp;依定價
+                            <i class="fas fa-sort"></i>&nbsp;&nbsp;&nbsp;依定價
                         </button>
                         <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-                            <a class="dropdown-item" href="#">大→小</a>
-                            <a class="dropdown-item" href="#">小→大</a>
+                            <a class="dropdown-item" href="#" onclick="goto_orderby('<?php $params['col'] = 'fixed_price';
+                                                                                        $params['ord'] = 'ASC';
+                                                                                        echo http_build_query($params) ?>')">小→大</a>
+                            <a class="dropdown-item" href="#" onclick="goto_orderby('<?php $params['col'] = 'fixed_price';
+                                                                                        $params['ord'] = 'DESC';
+                                                                                        echo http_build_query($params) ?>')">大→小</a>
                         </div>
                     </div>
                 </li>
                 <li class="nav-item">
                     <div id="btnGroupDrop1" class="position-relative" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <button type="button" class="btn btn-outline-dark">
-                        <i class="fas fa-sort"></i>&nbsp;&nbsp;&nbsp;依庫存
+                            <i class="fas fa-sort"></i>&nbsp;&nbsp;&nbsp;依庫存
                         </button>
                         <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-                            <a class="dropdown-item" href="#">大→小</a>
-                            <a class="dropdown-item" href="#">小→大</a>
+                            <a class="dropdown-item" href="#" onclick="goto_orderby('<?php $params['col'] = 'stock';
+                                                                                        $params['ord'] = 'ASC';
+                                                                                        echo http_build_query($params) ?>')">小→大</a>
+                            <a class="dropdown-item" href="#" onclick="goto_orderby('<?php $params['col'] = 'stock';
+                                                                                        $params['ord'] = 'DESC';
+                                                                                        echo http_build_query($params) ?>')">大→小</a>
                         </div>
                     </div>
                 </li>
@@ -191,18 +223,36 @@ foreach ($cates as $r) {
                 <thead>
                     <tr>
                         <th scope="col">#</th>
-                        <th scope="col">編號</th>
+                        <th scope="col">
+                        <i class="fas fa-sort-amount-down-alt" style="<?= ($col == 'sid' &&  $ord =='ASC')?'display:inline-block;color:#ffc408':'display:none;'?>"></i>
+                        <i class="fas fa-sort-amount-down" style="<?= ($col == 'sid' && $ord =='DESC')?'display:inline-block;color:#ffc408':'display:none;'?>"></i>    
+                        SID</th>
                         <th scope="col">ISBN</th>
                         <th scope="col">書籍名稱</th>
                         <th scope="col">封面</th>
-                        <th scope="col">分類</th>
+                        <th scope="col">
+                        <i class="fas fa-sort-amount-down-alt" style="<?= ($col == 'categories' &&  $ord =='ASC')?'display:inline-block;;color:#ffc408':'display:none;'?>"></i>
+                        <i class="fas fa-sort-amount-down" style="<?= ($col == 'categories' && $ord =='DESC')?'display:inline-block;color:#ffc408':'display:none;'?>"></i>    
+                        分類</th>
                         <th scope="col">作者</th>
-                        <th scope="col">出版社</th>
-                        <th scope="col">出版日期</th>
+                        <th scope="col">
+                        <i class="fas fa-sort-amount-down-alt" style="<?= ($col == 'publishing' &&  $ord =='ASC')?'display:inline-block;color:#ffc408':'display:none;'?>"></i>
+                        <i class="fas fa-sort-amount-down" style="<?= ($col == 'publishing' && $ord =='DESC')?'display:inline-block;color:#ffc408':'display:none;'?>"></i>    
+                        出版社</th>
+                        <th scope="col">
+                        <i class="fas fa-sort-amount-down-alt" style="<?= ($col == 'publish_date' &&  $ord =='ASC')?'display:inline-block;color:#ffc408':'display:none;'?>"></i>
+                        <i class="fas fa-sort-amount-down" style="<?= ($col == 'publish_date' && $ord =='DESC')?'display:inline-block;color:#ffc408':'display:none;'?>"></i>    
+                        出版日期</th>
                         <th scope="col">版次</th>
-                        <th scope="col">定價</th>
+                        <th scope="col">
+                        <i class="fas fa-sort-amount-down-alt" style="<?= ($col == 'fixed_price' &&  $ord =='ASC')?'display:inline-block;color:#ffc408':'display:none;'?>"></i>
+                        <i class="fas fa-sort-amount-down" style="<?= ($col == 'fixed_price' && $ord =='DESC')?'display:inline-block;color:#ffc408':'display:none;'?>"></i>      
+                        定價</th>
                         <th scope="col">頁數</th>
-                        <th scope="col">庫存</th>
+                        <th scope="col">
+                        <i class="fas fa-sort-amount-down-alt" style="<?= ($col == 'stock' &&  $ord =='ASC')?'display:inline-block;color:#ffc408':'display:none;'?>"></i>
+                        <i class="fas fa-sort-amount-down" style="<?= ($col == 'stock' && $ord =='DESC')?'display:inline-block;color:#ffc408':'display:none;'?>"></i>    
+                        庫存</th>
                         <th scope="col">修改</th>
                         <th scope="col">刪除</th>
                     </tr>
@@ -332,5 +382,10 @@ foreach ($cates as $r) {
     function delete_no() {
         location.href = 'vb_data_list.php?page=' + <?= $page ?>;
     }
+
+    function goto_orderby(str) {
+                location.href = '?' + str;
+    }
+
 </script>
 <?php include __DIR__ . '/../../pbook_index/__html_foot.php' ?>
