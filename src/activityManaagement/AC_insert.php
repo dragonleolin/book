@@ -24,20 +24,20 @@ $page_title = '品書 - 活動新增';
                 </div>
                 <ul class="nav justify-content-between">
                 <li class="nav-item" style="margin: 0px 10px">
-                <button class="btn btn-outline-primary my-2 my-sm-0" type="button" onclick="preceding_page()">
+                <button class="btn btn-outline-primary my-2= my-sm-0" type="button" onclick="preceding_page()">
                     <i class="fas fa-arrow-circle-left"></i>
                     回到上一頁
                 </button>
                 </li>
-        </ul>
+                </ul>
             </nav>
 
             <!-- 每個人填資料的區塊 -->
             <div class="container2" style="visibility:visible;" id="main_datalist">
                 <section class="d-flex" style="min-width:600px;">
-                    <div class="card-body d-flex">
-                                                                <!-- action="AC_insert_api.php" method="post"-->
-                        <form style="width:800px;margin:10px 50px;" name="form1" onsubmit="return checkForm()">
+                    <div class="card-body">
+                        <form class="row" style="width:80vw;margin:10px 0;" name="form1" onsubmit="return checkForm()">
+                            <div class="col-6">
                             <div class="form-group">
                                 <label for="AC_name" class="update_label">申請人</label>
                                 <span id="AC_nameHelp" style="margin:0px 10px; color:red"></span>
@@ -75,47 +75,46 @@ $page_title = '品書 - 活動新增';
                                 <span id="AC_organizerHelp" style="margin:0px 10px; color:red"></span>
                                 <input type="text" class="update form-control" id="AC_organizer" name="AC_organizer" value="">
                             </div>
-                            <!-- <div class="form-group">
-                                <label for="AC_price" class="update_label">參加費</label>
-                                <span style="margin:0px 10px;color:red">示意:錯誤顯示訊息</span>
-                                <input type="text" class="update form-control" id="AC_price" name="AC_price">
-                            </div> -->
 
-                            <div style="position:absolute;left:900px; margin:20px 0;">
+                            <div style="position:absolute;left:34vw; margin:30px 0;">
                                 <button type="submit" class="btn btn-warning" id="success">&nbsp;新&nbsp;增&nbsp;活&nbsp;動&nbsp;</button>
                             </div>
+                            </div>
+                        <!-- 分隔線 --------------------------------------------------- -->
+                        <div class="col-6">
+                                <div class="form-group" style="margin:0 40px;">
+                                    <label for="categories" class="update_label">・活動簡介</label>
+                                    <span style="color:#999;">&nbsp;限制100字以內</span>
+                                    <textarea class="update form-control" id="exampleFormControlTextarea1" rows="3"
+                                    style="width:500px;height:165px;resize:none"></textarea>
+                                </div>
+
+                                <div class="form-group" style="margin:20px 40px;">
+                                    
+                    
+                                    <label for="AC_pic" style="font-size: 20px;">・活動封面</label>
+                                    <input type="file" class="form-control-file" id="AC_pic" name="AC_pic" style="display:none">
+                                    
+                                    <button style="margin:0 10px" class="btn btn-outline-primary my-2 my-sm-0" type="button" onclick="selUpload()">
+                                        <i class="fas fa-plus-circle" style="width:30px; "></i>上傳圖片檔案
+                                    </button>
+
+                                     <div style="width: 500px;height:340px; margin:20px 0;">
+                                     <img style="object-fit: contain;width: 100%;height: 100%; margin:0 10px;" id="demo"/>
+                                     </div>                  
+                                </div>
+                        </div>
+                        <!-- --------------------------------------------------- -->
+      
                         </form>
-                    </div>
-
-                    <div >
-                        <div class="form-group" style="margin:30px 0 0 0;">
-                            <label for="categories" class="update_label">・活動簡介</label>
-                            <span style="color:#999;">&nbsp;限制100字以內</span>
-                            <textarea class="update form-control" id="exampleFormControlTextarea1" rows="3"
-                            style="width:500px;height:165px;resize:none"></textarea>
-                        </div>
-
-                        <div class="form-group" style="margin:20px 0;">
-                        <div class="col-lg-5 ">
-                            <div>
-                            <label for="AC_pic" style="font-size: 20px;">・活動封面</label>
-                            <input type="file" class="form-control-file" id="AC_pic" name="AC_pic" style="display:none">
-                            </div>
-                            <div>
-                            <button class="btn btn-outline-primary my-2 my-sm-0" type="button" onclick="selUpload()">
-                                <i class="fas fa-plus-circle" style="width:30px;"></i>上傳圖片檔案
-                            </button>
-                            </div>
-                        </div>
-                    </div>
-                    <div style="width: 500px;">
-                            <img style="object-fit: contain;width: 100%;height: 100%" id="demo"/>
-                    </div>
+                        
+                    
+                    
                         
                         </div>
 
                         <script>
-                            // --圖片上傳--------------------------------------------------
+                            // --圖片上傳函式--------------------------------------------------
                              function selUpload() {
                                  document.querySelector('#AC_pic').click();
                              }
@@ -163,7 +162,7 @@ $page_title = '品書 - 活動新增';
         let container2 =  document.querySelector('.container2');
         let success = document.querySelector('#submit_btn');
         let my_false = document.querySelector('#my_false');
-        let main_datalist_hidden = document.querySelector('#main_datalist');
+        // let main_datalist_hidden = document.querySelector('#main_datalist');
         // 檢查有沒有輸入----------------------------------------------
         let i, s, item;
 
@@ -241,13 +240,15 @@ $page_title = '品書 - 活動新增';
                     // success.innerHTML = json.info;
                     if (json.success){
                         submit_btn.style.display = 'block';
-                        main_datalist_hidden.style.visibility = 'hidden';
+                        container2.style.display = 'none';
+                        // main_datalist_hidden.style.visibility = 'hidden';
                         setTimeout(function(){
                         location.href = 'AC_data_list.php';
                         },1000)
                     } else {
                         my_false.style.display = 'block';
-                        main_datalist_hidden.style.visibility = 'hidden';
+                        container2.style.display = 'none';
+                        // main_datalist_hidden.style.visibility = 'hidden';
                         setTimeout(function(){
                             location.href = 'AC_insert.php';
                         },500)

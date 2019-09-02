@@ -2,7 +2,7 @@
 require __DIR__. '/AC__connect_db.php';
 
 //取得api request
-$search = $_GET['search'];
+$search = $_POST['search'];
 
 //搜尋解析
 $search = $pdo->quote("%$search%");
