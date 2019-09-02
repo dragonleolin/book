@@ -41,6 +41,7 @@ if(empty($_POST['name'])){
     exit;
 };
 
+
 $sql = "INSERT INTO `vb_books`(`isbn`, `name`, `author`, `publishing`, `publish_date`, `version`, `fixed_price`, `stock`, `page`, `pic`, `categories`, `introduction`, `created_at`) 
         VALUES (?,?,?,?,?,?,?,?,?,?,?,?,NOW())";
 
