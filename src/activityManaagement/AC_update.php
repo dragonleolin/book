@@ -153,7 +153,7 @@ $totalPages = ceil($totalRows / $per_page);
                         </div>
 
                         <script>
-                            // --圖片上傳函式--------------------------------------------------
+                            // --圖片上傳函式----------------------------------------
                             function selUpload() {
                                 document.querySelector('#AC_pic').click();
                             }

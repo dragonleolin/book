@@ -1,10 +1,12 @@
 <?php
+
 require __DIR__. '/AC__connect_db.php';
 
 if (empty($_POST['AC_name']) or empty($_POST['AC_sid'])) {
     echo json_encode($result, JSON_UNESCAPED_UNICODE);
     exit;
 }
+
 $result = [
     'success' => false,
     'code' => 400,
@@ -12,12 +14,6 @@ $result = [
     'post' => $_POST,
 ];
 
-
-
-if (empty($_POST['AC_name']) or empty($_POST['AC_sid'])) {
-    echo json_encode($result, JSON_UNESCAPED_UNICODE);
-    exit;
-}
 
 $upload_dir = __DIR__. '/AC_images/';
 $allowed_types = [
@@ -30,13 +26,13 @@ $exts = [
     'image/jpeg' => '.jpg',
 ];
 
+$new_filename = '';
+$new_ext = '';
 
 $pic_sql = sprintf("SELECT `AC_pic` FROM `ac_pbook` WHERE `AC_sid` = %s", $_POST['AC_sid']);
 $pic_stmt = $pdo->query($pic_sql);
 $new_filename = $pic_stmt->fetch()['AC_pic'];
 
-$new_filename = '';
-$new_ext = '';
 
 if(!empty($_FILES['AC_pic'])){ //檔案有沒有上傳
     if(in_array($_FILES['AC_pic']['type'],$allowed_types)){  //上傳檔案類型是否符合
@@ -47,8 +43,6 @@ if(!empty($_FILES['AC_pic'])){ //檔案有沒有上傳
         //函式 : move_uploaded_file(要移動的文件名稱,移動文件的新位置。);
     }
 }
-
-
 
 $sql = "UPDATE `ac_pbook` SET
          `AC_name`=?,
@@ -62,6 +56,7 @@ $sql = "UPDATE `ac_pbook` SET
          WHERE `AC_sid`=?";
 
 $stmt = $pdo->prepare($sql);
+
 
 $stmt->execute([
         $_POST['AC_name'],
