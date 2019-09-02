@@ -98,7 +98,19 @@ foreach ($cates as $r) {
                         目前總計<?= $totalRows ?>筆資料
                     </div>
                 </li>
-                <li class="nav-item" style="margin: 0px 10px">
+                <li class="nav-item" style="margin-left:10px">
+                    <div id="btnGroupDrop1" class="position-relative" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >
+                        <button type="button" class="btn btn-outline-dark">
+                            <i class="fas fa-arrow-circle-down"></i>
+                            排序
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+                            <a class="dropdown-item" href="#">Dropdown link</a>
+                            <a class="dropdown-item" href="#">Dropdown link</a>
+                        </div>
+                    </div>
+                </li>
+                <li class="nav-item" style="margin-right:10px">
                     <button class="btn btn-outline-primary my-2 my-sm-0" type="button" onclick="vb_data_insert()">
                         <i class="fas fa-plus-circle"></i>
                         新增出版社書籍
