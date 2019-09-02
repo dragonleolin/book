@@ -54,7 +54,7 @@ foreach ($cates as $r) {
 
     .page-position {
         position: absolute;
-        bottom: 5%;
+        bottom: 2%;
         left: 50%;
     }
 
@@ -86,23 +86,86 @@ foreach ($cates as $r) {
                 <h4>出版社書籍總表</h4>
                 <div class="title_line"></div>
             </div>
+        </nav>
+        <nav class="navbar justify-content-between" style="padding: 0px;width: 83vw;margin:10px 0px -10px 0px">
+            <ul class="nav justify-content-between">
+                <li class="nav-item">
+                    <div style="padding: 0.375rem 0.75rem;">
+                        資料排序：
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <div id="btnGroupDrop1" class="position-relative" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <button type="button" class="btn btn-outline-dark">
+                        <i class="fas fa-sort"></i>&nbsp;&nbsp;&nbsp;依編號
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+                            <a class="dropdown-item" href="#">大→小</a>
+                            <a class="dropdown-item" href="#">小→大</a>
+                        </div>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <div id="btnGroupDrop1" class="position-relative" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <button type="button" class="btn btn-outline-dark">
+                        <i class="fas fa-sort"></i>&nbsp;&nbsp;&nbsp;依分類
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+                            <a class="dropdown-item" href="#">大→小</a>
+                            <a class="dropdown-item" href="#">小→大</a>
+                        </div>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <div id="btnGroupDrop1" class="position-relative" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <button type="button" class="btn btn-outline-dark">
+                        <i class="fas fa-sort"></i>&nbsp;&nbsp;&nbsp;依出版社
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+                            <a class="dropdown-item" href="#">大→小</a>
+                            <a class="dropdown-item" href="#">小→大</a>
+                        </div>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <div id="btnGroupDrop1" class="position-relative" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <button type="button" class="btn btn-outline-dark">
+                        <i class="fas fa-sort"></i>&nbsp;&nbsp;&nbsp;依出版日期
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+                            <a class="dropdown-item" href="#">大→小</a>
+                            <a class="dropdown-item" href="#">小→大</a>
+                        </div>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <div id="btnGroupDrop1" class="position-relative" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <button type="button" class="btn btn-outline-dark">
+                        <i class="fas fa-sort"></i>&nbsp;&nbsp;&nbsp;依定價
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+                            <a class="dropdown-item" href="#">大→小</a>
+                            <a class="dropdown-item" href="#">小→大</a>
+                        </div>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <div id="btnGroupDrop1" class="position-relative" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <button type="button" class="btn btn-outline-dark">
+                        <i class="fas fa-sort"></i>&nbsp;&nbsp;&nbsp;依庫存
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+                            <a class="dropdown-item" href="#">大→小</a>
+                            <a class="dropdown-item" href="#">小→大</a>
+                        </div>
+                    </div>
+                </li>
+            </ul>
             <ul class="nav justify-content-between">
                 <li class="nav-item">
                     <div style="padding: 0.375rem 0.75rem;">
                         <i class="fas fa-check"></i>
                         目前總計<?= $totalRows ?>筆資料
-                    </div>
-                </li>
-                <li class="nav-item" style="margin-left:10px">
-                    <div id="btnGroupDrop1" class="position-relative" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <button type="button" class="btn btn-outline-dark">
-                            <i class="fas fa-arrow-circle-down"></i>
-                            排序
-                        </button>
-                        <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-                            <a class="dropdown-item" href="#">Dropdown link</a>
-                            <a class="dropdown-item" href="#">Dropdown link</a>
-                        </div>
                     </div>
                 </li>
                 <li class="nav-item" style="margin-right:10px">
@@ -239,17 +302,9 @@ foreach ($cates as $r) {
                 </li>
             </ul>
         </nav>
-        <div class="delete update card" id="my_delete" style="display:none">
-            <div class="delete card-body">
-                <label class="delete_text">您確認要刪除資料嗎?</label>
-                <div>
-                    <button type="button" class="delete btn btn-danger" onclick="delete_yes()">確認</button>
-                    <button type="button" class="delete btn btn-warning" onclick="delete_no()">取消</button>
-                </div>
-            </div>
-        </div>
     </div>
 </section>
+</div>
 <script>
     function vb_data_insert() {
         location = "vb_data_insert.php";
