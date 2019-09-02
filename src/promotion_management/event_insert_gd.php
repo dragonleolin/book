@@ -124,8 +124,8 @@ $cp_data_list = $pdo->query($sql)->fetchAll(PDO::FETCH_UNIQUE | PDO::FETCH_COLUM
                                 <div class="form-group col-md-6">
                                     <label for="gd_type">折扣類型</label>
                                     <select class="form-control" id="gd_type" name="gd_type"">
-                                    <option value="5">百分比折扣</option>
-                                    <option value="6">固定金額</option>
+                                    <option value="6">百分比折扣</option>
+                                    <option value="7">固定金額</option>
                                     </select>
                                     <small class="form-text"></small>
                                 </div>

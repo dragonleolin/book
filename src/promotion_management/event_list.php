@@ -48,6 +48,13 @@ $user_level_const = [
 
 ?>
 
+    <style>
+        body {
+            background: url(../../images/bg.png) repeat center top;
+        }
+
+    </style>
+
     <div class="container-fluid pt-3 pb-5">
 
         <nav class="navbar justify-content-between mb-3" style="padding: 0px;width: 80vw;">
@@ -105,7 +112,7 @@ $user_level_const = [
                     <td><?= htmlentities($r['name']); ?></td>
                     <td><?php
                         if ($r['user_level'] == '1') {
-                            $sql = "SELECT `user_level` FROM `pm_condition` WHERE `event_id` = {$r['sid']}";
+                            $sql = "SELECT `user_level` FROM `pm_condition` WHERE `event_id` = {$r['sid']} AND `user_level` IS NOT NULL";
                             $user_level_condition = $pdo->query($sql)->fetchAll();
                             for ($i = 0; $i < count($user_level_condition); $i++) {
                                 echo $user_level_const[$user_level_condition[$i]['user_level']];
@@ -137,6 +144,17 @@ $user_level_const = [
                                 foreach ($discount_row as $k => $v) {
                                     printf("滿 %s元折 %s%s<br>", $v['price_limit'], $v['discounts'], $discount_type);
                                 }
+                            }
+                        }
+                        if($r['rule']==6 or $r['rule']==7) {
+                            $sql = "SELECT d.* 
+                                    FROM `pm_general_discounts` d JOIN `pm_event` e ON 
+                                    d.`event_id` = e.`sid` WHERE e.`sid` = {$r['sid']}";
+                            $discount_row = $pdo->query($sql)->fetch();
+                            if ($r['rule'] == 6) {
+                                echo '折價' . $discount_row['discounts'] . '%';
+                            }else{
+                                echo '限時特價'.$discount_row['discounts'].'元';
                             }
                         }
                         ?>
@@ -246,7 +264,7 @@ $user_level_const = [
                         if (!empty($r['cp_group'])) {
                             $sql = "SELECT c.`cp_id` 
                                             FROM `pm_condition` c JOIN `pm_event` e ON 
-                                            c.`event_id` = e.`sid` WHERE e.`sid` = {$r['sid']}";
+                                            c.`event_id` = e.`sid` WHERE e.`sid` = {$r['sid']} AND c.`cp_id` IS NOT NULL";
                             $cp_group = $pdo->query($sql)->fetchAll(PDO::FETCH_COLUMN);
                             $sql = "SELECT `sid`,`cp_name` FROM `cp_data_list` WHERE 1 ";
                             $cp_data_list = $pdo->query($sql)->fetchAll(PDO::FETCH_UNIQUE | PDO::FETCH_COLUMN);

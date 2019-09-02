@@ -14,6 +14,14 @@ include __DIR__ . '/../../pbook_index/__navbar.php';
 
 ?>
 
+    <style>
+        body {
+            background: url(../../images/bg.png) repeat center top;
+        }
+
+    </style>
+
+
     <div class="container-fluid pt-5">
 
         <nav class="navbar justify-content-between">

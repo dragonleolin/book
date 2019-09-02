@@ -46,6 +46,7 @@ if ($stmt->rowCount() == 1) {
 }
 
 
+//輸入折扣條件
 $event_id = $pdo->lastInsertId();
 echo 'event_id:' . $event_id;
 
@@ -68,6 +69,25 @@ if ($stmt->rowCount() == 1) {
     $result['code'] = 420;
     $result['info'] = '輸入失敗';
 }
+
+
+//輸入適用會員
+if ($_POST['user_level_type'] == 1) {
+    $sql = "";
+    foreach ($_POST['user_level'] as $k => $v) {
+        $sql = $sql . "INSERT INTO `pm_condition`
+        (`event_id`, `user_level`)
+        VALUES 
+        ({$event_id},{$v});";
+    }
+    $stmt = $pdo->query($sql);
+    if ($stmt->rowCount() == 1) {
+        $result['success'] = true;
+        $result['code'] = 220;
+        $result['info'] = '會員條件輸入成功';
+    }
+}
+
 
 
 //輸入參與廠商

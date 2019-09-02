@@ -16,6 +16,9 @@ $cate_row = $pdo->query($cate_sql)->fetchAll(PDO::FETCH_UNIQUE | PDO::FETCH_COLU
 ?>
 
     <style>
+        body {
+            background: url(../../images/bg.png) repeat center top;
+        }
         small.form-text {
             color: red;
         }
