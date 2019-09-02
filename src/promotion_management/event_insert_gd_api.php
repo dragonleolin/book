@@ -14,7 +14,10 @@ if (empty($_POST) or empty($_SESSION)) {
 }
 
 $fd = array_merge($_SESSION['event_insert_gd'], $_POST);
-unset($_SESSION['event_insert_gd']);
+//unset($_SESSION['event_insert_gd']);
+
+$fd['book_group'] = json_decode($fd['book_group']);
+
 echo '<pre>';
 print_r($fd);
 echo '</pre>';
@@ -30,8 +33,8 @@ $stmt->execute([
     $fd['event_name'],
     $fd['event_start_time'],
     $fd['event_end_time'],
-    $fd['event_pbd_type'],
-    $fd['user_level'],
+    $fd['gd_type'],
+    $fd['user_level_type'],
     $fd['group_type'],
     $fd['cp_group_set'],
     0
@@ -47,29 +50,24 @@ $event_id = $pdo->lastInsertId();
 echo 'event_id:' . $event_id;
 
 $i = 1;
-do {
-    $sql = "INSERT INTO `pm_price_break_discounts`
-    (`event_id`, `type`, `price_limit`, `discounts`, `discount_type`) 
+$sql = "INSERT INTO `pm_general_discounts`
+    (`event_id`, `type`, `discounts`) 
     VALUES 
-    (?,?,?,?,?)";
-    $stmt = $pdo->prepare($sql);
-    $stmt->execute([
-        $event_id,
-        $fd['event_pbd_type'],
-        $fd['price_condition' . $i],
-        $fd['discount_amount' . $i],
-        $fd['discount_type'],
-    ]);
-    if ($stmt->rowCount() == 1) {
-        $result['success'] = true;
-        $result['code'] = 210;
-        $result['info'] = '折扣條件輸入成功';
-    } else {
-        $result['code'] = 420;
-        $result['info'] = '輸入失敗';
-    }
-    $i++;
-} while ($i <= 3 and $fd['event_pbd_type'] == 4 and !empty($fd['price_condition' . $i]));
+    (?,?,?)";
+$stmt = $pdo->prepare($sql);
+$stmt->execute([
+    $event_id,
+    $fd['gd_type'],
+    $fd['gd_amount'],
+]);
+if ($stmt->rowCount() == 1) {
+    $result['success'] = true;
+    $result['code'] = 210;
+    $result['info'] = '折扣條件輸入成功';
+} else {
+    $result['code'] = 420;
+    $result['info'] = '輸入失敗';
+}
 
 
 //輸入參與廠商
@@ -109,7 +107,7 @@ if ($fd['group_type'] == 1) {
     }
 } else if ($fd['group_type'] == 2) {
     $sql = "";
-    foreach ($fd['book_id'] as $k => $v) {
+    foreach ($fd['book_group'] as $k => $v) {
         $sql = $sql . "INSERT INTO `pm_books_group`
         (`event_id`, `books_id`)
         VALUES 
