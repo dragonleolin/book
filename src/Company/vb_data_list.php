@@ -33,11 +33,17 @@ $totalPages = ceil($totalRows / $per_page); //取得總頁數
 
 
 if ($page < 1) {
-    header('Location: vb_data_list.php');
+    $params['page'] = 1;
+    $params['col'] = isset($_GET['col']) ? $_GET['col'] : '';
+    $params['ord'] = isset($_GET['ord']) ? $_GET['ord'] : '';
+    header('Location: vb_data_list.php?' . http_build_query($params));
 };
 
 if ($page > $totalPages) {
-    header('Location: vb_data_list.php?page=' . $totalPages);
+    $params['page'] = $totalPages;
+    $params['col'] = isset($_GET['col']) ? $_GET['col'] : '';
+    $params['ord'] = isset($_GET['ord']) ? $_GET['ord'] : '';
+    header('Location: vb_data_list.php?' . http_build_query($params));
 };
 
 
@@ -297,10 +303,18 @@ foreach ($cates as $r) {
         <nav aria-label="Page navigation example" class="page-position">
             <ul class="pagination">
                 <li class="page-item">
-                    <a class="page-link" href="?page=1"><i class="fas fa-angle-double-left"></i></a>
+                    <a class="page-link" href="?<?php
+                                                $params['page'] = 1;
+                                                $params['col'] = isset($_GET['col']) ? $_GET['col'] : '';
+                                                $params['ord'] = isset($_GET['ord']) ? $_GET['ord'] : '';
+                                                echo http_build_query($params) ?>"><i class="fas fa-angle-double-left"></i></a>
                 </li>
                 <li class="page-item">
-                    <a class="page-link" href="?page=<?= $page - 1 ?>"><i class="fas fa-angle-left"></i></a>
+                    <a class="page-link" href="?<?php
+                                                $params['page'] = $page - 1;
+                                                $params['col'] = isset($_GET['col']) ? $_GET['col'] : '';
+                                                $params['ord'] = isset($_GET['ord']) ? $_GET['ord'] : '';
+                                                echo http_build_query($params) ?>"><i class="fas fa-angle-left"></i></a>
                 </li>
                 <?php
                 if ($totalPages <= 5) {
@@ -327,45 +341,24 @@ foreach ($cates as $r) {
                     ?>
                     <li class="page-item <?= $page == $i ? 'active' : '' ?>">
                         <a class="page-link" href="?<?php
-                                                        switch ($col) {
-                                                            case 'sid':
-                                                                $params['col'] = 'sid';
-                                                                break;
-                                                            case 'categories':
-                                                                $params['col'] = 'categories';
-                                                                break;
-                                                            case 'publish_date':
-                                                                $params['col'] = 'publish_date';
-                                                                break;
-                                                            case 'fixed_price':
-                                                                $params['col'] = 'fixed_price';
-                                                                break;
-                                                            case 'stock':
-                                                                $params['col'] = 'stock';
-                                                                break;
-                                                            case '':
-                                                                $params['col'] = '';
-                                                                break;
-                                                        };
-                                                        switch ($ord) {
-                                                            case 'ASC':
-                                                                $params['ord'] = 'ASC';
-                                                                break;
-                                                            case 'DESC':
-                                                                $params['ord'] = 'DESC';
-                                                                break;
-                                                            case '':
-                                                                $params['ord'] = '';
-                                                                break;
-                                                        };
+                                                        $params['col'] = isset($_GET['col']) ? $_GET['col'] : '';
+                                                        $params['ord'] = isset($_GET['ord']) ? $_GET['ord'] : '';
                                                         echo http_build_query($params) ?>"><?= $i < 10 ? '0' . $i : $i ?></a>
                     </li>
                 <?php endfor; ?>
                 <li class="page-item">
-                    <a class="page-link" href="?page=<?= $page + 1 ?>"><i class="fas fa-angle-right"></i></a>
+                    <a class="page-link" href="?<?php
+                                                $params['page'] = $page + 1;
+                                                $params['col'] = isset($_GET['col']) ? $_GET['col'] : '';
+                                                $params['ord'] = isset($_GET['ord']) ? $_GET['ord'] : '';
+                                                echo http_build_query($params) ?>"><i class="fas fa-angle-right"></i></a>
                 </li>
                 <li class="page-item">
-                    <a class="page-link" href="?page=<?= $totalPages ?>"><i class="fas fa-angle-double-right"></i></a>
+                    <a class="page-link" href="?<?php
+                                                $params['page'] = $totalPages;
+                                                $params['col'] = isset($_GET['col']) ? $_GET['col'] : '';
+                                                $params['ord'] = isset($_GET['ord']) ? $_GET['ord'] : '';
+                                                echo http_build_query($params) ?>"><i class="fas fa-angle-double-right"></i></a>
                 </li>
             </ul>
         </nav>
