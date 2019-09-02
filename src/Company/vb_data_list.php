@@ -326,7 +326,33 @@ foreach ($cates as $r) {
                     // }
                     ?>
                     <li class="page-item <?= $page == $i ? 'active' : '' ?>">
-                        <a class="page-link" href="?<?php $params['col'] = 'sid';$params['ord'] = 'ASC';echo http_build_query($params) ?>"><?= $i < 10 ? '0' . $i : $i ?></a>
+                        <a class="page-link" href="?<?php
+                                                        switch ($col) {
+                                                            case 'sid':
+                                                                $params['col'] = 'sid';
+                                                                break;
+                                                            case 'categories':
+                                                                $params['col'] = 'categories';
+                                                                break;
+                                                            case 'publish_date':
+                                                                $params['col'] = 'publish_date';
+                                                                break;
+                                                            case 'fixed_price':
+                                                                $params['col'] = 'fixed_price';
+                                                                break;
+                                                            case 'stock':
+                                                                $params['col'] = 'stock';
+                                                                break;
+                                                        };
+                                                        switch ($ord) {
+                                                            case 'ASC':
+                                                                $params['ord'] = 'ASC';
+                                                                break;
+                                                            case 'DESC':
+                                                                $params['ord'] = 'DESC';
+                                                                break;
+                                                        };
+                                                        echo http_build_query($params) ?>"><?= $i < 10 ? '0' . $i : $i ?></a>
                     </li>
                 <?php endfor; ?>
                 <li class="page-item">
