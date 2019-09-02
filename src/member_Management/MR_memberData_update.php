@@ -60,18 +60,20 @@ if (empty($row)) {
 </div>
 <section class="p-4 container-fluid dis_relative">
     <nav class="navbar justify-content-between" style="padding: 0px;width: 80vw;">
-        <div>
-            <h4>修改會員資料</h4>
-            <div class="title_line"></div>
+        <div class="d-flex">
+            <div>
+                <h4>修改會員資料</h4>
+                <div class="title_line"></div>
+            </div>
+            <ul class="nav justify-content-between">
+                <li class="nav-item" style="margin: 0px 10px">
+                    <button class="btn btn-outline-primary my-2 my-sm-0" type="button" onclick="history.back()">
+                        <i class="fas fa-arrow-circle-left"></i>
+                        回到上一頁
+                    </button>
+                </li>
+            </ul>
         </div>
-        <ul class="nav justify-content-between">
-            <li class="nav-item" style="margin: 0px 10px">
-                <button class="btn btn-outline-primary my-2 my-sm-0" type="button" onclick="history.back()">
-                    <i class="fas fa-arrow-circle-left"></i>
-                    回到上一頁
-                </button>
-            </li>
-        </ul>
     </nav>
     <div class="container" id="container1">
         <div class="row " style="margin-top:-5px ">
@@ -79,7 +81,7 @@ if (empty($row)) {
                 <div class="alert alert-primary " role="alert" id="info-bar" style="padding:8px;"></div>
             </div>
         </div>
-         <div class="">
+        <div class="">
             <form name="form1" style="width:1100px" onsubmit="return checkForm()" class="d-flex">
                 <div>
                     <div class="form-group">
