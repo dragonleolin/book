@@ -28,7 +28,7 @@ include __DIR__ . '/../../pbook_index/__navbar.php';
             </div>
             <ul class="nav justify-content-between">
                 <li class="nav-item" style="margin: 0px 10px">
-                    <button class="btn btn-outline-primary my-2 my-sm-0" type="button" onclick="location.href = 'event_list.php'">
+                    <button class="btn btn-outline-primary my-2 my-sm-0" type="button" onclick="location.href = 'event_insert.php'">
                         <i class="fas fa-arrow-circle-left"></i>
                         回到上一頁
                     </button>
@@ -60,7 +60,7 @@ include __DIR__ . '/../../pbook_index/__navbar.php';
                                 </div>
                             </div>
                             <div class="row mb-3 mt-2 ml-1" id="user_level_row" style="display: none">
-                                <div class="form-group col-md-9 d-flex flex-wrap">
+                                <div class="form-group col-md-12 d-flex flex-wrap">
                                     <div class="form-check pr-3">
                                         <input class="form-check-input" type="checkbox"
                                                name="user_level[]"
