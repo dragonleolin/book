@@ -22,6 +22,7 @@ if (!empty($col)) {
 }
 $totalRows = $pdo->query("SELECT COUNT(1) FROM `cp_data_list` $where ")->fetch(PDO::FETCH_NUM)[0];    // 拿到總筆數
 $totalPages = ceil($totalRows / $per_page);    //算總頁數
+
 if ($page < 1) {
     header('Location: CP_data_list.php');
     exit;
@@ -171,7 +172,7 @@ foreach ($rows as $r) {
 
         <!-- 每個人填資料的區塊 -->
         <div style="margin-top: 1rem">
-            <table class="table table-striped table-bordered" style="width: 80vw ; text-align: center; font-size:16px; max-height:75vh">
+            <table class="table table-striped table-bordered" style="width: 83vw ; text-align: center; font-size:16px; max-height:75vh">
                 <thead>
                     <tr>
                         <th scope="col">
@@ -260,16 +261,70 @@ foreach ($rows as $r) {
         <!-- 我是分頁按鈕列 請自取並調整頁面擺放位置 -->
         <nav aria-label="Page navigation example">
             <ul class="pagination page-position ">
-                <li class="page-item">
-                    <a class="page-link" href="?page=1" aria-label="Previous">
+            <li class="page-item">
+                    <a class="page-link" href="?<?php 
+                    $params['page'] = 1 ;
+                    switch ($col) {
+                        case 'sid':
+                            $params['col'] = 'sid';
+                            break;
+                        case 'cp_name':
+                            $params['col'] = 'cp_name';
+                            break;
+                        case 'created_date':
+                            $params['col'] = 'created_date';
+                            break;
+                        case '':
+                            $params['col'] = '';
+                            break;
+                    };
+                    switch ($ord) {
+                        case 'ASC':
+                            $params['ord'] = 'ASC';
+                            break;
+                        case 'DESC':
+                            $params['ord'] = 'DESC';
+                            break;
+                        case '':
+                            $params['ord'] = '';
+                            break;
+                    };
+                    echo http_build_query($params) ?>" aria-label="Next">
                         <i class="fas fa-angle-double-left"></i>
                     </a>
                 </li>
                 <li class="page-item">
-                    <a class="page-link" href="?page=<?= $page - 1 ?>" aria-label="Previous">
+                    <a class="page-link" href="?<?php 
+                    $params['page'] = $page - 1 ;
+                    switch ($col) {
+                        case 'sid':
+                            $params['col'] = 'sid';
+                            break;
+                        case 'cp_name':
+                            $params['col'] = 'cp_name';
+                            break;
+                        case 'created_date':
+                            $params['col'] = 'created_date';
+                            break;
+                        case '':
+                            $params['col'] = '';
+                            break;
+                    };
+                    switch ($ord) {
+                        case 'ASC':
+                            $params['ord'] = 'ASC';
+                            break;
+                        case 'DESC':
+                            $params['ord'] = 'DESC';
+                            break;
+                        case '':
+                            $params['ord'] = '';
+                            break;
+                    };
+                    echo http_build_query($params) ?>" aria-label="Next">
                         <i class="fas fa-angle-left"></i>
                     </a>
-                </li>
+                <li class="page-item">
                 <?php
                 if ($totalPages <= 5) {
                     $p_start = 1;
@@ -321,12 +376,65 @@ foreach ($rows as $r) {
                     </li>
                 <?php endfor; ?>
                 <li class="page-item">
-                    <a class="page-link" href="?page=<?= $page + 1 ?>" aria-label="Next" style="width:100%">
+                    <a class="page-link" href="?<?php 
+                    $params['page'] = $page + 1 ;
+                    switch ($col) {
+                        case 'sid':
+                            $params['col'] = 'sid';
+                            break;
+                        case 'cp_name':
+                            $params['col'] = 'cp_name';
+                            break;
+                        case 'created_date':
+                            $params['col'] = 'created_date';
+                            break;
+                        case '':
+                            $params['col'] = '';
+                            break;
+                    };
+                    switch ($ord) {
+                        case 'ASC':
+                            $params['ord'] = 'ASC';
+                            break;
+                        case 'DESC':
+                            $params['ord'] = 'DESC';
+                            break;
+                        case '':
+                            $params['ord'] = '';
+                            break;
+                    };
+                    echo http_build_query($params) ?>" aria-label="Next">
                         <i class="fas fa-angle-right"></i>
                     </a>
-                </li>
                 <li class="page-item">
-                    <a class="page-link" href="?page=<?= $totalPages ?>" aria-label="Next">
+                    <a class="page-link" href="?<?php 
+                    $params['page'] = $totalPages ;
+                    switch ($col) {
+                        case 'sid':
+                            $params['col'] = 'sid';
+                            break;
+                        case 'cp_name':
+                            $params['col'] = 'cp_name';
+                            break;
+                        case 'created_date':
+                            $params['col'] = 'created_date';
+                            break;
+                        case '':
+                            $params['col'] = '';
+                            break;
+                    };
+                    switch ($ord) {
+                        case 'ASC':
+                            $params['ord'] = 'ASC';
+                            break;
+                        case 'DESC':
+                            $params['ord'] = 'DESC';
+                            break;
+                        case '':
+                            $params['ord'] = '';
+                            break;
+                    };
+                    echo http_build_query($params) ?>" aria-label="Next">
                         <i class="fas fa-angle-double-right"></i>
                     </a>
                 </li>
