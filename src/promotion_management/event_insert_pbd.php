@@ -42,23 +42,60 @@ include __DIR__ . '/../../pbook_index/__navbar.php';
                 <div class="alert alert-primary" role="alert" id="info_bar" style="display: none"></div>
                 <div class="card mb-5 pl-5 pr-5 pt-3">
                     <div class="card-body">
-                        <form name="form1" onsubmit="return checkForm()" method="POST" action="event_insert_pbd2.php">
+                        <form name="form1" onsubmit="return checkForm()" method="POST" action="event_insert_pbd_api.php">
                             <div class="row">
                                 <div class="form-group col-md-6">
                                     <label for="event_name">活動名稱</label>
                                     <input type="text" class="form-control" id="event_name" name="event_name">
                                     <small class="form-text"></small>
                                 </div>
+                            </div>
+                            <div class="row">
                                 <div class="form-group col-md-6">
-                                    <label for="user_level">會員等級限制</label>
-                                    <select class="form-control" id="user_level" name="user_level"">
-                                    <option value="0">無限制</option>
-                                    <option value="1">品書會員</option>
-                                    <option value="2">品書學徒</option>
-                                    <option value="3">品書專家</option>
-                                    <option value="4">品書大師</option>
-                                    <option value="5">品書至尊</option>
+                                    <label for="user_level_type">會員等級限制</label>
+                                    <select class="form-control" id="user_level_type" name="user_level_type" onchange="display_user_level_row()">
+                                        <option value="0">無限制</option>
+                                        <option value="1">僅限－－</option>
                                     </select>
+                                </div>
+                            </div>
+                            <div class="row mb-3 mt-2 ml-1" id="user_level_row" style="display: none">
+                                <div class="form-group col-md-9 d-flex flex-wrap">
+                                    <div class="form-check pr-3">
+                                        <input class="form-check-input" type="checkbox"
+                                               name="user_level[]"
+                                               id="user_level1" value="1">
+                                        <label class="form-check-label"
+                                               for="user_level1">品書會員</label>
+                                    </div>
+                                    <div class="form-check pr-3">
+                                        <input class="form-check-input" type="checkbox"
+                                               name="user_level[]"
+                                               id="user_level2" value="2">
+                                        <label class="form-check-label"
+                                               for="user_level2">品書學徒</label>
+                                    </div>
+                                    <div class="form-check pr-3">
+                                        <input class="form-check-input" type="checkbox"
+                                               name="user_level[]"
+                                               id="user_level3" value="3">
+                                        <label class="form-check-label"
+                                               for="user_level3">品書專家</label>
+                                    </div>
+                                    <div class="form-check pr-3">
+                                        <input class="form-check-input" type="checkbox"
+                                               name="user_level[]"
+                                               id="user_level4" value="4">
+                                        <label class="form-check-label"
+                                               for="user_level4">品書大師</label>
+                                    </div>
+                                    <div class="form-check pr-3">
+                                        <input class="form-check-input" type="checkbox"
+                                               name="user_level[]"
+                                               id="user_level5" value="5">
+                                        <label class="form-check-label"
+                                               for="user_level5">品書至尊</label>
+                                    </div>
                                     <small class="form-text"></small>
                                 </div>
                             </div>
@@ -163,7 +200,7 @@ include __DIR__ . '/../../pbook_index/__navbar.php';
                             </button>
                     </div>
 
-                    <button id="submit_btn" type="submit" class="btn btn-primary mr-3 ml-3 mb-3">下一步</button>
+                    <button id="submit_btn" type="submit" class="btn btn-primary mr-3 ml-3 mb-3">提交</button>
 
                     </form>
                 </div>
@@ -250,6 +287,24 @@ include __DIR__ . '/../../pbook_index/__navbar.php';
                 }
             }
 
+
+            //檢查會員等級選項
+
+            let user_level_help = document.querySelector('#user_level_row small');
+            let user_level_type = document.querySelector('#user_level_type');
+            let user_level_checkboxes = document.querySelectorAll('#user_level_row input');
+            let user_level_ischeck = 0;
+            user_level_help.innerHTML = '';
+            for(let i = 0; i < 5; i++){
+                if(user_level_checkboxes[i].checked == true) {
+                    user_level_ischeck++;
+                }
+            }
+            if(user_level_type.value == '1' && user_level_ischeck == 0){
+                isPass = false;
+                user_level_help.innerHTML = '請勾選會員等級需求';
+            }
+
             //測試階梯減價是否符合邏輯
             if (isPass) {
                 let price_condition = document.querySelectorAll('.price_condition');
@@ -289,10 +344,28 @@ include __DIR__ . '/../../pbook_index/__navbar.php';
             return [year, month, day].join('-');
         }
 
+        //顯示會員等級選項
+        function display_user_level_row(){
+            let user_level_type = document.querySelector('#user_level_type');
+            let user_level_row = document.querySelector('#user_level_row');
+            if (user_level_type.value == '1'){
+                user_level_row.style.display = 'flex';
+            }else{
+                let user_level_checkboxes = document.querySelectorAll('#user_level_row input')
+                for(let i = 0; i < 5; i++){
+                    user_level_checkboxes[i].checked = false;
+                }
+                user_level_row.style.display = 'none';
+            }
+        }
+
+
+        //自動輸入當天日期
         document.querySelector('#event_start_time').value = formatDate(new Date());
         document.querySelector('#event_end_time').value = formatDate(new Date());
 
 
+        //階梯減價顯示
         const event_pbd_type = document.querySelector('#event_pbd_type');
         const addStageBtn = document.querySelector('#addStageBtn');
         let stage = 1;
