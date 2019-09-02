@@ -46,22 +46,33 @@ foreach ($rows as $r) {
     .vertical td {
         vertical-align: middle;
     }
-    
+
     .test::after {
-    content: "";
-    background: url(../../images/admin_bg.png) no-repeat;
-    width: calc(100vw - 280px);
-    object-fit: contain;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    right: 0;
-    position: absolute;
-    z-index: -1;   
-    opacity: 0.05;
-}
+        content: "";
+        background: url(../../images/admin_bg.png) no-repeat;
+        width: calc(100vw - 280px);
+        object-fit: contain;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        position: absolute;
+        z-index: -1;
+        opacity: 0.05;
+    } 
 </style>
 <?php include __DIR__ . '/../../pbook_index/__html_body.php' ?>
+<div style="z-index:999;width:100vw;height:100vh;display:none;background:rgba(0,0,0,0.2)" id="delete_confirm" class="position-absolute">
+    <div class="delete update card">
+        <div class="delete card-body">
+            <label class="delete_text">您確認要刪除資料嗎?</label>
+            <div>
+                <button type="button" class="delete btn btn-danger" onclick="delete_yes()">確認</button>
+                <button type="button" class="delete btn btn-warning" onclick="delete_no()">取消</button>
+            </div>
+        </div>
+    </div>
+</div>
 <?php include __DIR__ . '/../../pbook_index/__navbar.php' ?>
 <!-- 右邊section資料欄位 -->
 <section class="position-relative test">
@@ -234,15 +245,7 @@ foreach ($rows as $r) {
 
 
         <!-- 刪除提示框 -->
-        <div class="delete update card" id="delete_confirm" style="display: none">
-            <div class="delete card-body">
-                <label class="delete_text">您確認要刪除資料嗎?</label>
-                <div>
-                    <button type="button" class="delete btn btn-danger" onclick="delete_yes()">確認</button>
-                    <button type="button" class="delete btn btn-warning" onclick="delete_no()">取消</button>
-                </div>
-            </div>
-        </div>
+        
 
 </section>
 </div>
