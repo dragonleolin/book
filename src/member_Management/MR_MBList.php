@@ -162,7 +162,7 @@ $row = $t_stmt->fetchAll();
                             <td><?= htmlentities($r['mb_fixedPrice']) ?></td>
                             <td><?= htmlentities($r['mb_page']) ?></td>
                             <td><?= htmlentities($r['mb_savingStatus']) ?></td>
-                            <td><?= htmlentities($r['mb_shelveMember']) ?></td>
+                            <td><a href="MR_memberDataList.php?search=<?=$r['mb_shelveMember']?>"> <?= htmlentities($r['mb_shelveMember']) ?></a></td>
                             <td><?= htmlentities($r['mb_shelveDate']) ?></td>
                             <td><a href="MB_update.php?mb_sid=<?= $r['mb_sid'] ?>"><i class="fas fa-edit"></i></a></td>
                             <td><a href="javascript:delete_one(<?= $r['mb_sid'] ?>)"><i class="fas fa-trash-alt"></i></a></td>
