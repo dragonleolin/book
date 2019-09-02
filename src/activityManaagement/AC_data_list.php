@@ -83,7 +83,7 @@ $stmt = $pdo->query($sql);
                             <th scope="col">標題</th>
                             <th scope="col">活動類型</th>
                             <th scope="col">封面</th>
-                            <th scope="col">時間</th>
+                            <th scope="col">開始日期</th>
                             <th scope="col">地點</th>
                             <th scope="col">聯絡電話</th>
                             <th scope="col">主辦單位</th>
@@ -131,11 +131,8 @@ $stmt = $pdo->query($sql);
                             <td><?= htmlentities($r['AC_eventArea']) ?></td>
                             <td><?= htmlentities($r['AC_mobile']) ?></td>
                             <td><?= htmlentities($r['AC_organizer']) ?></td>
-                            <td><?= htmlentities($r['AC_brief']) ?></td>
-                            <td><?= htmlentities($r['AC_created_at']) ?></td>
-                            <!-- 圖片 -->
-                            
-
+                            <td><?= htmlentities($r['AC_introduction']) ?></td>
+                            <td><?= htmlentities($r['AC_created_at']) ?></td>        
                             <td><a href="AC_update.php?AC_sid=<?= $r['AC_sid'] ?>"><i class="fas fa-edit"></i></a>
                             <td><a href="javascript:delete_one(<?= $r['AC_sid'] ?>)"><i class="fas fa-trash-alt"></i></a></td>
                         </tr>
@@ -243,7 +240,7 @@ function renderBooks(books){
         html += '<td>' + books[i].AC_eventArea+'</td>';
         html += '<td>' + books[i].AC_mobile+'</td>';
         html += '<td>' + books[i].AC_organizer+'</td>';
-        html += '<td>' + books[i].AC_brief+'</td>';
+        html += '<td>' + books[i].AC_introduction+'</td>';
         html += '<td>' + books[i].AC_created_at+'</td>';
         html += '<td><a href="AC_update.php?AC_sid='+books[i].AC_sid+'"><i class="fas fa-edit"></i></a></td>';
         html += '<td><a href="javascript:delete_one('+books[i].AC_sid+')"><i class="fas fa-trash-alt"></i></a></td>';
