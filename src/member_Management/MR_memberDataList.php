@@ -129,11 +129,11 @@ $rows = $stmt->fetchAll();
                 </thead>
                 <tbody>
 
-                    <?php $s = 0;
+                    <?php $sequence = 0;
                     $sid = [];
-                    foreach ($rows as $a) : $s++ ?>
+                    foreach ($rows as $a) : $sequence++ ?>
                         <tr>
-                            <td><?= $s ?></td>
+                            <td><?= $sequence ?></td>
                             <td><?= htmlentities($a['MR_number']) ?></td>
                             <td><?= htmlentities($a_level[$a['MR_personLevel'] - 1]) ?></td>
                             <td><?= htmlentities($a['MR_name']) ?></td>
@@ -142,7 +142,7 @@ $rows = $stmt->fetchAll();
                             <td><?= (htmlentities($a['MR_gender'])) ? '男' : '女' ?></td>
                             <td><?= htmlentities($a['MR_birthday']) ?></td>
                             <td><?= htmlentities($a['MR_mobile']) ?></td>
-                            <td><a href="" data-toggle="modal" data-target="#exampleModalCenter">
+                            <td><a href="" data-toggle="modal" data-target="#exampleModalCenter<?=$sequence?>">
                                     <i class="fas fa-file-alt"></i>
                                 </a></td>
                             <td><a href="MR_memberData_update.php?sid=<?= $a['sid'] ?>"><i class="fas fa-edit"></i></a></td>
@@ -150,7 +150,7 @@ $rows = $stmt->fetchAll();
                             <input type="hidden" id=`tdsid<?= $a['sid'] ?>` value="<?= $a['sid'] ?>">
 
                         </tr>
-                    <?php $sid = $a['sid'];
+                    <?php $sid[] = $a['sid'];
                     endforeach ?>
                 </tbody>
             </table>
@@ -194,58 +194,55 @@ $rows = $stmt->fetchAll();
         </nav>
 
         <!-- Modal -->
-
-        <?php for ($i = 0; $i < count($rows); $i++) :
-            $details = $rows[$i];
-            echo $i;?>
-            <pre><?php print_r($details);?></pre>
-            
-        <?php endfor ?>
-        <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered" role="document" style="max-width:1200px">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalCenterTitle">會員資料 </h5>
-                        <div class="nav-item" style="margin: 0px 10px">
-                            <button class="btn btn-outline-primary my-2 my-sm-0" onclick="secondHandBook()">
-                                <i class="fas fa-arrow-circle-right"></i>
-                                會員二手書清單
+        <?php for ($i = 0; $i < count($rows); $i++) : ?>
+            <?php $details = $rows[$i]; ?>
+            <div class="modal fade" id="exampleModalCenter<?=$i+1;?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document" style="max-width:1200px">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalCenterTitle">會員資料 </h5>
+                            <div class="nav-item" style="margin: 0px 10px">
+                                <button class="btn btn-outline-primary my-2 my-sm-0" onclick="secondHandBook()">
+                                    <i class="fas fa-arrow-circle-right"></i>
+                                    會員二手書清單
+                                </button>
+                            </div>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body" style="min-height:500px">
-                        <?= $i ?>
-                        <pre><?php print_r($details); ?></pre>
-                        <!-- body -->
-                        <?php foreach ($details as $k => $v) : ?>
-                            <ul class="d-flex">
-                                <li class="" style="text-align:right">
-                                    <h5><?= $item_switch[$k]; ?>
-                                        <?php
-                                            if ($k == 'MR_number') {
-                                                echo "<input type='hidden' value='${v}' id='hand2_number'>";
-                                            }
-                                            // strlen($k)>3 ? substr($k, 3, strlen($k) - 3): $k
-                                            ?> &nbsp : &nbsp </h5>
-                                </li>
-                                <li><?php if ($k == 'MR_gender') {
-                                            echo  $v == 1 ? '男' : '女';
-                                        } else {
-                                            echo $v;
-                                        }; ?></li>
-                            </ul>
-                        <?php endforeach ?>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="location.href='MR_memberData_update.php?sid=<?= $a['sid'] ?>'">修改內容</button>
-                        <button type="button" class="btn btn-primary" data-dismiss="modal" aria-label="Close">Close</button>
+                        <div class="modal-body" style="min-height:500px">
+                            <!-- body -->
+                            <?php foreach ($details as $k => $v) : ?>
+                             <?php if($k=='MR_imageloactionX' or $k=='MR_imageloactionY') continue; ?>
+                                <ul class="d-flex">
+                                    <li class="" style="text-align:right">
+                                        <h5><?= $item_switch[$k]; ?>
+                                            <?php
+                                                    if ($k == 'MR_number') {
+                                                        echo "<input type='hidden' value='${v}' id='hand2_number'>";
+                                                    }
+                                                    // strlen($k)>3 ? substr($k, 3, strlen($k) - 3): $k
+                                                    ?> &nbsp : &nbsp </h5>
+                                    </li>
+                                    <li><?php if ($k == 'MR_gender') {
+                                                    echo  $v == 1 ? '男' : '女';
+                                                } else {
+                                                    echo $v;
+                                                }; ?></li>
+                                </ul>
+                            <?php endforeach ?>
+                        </div>
+                        
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="location.href='MR_memberData_update.php?sid=<?= $sid[$i]; ?>'">修改內容</button>
+                            <button type="button" class="btn btn-primary" data-dismiss="modal" aria-label="Close">Close</button>
+                        </div>
+                        
                     </div>
                 </div>
             </div>
-        </div>
+        <?php endfor ?>
 
 
         <!-- 刪除提示框 -->

@@ -71,6 +71,17 @@ foreach ($cates as $r) {
     }
 </style>
 <?php include __DIR__ . '/__html_body.php' ?>
+<div style="z-index:999;width:100vw;height:100vh;display:none;background:rgba(0,0,0,0.2)" id="my_delete" class="position-absolute">
+    <div class="delete update card">
+        <div class="delete card-body">
+            <label class="delete_text">您確認要刪除資料嗎?</label>
+            <div>
+                <button type="button" class="delete btn btn-danger" onclick="delete_yes()">確認</button>
+                <button type="button" class="delete btn btn-warning" onclick="delete_no()">取消</button>
+            </div>
+        </div>
+    </div>
+</div>
 <?php include __DIR__ . '/__navbar.php' ?>
 <!-- 右邊section資料欄位 -->
 <div>
@@ -233,21 +244,12 @@ foreach ($cates as $r) {
                 </li>
             </ul>
         </nav>
-        <div class="delete update card" id="my_delete" style="display:none">
-            <div class="delete card-body">
-                <label class="delete_text">您確認要刪除資料嗎?</label>
-                <div>
-                    <button type="button" class="delete btn btn-danger" onclick="delete_yes()">確認</button>
-                    <button type="button" class="delete btn btn-warning" onclick="delete_no()">取消</button>
-                </div>
-            </div>
-        </div>
     </div>
 </div>
+
+</div>
 <script>
-    function vb_data_insert() {
-        location = "vb_data_insert.php";
-    }
+    
 
     let b;
 
@@ -262,6 +264,7 @@ foreach ($cates as $r) {
         a = sid;
         let my_delete = document.querySelector('#my_delete');
         my_delete.style.display = 'block';
+        no_touch1.style.pointerEvents = "none";
     }
 
     function delete_yes() {
