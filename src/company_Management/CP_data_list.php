@@ -59,7 +59,7 @@ foreach ($rows as $r) {
         position: absolute;
         z-index: -1;
         opacity: 0.05;
-    } 
+    }
 </style>
 <?php include __DIR__ . '/../../pbook_index/__html_body.php' ?>
 <div style="z-index:999;width:100vw;height:100vh;display:none;background:rgba(0,0,0,0.2)" id="delete_confirm" class="position-absolute">
@@ -196,40 +196,29 @@ foreach ($rows as $r) {
                     </a>
                 </li>
                 <?php
-                $p_start = $page - 3;
-                $p_end = $page + 3;
-                if ($page < 5) :
-                    for ($i = $p_start; $i <= 7; $i++) :
-                        $params['page'] = $i;
-                        if ($i < 1 or $i > $totalPages) continue;
-                        ?>
-                        <li class="page-item">
-                            <a class="page-link" style="<?= $i == $page ? 'background: rgba(156, 197, 161, 0.5) ;color: #ffffff;' : '' ?>" href="?<?= http_build_query($params) ?>"><?= $i ?></a>
-                        </li>
-                    <?php endfor; ?>
-                <?php endif; ?>
-                <?php
-                if ($page < $totalPages - 3 && $page >= 5) :
-                    for ($i = $p_start; $i <= $p_end; $i++) :
-                        $params['page'] = $i;
-                        if ($i < 1 or $i > $totalPages) continue;
-                        ?>
-                        <li class="page-item ">
-                            <a class="page-link" style="<?= $i == $page ? 'background: rgba(156, 197, 161, 0.5) ;color: #ffffff;' : '' ?>" href="?<?= http_build_query($params) ?>"><?= $i ?></a>
-                        </li>
-                    <?php endfor; ?>
-                <?php endif; ?>
-                <?php
-                if ($page >= $totalPages - 3) :
-                    for ($i = $totalPages - 6; $i <= $p_end; $i++) :
-                        $params['page'] = $i;
-                        if ($i < 1 or $i > $totalPages) continue;
-                        ?>
-                        <li class="page-item ">
-                            <a class="page-link" style="<?= $i == $page ? 'background: rgba(156, 197, 161, 0.5) ;color: #ffffff;' : '' ?>" href="?<?= http_build_query($params) ?>"><?= $i ?></a>
-                        </li>
-                    <?php endfor; ?>
-                <?php endif; ?>
+                if ($totalPages <= 5) {
+                    $p_start = 1;
+                    $p_end = $totalPages;
+                } else if (($page - 2) < 1) {
+                    $p_start = 1;
+                    $p_end = 5;
+                } else if (($page + 2) > $totalPages) {
+                    $p_start = $totalPages - 4;
+                    $p_end = $totalPages;
+                } else {
+                    $p_start = $page - 2;
+                    $p_end = $page + 2;
+                }
+                for (
+                    $i = $p_start;
+                    $i <= $p_end;
+                    $i++
+                ) : $params['page'] = $i;
+                    ?>
+                    <li class="page-item ">
+                        <a class="page-link" style="<?= $i == $page ? 'background: rgba(156, 197, 161, 0.5) ;color: #ffffff;' : '' ?>" href="?<?= http_build_query($params) ?>"><?= $i < 10 ? '0' . $i : $i ?></a>
+                    </li>
+                <?php endfor; ?>
                 <li class="page-item">
                     <a class="page-link" href="?page=<?= $page + 1 ?>" aria-label="Next">
                         <i class="fas fa-angle-right"></i>
@@ -245,7 +234,7 @@ foreach ($rows as $r) {
 
 
         <!-- 刪除提示框 -->
-        
+
 
 </section>
 </div>
