@@ -368,11 +368,9 @@ foreach ($cates as $r) {
 
 </div>
 <script>
-    function order_sid_desc() {
-        <?php $k = 1 ?>
+    function vb_data_insert() {
+        location = "vb_data_insert.php";
     }
-
-
 
     let b;
 
