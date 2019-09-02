@@ -160,21 +160,25 @@ $totalPages = ceil($totalRows / $per_page); //取得總頁數
 </div>
 
 <!-- 以下為新增成功才會跳出來的顯示框 -->
-<div class="success update card" id="success" style="display:none">
-    <div class="success card-body">
-        <label class="success_text" style="background:transparent">新增成功</label>
-        <div><img class="success_img" src="../../images/icon_checked.svg"></div>
+<div style="padding:150px 100px 170px 180px">
+    <div class="success update card" id="success" style="display:none">
+        <div class="success card-body">
+            <label class="success_text" style="background:transparent">新增成功</label>
+            <div><img class="success_img" src="../../images/icon_checked.svg"></div>
+        </div>
     </div>
 </div>
 
 <!-- 以下為新增失敗才會跳出來的顯示框 -->
-<div class="success update card" id="my_false" style="box-shadow:0px 0px 10px red;display:none">
-    <div class="success card-body">
-        <label class="success_text" style="background:transparent;color:rgb(228, 63, 63)">新增失敗,不可以偷偷來喔!</label>
+<div style="padding:150px 100px 170px 180px">
+    <div class="success update card" id="my_false" style="box-shadow:0px 0px 10px red;display:none">
+        <div class="success card-body">
+            <label class="success_text" style="background:transparent;color:rgb(228, 63, 63)">新增失敗,不可以偷偷來喔!</label>
+        </div>
     </div>
 </div>
-</div>
 
+</div>
 <script>
     function selUpload() {
         document.querySelector('#pic').click();
@@ -359,9 +363,9 @@ $totalPages = ceil($totalRows / $per_page); //取得總頁數
                     if (json.success) {
                         success.style.display = 'block';
                         container2.style.display = 'none';
-                        setTimeout(function() {
-                            location.href = 'vb_data_list.php?page=' + <?= $totalPages ?>;
-                        }, 1000)
+                        // setTimeout(function() {
+                        //     location.href = 'vb_data_list.php?page=' + <?= $totalPages ?>;
+                        // }, 1000)
                     } else {
                         my_false.style.display = 'block';
                         container2.style.display = 'none';
