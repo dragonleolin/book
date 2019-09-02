@@ -22,6 +22,7 @@ if (!empty($col)) {
 }
 $totalRows = $pdo->query("SELECT COUNT(1) FROM `cp_data_list` $where ")->fetch(PDO::FETCH_NUM)[0];    // 拿到總筆數
 $totalPages = ceil($totalRows / $per_page);    //算總頁數
+
 if ($page < 1) {
     header('Location: CP_data_list.php');
     exit;

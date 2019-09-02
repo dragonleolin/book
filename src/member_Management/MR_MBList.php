@@ -12,7 +12,7 @@ $where = ' WHERE 1 ';
 
 if (!empty($MR_number)) {
     $params['MR_number'] = $MR_number;
-     $where.= " AND `mb_books`.`mb_shelveMember` = ".'"'.$MR_number .'"';
+    $where .= " AND `mb_books`.`mb_shelveMember` = " . '"' . $MR_number . '"';
 }
 
 // 分頁功能
@@ -70,9 +70,19 @@ $row = $t_stmt->fetchAll();
 <section class="position-relative">
     <div class="container">
         <nav class="navbar justify-content-between" style="padding: 0px;width: 80vw;">
-            <div>
-                <h4>會員書籍列表</h4>
-                <div class="title_line"></div>
+            <div class="d-flex">
+                <div>
+                    <h4>會員書籍列表</h4>
+                    <div class="title_line"></div>
+                </div>
+                <ul class="nav justify-content-between">
+                    <li class="nav-item" style="margin: 0px 10px">
+                        <button class="btn btn-outline-primary my-2 my-sm-0" type="button" onclick="history.back()">
+                            <i class="fas fa-arrow-circle-left"></i>
+                            會員列表
+                        </button>
+                    </li>
+                </ul>
             </div>
             <ul class="nav justify-content-between">
                 <li class="nav-item">
@@ -162,52 +172,53 @@ $row = $t_stmt->fetchAll();
                             <td><?= htmlentities($r['mb_fixedPrice']) ?></td>
                             <td><?= htmlentities($r['mb_page']) ?></td>
                             <td><?= htmlentities($r['mb_savingStatus']) ?></td>
-                            <td><a href="MR_memberDataList.php?search=<?=$r['mb_shelveMember']?>"> <?= htmlentities($r['mb_shelveMember']) ?></a></td>
+                            <td><a href="MR_memberDataList.php?search=<?= $r['mb_shelveMember'] ?>"> <?= htmlentities($r['mb_shelveMember']) ?></a></td>
                             <td><?= htmlentities($r['mb_shelveDate']) ?></td>
-                            <td><a href="MB_update.php?mb_sid=<?= $r['mb_sid'] ?>"><i class="fas fa-edit"></i></a></td>
+                            <td><a href="../../src/memberBooks_Management/MB_update.php?mb_sid=<?= $r['mb_sid'] ?>"><i class="fas fa-edit"></i></a></td>
                             <td><a href="javascript:delete_one(<?= $r['mb_sid'] ?>)"><i class="fas fa-trash-alt"></i></a></td>
                         </tr>
                     <?php endforeach; ?>
                 </tbody>
             </table>
             <!-- 我是分頁按鈕列 請自取並調整頁面擺放位置 -->
-             <nav class="" aria-label="Page navigation example ">
-            <ul class="pagination justify-content-center">
-                <li class="page-item">
-                    <a class="page-link my_text_blacktea" href="?<?php $params['page']=1; echo http_build_query($params)?>" aria-label="Next">
-                        <i class="fas fa-angle-double-left"></i>
-                    </a>
-                </li>
-                <li class="page-item">
-                    <a class="page-link" href="?<?php $params['page'] = ($page - 1 <= 0) ? 1 : $page - 1 ?>">
-                        <i class="fas fa-angle-left"></i>
-                    </a>
-                </li>
-                <?php
-                $p_start = $page - 3;
-                $p_end = $page + 3;
-                if ($p_start <= 0) $p_end += -($p_start) + 1;
-                if ($p_end > $totalPages) $p_start -= -($totalPages - $p_end);
-                for ($i = $p_start; $i <= $p_end; $i++) :
-                    if ($i < 1 or $i > $totalPages) continue;
-                    //continue跳過該次迴圈
-                    $params['page'] = $i;
-                    ?>
-                    <li class="page-item <?= $i == $page ? 'active' : '' ?>">
-                        <a class="page-link" href="?<?= http_build_query($params) ?>"><?= $i ?></a></li>
-                <?php endfor; ?>
-                <li class="page-item">
-                    <a class="page-link my_text_blacktea" href="?<?php $params['page'] = ($page + 1 > $totalPages) ? $totalPages : $page + 1 ?> <?= http_build_query($params)?>" aria-label="Next">
-                        <i class="fas fa-angle-right"></i>
-                    </a>
-                </li>
-                <li class="page-item">
-                    <a class="page-link my_text_blacktea" href="?<?php $params['page'] = $totalPages ?><?= http_build_query($params)?>" aria-label="Next">
-                        <i class="fas fa-angle-double-right"></i>
-                    </a>
-                </li>
-            </ul>
-        </nav>
+            <nav class="" aria-label="Page navigation example ">
+                <ul class="pagination justify-content-center">
+                    <li class="page-item">
+                        <a class="page-link my_text_blacktea" href="?<?php $params['page'] = 1;
+                                                                        echo http_build_query($params) ?>" aria-label="Next">
+                            <i class="fas fa-angle-double-left"></i>
+                        </a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="?<?php $params['page'] = ($page - 1 <= 0) ? 1 : $page - 1 ?>">
+                            <i class="fas fa-angle-left"></i>
+                        </a>
+                    </li>
+                    <?php
+                    $p_start = $page - 3;
+                    $p_end = $page + 3;
+                    if ($p_start <= 0) $p_end += -($p_start) + 1;
+                    if ($p_end > $totalPages) $p_start -= -($totalPages - $p_end);
+                    for ($i = $p_start; $i <= $p_end; $i++) :
+                        if ($i < 1 or $i > $totalPages) continue;
+                        //continue跳過該次迴圈
+                        $params['page'] = $i;
+                        ?>
+                        <li class="page-item <?= $i == $page ? 'active' : '' ?>">
+                            <a class="page-link" href="?<?= http_build_query($params) ?>"><?= $i ?></a></li>
+                    <?php endfor; ?>
+                    <li class="page-item">
+                        <a class="page-link my_text_blacktea" href="?<?php $params['page'] = ($page + 1 > $totalPages) ? $totalPages : $page + 1 ?> <?= http_build_query($params) ?>" aria-label="Next">
+                            <i class="fas fa-angle-right"></i>
+                        </a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link my_text_blacktea" href="?<?php $params['page'] = $totalPages ?><?= http_build_query($params) ?>" aria-label="Next">
+                            <i class="fas fa-angle-double-right"></i>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
 
 
 
@@ -221,8 +232,8 @@ $row = $t_stmt->fetchAll();
                     </div>
                 </div>
             </div>
- 
-        
+
+
 </section>
 <script>
     let deleteType = document.querySelector('#deleteType');
@@ -230,7 +241,7 @@ $row = $t_stmt->fetchAll();
     let cancel = document.querySelector('#cancel');
 
     function data_insert() {
-        location = "MB_insert.php";
+        location = "../memberBooks_Management/MB_insert.php";
     }
 
     function change_img(mb_sid) {
@@ -247,7 +258,7 @@ $row = $t_stmt->fetchAll();
         // }
 
         confirm.addEventListener('click', function() {
-            location.href = 'MB_delete.php?mb_sid=' + mb_sid;
+            location.href = '../memberBooks_Management/MB_delete.php?mb_sid=' + mb_sid;
         })
         cancel.addEventListener('click', function() {
             location.href = window.location.href;

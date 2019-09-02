@@ -27,6 +27,7 @@ $item_switch = [
     'MR_createdDate' => '創建日期'
 ];
 $a_level = [
+    '',
     '品書會員',
     '品書學徒',
     '品書專家',
@@ -35,16 +36,17 @@ $a_level = [
 ];
 
 $page = isset($_GET['page']) ? intval($_GET['page']) : 1;
-$search = isset($_GET['search']) ? $_GET['search'] : '';
+
 
 $per_page = 10; // 每頁顯示的筆數
 
+$search = isset($_GET['search']) ? $_GET['search'] : '';
 $params = [];
 $where = ' WHERE 1 ';
 if (!empty($search)) {
     $params['search'] = $search;
     $search1 = $pdo->quote("%$search%");
-    $where .= " AND (`MR_name` LIKE $search1 OR `MR_email` LIKE $search1 OR `MR_mobile` LIKE $search1) ";
+    $where .= " AND (`MR_name` LIKE $search1 OR `MR_email` LIKE $search1 OR `MR_mobile` LIKE $search1 OR `MR_number` LIKE $search1 )";
 }
 
 $count = "SELECT COUNT(1) FROM `mr_information` $where"; //用count計算出總筆數
@@ -54,14 +56,19 @@ $totalRows = $pdo->query($count)->fetch(PDO::FETCH_NUM)[0];
 // echo "$totalRows <br>";
 $totalPage = ceil($totalRows / $per_page); //ceil()無條件進位
 
-if ($page < 1) {
-    header('Location: MR_dataList.php');
+
+
+if (($page < 1) | ($totalPage == 0)) {
+    // header('Refresh:2; url=MR_memberDataList.php');
+    header('Location: searchFail.php');
     exit;
 }
+
 if ($page > $totalPage) {
-    header('Location: MR_dataList.php?page=' . $totalPage);
+    header('Location: MR_memberDataList.php?page=' . $totalPage);
     exit;
 }
+
 
 $sql = "SELECT * FROM `mr_information` $where ORDER BY `sid` LIMIT " . ($page - 1) * $per_page . "," . $per_page;
 $stmt = $pdo->query($sql);
@@ -77,16 +84,32 @@ $rows = $stmt->fetchAll();
     ul li {
         list-style-type: none;
     }
+
+    .modal-header {
+        padding-left: 40px;
+    }
 </style>
 <?php include '../../pbook_index/__html_body.php' ?>
 <?php include '../../pbook_index/__navbar.php' ?>
 <div id="outerSpace">
-    <section class="justify-content-center p-4 container-fluid">
+    <section class="justify-content-center p-4 container-fluid" id="table_content">
         <div class="container-fluid">
             <nav class="navbar justify-content-between" style="padding: 0px;width: 80vw;">
-                <div>
-                    <h4>會員列表</h4>
-                    <div class="title_line"></div>
+                <div class="d-flex">
+                    <div>
+                        <h4>會員列表</h4>
+                        <div class="title_line"></div>
+                    </div>
+                    <?php if (!empty($search)) : ?>
+                        <ul class="nav justify-content-between">
+                            <li class="nav-item" style="margin: 0px 10px">
+                                <button class="btn btn-outline-primary my-2 my-sm-0" type="button" onclick='location.href = "MR_memberDataList.php"'>
+                                    <i class="fas fa-arrow-circle-left"></i>
+                                    回到上一頁
+                                </button>
+                            </li>
+                        </ul>
+                    <?php endif ?>
                 </div>
                 <ul class="nav justify-content-between">
                     <li class="nav-item">
@@ -103,7 +126,7 @@ $rows = $stmt->fetchAll();
                     </li>
                     <li class="nav-item" style="flex-grow: 1">
                         <form name="form2" class="form-inline my-2 my-lg-0">
-                            <input class="search form-control mr-sm-2" id="search_bar" name="search" value="<?= $search ?>" type="search" placeholder="Search" aria-label="Search">
+                            <input class="search form-control mr-sm-2" id="search_bar" name="search" type="search" placeholder="Search" aria-label="Search">
                             <button class="btn btn-outline-warning my-2 my-sm-0" type="submit">
                                 <i class="fas fa-search"></i>
                             </button>
@@ -135,15 +158,20 @@ $rows = $stmt->fetchAll();
                         <tr>
                             <td><?= $sequence ?></td>
                             <td><?= htmlentities($a['MR_number']) ?></td>
-                            <td><?= htmlentities($a_level[$a['MR_personLevel'] - 1]) ?></td>
+                            <td><?php
+                                    if ($a['MR_personLevel'] > 0 && $a['MR_personLevel'] <= 5) {
+                                        echo htmlentities($a_level[$a['MR_personLevel']]);
+                                    } else {
+                                        echo '';
+                                    } ?></td>
                             <td><?= htmlentities($a['MR_name']) ?></td>
                             <td><?= htmlentities($a['MR_nickname']) ?></td>
                             <td><?= htmlentities($a['MR_email']) ?></td>
                             <td><?= (htmlentities($a['MR_gender'])) ? '男' : '女' ?></td>
                             <td><?= htmlentities($a['MR_birthday']) ?></td>
                             <td><?= htmlentities($a['MR_mobile']) ?></td>
-                            <td><a href="" data-toggle="modal" data-target="#exampleModalCenter<?=$sequence?>">
-                                    <i class="fas fa-file-alt"></i>
+                            <td><a href="" data-toggle="modal" data-target="#exampleModalCenter<?= $sequence ?>">
+                                    <i class="fas fa-plus-circle"></i>&nbsp&nbsp顯示
                                 </a></td>
                             <td><a href="MR_memberData_update.php?sid=<?= $a['sid'] ?>"><i class="fas fa-edit"></i></a></td>
                             <td><a href="javascript:delete_one(<?= $a['sid'] ?>)"><i class="fas fa-trash-alt"></i></a></td>
@@ -177,7 +205,7 @@ $rows = $stmt->fetchAll();
                     //continue跳過該次迴圈
                     $params['page'] = $i;
                     ?>
-                    <li class="page-item <?= $i == $page ? 'active' : '' ?>">
+                    <li class="page-item "  style="<?= $i == $page ? 'background: rgba(156, 197, 161, 0.5) ;color: #ffffff;' : '' ?>">
                         <a class="page-link" href="?<?= http_build_query($params) ?>"><?= $i ?></a></li>
                 <?php endfor; ?>
                 <li class="page-item">
@@ -196,15 +224,19 @@ $rows = $stmt->fetchAll();
         <!-- Modal -->
         <?php for ($i = 0; $i < count($rows); $i++) : ?>
             <?php $details = $rows[$i]; ?>
-            <div class="modal fade" id="exampleModalCenter<?=$i+1;?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal fade" id="exampleModalCenter<?= $i + 1; ?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered" role="document" style="max-width:1200px">
                     <div class="modal-content">
                         <div class="modal-header">
                             <h5 class="modal-title" id="exampleModalCenterTitle">會員資料 </h5>
-                            <div class="nav-item" style="margin: 0px 10px">
+                            <div class="nav-item" style="margin-left:50px">
                                 <button class="btn btn-outline-primary my-2 my-sm-0" onclick="secondHandBook()">
                                     <i class="fas fa-arrow-circle-right"></i>
                                     會員二手書清單
+                                </button>
+                                <button class="btn btn-outline-primary my-2 my-sm-0" onclick="fans()">
+                                    <i class="fas fa-arrow-circle-right"></i>
+                                    追蹤書評人
                                 </button>
                             </div>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -214,11 +246,12 @@ $rows = $stmt->fetchAll();
                         <div class="modal-body" style="min-height:500px">
                             <!-- body -->
                             <?php foreach ($details as $k => $v) : ?>
-                             <?php if($k=='MR_imageloactionX' or $k=='MR_imageloactionY') continue; ?>
+                                <?php if ($k == 'MR_imageloactionX' or $k == 'MR_imageloactionY') continue; ?>
                                 <ul class="d-flex">
                                     <li class="" style="text-align:right">
                                         <h5><?= $item_switch[$k]; ?>
-                                            <?php
+                                            <?php   
+                                                    echo ;
                                                     if ($k == 'MR_number') {
                                                         echo "<input type='hidden' value='${v}' id='hand2_number'>";
                                                     }
@@ -227,18 +260,23 @@ $rows = $stmt->fetchAll();
                                     </li>
                                     <li><?php if ($k == 'MR_gender') {
                                                     echo  $v == 1 ? '男' : '女';
+                                                } else if ($k == 'MR_personLevel') {
+                                                    if ($a['MR_personLevel'] > 0 && $a['MR_personLevel'] <= 5) {
+                                                        echo htmlentities($a_level[$a['MR_personLevel']]);
+                                                    }
                                                 } else {
                                                     echo $v;
-                                                }; ?></li>
+                                                }; ?>
+                                    </li>
                                 </ul>
                             <?php endforeach ?>
                         </div>
-                        
+
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="location.href='MR_memberData_update.php?sid=<?= $sid[$i]; ?>'">修改內容</button>
                             <button type="button" class="btn btn-primary" data-dismiss="modal" aria-label="Close">Close</button>
                         </div>
-                        
+
                     </div>
                 </div>
             </div>
@@ -257,25 +295,17 @@ $rows = $stmt->fetchAll();
         </div>
     </section>
 </div>
+
+<!-- 搜尋失敗提視窗 -->
+<div class="delete update card" id="search_failed" style="display:none">
+    <div class="delete card-body">
+        <label class="delete_text " id="">查無資料，請重新輸入搜尋條件</label>
+    </div>
+</div>
+
 <script>
     let delete_info = document.querySelector('#delete_info');
     let delete_confirm = document.querySelector('#delete_confirm')
-
-
-    function checkForm2() {
-        let s = document.querySelector('#search_bar').value;
-
-        // let fd2 = new FormData(document.form1);
-
-        // fetch(`MR_searchAPI.php?s=${s}`)
-        //     .then(Response => {
-        //         return Response.json();
-        //     })
-        //     .then(json => {
-        //         console.log(json);
-        //     });
-        // return false;
-    }
 
     function delete_one(sid) {
         delete_confirm.style.display = "block";
@@ -284,6 +314,8 @@ $rows = $stmt->fetchAll();
         // if (confirm(`確定要刪除編號${sid}的資料嗎?`)) {
         //     location.href = 'MR_memberData_delete.php?sid=' + sid;
         // }
+
+
     }
     let delete_sid;
 
@@ -296,10 +328,13 @@ $rows = $stmt->fetchAll();
     }
     //二手書連結
     let hand2_number = document.querySelector('#hand2_number');
+    let MR_number = hand2_number.value;
 
     function secondHandBook() {
-        let MR_number = hand2_number.value;
         location.href = `MR_MBList.php?MR_number=${MR_number}`;
+    }
+    function fans() {
+        location.href = `MR_BRDataList.php?MR_number=${MR_number}`;
     }
 </script>
 

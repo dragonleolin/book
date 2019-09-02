@@ -25,10 +25,10 @@ $a_level = [
     '品書至尊',
 ];
 
-$number_blank= 'MR00000';
+$number_blank = 'MR00000';
 $count = "SELECT COUNT(1) FROM `mr_information`";
-$totalRows = $pdo->query($count)->fetch(PDO::FETCH_NUM)[0]+1;
-$new_number = substr( $number_blank ,0 , strlen($number_blank)-strlen( $totalRows)).$totalRows;
+$totalRows = $pdo->query($count)->fetch(PDO::FETCH_NUM)[0] + 1;
+$new_number = substr($number_blank, 0, strlen($number_blank) - strlen($totalRows)) . $totalRows;
 
 ?>
 <?php include '../../pbook_index/__html_head.php' ?>
@@ -45,18 +45,20 @@ $new_number = substr( $number_blank ,0 , strlen($number_blank)-strlen( $totalRow
 </div>
 <section class="p-4 container-fluid">
     <nav class="navbar justify-content-between" style="padding: 0px;width: 80vw;">
-        <div>
-            <h4>新增會員資料</h4>
-            <div class="title_line"></div>
+        <div class="d-flex">
+            <div>
+                <h4>新增會員資料</h4>
+                <div class="title_line"></div>
+            </div>
+            <ul class="nav justify-content-between">
+                <li class="nav-item" style="margin: 0px 10px">
+                    <button class="btn btn-outline-primary my-2 my-sm-0" type="button" onclick="history.back()">
+                        <i class="fas fa-arrow-circle-left"></i>
+                        回到上一頁
+                    </button>
+                </li>
+            </ul>
         </div>
-        <ul class="nav justify-content-between">
-            <li class="nav-item" style="margin: 0px 10px">
-                <button class="btn btn-outline-primary my-2 my-sm-0" type="button" onclick="history.back()">
-                    <i class="fas fa-arrow-circle-left"></i>
-                    回到上一頁
-                </button>
-            </li>
-        </ul>
     </nav>
     <div class=" ">
         <div class="row mt-3 ">
@@ -318,8 +320,7 @@ $new_number = substr( $number_blank ,0 , strlen($number_blank)-strlen( $totalRow
         }
 
         if (isPass) {
-            let fd = new FormData(document.form1);
-            let hello = document.querySelector('#hello');
+            let fd = new FormData(document.form1); 
             fetch('MR_memberData_insertAPI.php', {
                     method: 'POST',
                     body: fd,
