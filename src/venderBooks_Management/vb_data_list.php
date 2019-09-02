@@ -358,6 +358,9 @@ foreach ($cates as $r) {
                                                             case 'stock':
                                                                 $params['col'] = 'stock';
                                                                 break;
+                                                            case '':
+                                                                $params['col'] = '';
+                                                                break;
                                                         };
                                                         switch ($ord) {
                                                             case 'ASC':
@@ -365,6 +368,9 @@ foreach ($cates as $r) {
                                                                 break;
                                                             case 'DESC':
                                                                 $params['ord'] = 'DESC';
+                                                                break;
+                                                            case '':
+                                                                $params['ord'] = '';
                                                                 break;
                                                         };
                                                         echo http_build_query($params) ?>"><?= $i < 10 ? '0' . $i : $i ?></a>
