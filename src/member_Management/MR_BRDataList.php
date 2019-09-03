@@ -33,10 +33,11 @@ $count = "SELECT COUNT(1) FROM `br_create` $JOIN_ON1 $where"; //用count計算�
 $totalRows = $pdo->query($count)->fetch(PDO::FETCH_NUM)[0];
 $totalPage = ceil($totalRows / $page_list); //ceil()無條件進位
 
-// if ($page < 1) {
-//     header('Location: ../Book_review/BR_data_list.php');
-//     exit;
-// }
+
+if ($page < 1) {
+    header('Location: ../Book_review/BR_data_list.php');
+    exit;
+}
 
 // if ($page > $total_page) {
 //     header('Location: ../Book_review/BR_data_list.php?page=' . $total_page);
@@ -65,7 +66,7 @@ $row = $stmt->fetchAll();
             <nav class="navbar justify-content-between" style="padding: 0px;width: 80vw;">
                 <div class="d-flex">
                     <div>
-                        <h4>會員書籍列表</h4>
+                        <h4>追蹤書評人清單</h4>
                         <div class="title_line"></div>
                     </div>
                     <ul class="nav justify-content-between">
@@ -149,7 +150,7 @@ $row = $stmt->fetchAll();
 
             <!-- 我是分頁按鈕列 請自取並調整頁面擺放位置 -->
             <nav aria-label="Page navigation example" class="d-flex justify-content-center">
-                <ul class="pagination">
+                <ul class="pagination ">
                     <li class="page-item">
                         <a class="page-link" href="?page=<?= $page - 1 ?>" aria-label="Previous">
                             <span aria-hidden="true">&laquo;</span>

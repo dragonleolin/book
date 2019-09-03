@@ -142,6 +142,15 @@ $rows = $stmt->fetchAll();
             <table class="table table-striped table-bordered" style="text-align: center">
                 <thead>
                     <tr>
+                        <ul class="nav" style="" id="delete1">
+                            <button class="btn btn-outline-primary my-2 my-sm-0 " id="multi_delete" onclick="delete_multiple(event)">刪除</button>
+                        </ul>
+                    </tr>
+                    <tr>
+                        <!-- <th><a href="" id="all_check">
+                            <div style="width:15px;height:15px;border: 2px solid #bbb"></div>
+                            <i class="fas fa-angle-down" style="color:#bbb;margin-left:5px"></i></a></th> -->
+                        <th><input type="checkbox" onclick="check_all(this,'c')"><i class="fas fa-angle-down" style="color:#bbb;margin-left:5px"></i></th>
                         <?php for ($i = 0; $i < count($thead_item); $i++) : ?>
                             <th scope="col"><?= $thead_item[$i] ?></th>
                         <?php endfor ?>
@@ -156,7 +165,8 @@ $rows = $stmt->fetchAll();
                     $sid = [];
                     foreach ($rows as $a) : $sequence++ ?>
                         <tr>
-                            <td><?= $sequence ?></td>
+                            <td><input type="checkbox" name="check[]" id="check<?= $sequence ?>" value="<?= $a['sid'] ?>"></td>
+                            <td><?= $a['sid'] ?></td>
                             <td><?= htmlentities($a['MR_number']) ?></td>
                             <td><?php
                                     if ($a['MR_personLevel'] > 0 && $a['MR_personLevel'] <= 5) {
@@ -205,7 +215,7 @@ $rows = $stmt->fetchAll();
                     //continue跳過該次迴圈
                     $params['page'] = $i;
                     ?>
-                    <li class="page-item "  style="<?= $i == $page ? 'background: rgba(156, 197, 161, 0.5) ;color: #ffffff;' : '' ?>">
+                    <li class="page-item " style="<?= $i == $page ? 'background: rgba(156, 197, 161, 0.5) ;color: #ffffff;' : '' ?>">
                         <a class="page-link" href="?<?= http_build_query($params) ?>"><?= $i ?></a></li>
                 <?php endfor; ?>
                 <li class="page-item">
@@ -220,23 +230,27 @@ $rows = $stmt->fetchAll();
                 </li>
             </ul>
         </nav>
+        <form action="" method="POST" name="form2">
+            <input type="hidden" name="json">
+        </form>
 
         <!-- Modal -->
         <?php for ($i = 0; $i < count($rows); $i++) : ?>
             <?php $details = $rows[$i]; ?>
+            <?php $MR_number = $details['MR_number']; ?>
             <div class="modal fade" id="exampleModalCenter<?= $i + 1; ?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered" role="document" style="max-width:1200px">
                     <div class="modal-content">
                         <div class="modal-header">
                             <h5 class="modal-title" id="exampleModalCenterTitle">會員資料 </h5>
                             <div class="nav-item" style="margin-left:50px">
-                                <button class="btn btn-outline-primary my-2 my-sm-0" onclick="secondHandBook()">
+                                <button class="btn btn-outline-primary my-2 my-sm-0" onclick=" location.href = `MR_MBList.php?MR_number=<?= $MR_number ?>`">
                                     <i class="fas fa-arrow-circle-right"></i>
                                     會員二手書清單
                                 </button>
-                                <button class="btn btn-outline-primary my-2 my-sm-0" onclick="fans()">
+                                <button class="btn btn-outline-primary my-2 my-sm-0" onclick="location.href = `MR_BRDataList.php?MR_number=<?= $MR_number ?>`;">
                                     <i class="fas fa-arrow-circle-right"></i>
-                                    追蹤書評人
+                                    追蹤書評人清單
                                 </button>
                             </div>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -250,8 +264,7 @@ $rows = $stmt->fetchAll();
                                 <ul class="d-flex">
                                     <li class="" style="text-align:right">
                                         <h5><?= $item_switch[$k]; ?>
-                                            <?php   
-                                                    echo ;
+                                            <?php
                                                     if ($k == 'MR_number') {
                                                         echo "<input type='hidden' value='${v}' id='hand2_number'>";
                                                     }
@@ -288,8 +301,10 @@ $rows = $stmt->fetchAll();
             <div class="delete card-body">
                 <label class="delete_text " id="delete_info"></label>
                 <div>
-                    <button type="button" class="delete btn btn-danger" onclick="delete_yes()">確認</button>
-                    <button type="button" class="delete btn btn-warning" onclick="delete_no()">取消</button>
+                    <button type="button" class="delete btn btn-danger" id="deltet_yes">確認</button>
+                    <!-- onclick="delete_yes()" -->
+                    <button type="button" class="delete btn btn-warning" id="deltet_no">取消</button>
+                    <!-- onclick="delete_no()" -->
                 </div>
             </div>
         </div>
@@ -304,6 +319,19 @@ $rows = $stmt->fetchAll();
 </div>
 
 <script>
+    // 全選刪除
+    let checkboxs = document.getElementsByName('check[]');
+    let all_check = document.querySelector('#all_check');
+    let times = false;
+
+    function check_all(obj, cName) {
+        times = !times;
+        for (var i = 0; i < checkboxs.length; i++) {
+            checkboxs[i].checked = obj.checked;
+        }
+    }
+
+    // 刪除資料功能
     let delete_info = document.querySelector('#delete_info');
     let delete_confirm = document.querySelector('#delete_confirm')
 
@@ -314,18 +342,55 @@ $rows = $stmt->fetchAll();
         // if (confirm(`確定要刪除編號${sid}的資料嗎?`)) {
         //     location.href = 'MR_memberData_delete.php?sid=' + sid;
         // }
-
-
     }
     let delete_sid;
+    let deltet_yes = document.querySelector('#deltet_yes');
+    let deltet_no = document.querySelector('#deltet_no');
+    let muti_delete = document.querySelector('#multi_delete');
 
-    function delete_yes() {
-        location.href = 'MR_memberData_delete.php?sid=' + delete_sid;
+    deltet_yes.addEventListener('click', delete_yes);
+    deltet_no.addEventListener('click', delete_no);
+
+
+    function delete_yes(event) {
+        if (event.target == deltet_yes) {
+            location.href = 'MR_memberData_delete.php?sid=' + delete_sid;
+        }
+        if (delete_eventTarget == multi_delete) {
+            document.cookie="delete_sid="+ar;
+            location.href = 'MR_memberData_delete.php';
+        }
     }
 
-    function delete_no() {
+
+    function delete_no(event) {
         delete_confirm.style.display = "none";
     }
+    let ar = [];
+    let delete_eventTarget;
+
+    function delete_multiple(event) {
+        delete_eventTarget=event.target;
+        ar = [];
+        for (i = 0; i < 10; i++) {
+            if (checkboxs[i].checked) {
+                ar.push(checkboxs[i].value);
+            }
+        }
+        delete_confirm.style.display = "block";
+        let string1 = '';
+        for (i = 0; i < ar.length; i++) {
+            string1 += `${ar[i]}, `;
+        }
+        string1 = string1.slice(0, string1.length - 2);
+        delete_info.innerHTML = `確定要刪除編號 ${string1} 的資料嗎?`;
+
+        // delete_sid = sid;
+        // if (confirm(`確定要刪除編號${sid}的資料嗎?`)) {
+        //     location.href = 'MR_memberData_delete.php?sid=' + sid;
+        // }
+    }
+
     //二手書連結
     let hand2_number = document.querySelector('#hand2_number');
     let MR_number = hand2_number.value;
@@ -333,6 +398,7 @@ $rows = $stmt->fetchAll();
     function secondHandBook() {
         location.href = `MR_MBList.php?MR_number=${MR_number}`;
     }
+
     function fans() {
         location.href = `MR_BRDataList.php?MR_number=${MR_number}`;
     }

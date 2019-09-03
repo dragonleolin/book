@@ -39,7 +39,8 @@ if ($page < 1) {
     header('Location:MR_MBList.php'); //***
     exit;
 }
-if ($page > $totalPages) {
+if ($page > $totalPages && $totalPages!=0 )  {
+    
     header('Location:MR_MBList.php?page=' . $totalPages); //***
     exit;
 }
@@ -72,7 +73,7 @@ $row = $t_stmt->fetchAll();
         <nav class="navbar justify-content-between" style="padding: 0px;width: 80vw;">
             <div class="d-flex">
                 <div>
-                    <h4>會員書籍列表</h4>
+                    <h4>會員二手書清單</h4>
                     <div class="title_line"></div>
                 </div>
                 <ul class="nav justify-content-between">
@@ -184,8 +185,7 @@ $row = $t_stmt->fetchAll();
             <nav class="" aria-label="Page navigation example ">
                 <ul class="pagination justify-content-center">
                     <li class="page-item">
-                        <a class="page-link my_text_blacktea" href="?<?php $params['page'] = 1;
-                                                                        echo http_build_query($params) ?>" aria-label="Next">
+                        <a class="page-link my_text_blacktea" href="?<?php $params['page'] = 1; echo http_build_query($params) ?>" aria-label="Next">
                             <i class="fas fa-angle-double-left"></i>
                         </a>
                     </li>
@@ -204,7 +204,7 @@ $row = $t_stmt->fetchAll();
                         //continue跳過該次迴圈
                         $params['page'] = $i;
                         ?>
-                        <li class="page-item <?= $i == $page ? 'active' : '' ?>">
+                        <li class="page-item "  style="<?= $i == $page ? 'background: rgba(156, 197, 161, 0.5) ;color: #ffffff;' : '' ?>">
                             <a class="page-link" href="?<?= http_build_query($params) ?>"><?= $i ?></a></li>
                     <?php endfor; ?>
                     <li class="page-item">

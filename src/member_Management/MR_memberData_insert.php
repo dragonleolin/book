@@ -32,10 +32,23 @@ $new_number = substr($number_blank, 0, strlen($number_blank) - strlen($totalRows
 
 ?>
 <?php include '../../pbook_index/__html_head.php' ?>
-<link rel="stylesheet" href="lib/memberlist.css">
+
+<link rel="stylesheet" href="lib/memberlist.css"> <!-- css樣式 -->
 <style>
     body {
         background: url(../../images/bg.png) repeat center top;
+    }
+
+    .btn_zoomIn {
+        position: absolute;
+        bottom: 40px;
+        right: 0;
+    }
+
+    .btn_zoomOut {
+        position: absolute;
+        bottom: 10px;
+        right: 0;
     }
 </style>
 <?php include '../../pbook_index/__html_body.php' ?>
@@ -173,9 +186,15 @@ $new_number = substr($number_blank, 0, strlen($number_blank) - strlen($totalRows
                     <div class="">
                         <label for="pic">會員頭像</label>
                         <div class="d-flex ">
-                            <figure id="demo-fig">
-                                <img src="" alt="" id="demo">
-                            </figure>
+                            <div class="dis_relative">
+                                <figure id="demo-fig">
+                                    <img src="" alt="" id="demo">
+                                </figure>
+                                <button type="button" class="btn btn_zoomIn " style="padding:3px;" onclick="imgZoomIn()">
+                                    <i class="fas fa-search-plus"></i></button>
+                                <button type="button" class="btn btn_zoomOut " style="padding:3px;" onclick="imgZoomOut()">
+                                    <i class="fas fa-search-minus"></i></button>
+                            </div>
                             <input type="file" class="form-control-file" id="pic" name="pic">
                             <input type="hidden" name="imageLocationX" id="imageLocationX" value="0">
                             <input type="hidden" name="imageLocationY" id="imageLocationY" value="0">
@@ -288,7 +307,7 @@ $new_number = substr($number_blank, 0, strlen($number_blank) - strlen($totalRows
         el.style.transform = "translate3d(" + xPos + "px, " + yPos + "px, 0)";
         imageLocationX.value = xOffset;
         imageLocationY.value = yOffset;
-        console.log(imageLocationX.value, imageLocationY.value);
+        // console.log(imageLocationX.value, imageLocationY.value);
     }
 
     function dragEnd(event) {
@@ -298,6 +317,34 @@ $new_number = substr($number_blank, 0, strlen($number_blank) - strlen($totalRows
 
     }
 
+    //圖片遠近
+    let times = 1;
+    let one = 100;
+    let result='';
+
+    function imgZoomIn() {
+        if (times > 0) {
+            one += 25 ;
+            demo.style.width = demo.style.height = one+result+'%';
+            
+        } else {
+            one -= 25 ;
+            demo.style.width = demo.style.height = one+result+'%';
+        }
+        console.log(`${result+one}+'%'`);
+    }
+
+    function imgZoomOut() {
+        console.log(one);
+        if (times < 0) {
+            one += 25 ;
+            demo.style.width = demo.style.height =one+result+'%';
+        } else {
+            one -= 25;
+            demo.style.width = demo.style.height = one+result+'%';
+        };
+        console.log(`${one+result}+'%'`);
+    }
 
     function checkForm() {
         isPass = true;
@@ -320,7 +367,7 @@ $new_number = substr($number_blank, 0, strlen($number_blank) - strlen($totalRows
         }
 
         if (isPass) {
-            let fd = new FormData(document.form1); 
+            let fd = new FormData(document.form1);
             fetch('MR_memberData_insertAPI.php', {
                     method: 'POST',
                     body: fd,
