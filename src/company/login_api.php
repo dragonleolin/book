@@ -15,7 +15,7 @@ if (empty($_POST['account']) or empty($_POST['password'])) {
 }
 
 
-$sql = "SELECT `cp_account`, `cp_password`, `cp_name`, `sid`,`cp_logo` FROM `cp_data_list` WHERE `cp_account`=? AND `cp_password`=?";
+$sql = "SELECT `cp_account`, `cp_password`, `cp_name`, `sid`, `cp_logo` FROM `cp_data_list` WHERE `cp_account`=? AND `cp_password`=?";
 
 $stmt = $pdo->prepare($sql);
 
