@@ -56,7 +56,7 @@ $new_number = substr($number_blank, 0, strlen($number_blank) - strlen($totalRows
 <div>
 
 </div>
-<section class="p-4 container-fluid">
+<section class="p-4 container">
     <nav class="navbar justify-content-between" style="padding: 0px;width: 80vw;">
         <div class="d-flex">
             <div>

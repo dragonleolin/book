@@ -83,6 +83,9 @@ $rows = $stmt->fetchAll();
     ul li {
         list-style-type: none;
     }
+    .ww:active{
+        
+    }
 
     .modal-header {
         padding-left: 40px;
@@ -125,7 +128,7 @@ $rows = $stmt->fetchAll();
                     </li>
                     <li class="nav-item" style="flex-grow: 1">
                         <form name="form2" class="form-inline my-2 my-lg-0">
-                            <input class="search form-control mr-sm-2" id="search_bar" name="search" type="search" placeholder="Search" aria-label="Search">
+                            <input class="search form-control mr-sm-2" id="search_bar" name="search" type="search" placeholder="請輸入會員編號、姓名、電子信、手機" aria-label="Search" style="width:320px"  >
                             <button class="btn btn-outline-warning my-2 my-sm-0" type="submit">
                                 <i class="fas fa-search"></i>
                             </button>
@@ -141,11 +144,8 @@ $rows = $stmt->fetchAll();
             <table class="table table-striped table-bordered" style="text-align: center">
                 <thead>
                     <tr>
-                        <ul style="visibility:hidden">
-                            <li></li>
-                        </ul>
-                        <ul class="nav" style="display:none" id="delete1">
-                            <button class="btn btn-outline-primary my-2 my-sm-0 " id="multi_delete" onclick="delete_multiple(event)">刪除</button>
+                        <ul class="nav" style="visibility: hidden" id="delete1">
+                            <button class="btn btn-outline-primary my-2 my-sm-0 " id="multi_delete" onclick="delete_multiple(event)"><i class="fas fa-trash-alt"></i> &nbsp刪除</button>
                         </ul>
                     </tr>
                     <tr>
@@ -167,7 +167,8 @@ $rows = $stmt->fetchAll();
                     $sid = [];
                     foreach ($rows as $a) : $sequence++ ?>
                         <tr>
-                            <td><input type="checkbox" name="check[]" id="check<?= $sequence ?>" value="<?= $a['sid'] ?>"></td>
+                            <td><input type="checkbox" name="check[]" id="check<?= $sequence ?>" value="<?= $a['sid'] ?>">
+                            <i class="far fa-square "></i></td>
                             <td><?= $a['sid'] ?></td>
                             <td><?= htmlentities($a['MR_number']) ?></td>
                             <td><?php
@@ -195,7 +196,7 @@ $rows = $stmt->fetchAll();
                 </tbody>
             </table>
         </div>
-        <nav class="" aria-label="Page navigation example ">
+        <nav class="mt-5" aria-label="Page navigation example ">
             <ul class="pagination justify-content-center">
                 <li class="page-item">
                     <a class="page-link my_text_blacktea" href="?page=1" aria-label="Next">
@@ -331,11 +332,10 @@ $rows = $stmt->fetchAll();
     function check_all(obj, cName) {
         clicks = !clicks;
         if (clicks) {
-            delete1.style.display = "block";
+            delete1.style.visibility = "visible";
         } else {
-            delete1.style.display = "none";
+            delete1.style.visibility = "hidden";
         }
-        console.log(clicks);
         for (let i = 0; i < checkboxs.length; i++) {
             checkboxs[i].checked = obj.checked;
         }
@@ -353,9 +353,9 @@ $rows = $stmt->fetchAll();
             }
         }
         if (s.length > 0) {
-            delete1.style.display = "block";
+            delete1.style.visibility = "visible";
         } else {
-            delete1.style.display = "none";
+            delete1.style.visibility = "hidden";
         }
     }
 
