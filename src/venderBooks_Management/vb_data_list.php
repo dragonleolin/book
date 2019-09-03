@@ -229,6 +229,7 @@ foreach ($cates as $r) {
                 <thead>
                     <tr>
                         <th scope="col">#</th>
+                        <th scope="col">No.</th>
                         <th scope="col">
                             <i class="fas fa-sort-amount-down-alt" style="<?= ($col == 'sid' &&  $ord == 'ASC') ? 'display:inline-block;color:#ffc408' : 'display:none;' ?>"></i>
                             <i class="fas fa-sort-amount-down" style="<?= ($col == 'sid' && $ord == 'DESC') ? 'display:inline-block;color:#ffc408' : 'display:none;' ?>"></i>
@@ -268,6 +269,7 @@ foreach ($cates as $r) {
                     $row = $books_stmt->fetchAll();
                     for ($i = 0; $i < count($row); $i++) : ?>
                         <tr>
+                            <td style="vertical-align:middle;"><input type="checkbox" name="check[]" id="check<?= $row[$i]['sid'] ?>" value="<?= $row[$i]['sid'] ?>"></td>
                             <td style="vertical-align:middle;"><?= (($page - 1) * $per_page) + ($i + 1) ?></td>
                             <td style="vertical-align:middle;"><?= $row[$i]['sid']; ?></td>
                             <td style="vertical-align:middle;"><?= $row[$i]['isbn']; ?></td>
@@ -379,13 +381,70 @@ foreach ($cates as $r) {
                 </li>
             </ul>
         </nav>
+
+        <nav class="navbar justify-content-between" style="padding: 0px;width: 20vw;margin:10px 0px -10px 0px">
+            <ul class="nav justify-content-between">
+                <li class="nav-item">
+                    <div style="padding: 0.375rem 0.75rem;">
+                        批次：
+                    </div>
+                </li>
+                <li class="nav-item form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" id="all_check" value="all_check" name="all_check" onclick="check_all(this,'check[]')">
+                    <label class="form-check-label" for="inlineCheckbox1">全選</label>
+                </li>
+                <!-- <li class="nav-item">
+                    <div id="btnGroupDrop1" class="position-relative" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <button type="button" class="btn btn-outline-dark" onclick="vb_data_update('check[]')">
+                            <i class="fas fa-edit"></i>&nbsp;&nbsp;&nbsp;修改
+                        </button>
+                    </div>
+                </li> -->
+                <li class="nav-item">
+                    <div id="btnGroupDrop1" class="position-relative" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <button type="submit" class="btn btn-outline-dark" onclick="vb_data_delete('check[]')">
+                            <i class="fas fa-trash-alt"></i>&nbsp;&nbsp;&nbsp;刪除
+                        </button>
+                    </div>
+                </li>
+                <!-- <li class="nav-item">
+                    <div id="btnGroupDrop1" class="position-relative" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <button type="submit" class="btn btn-outline-dark">
+                            <i class="fas fa-copy"></i>&nbsp;&nbsp;&nbsp;複製
+                        </button>
+                    </div>
+                </li> -->
+            </ul>
+        </nav>
+
     </div>
 </section>
 </div>
 <script>
+    function check_all(obj, cName) {
+        var checkboxes = document.getElementsByName(cName);
+        for (var i = 0; i < checkboxes.length; i++) {
+            checkboxes[i].checked = obj.checked;
+        }
+    }
+
+    function vb_data_delete(cName) {
+        var checkboxes = document.getElementsByName(cName);
+        let ar = [];
+        for (var i = 0; i < checkboxes.length; i++) {
+            if (checkboxes[i].checked) {
+                ar.push(checkboxes[i].value);
+            }
+        }
+        document.cookie = "checkbox_sid=" + ar;
+        location = "vb_data_delete.php";
+    }
+
+
     function vb_data_insert() {
         location = "vb_data_insert.php";
     }
+
 
     let b;
 
@@ -393,6 +452,7 @@ foreach ($cates as $r) {
         b = sid;
         location = 'vb_data_update.php?sid=' + b;
     }
+
 
     let a;
 
@@ -402,13 +462,16 @@ foreach ($cates as $r) {
         my_delete.style.display = 'block';
     }
 
+
     function delete_yes() {
         location.href = 'vb_data_delete.php?sid=' + a;
     }
 
+
     function delete_no() {
         location.href = 'vb_data_list.php?page=' + <?= $page ?>;
     }
+
 
     function goto_orderby(str) {
         location.href = '?' + str;
