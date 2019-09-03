@@ -169,9 +169,9 @@ foreach ($row as $r => $s) {
         </form>
     </div>
 
-    <!-- 以下為新增成功才會跳出來的顯示框 -->
-    <div style="padding:150px 100px 170px 180px">
-        <div class="success update card" id="success" style="display:none">
+    <!-- 以下為修改成功才會跳出來的顯示框 -->
+    <div style="padding:150px 100px 170px 180px;display:none" id="success">
+        <div class="success update card">
             <div class="success card-body">
                 <label class="success_text" style="background:transparent">修改成功</label>
                 <div><img class="success_img" src="../../images/icon_checked.svg"></div>
@@ -179,9 +179,9 @@ foreach ($row as $r => $s) {
         </div>
     </div>
 
-    <!-- 以下為新增失敗才會跳出來的顯示框 -->
-    <div style="padding:150px 100px 170px 180px">
-        <div class="success update card" id="my_false" style="box-shadow:0px 0px 10px red;display:none">
+    <!-- 以下為修改失敗才會跳出來的顯示框 -->
+    <div style="padding:150px 100px 170px 180px;display:none" id="my_false">
+        <div class="success update card" style="box-shadow:0px 0px 10px red">
             <div class="success card-body">
                 <label class="success_text" style="background:transparent;color:rgb(228, 63, 63)">修改失敗,不可以偷偷來喔!</label>
             </div>
