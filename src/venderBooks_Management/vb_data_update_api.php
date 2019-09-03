@@ -70,9 +70,6 @@ $sql = "UPDATE `vb_books`
 
 $stmt = $pdo->prepare($sql);
 
-
-
-
 $stmt->execute([
     $_POST['isbn'],
     $_POST['name'],

@@ -86,7 +86,7 @@ $page_title = '品書 - 活動新增';
                                     <label for="categories" class="update_label">・活動簡介</label>
                                     <span style="color:#999;">&nbsp;限制100字以內</span>
                                     <textarea class="update form-control" id="exampleFormControlTextarea1" rows="3"
-                                    style="width:500px;height:165px;resize:none"></textarea>
+                                    style="width:500px;height:165px;resize:none" name="AC_introduction"></textarea>
                                 </div>
 
                                 <div class="form-group" style="margin:20px 40px;">
@@ -237,7 +237,7 @@ $page_title = '品書 - 活動新增';
                 
                 .then(json => {
                     console.log(json);
-                    // success.innerHTML = json.info;
+                    // success.innerHTML = json.info;   
                     if (json.success){
                         submit_btn.style.display = 'block';
                         container2.style.display = 'none';

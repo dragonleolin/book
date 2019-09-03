@@ -83,7 +83,7 @@ $stmt = $pdo->query($sql);
                             <th scope="col">標題</th>
                             <th scope="col">活動類型</th>
                             <th scope="col">封面</th>
-                            <th scope="col">時間</th>
+                            <th scope="col">開始日期</th>
                             <th scope="col">地點</th>
                             <th scope="col">聯絡電話</th>
                             <th scope="col">主辦單位</th>
@@ -102,7 +102,7 @@ $stmt = $pdo->query($sql);
                             <td><?= htmlentities($r['AC_title']) ?></td>
                             <td><?= htmlentities($r['AC_type']) ?></td>
                             <td>
-                                <button type="button" class="btn btn-outline-primary textHidden" data-toggle="modal" data-target="#<?= 'book' . $r['AC_sid']; ?>">
+                                <button id="AC_lb" name="AC_lb" type="button" class="btn btn-outline-primary textHidden" data-toggle="modal" data-target="#<?= 'book' . $r['AC_sid']; ?>">
                                     <i class="fas fa-plus-circle"></i>
                                     顯示
                                 </button>
@@ -131,11 +131,8 @@ $stmt = $pdo->query($sql);
                             <td><?= htmlentities($r['AC_eventArea']) ?></td>
                             <td><?= htmlentities($r['AC_mobile']) ?></td>
                             <td><?= htmlentities($r['AC_organizer']) ?></td>
-                            <td><?= htmlentities($r['AC_brief']) ?></td>
-                            <td><?= htmlentities($r['AC_created_at']) ?></td>
-                            <!-- 圖片 -->
-                            
-
+                            <td><?= htmlentities($r['AC_introduction']) ?></td>
+                            <td><?= htmlentities($r['AC_created_at']) ?></td>        
                             <td><a href="AC_update.php?AC_sid=<?= $r['AC_sid'] ?>"><i class="fas fa-edit"></i></a>
                             <td><a href="javascript:delete_one(<?= $r['AC_sid'] ?>)"><i class="fas fa-trash-alt"></i></a></td>
                         </tr>
@@ -148,12 +145,16 @@ $stmt = $pdo->query($sql);
             <!-- 我是分頁按鈕列 請自取並調整頁面擺放位置 -->
             <nav aria-label="Page navigation example" style="position:absolute;left:800px;margin:5px 0;">
                 <ul class="pagination">
-                    <li class="page-item">
-                    <a class="page-link" href="?page=<?= $page - 1 ?>" aria-label="Previous">
-                        <span aria-hidden="true">&laquo;</span>
+                <li class="page-item">
+                    <a class="page-link" href="?page=1" aria-label="Next">
+                        <span aria-hidden="">&laquo;</span>
                     </a>
                     </li>
-                    
+                    <li class="page-item">
+                    <a class="page-link" href="?page=<?= $page - 1 ?>" aria-label="Previous">
+                        <i class="fas fa-angle-left"></i>
+                    </a>
+                    </li>
                     <?php
                     $p_start = $page - 5;
                     $p_end = $page + 5;
@@ -167,6 +168,7 @@ $stmt = $pdo->query($sql);
                     </li>
                     <?php endfor; ?>
                     <?php endif; ?>
+                    
                     <?php
                     if ($page >= 5) :
                       for ($i = 1; $i <= $p_end; $i++) :
@@ -181,6 +183,11 @@ $stmt = $pdo->query($sql);
 
                     <li class="page-item">
                     <a class="page-link" href="?page=<?= $page + 1 ?>" aria-label="Next">
+                        <i class="fas fa-angle-right"></i>
+                    </a>
+                    </li>
+                    <li class="page-item">
+                    <a class="page-link" href="?page=<?= $totalPages ?>" aria-label="Next">
                         <span aria-hidden="true">&raquo;</span>
                     </a>
                     </li>
@@ -239,11 +246,12 @@ function renderBooks(books){
         html += '<td>' + books[i].AC_name+'</td>';
         html += '<td>' + books[i].AC_title+'</td>';
         html += '<td>' + books[i].AC_type+'</td>';
+        html += '<td><a href="AC_update.php?AC_sid='+books[i].AC_sid+'"><i class="fas fa-plus-circle"></i>&nbsp顯示</a></td>';
         html += '<td>' + books[i].AC_date+'</td>';
         html += '<td>' + books[i].AC_eventArea+'</td>';
         html += '<td>' + books[i].AC_mobile+'</td>';
         html += '<td>' + books[i].AC_organizer+'</td>';
-        html += '<td>' + books[i].AC_brief+'</td>';
+        html += '<td>' + books[i].AC_introduction+'</td>';
         html += '<td>' + books[i].AC_created_at+'</td>';
         html += '<td><a href="AC_update.php?AC_sid='+books[i].AC_sid+'"><i class="fas fa-edit"></i></a></td>';
         html += '<td><a href="javascript:delete_one('+books[i].AC_sid+')"><i class="fas fa-trash-alt"></i></a></td>';
@@ -264,6 +272,7 @@ if(keyNum=='13'){
 
 //--Ajax搜尋功能---------------------------------------------------------------------------
 var searchItem = document.querySelector('#AC_search'); //取ID
+
     function search() {
         //取得搜尋字串
         if (searchItem.value != 0) {
@@ -286,6 +295,8 @@ var searchItem = document.querySelector('#AC_search'); //取ID
             return false;
         }
     }
+
+    
 </script>
 
 <?php include __DIR__ . '/../../pbook_index/__html_foot.php' ?>

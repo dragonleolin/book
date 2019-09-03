@@ -72,9 +72,9 @@ if ($stmt->rowCount() == 1) {
 
 
 //輸入適用會員
-if ($_POST['user_level_type'] == 1) {
+if ($fd['user_level_type'] == 1) {
     $sql = "";
-    foreach ($_POST['user_level'] as $k => $v) {
+    foreach ($fd['user_level'] as $k => $v) {
         $sql = $sql . "INSERT INTO `pm_condition`
         (`event_id`, `user_level`)
         VALUES 
@@ -141,3 +141,5 @@ if ($fd['group_type'] == 1) {
     }
 }
 echo json_encode($result, JSON_UNESCAPED_UNICODE);
+
+header('Location: result_page.php');

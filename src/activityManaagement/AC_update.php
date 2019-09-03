@@ -127,7 +127,7 @@ $totalPages = ceil($totalRows / $per_page);
                                     <label for="categories" class="update_label">・活動簡介</label>
                                     <span style="color:#999;">&nbsp;限制100字以內</span>
                                     <textarea class="update form-control" id="exampleFormControlTextarea1" rows="3"
-                                    style="width:500px;height:165px;resize:none"></textarea>
+                                    style="width:500px;height:165px;resize:none" name="AC_introduction" placeholder="<?= htmlentities($row['AC_introduction']) ?>"></textarea>
                                 </div>
 
                                 <div class="form-group" style="margin:20px 40px;">

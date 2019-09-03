@@ -44,6 +44,12 @@ if(!empty($_FILES['AC_pic'])){ //檔案有沒有上傳
     }
 }
 
+if (empty($_POST['AC_introduction'])) {
+    $introduction_sql = sprintf("SELECT `AC_introduction` FROM `ac_pbook` WHERE `AC_sid` = %s", $_POST['AC_sid']);
+    $introduction_stmt = $pdo->query($introduction_sql);
+    $_POST['AC_introduction'] = $introduction_stmt->fetch()['AC_introduction'];
+}
+
 $sql = "UPDATE `ac_pbook` SET
          `AC_name`=?,
          `AC_title`=?,
@@ -52,11 +58,11 @@ $sql = "UPDATE `ac_pbook` SET
          `AC_eventArea`=?,
          `AC_mobile`=?,
          `AC_organizer`=?,
+         `AC_introduction`=?,
          `AC_pic`=?
          WHERE `AC_sid`=?";
 
 $stmt = $pdo->prepare($sql);
-
 
 $stmt->execute([
         $_POST['AC_name'],
@@ -66,6 +72,7 @@ $stmt->execute([
         $_POST['AC_eventArea'],
         $_POST['AC_mobile'],
         $_POST['AC_organizer'],
+        $_POST['AC_introduction'],
         $new_filename . $new_ext,
         $_POST['AC_sid'],
 ]);
