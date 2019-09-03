@@ -344,7 +344,7 @@ foreach ($rows as $r) {
             </li>
             </ul>
         </nav>
-        <nav class="navbar justify-content-between" style="padding: 0px;width: 83vw;margin:10px 0px -10px 0px">
+        <nav class="navbar justify-content-between" style="padding: 0px;width: 20vw;margin:10px 0px -10px 0px">
             <ul class="nav justify-content-between">
                 <!-- <li class="nav-item">
                     <div style="padding: 0.375rem 0.75rem;">
