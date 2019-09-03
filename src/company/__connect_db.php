@@ -1,9 +1,14 @@
 <?php
 
-$db_host = '192.168.27.186';
-$db_name = 'pbook';
-$db_user = 'weihsun';
-$db_pass = '841012';
+// $db_host = '192.168.27.186';
+// $db_name = 'pbook';
+// $db_user = 'weihsun';
+// $db_pass = '841012';
+
+$db_host = '127.0.0.1';
+$db_name = 'nana_vb_project';
+$db_user = 'Nana';
+$db_pass = 'addme';
 
 $dsn = "mysql:host={$db_host};dbname={$db_name}";
 
