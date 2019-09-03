@@ -4,6 +4,9 @@
 .dis_relative{
  position: relative;
 }
+.dis_absolute{
+    position: absolute;
+   }
 body {
     background: url(../../images/bg.png) repeat center top;
 }

@@ -224,19 +224,20 @@ $rows = $stmt->fetchAll();
         <!-- Modal -->
         <?php for ($i = 0; $i < count($rows); $i++) : ?>
             <?php $details = $rows[$i]; ?>
+            <?php $MR_number=$details['MR_number']; ?>
             <div class="modal fade" id="exampleModalCenter<?= $i + 1; ?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered" role="document" style="max-width:1200px">
                     <div class="modal-content">
                         <div class="modal-header">
                             <h5 class="modal-title" id="exampleModalCenterTitle">會員資料 </h5>
                             <div class="nav-item" style="margin-left:50px">
-                                <button class="btn btn-outline-primary my-2 my-sm-0" onclick="secondHandBook()">
+                                <button class="btn btn-outline-primary my-2 my-sm-0" onclick=" location.href = `MR_MBList.php?MR_number=<?=$MR_number?>`">
                                     <i class="fas fa-arrow-circle-right"></i>
                                     會員二手書清單
                                 </button>
-                                <button class="btn btn-outline-primary my-2 my-sm-0" onclick="fans()">
+                                <button class="btn btn-outline-primary my-2 my-sm-0" onclick="location.href = `MR_BRDataList.php?MR_number=<?=$MR_number?>`;">
                                     <i class="fas fa-arrow-circle-right"></i>
-                                    追蹤書評人
+                                    追蹤書評人清單
                                 </button>
                             </div>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -251,7 +252,6 @@ $rows = $stmt->fetchAll();
                                     <li class="" style="text-align:right">
                                         <h5><?= $item_switch[$k]; ?>
                                             <?php   
-                                                    echo ;
                                                     if ($k == 'MR_number') {
                                                         echo "<input type='hidden' value='${v}' id='hand2_number'>";
                                                     }
