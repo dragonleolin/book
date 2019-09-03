@@ -59,7 +59,7 @@ if (empty($row)) {
 
 </div>
 <section class="p-4 container-fluid dis_relative">
-    <nav class="navbar justify-content-between" style="padding: 0px;width: 80vw;">
+    <nav class="navbar justify-content-between" style="padding: 0px;width: 80vw; margin-left:25px;">
         <div class="d-flex">
             <div>
                 <h4>修改會員資料</h4>
