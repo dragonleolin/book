@@ -1,7 +1,4 @@
 <?php
-require __DIR__.'/../../vendor/autoload.php';
-use Tracy\Debugger;
-Debugger::enable();
 
 $page_name = 'event_list';
 $page_title = '活動列表';
@@ -51,6 +48,13 @@ $user_level_const = [
 
 ?>
 
+    <style>
+        body {
+            background: url(../../images/bg.png) repeat center top;
+        }
+
+    </style>
+
     <div class="container-fluid pt-3 pb-5">
 
         <nav class="navbar justify-content-between mb-3" style="padding: 0px;width: 80vw;">
@@ -92,10 +96,11 @@ $user_level_const = [
                 <th scope="col">名稱</th>
                 <th scope="col">適用會員</th>
                 <th scope="col">規則</th>
-                <th scope="col">折扣</th>
+                <th scope="col">內容</th>
                 <th scope="col">時間</th>
                 <th scope="col">狀態</th>
                 <th scope="col">適用品項</th>
+                <th scope="col">參與出版社</th>
                 <th scope="col">修改</th>
                 <th scope="col">刪除</th>
             </tr>
@@ -105,7 +110,19 @@ $user_level_const = [
                 <tr>
                     <th scope="row"><?= $r['sid']; ?></th>
                     <td><?= htmlentities($r['name']); ?></td>
-                    <td><?= $user_level_const[$r['user_level']]; ?></td>
+                    <td><?php
+                        if ($r['user_level'] == '1') {
+                            $sql = "SELECT `user_level` FROM `pm_condition` WHERE `event_id` = {$r['sid']} AND `user_level` IS NOT NULL";
+                            $user_level_condition = $pdo->query($sql)->fetchAll();
+                            for ($i = 0; $i < count($user_level_condition); $i++) {
+                                echo $user_level_const[$user_level_condition[$i]['user_level']];
+                                echo '<br>';
+                            }
+                        } else {
+                            echo $user_level_const[0];
+                        }
+                        ?>
+                    </td>
                     <td>
                         <?php
                         $parent_id = $rule_const[$r['rule']]['parent_id'];
@@ -129,6 +146,17 @@ $user_level_const = [
                                 }
                             }
                         }
+                        if($r['rule']==6 or $r['rule']==7) {
+                            $sql = "SELECT d.* 
+                                    FROM `pm_general_discounts` d JOIN `pm_event` e ON 
+                                    d.`event_id` = e.`sid` WHERE e.`sid` = {$r['sid']}";
+                            $discount_row = $pdo->query($sql)->fetch();
+                            if ($r['rule'] == 6) {
+                                echo '折價' . $discount_row['discounts'] . '%';
+                            }else{
+                                echo '限時特價'.$discount_row['discounts'].'元';
+                            }
+                        }
                         ?>
                     </td>
                     <td>
@@ -148,16 +176,18 @@ $user_level_const = [
                         }
                         ?>
                     </td>
+
+
+                    <!--適用書籍-->
                     <td>
                         <!-- Button trigger modal -->
                         <?php
-                        if(!empty($r['group_type'])) {
+                        if (!empty($r['group_type'])) {
                             $sql = "SELECT bg.* 
                                             FROM `pm_books_group` bg JOIN `pm_event` e ON 
                                             bg.`event_id` = e.`sid` WHERE e.`sid` = {$r['sid']}";
                             $book_group = $pdo->query($sql)->fetchAll();
-                        }
-                        else{
+                        } else {
                             $book_group = 0;
                         }
                         if (empty($book_group)):?>
@@ -194,9 +224,80 @@ $user_level_const = [
                                     </div>
                                     <div class="modal-body">
                                         <?php
+                                        if ($r['group_type'] == 1) {
+                                            foreach ($book_group as $k => $v) {
+                                                echo $k<9?'0'.($k+1):($k+1);
+                                                echo " &nbsp";
+                                                echo $cate_const[$v['categories_id']]['name'] . '<br>';
+                                            }
+                                        } elseif ($r['group_type'] == 2) {
+                                            $sql = "SELECT b.`name` FROM `vb_books` b JOIN `pm_books_group` g ON b.`sid` = g.`books_id` WHERE g.`event_id` = {$r['sid']}";
+                                            $book_group_data = $pdo->query($sql)->fetchAll(PDO::FETCH_COLUMN);
+                                            foreach ($book_group_data as $k => $v){
+                                                echo $k<9?'0'.($k+1):($k+1);
+                                                echo " &nbsp";
+                                                echo $v;
+                                                echo '<br>';
+                                            }
 
-                                        foreach ($book_group as $k => $v) {
-                                            echo $cate_const[$v['categories_id']]['name'] . '<br>';
+                                        } elseif ($r['group_type'] == 3) {
+                                            echo '活動廠商';
+                                        } else {
+                                            echo '錯誤';
+                                        }
+                                        ?>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">關閉
+                                        </button>
+                                        <button type="button" class="btn btn-primary">編輯</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+
+                    <!--參與廠商-->
+                    <td>
+                        <!-- Button trigger modal -->
+                        <?php
+                        if (!empty($r['cp_group'])) {
+                            $sql = "SELECT c.`cp_id` 
+                                            FROM `pm_condition` c JOIN `pm_event` e ON 
+                                            c.`event_id` = e.`sid` WHERE e.`sid` = {$r['sid']} AND c.`cp_id` IS NOT NULL";
+                            $cp_group = $pdo->query($sql)->fetchAll(PDO::FETCH_COLUMN);
+                            $sql = "SELECT `sid`,`cp_name` FROM `cp_data_list` WHERE 1 ";
+                            $cp_data_list = $pdo->query($sql)->fetchAll(PDO::FETCH_UNIQUE | PDO::FETCH_COLUMN);
+                        } else {
+                            $cp_group = 0;
+                        }
+                        if (empty($cp_group)):?>
+                            所有出版社
+                        <?php else: ?>
+                            <button type="button" class="btn btn-outline-primary" data-toggle="modal"
+                                    data-target="#cp_groupModal<?= $r['sid']; ?>">
+                                <i class="fas fa-plus-circle"></i>
+                                顯示
+                            </button>
+                        <?php endif; ?>
+                        <!-- Modal -->
+                        <div class="modal fade" id="cp_groupModal<?= $r['sid']; ?>" tabindex="-1" role="dialog"
+                             aria-labelledby="cp_groupModalLabel<?= $r['sid']; ?>" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="cp_groupModalLabel<?= $r['sid']; ?>">
+                                            參與出版社
+                                        </h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <?php
+
+                                        foreach ($cp_group as $k => $v) {
+                                            echo ($k < 9 ? '0' . ($k + 1) : ($k + 1)) . " &nbsp" . $cp_data_list[$v] . '<br>';
                                         }
 
                                         ?>
@@ -210,6 +311,7 @@ $user_level_const = [
                             </div>
                         </div>
                     </td>
+
                     <td><a href="event_edit.php?event_id=<?= $r['sid'] . ' & page = ' . $page ?>"><i
                                     class="fas fa-edit"></i></a>
                     </td>

@@ -60,10 +60,11 @@ $row = $stmt->fetchAll();
                     <tr>
                         <th scope="col">#</th>
                         <th scope="col">書評標題</th>
-                        <th scope="col">書評資料</th>
+                        <th scope="col">書評內容</th>
                         <th scope="col">書評圖片</th>
                         <th scope="col">書評發表時間</th>
                         <th scope="col">書評發表人</th>
+                        <th scope="col">刪除</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -75,14 +76,10 @@ $row = $stmt->fetchAll();
                             <td><?= $value['BR_image'] ?></td>
                             <td><?= $value['BR_release_time'] ?></td>
                             <td><?= htmlentities($value['BR_publisher']) ?></td>
-                            <!-- <td><a href="BR_update.php?sid=<?= $value['sid'] ?>">
-                                        <i class="fas fa-edit"></i>
-                                    </a>
-                                </td>
-                                <td><a href="javascript:delete_doublecheck(<?= $value['sid'] ?>)">
-                                        <i class="fas fa-trash-alt"></i>
-                                    </a>
-                                </td> -->
+                            <td><a href="javascript:delete_doublecheck(<?= $value['BR_sid'] ?>)">
+                                    <i class="fas fa-trash-alt"></i>
+                                </a>
+                            </td>
                         </tr>
                     <?php endforeach; ?>
                 </tbody>
@@ -114,16 +111,34 @@ $row = $stmt->fetchAll();
 
 
         <!-- 刪除提示框 -->
-        <!-- <div id="d_window" class="delete update card" style="display:none;">
-                <div class="delete card-body">
-                    <label class="delete_text">您確認要刪除資料嗎?</label>
-                    <div>
-                        <button type="button" class="delete btn btn-danger" onclick="delete_enter()"> 確認</button>
-                        <button type="button" class="delete btn btn-warning" onclick="delete_cancel()">取消</button>
-                    </div>
+        <div id="d_window" class="delete update card" style="display:none;">
+            <div class="delete card-body">
+                <label class="delete_text">您確認要刪除資料嗎?</label>
+                <div>
+                    <button type="button" class="delete btn btn-danger" onclick="delete_enter()"> 確認</button>
+                    <button type="button" class="delete btn btn-warning" onclick="delete_cancel()">取消</button>
                 </div>
-            </div> -->
+            </div>
+        </div>
 
 </section>
 </div>
+
+<script>
+    let delete_window = document.querySelector('#d_window');
+    let d;
+
+    function delete_doublecheck(sid) {
+        d = sid;
+        delete_window.style.display = 'block';
+    };
+
+    function delete_enter() {
+        location.href = 'BR_bookreview_list_delete.php?BR_sid=' + d;
+    }
+
+    function delete_cancel() {
+        location.href = window.location.href;
+    }
+</script>
 <?php require '__html_foot.php'; ?>

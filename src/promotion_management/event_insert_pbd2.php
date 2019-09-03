@@ -29,6 +29,9 @@ foreach ($temp_cp_row as $r => $s){
 
 ?>
     <style>
+        body {
+            background: url(../../images/bg.png) repeat center top;
+        }
         small.form-text {
             color: red;
         }

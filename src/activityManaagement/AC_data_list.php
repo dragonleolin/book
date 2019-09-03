@@ -39,64 +39,6 @@ $stmt = $pdo->query($sql);
 <?php include __DIR__ . '/../../pbook_index/__html_body.php' ?>
 <?php include __DIR__ . '/../../pbook_index/__navbar.php' ?>
 
-
-<!--印出---------------------------------------------------------->
-<script src="../../lib/jquery-3.4.1.js"></script>
-<script>
-function renderBooks(books){
-    var tbody = document.getElementById('books');
-    var html = '';
-    for(var i = 0; i < books.length; i++){
-        html += '<tr>';
-        html += '<td>' + books[i].AC_sid+'</td>';
-        html += '<td>' + books[i].AC_name+'</td>';
-        html += '<td>' + books[i].AC_title+'</td>';
-        html += '<td>' + books[i].AC_type+'</td>';
-        html += '<td>' + books[i].AC_date+'</td>';
-        html += '<td>' + books[i].AC_eventArea+'</td>';
-        html += '<td>' + books[i].AC_mobile+'</td>';
-        html += '<td>' + books[i].AC_organizer+'</td>';
-        html += '<td>' + books[i].AC_brief+'</td>';
-        html += '<td>' + books[i].AC_created_at+'</td>';
-        html += '<td><a href="AC_update.php?AC_sid='+books[i].AC_sid+'"><i class="fas fa-edit"></i></a></td>';
-        html += '<td><a href="javascript:delete_one('+books[i].AC_sid+')"><i class="fas fa-trash-alt"></i></a></td>';
-        html += '</tr>';
-    }
-    tbody.innerHTML = html;
-    return false;
-}
-
-//--Enter監聽---------------------------------------------------------------------------
-document.onkeypress = function(e){ //對整個頁面監聽 
-var keyNum = window.event ? e.keyCode :e.which; //獲取被按下的鍵值
-//判斷使用者按下Enter鍵 (監聽13）
-if(keyNum==13){  
-    search() ;
-    return false;
-}};
-
-
-//--Ajax搜尋功能---------------------------------------------------------------------------
-function search(){
-    //取得搜尋字串
-    var searchItem = document.getElementById('AC_search'); //取ID
-    var value = searchItem.value; //取值
-    //ajax
-$.ajax({
-    method:"GET",
-    url:"./AC_search.php", //進api
-    data: {search: value}
-})
-
-.done(function(msg){
-    var books = JSON.parse(msg);
-    renderBooks(books);
-});
-    return false;
-}
-</script>
-
-
     <!-- 右邊section資料欄位 -->
     <section>
         <div class="container">
@@ -140,7 +82,8 @@ $.ajax({
                             <th scope="col">姓名</th>
                             <th scope="col">標題</th>
                             <th scope="col">活動類型</th>
-                            <th scope="col">時間</th>
+                            <th scope="col">封面</th>
+                            <th scope="col">開始日期</th>
                             <th scope="col">地點</th>
                             <th scope="col">聯絡電話</th>
                             <th scope="col">主辦單位</th>
@@ -158,15 +101,38 @@ $.ajax({
                             <td><?= htmlentities($r['AC_name']) ?></td>
                             <td><?= htmlentities($r['AC_title']) ?></td>
                             <td><?= htmlentities($r['AC_type']) ?></td>
+                            <td>
+                                <button type="button" class="btn btn-outline-primary textHidden" data-toggle="modal" data-target="#<?= 'book' . $r['AC_sid']; ?>">
+                                    <i class="fas fa-plus-circle"></i>
+                                    顯示
+                                </button>
+                                <div class="modal fade" id="<?= 'book' . $r['AC_sid']; ?>" tabindex="-1" role="dialog" aria-labelledby="<?= 'book' . $r['AC_sid']; ?>Title" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="<?= 'book' . $r['AC_sid']; ?>Title"><?= $r['AC_name']; ?></h5>
+
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body" style="width:450px;width:450px;margin:0 auto">
+                                                <img style="object-fit: contain;width: 100%;height: 100%;" src="<?= 'AC_images/' . $r['AC_pic']; ?>" alt="">
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                                                <button type="button" class="btn btn-primary" onclick="change_img(<?= $r['AC_sid'] ?>)">修改圖片</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
                             <td><?= htmlentities($r['AC_date']) ?></td>
                             <td><?= htmlentities($r['AC_eventArea']) ?></td>
                             <td><?= htmlentities($r['AC_mobile']) ?></td>
                             <td><?= htmlentities($r['AC_organizer']) ?></td>
-                            <td><?= htmlentities($r['AC_brief']) ?></td>
-                            <td><?= htmlentities($r['AC_created_at']) ?></td>
-                            <!-- 圖片 -->
-                            
-
+                            <td><?= htmlentities($r['AC_introduction']) ?></td>
+                            <td><?= htmlentities($r['AC_created_at']) ?></td>        
                             <td><a href="AC_update.php?AC_sid=<?= $r['AC_sid'] ?>"><i class="fas fa-edit"></i></a>
                             <td><a href="javascript:delete_one(<?= $r['AC_sid'] ?>)"><i class="fas fa-trash-alt"></i></a></td>
                         </tr>
@@ -229,8 +195,22 @@ $.ajax({
             </div>
             </div>     
     </section>
- 
+    
+    <script src="../../lib/jquery-3.4.1.js"></script>
     <script>
+    //圖片上傳函式
+    function AC_data_insert() {
+        location = "AC_data_insert.php";
+    }
+
+    let b;
+
+    function change_img(sid) {
+        b = sid;
+        location = 'AC_update.php?AC_sid=' + b;
+    }
+
+    // -----------------------------------------------
     let a;
     function delete_one(sid) {
         a = sid;
@@ -245,6 +225,64 @@ $.ajax({
     function delete_no() {
         location.href = 'AC_data_list.php?page=' + <?= $page ?>;
     }
-    </script>
+
+//印出--------------------------------------------
+function renderBooks(books){
+    var tbody = document.getElementById('books');
+    var html = '';
+    for(var i = 0; i < books.length; i++){
+        html += '<tr>';
+        html += '<td>' + books[i].AC_sid+'</td>';
+        html += '<td>' + books[i].AC_name+'</td>';
+        html += '<td>' + books[i].AC_title+'</td>';
+        html += '<td>' + books[i].AC_type+'</td>';
+        html += '<td>' + books[i].AC_date+'</td>';
+        html += '<td>' + books[i].AC_eventArea+'</td>';
+        html += '<td>' + books[i].AC_mobile+'</td>';
+        html += '<td>' + books[i].AC_organizer+'</td>';
+        html += '<td>' + books[i].AC_introduction+'</td>';
+        html += '<td>' + books[i].AC_created_at+'</td>';
+        html += '<td><a href="AC_update.php?AC_sid='+books[i].AC_sid+'"><i class="fas fa-edit"></i></a></td>';
+        html += '<td><a href="javascript:delete_one('+books[i].AC_sid+')"><i class="fas fa-trash-alt"></i></a></td>';
+        html += '</tr>';
+    }
+    tbody.innerHTML = html;
+    return false;
+}
+
+//--Enter監聽---------------------------------------------------------------------------
+document.onkeypress = function(e){ //對整個頁面監聽 
+var keyNum = window.event ? e.keyCode :e.which; //獲取被按下的鍵值
+//判斷使用者按下Enter鍵 (監聽13）
+if(keyNum=='13'){  
+    search() ;
+    return false;
+}};
+
+//--Ajax搜尋功能---------------------------------------------------------------------------
+var searchItem = document.querySelector('#AC_search'); //取ID
+    function search() {
+        //取得搜尋字串
+        if (searchItem.value != 0) {
+            $.ajax({
+                    method: "POST",
+                    url: "./AC_search.php", //進api
+                    data: {
+                        search: searchItem.value
+                    }
+                })
+
+                .done(function(msg) {
+                    var books = JSON.parse(msg);
+                    renderBooks(books);
+                });
+            return false;
+        }
+        //ajax
+        else {
+            return false;
+        }
+    }
+</script>
 
 <?php include __DIR__ . '/../../pbook_index/__html_foot.php' ?>

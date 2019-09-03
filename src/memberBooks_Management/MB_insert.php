@@ -262,64 +262,59 @@ $mr_no = $mrNo_s->fetchAll();
         let info_bar = document.querySelector('#info-bar');
         let success_bar = document.querySelector('#success_bar')
         const submit_btn = document.querySelector('#submit_btn');
-        let mb_shelveMember = document.querySelector('#mb_shelveMember')
+        // let mb_shelveMember = document.querySelector('#mb_shelveMember')
         let i, s, item;
 
         let isPass = true;
         
         const require_fields = [
-        {
-            id: 'mb_isbn',
-            pattern: /(^\d{10}$)|(^\d{13}$)/,
-            info: '請填寫正確ISBN碼格式',
-        },
-        {
-            id: 'mb_name',
-            pattern: /^\S{1,}/,
-            info: '請輸入正確的書名',
-        },
-        {
-            id: 'mb_author',
-            pattern: /^\S{1,}/,
-            info: '請輸入正確的作者',
-        },
-        {
-            id: 'mb_publishing',
-            pattern: /^\S{2,}/,
-            info: '請輸入正確的出版社',
-        },
-        {
-            id: 'mb_publishDate',
-            pattern: /\d{4}\-?\d{2}\-?\d{2}/,
-            info: '請輸入正確的出版日期',
-        },
-        {
-            id: 'mb_fixedPrice',
-            pattern: /\d{2,}/,
-            info: '請輸入正確的定價',
-        },
-        {
-            id: 'mb_page',
-            pattern: /\d{2,}/,
-            info: '請輸入正確的頁數',
-        },
-        {
-            id: 'mb_savingStatus',
-            pattern: /\S{1,}/,
-            info: '請輸入正確的書況',
-        },
-        {
-            id: 'mb_shelveMember',
-            pattern: /^\w\d{2,}/,
-            info: '請輸入正確的會員編號',
-        },
-        {
-            id: 'mb_categories',
-            pattern: /\d{1,}/,
-            info: '請選擇類別',
-        },
+            {
+                id: 'mb_isbn',
+                pattern: /(^\d{10}$)|(^\d{13}$)/,
+                info: '請填寫正確ISBN碼格式',
+            },
+            {
+                id: 'mb_name',
+                pattern: /^\S{1,}/,
+                info: '請輸入正確的書名',
+            },
+            {
+                id: 'mb_author',
+                pattern: /^\S{1,}/,
+                info: '請輸入正確的作者',
+            },
+            {
+                id: 'mb_publishing',
+                pattern: /^\S{2,}/,
+                info: '請輸入正確的出版社',
+            },
+            {
+                id: 'mb_publishDate',
+                pattern: /\d{4}\-?\d{2}\-?\d{2}/,
+                info: '請輸入正確的出版日期',
+            },
+            {
+                id: 'mb_fixedPrice',
+                pattern: /\d{2,}/,
+                info: '請輸入正確的定價',
+            },
+            {
+                id: 'mb_page',
+                pattern: /\d{2,}/,
+                info: '請輸入正確的頁數',
+            },
+            {
+                id: 'mb_savingStatus',
+                pattern: /\S{1,}/,
+                info: '請輸入正確的書況',
+            },
+            {
+                id: 'mb_categories',
+                pattern: /\d{1,}/,
+                info: '請選擇類別',
+            },
 
-    ];
+        ];
 
         for (s in require_fields) {
             item = require_fields[s];
@@ -346,36 +341,57 @@ $mr_no = $mrNo_s->fetchAll();
             }
         }
 
-        //核對會員編號是否存在於資料庫
-        let mr_no = '<?php
-            foreach ($mr_no as $r) {
-                $num = $r['MR_number'];
-                echo  $num;
-                 };
-            ?>';
-        // console.log("mr_no=" + mr_no +'<br>');
-        // console.log("mb_shelveMember.value=" + mb_shelveMember.value);
         itemEl = document.querySelector('#mb_shelveMember');
         itemInfoEl = document.querySelector('#mb_shelveMemberHelp');
-        if (mr_no.indexOf(mb_shelveMember.value) == -1) {
-            itemEl.style.border = '1px solid red';
-            itemInfoEl.innerHTML = '沒有查到此會員編號';
-            isPass = false;
-            
-        }else{
-            itemEl.style.border = '1px solid #CCCCCC';
-            itemInfoEl.innerHTML = '';
-            isPass = true;
-        }
-        console.log('isPass=' + isPass)
 
 
-        isPass = isbn_test();
-
+        let memberNo = false;
         let fd = new FormData(document.form1);
 
-        if (isPass) {
-            fetch('MB_insert_api.php', {
+        //判斷ISBN碼正確性
+        isPass = isbn_test();
+
+        //判斷會員編號的API
+        fetch('MB_searchMember_api.php', {
+                    method: 'POST',
+                    body: fd,
+                })
+                .then(response => {
+                    return response.json();
+                })
+                .then(json => {
+                    if (json.success) {
+                        itemEl.style.border = '1px solid #CCCCCC';
+                        itemInfoEl.innerHTML = '';
+                        memberNo = [true,isPass];
+                        console.log("memberNo1=" + memberNo);
+                        //判斷各個選項的API，因為有執行順序問題所以用函式包起來
+                        memberNoCheck(memberNo,isPass);
+                        // return memberNoAndisPass;
+                    } else {
+                        
+                        itemEl.style.border = '1px solid red';
+                        itemInfoEl.innerHTML = json.info;
+                        memberNo = false;
+                        console.log("memberNo2=" + memberNo);
+                    }
+                })
+                // .then( memberNoAndisPass =>{
+                //     if(memberNoAndisPass[0]==true && memberNoAndisPass[]==true){
+                //         console.log(377);
+                //     }
+                // })
+
+
+        
+        
+       
+
+        function memberNoCheck(memberNo,isPass){
+            console.log("isPass=" + isPass);
+            console.log("memberNo3=" + memberNo);
+            if( memberNo && isPass){
+                fetch('MB_insert_api.php', {
                     method: 'POST',
                     body: fd,
                 })
@@ -393,9 +409,9 @@ $mr_no = $mrNo_s->fetchAll();
                         success_bar.style.display = 'none'
                     }
                 });
-        } else {
-
+            }
         }
+
         return false;
     };
 </script>

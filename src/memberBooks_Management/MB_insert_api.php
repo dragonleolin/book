@@ -1,6 +1,8 @@
 <?php
+
 require __DIR__ . '/__admin_required.php';
 require __DIR__ . '/__connect_db.php';
+
 
 //移動上傳的圖檔到指定資料夾
 $upload_dir = __DIR__. '/mb_images/';
@@ -16,10 +18,11 @@ $exts = [
 
 $new_filename = '';
 $new_ext ='';
-// $a[]="";
+$a=[];
 $fileCount = count($_FILES['mb_pic']['name']);
 
-for($i=0;$i<$fileCount;$i++){
+for($i=0; $i<$fileCount; $i++){
+
     if(!empty($_FILES['mb_pic'])){ //檔案有沒有上傳
         if(in_array($_FILES['mb_pic']['type'][$i],$allowed_types)){  //上傳檔案類型是否符合
             
@@ -27,12 +30,17 @@ for($i=0;$i<$fileCount;$i++){
                 $new_ext = $exts[$_FILES['mb_pic']['type'][$i]];
                 move_uploaded_file($_FILES['mb_pic']['tmp_name'][$i], $upload_dir. $new_filename. $new_ext);
                 //函式 : move_uploaded_file(要移动的文件名稱,移動文件的新位置。);
+                
                 // var_dump($fileCount);
-                // $a[]=$new_filename.$new_ext[$i];
+                $a[] = $new_filename.$new_ext;
         }
     }
+    
 }
-// print_r($_FILES);
+// print_r($a);
+
+$arr_pic = json_encode($a, JSON_UNESCAPED_UNICODE);
+
 
 $result = [
     'success'=> false,
@@ -72,6 +80,14 @@ $stmt->execute([
     $_POST['mb_categories'],
     $_POST['mb_remarks'],
 ]);
+
+// $pic_sql = "INSERT INTO `mb_gallery`(`name`) VALUES (?)";
+
+// $pic_stmt = $pdo -> prepare($pic_sql);
+
+// $pic_stmt -> execute([
+//     $a,
+// ]);
 
 if($stmt->rowCount()==1){
     $result['success'] = true;
