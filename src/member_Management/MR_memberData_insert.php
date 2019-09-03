@@ -320,29 +320,30 @@ $new_number = substr($number_blank, 0, strlen($number_blank) - strlen($totalRows
     //圖片遠近
     let times = 1;
     let one = 100;
+    let result='';
 
     function imgZoomIn() {
-        times++;
         if (times > 0) {
-            one += 25 * times + '%';
-            demo.style.width = demo.style.height = one;
+            one += 25 ;
+            demo.style.width = demo.style.height = one+result+'%';
+            
         } else {
-            one -= 25 * times + '%';
-            demo.style.width = demo.style.height = one;
+            one -= 25 ;
+            demo.style.width = demo.style.height = one+result+'%';
         }
- console.log(times);
+        console.log(`${result+one}+'%'`);
     }
 
     function imgZoomOut() {
-        times--
+        console.log(one);
         if (times < 0) {
-            one += 25 * times + '%';
-            demo.style.width = demo.style.height = one;
+            one += 25 ;
+            demo.style.width = demo.style.height =one+result+'%';
         } else {
-            demo.style.width = 100 - 25 * times + '%';
-            demo.style.height = 100 - 25 * times + '%';
+            one -= 25;
+            demo.style.width = demo.style.height = one+result+'%';
         };
-        console.log(times);
+        console.log(`${one+result}+'%'`);
     }
 
     function checkForm() {

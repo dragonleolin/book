@@ -142,6 +142,16 @@ $rows = $stmt->fetchAll();
             <table class="table table-striped table-bordered" style="text-align: center">
                 <thead>
                     <tr>
+                        <ul class="nav">
+                            <li class="nav-item" style="margin: 0px 10px">
+                                <button class="btn btn-outline-primary my-2 my-sm-0" onclick="location.href='MR_memberData_insert.php'">
+                                    新增會員
+                                </button>
+                            </li>
+                        </ul>
+                    </tr>
+                    <tr>
+                        <th scope="col"></th>
                         <?php for ($i = 0; $i < count($thead_item); $i++) : ?>
                             <th scope="col"><?= $thead_item[$i] ?></th>
                         <?php endfor ?>
@@ -156,6 +166,7 @@ $rows = $stmt->fetchAll();
                     $sid = [];
                     foreach ($rows as $a) : $sequence++ ?>
                         <tr>
+                            <td><input type="checkbox" name="check<?= $sequence ?>" id="check<?= $sequence ?>"></td>
                             <td><?= $sequence ?></td>
                             <td><?= htmlentities($a['MR_number']) ?></td>
                             <td><?php
@@ -205,7 +216,7 @@ $rows = $stmt->fetchAll();
                     //continue跳過該次迴圈
                     $params['page'] = $i;
                     ?>
-                    <li class="page-item "  style="<?= $i == $page ? 'background: rgba(156, 197, 161, 0.5) ;color: #ffffff;' : '' ?>">
+                    <li class="page-item " style="<?= $i == $page ? 'background: rgba(156, 197, 161, 0.5) ;color: #ffffff;' : '' ?>">
                         <a class="page-link" href="?<?= http_build_query($params) ?>"><?= $i ?></a></li>
                 <?php endfor; ?>
                 <li class="page-item">
@@ -224,18 +235,18 @@ $rows = $stmt->fetchAll();
         <!-- Modal -->
         <?php for ($i = 0; $i < count($rows); $i++) : ?>
             <?php $details = $rows[$i]; ?>
-            <?php $MR_number=$details['MR_number']; ?>
+            <?php $MR_number = $details['MR_number']; ?>
             <div class="modal fade" id="exampleModalCenter<?= $i + 1; ?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered" role="document" style="max-width:1200px">
                     <div class="modal-content">
                         <div class="modal-header">
                             <h5 class="modal-title" id="exampleModalCenterTitle">會員資料 </h5>
                             <div class="nav-item" style="margin-left:50px">
-                                <button class="btn btn-outline-primary my-2 my-sm-0" onclick=" location.href = `MR_MBList.php?MR_number=<?=$MR_number?>`">
+                                <button class="btn btn-outline-primary my-2 my-sm-0" onclick=" location.href = `MR_MBList.php?MR_number=<?= $MR_number ?>`">
                                     <i class="fas fa-arrow-circle-right"></i>
                                     會員二手書清單
                                 </button>
-                                <button class="btn btn-outline-primary my-2 my-sm-0" onclick="location.href = `MR_BRDataList.php?MR_number=<?=$MR_number?>`;">
+                                <button class="btn btn-outline-primary my-2 my-sm-0" onclick="location.href = `MR_BRDataList.php?MR_number=<?= $MR_number ?>`;">
                                     <i class="fas fa-arrow-circle-right"></i>
                                     追蹤書評人清單
                                 </button>
@@ -251,7 +262,7 @@ $rows = $stmt->fetchAll();
                                 <ul class="d-flex">
                                     <li class="" style="text-align:right">
                                         <h5><?= $item_switch[$k]; ?>
-                                            <?php   
+                                            <?php
                                                     if ($k == 'MR_number') {
                                                         echo "<input type='hidden' value='${v}' id='hand2_number'>";
                                                     }
@@ -333,6 +344,7 @@ $rows = $stmt->fetchAll();
     function secondHandBook() {
         location.href = `MR_MBList.php?MR_number=${MR_number}`;
     }
+
     function fans() {
         location.href = `MR_BRDataList.php?MR_number=${MR_number}`;
     }
