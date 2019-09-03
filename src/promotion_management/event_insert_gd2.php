@@ -118,6 +118,7 @@ $cp_row = $pdo->query($cp_sql)->fetchAll(PDO::FETCH_UNIQUE | PDO::FETCH_COLUMN);
                                             <label class="mr-3" for="search_type">搜尋方式</label>
                                             <select class="form-control mr-3 border-0" name="search_type"
                                                     id="search_type" onchange="search()">
+                                                <option value="0">快速搜尋</option>
                                                 <option value="1">ISBN</option>
                                                 <option value="2">書籍名稱</option>
                                                 <option value="3">分類</option>
@@ -279,7 +280,6 @@ $cp_row = $pdo->query($cp_sql)->fetchAll(PDO::FETCH_UNIQUE | PDO::FETCH_COLUMN);
             let book_list_checkbox = document.querySelector('#book_list_id_' + book_id + ' input');
             book_list_checkbox.checked = false;
             let book_index = $.inArray(""+book_id,sel_books_ar);
-            console.log('delete: '+book_id);
             sel_books_ar.splice(book_index,1);
         }
 
