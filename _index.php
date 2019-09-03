@@ -198,7 +198,7 @@ require __DIR__ . '/pbook_index/__admin_required.php';
                             <i class="fas fa-caret-right"></i>
                             <span>P幣系統</span>
                         </button>
-                        <button type="button" class="btn btn-light sub_aside_text">
+                        <button type="button" class="btn btn-light sub_aside_text" onclick="location.href='src/promotion_management/event_list.php'">
                             <i class="fas fa-caret-right"></i>
                             <span>折扣系統</span>
                         </button>
