@@ -1,5 +1,5 @@
 <?php
-require __DIR__ . '/__admin_required.php';
+// require __DIR__ . '/__admin_required.php';
 require __DIR__ . '/__connect_db.php';
 $page_name = 'vb_data_list';
 $page_title = '出版社書籍總表';
@@ -228,7 +228,7 @@ foreach ($cates as $r) {
             <table class="table table-striped table-bordered" style="text-align: center;width:83vw">
                 <thead>
                     <tr>
-                        <th scope="col">#</th>
+                        <th scope="col"><input type="checkbox" id="all_check" value="all_check" name="all_check" onclick="check_all(this,'check[]')"></th>
                         <th scope="col">No.</th>
                         <th scope="col">
                             <i class="fas fa-sort-amount-down-alt" style="<?= ($col == 'sid' &&  $ord == 'ASC') ? 'display:inline-block;color:#ffc408' : 'display:none;' ?>"></i>
@@ -236,7 +236,7 @@ foreach ($cates as $r) {
                             SID</th>
                         <th scope="col">ISBN</th>
                         <th scope="col">書籍名稱</th>
-                        <th scope="col">封面</th>
+                        <th scope="col">詳細資料</th>
                         <th scope="col">
                             <i class="fas fa-sort-amount-down-alt" style="<?= ($col == 'categories' &&  $ord == 'ASC') ? 'display:inline-block;;color:#ffc408' : 'display:none;' ?>"></i>
                             <i class="fas fa-sort-amount-down" style="<?= ($col == 'categories' && $ord == 'DESC') ? 'display:inline-block;color:#ffc408' : 'display:none;' ?>"></i>
@@ -250,12 +250,11 @@ foreach ($cates as $r) {
                             <i class="fas fa-sort-amount-down-alt" style="<?= ($col == 'publish_date' &&  $ord == 'ASC') ? 'display:inline-block;color:#ffc408' : 'display:none;' ?>"></i>
                             <i class="fas fa-sort-amount-down" style="<?= ($col == 'publish_date' && $ord == 'DESC') ? 'display:inline-block;color:#ffc408' : 'display:none;' ?>"></i>
                             出版日期</th>
-                        <th scope="col">版次</th>
                         <th scope="col">
                             <i class="fas fa-sort-amount-down-alt" style="<?= ($col == 'fixed_price' &&  $ord == 'ASC') ? 'display:inline-block;color:#ffc408' : 'display:none;' ?>"></i>
                             <i class="fas fa-sort-amount-down" style="<?= ($col == 'fixed_price' && $ord == 'DESC') ? 'display:inline-block;color:#ffc408' : 'display:none;' ?>"></i>
                             定價</th>
-                        <th scope="col">頁數</th>
+                        <th scope="col">狀態</th>
                         <th scope="col">
                             <i class="fas fa-sort-amount-down-alt" style="<?= ($col == 'stock' &&  $ord == 'ASC') ? 'display:inline-block;color:#ffc408' : 'display:none;' ?>"></i>
                             <i class="fas fa-sort-amount-down" style="<?= ($col == 'stock' && $ord == 'DESC') ? 'display:inline-block;color:#ffc408' : 'display:none;' ?>"></i>
@@ -280,21 +279,39 @@ foreach ($cates as $r) {
                                     顯示
                                 </button>
                                 <div class="modal fade" id="<?= 'book' . $row[$i]['sid']; ?>" tabindex="-1" role="dialog" aria-labelledby="<?= 'book' . $row[$i]['sid']; ?>Title" aria-hidden="true">
-                                    <div class="modal-dialog modal-dialog-centered" role="document">
+                                    <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
                                         <div class="modal-content">
                                             <div class="modal-header">
                                                 <h5 class="modal-title" id="<?= 'book' . $row[$i]['sid']; ?>Title"><?= $row[$i]['name']; ?></h5>
-
                                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                     <span aria-hidden="true">&times;</span>
                                                 </button>
                                             </div>
-                                            <div class="modal-body" style="width:450px;width:450px;margin:0 auto">
-                                                <img style="object-fit: contain;width: 100%;height: 100%;" src="<?= 'vb_images/' . $row[$i]['pic']; ?>" alt="">
+                                            <div class="d-flex" style="padding:20px">
+                                                <div style="width:350px">
+                                                    <img style="object-fit: contain;width: 100%;height: 100%;" src="<?= 'vb_images/' . $row[$i]['pic']; ?>" alt="">
+                                                </div>
+                                                <div style="text-align:left;width:300px">
+                                                    <h5>・ISBN：<?= $row[$i]['isbn']; ?></h5>
+                                                    <h5>・分類：<?= $cate_dict[$row[$i]['categories']]; ?></h5>
+                                                    <h5>・作者：<?= $row[$i]['author']; ?></h5>
+                                                    <h5>・出版社：<?= $row[$i]['publishing']; ?></h5>
+                                                    <h5>・出版日期：<?= $row[$i]['publish_date']; ?></h5>
+                                                    <h5>・版次：<?= $row[$i]['version']; ?></h5>
+                                                    <h5>・定價：NT<?= $row[$i]['fixed_price']; ?></h5>
+                                                    <h5>・頁數：<?= $row[$i]['page']; ?>頁</h5>
+                                                </div>
+                                                <div style="text-align:left;width:400px;z-index:999">
+                                                    <h5>書籍簡介：</h5>
+                                                    <h5><?= $row[$i]['introduction']; ?></h5>
+                                                </div>
+                                                <div style="width:130px;height:130px;position:absolute;bottom:15%;right:3%;">
+                                                    <img style="object-fit: contain;width: 100%;height: 100%;" src="../../images/品書印章.png" alt="">
+                                                </div>
                                             </div>
                                             <div class="modal-footer">
                                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
-                                                <button type="button" class="btn btn-primary" onclick="change_img(<?= $row[$i]['sid'] ?>)">修改圖片</button>
+                                                <button type="button" class="btn btn-primary" onclick="change_data(<?= $row[$i]['sid'] ?>)">修改資料</button>
                                             </div>
                                         </div>
                                     </div>
@@ -304,9 +321,8 @@ foreach ($cates as $r) {
                             <td style="vertical-align:middle;"><?= $row[$i]['author']; ?></td>
                             <td style="vertical-align:middle;"><?= $row[$i]['publishing']; ?></td>
                             <td style="vertical-align:middle;"><?= $row[$i]['publish_date']; ?></td>
-                            <td style="vertical-align:middle;"><?= $row[$i]['version']; ?></td>
                             <td style="vertical-align:middle;"><?= $row[$i]['fixed_price']; ?></td>
-                            <td style="vertical-align:middle;"><?= $row[$i]['page']; ?></td>
+                            <td style="vertical-align:middle;"><?= $row[$i]['status']; ?></td>
                             <td style="vertical-align:middle;"><?= $row[$i]['stock']; ?></td>
                             <td style="vertical-align:middle;"><a href="vb_data_update.php?sid=<?= $row[$i]['sid'] ?>"><i class="fas fa-edit"></i></a></td>
                             <td style="vertical-align:middle;"><a href="#" onclick="delete_one(<?= $row[$i]['sid'] ?>)" id="btn_delete"><i class="fas fa-trash-alt"></i></a></td>
@@ -385,13 +401,11 @@ foreach ($cates as $r) {
         <nav class="navbar justify-content-between" style="padding: 0px;width: 20vw;margin:10px 0px -10px 0px">
             <ul class="nav justify-content-between">
                 <li class="nav-item">
-                    <div style="padding: 0.375rem 0.75rem;">
-                        批次：
+                    <div id="btnGroupDrop1" class="position-relative" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <button type="submit" class="btn btn-outline-dark" onclick="vb_data_delete('check[]')">
+                            <i class="fas fa-trash-alt"></i>&nbsp;&nbsp;&nbsp;批次刪除
+                        </button>
                     </div>
-                </li>
-                <li class="nav-item form-check form-check-inline">
-                    <input class="form-check-input" type="checkbox" id="all_check" value="all_check" name="all_check" onclick="check_all(this,'check[]')">
-                    <label class="form-check-label" for="inlineCheckbox1">全選</label>
                 </li>
                 <!-- <li class="nav-item">
                     <div id="btnGroupDrop1" class="position-relative" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -400,13 +414,6 @@ foreach ($cates as $r) {
                         </button>
                     </div>
                 </li> -->
-                <li class="nav-item">
-                    <div id="btnGroupDrop1" class="position-relative" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <button type="submit" class="btn btn-outline-dark" onclick="vb_data_delete('check[]')">
-                            <i class="fas fa-trash-alt"></i>&nbsp;&nbsp;&nbsp;刪除
-                        </button>
-                    </div>
-                </li>
                 <!-- <li class="nav-item">
                     <div id="btnGroupDrop1" class="position-relative" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <button type="submit" class="btn btn-outline-dark">
@@ -447,15 +454,18 @@ foreach ($cates as $r) {
 
 
     let b;
-
-    function change_img(sid) {
+    function change_data(sid) {
         b = sid;
         location = 'vb_data_update.php?sid=' + b;
     }
 
+    function next_data(i){
+        i++;
+        return i;
+    }
+
 
     let a;
-
     function delete_one(sid) {
         a = sid;
         let my_delete = document.querySelector('#my_delete');
