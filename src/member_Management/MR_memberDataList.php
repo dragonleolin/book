@@ -57,7 +57,6 @@ $totalRows = $pdo->query($count)->fetch(PDO::FETCH_NUM)[0];
 $totalPage = ceil($totalRows / $per_page); //ceil()無條件進位
 
 
-
 if (($page < 1) | ($totalPage == 0)) {
     // header('Refresh:2; url=MR_memberDataList.php');
     header('Location: searchFail.php');
@@ -142,7 +141,10 @@ $rows = $stmt->fetchAll();
             <table class="table table-striped table-bordered" style="text-align: center">
                 <thead>
                     <tr>
-                        <ul class="nav" style="" id="delete1">
+                        <ul style="visibility:hidden">
+                            <li></li>
+                        </ul>
+                        <ul class="nav" style="display:none" id="delete1">
                             <button class="btn btn-outline-primary my-2 my-sm-0 " id="multi_delete" onclick="delete_multiple(event)">刪除</button>
                         </ul>
                     </tr>
@@ -322,16 +324,44 @@ $rows = $stmt->fetchAll();
     // 全選刪除
     let checkboxs = document.getElementsByName('check[]');
     let all_check = document.querySelector('#all_check');
-    let times = false;
+    let delete1 = document.querySelector('#delete1');
+    let clicks = false;
+
 
     function check_all(obj, cName) {
-        times = !times;
-        for (var i = 0; i < checkboxs.length; i++) {
+        clicks = !clicks;
+        if (clicks) {
+            delete1.style.display = "block";
+        } else {
+            delete1.style.display = "none";
+        }
+        console.log(clicks);
+        for (let i = 0; i < checkboxs.length; i++) {
             checkboxs[i].checked = obj.checked;
         }
     }
 
+    for (let i = 0; i < 10; i++) {
+        checkboxs[i].addEventListener('click', showButton);
+    }
+
+    function showButton() {
+        let s = '';
+        for (let i = 0; i < 10; i++) {
+            if (checkboxs[i].checked) {
+                s += 's';
+            }
+        }
+        if (s.length > 0) {
+            delete1.style.display = "block";
+        } else {
+            delete1.style.display = "none";
+        }
+    }
+
     // 刪除資料功能
+
+
     let delete_info = document.querySelector('#delete_info');
     let delete_confirm = document.querySelector('#delete_confirm')
 
@@ -357,7 +387,7 @@ $rows = $stmt->fetchAll();
             location.href = 'MR_memberData_delete.php?sid=' + delete_sid;
         }
         if (delete_eventTarget == multi_delete) {
-            document.cookie="delete_sid="+ar;
+            document.cookie = "delete_sid=" + ar;
             location.href = 'MR_memberData_delete.php';
         }
     }
@@ -370,7 +400,7 @@ $rows = $stmt->fetchAll();
     let delete_eventTarget;
 
     function delete_multiple(event) {
-        delete_eventTarget=event.target;
+        delete_eventTarget = event.target;
         ar = [];
         for (i = 0; i < 10; i++) {
             if (checkboxs[i].checked) {
