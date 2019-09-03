@@ -11,7 +11,7 @@ if (empty($_POST['account']) or empty($_POST['oldpassword']) or empty($_POST['ne
     echo json_encode($result, JSON_UNESCAPED_UNICODE);
     exit;
 }
-$sql = "SELECT `cp_account`, `cp_password`, `cp_name` FROM `cp_data_list` WHERE `cp_account`=? AND `cp_password`=?";
+$sql = "SELECT `cp_account`, `cp_password`, `cp_name`, `sid`, `cp_logo` FROM `cp_data_list` WHERE `cp_account`=? AND `cp_password`=?";
 $stmt = $pdo->prepare($sql);
 $stmt->execute([
     $_POST['account'],
@@ -25,7 +25,7 @@ if (!empty($row)) {
         $_POST['newpassword'],
         $_POST['account'],
     ]);
-    $sql3 = "SELECT `cp_account`, `cp_password`, `cp_name` FROM `cp_data_list` WHERE `cp_account`=? AND `cp_password`=?";
+    $sql3 = "SELECT `cp_account`, `cp_password`, `cp_name`, `sid`, `cp_logo` FROM `cp_data_list` WHERE `cp_account`=? AND `cp_password`=?";
     $stmt3 = $pdo->prepare($sql3);
     $stmt3->execute([
         $_POST['account'],

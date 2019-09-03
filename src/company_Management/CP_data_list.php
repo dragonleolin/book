@@ -187,13 +187,18 @@ foreach ($rows as $r) {
                 <thead>
                     <tr>
                         <th scope="col">
+                        <input type="checkbox" id="all_check" value="all_check" name="all_check" onclick="check_all(this,'check[]')">
+                        </th>
+                        <th scope="col">
                             <i class="fas fa-sort-amount-down-alt" style="<?= ($col == 'sid' &&  $ord == 'ASC') ? 'display:inline-block;color:#ffc408' : 'display:none;' ?>"></i>
                             <i class="fas fa-sort-amount-down" style="<?= ($col == 'sid' && $ord == 'DESC') ? 'display:inline-block;color:#ffc408' : 'display:none;' ?>"></i>
-                            #</th>
+                            #
+                        </th>
                         <th scope="col">
                             <i class="fas fa-sort-amount-down-alt" style="<?= ($col == 'cp_name' &&  $ord == 'ASC') ? 'display:inline-block;color:#ffc408' : 'display:none;' ?>"></i>
                             <i class="fas fa-sort-amount-down" style="<?= ($col == 'cp_name' && $ord == 'DESC') ? 'display:inline-block;color:#ffc408' : 'display:none;' ?>"></i>
-                            出版社名</th>
+                            出版社名
+                        </th>
                         <th scope="col">聯絡人</th>
                         <th scope="col">電話</th>
                         <th scope="col">電子郵件</th>
@@ -217,6 +222,7 @@ foreach ($rows as $r) {
                 <tbody class="vertical">
                     <?php foreach ($rows as $r) : ?>
                         <tr>
+                            <td><input type="checkbox" name="check[]" id="check<?= $r['sid'] ?>" value="<?= $r['sid'] ?>"></td>
                             <td><?= $r['sid'] ?></td>
                             <td><?= htmlentities($r['cp_name']) ?></td>
                             <td><?= htmlentities($r['cp_contact_p']) ?></td>
@@ -338,9 +344,75 @@ foreach ($rows as $r) {
             </li>
             </ul>
         </nav>
+        <nav class="navbar justify-content-between" style="padding: 0px;width: 20vw;margin:10px 0px -10px 0px">
+            <ul class="nav justify-content-between">
+                <!-- <li class="nav-item">
+                    <div style="padding: 0.375rem 0.75rem;">
+                        批次：
+                    </div>
+                </li> -->
+                <!-- <li class="nav-item form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" id="all_check" value="all_check" name="all_check" onclick="check_all(this,'check[]')">
+                    <label class="form-check-label" for="inlineCheckbox1">全選</label>
+                </li> -->
+                <!-- <li class="nav-item">
+                    <div id="btnGroupDrop1" class="position-relative" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <button type="button" class="btn btn-outline-dark" onclick="vb_data_update('check[]')">
+                            <i class="fas fa-edit"></i>&nbsp;&nbsp;&nbsp;修改
+                        </button>
+                    </div>
+                </li> -->
+                <li class="nav-item">
+                    <div id="btnGroupDrop1" class="position-relative" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <button type="submit" class="btn btn-outline-dark" onclick="cp_data_delete('check[]')">
+                            <i class="fas fa-trash-alt"></i>&nbsp;&nbsp;&nbsp;批次刪除
+                        </button>
+                    </div>
+                </li>
+                <!-- <li class="nav-item">
+                    <div id="btnGroupDrop1" class="position-relative" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <button type="submit" class="btn btn-outline-dark">
+                            <i class="fas fa-copy"></i>&nbsp;&nbsp;&nbsp;複製
+                        </button>
+                    </div>
+                </li> -->
+            </ul>
+        </nav>
 </section>
 </div>
 <script>
+     function check_all(obj, cName) {
+        var checkboxes = document.getElementsByName(cName);
+        for (var i = 0; i < checkboxes.length; i++) {
+            checkboxes[i].checked = obj.checked;
+        }
+    }
+
+    //未完成的批次修改 
+    // function vb_data_update(cName) {
+    //     var checkboxes = document.getElementsByName(cName);
+    //     let ar = [];
+    //     for (var i = 0; i < checkboxes.length; i++) {
+    //          if(checkboxes[i].checked){
+    //              ar.push(checkboxes[i].value);
+    //          }
+    //     }
+    //     document.cookie = "checkbox_sid=" + ar;
+    // location = "vb_data_update.php";
+    // }
+
+    function cp_data_delete(cName) {
+        var checkboxes = document.getElementsByName(cName);
+        let ar = [];
+        for (var i = 0; i < checkboxes.length; i++) {
+            if (checkboxes[i].checked) {
+                ar.push(checkboxes[i].value);
+            }
+        }
+        document.cookie = "checkbox_sid=" + ar;
+        location = "cp_data_delete.php";
+    }
+
     function data_insert() {
         location = "CP_data_insert.php";
     }
