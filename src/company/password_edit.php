@@ -2,7 +2,7 @@
 require __DIR__ . '/__connect_db.php';
 $page_title = '修改密碼';
 ?>
-<?php include __DIR__ . '__html_head.php' ?>
+<?php include __DIR__ . '/__html_head.php' ?>
     <style>
         body {
             background: url(../../images/bg.png) repeat center top;
