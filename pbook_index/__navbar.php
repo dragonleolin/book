@@ -44,10 +44,10 @@
                         <i class="fas fa-caret-right"></i>
                         <span>出版社總表</span>
                     </button>
-                    <button type="button" class="btn btn-light sub_aside_text">
+                    <!-- <button type="button" class="btn btn-light sub_aside_text">
                         <i class="fas fa-caret-right"></i>
                         <span>出版社訂單總表</span>
-                    </button>
+                    </button> -->
                 </div>
             </div>
 
@@ -132,10 +132,10 @@
                     <i class="fas fa-caret-right"></i>
                     <span>書評列表</span>
                 </button>
-                <button type="button" class="btn btn-light sub_aside_text">
+                <!-- <button type="button" class="btn btn-light sub_aside_text">
                     <i class="fas fa-caret-right"></i>
                     <span>影片列表</span>
-                </button>
+                </button> -->
             </div>
         </div>
 
@@ -168,10 +168,10 @@
                     </div>
                 </button>
                 <div id="collapseSeven" class="collapse" aria-labelledby="headingSeven" data-parent="#accordion">
-                    <button type="button" class="btn btn-light sub_aside_text">
+                    <!-- <button type="button" class="btn btn-light sub_aside_text">
                         <i class="fas fa-caret-right"></i>
                         <span>P幣系統</span>
-                    </button>
+                    </button> -->
                     <button type="button" class="btn btn-light sub_aside_text" onclick="location.href='../promotion_management/event_list.php'">
                         <i class="fas fa-caret-right"></i>
                         <span>折扣系統</span>
