@@ -64,7 +64,7 @@
                     </button>
                 </div>
             </div>
-            <div class="aside card">
+            <!-- <div class="aside card">
                 <button type="button" class="aside card-header btn btn-info" id="headingTwo">
                     <div class="aside_hover" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
                         <img class="aside_logo" src="../../images/icon_MR_m.svg" alt="">
@@ -78,8 +78,8 @@
                         <span>訂單總表</span>
                     </button>
                 </div>
-            </div>
-            <div class="aside card">
+            </div> -->
+            <!-- <div class="aside card">
                 <button type="button" class="aside card-header btn btn-info" id="headingSix">
                     <div class="aside_hover" data-toggle="collapse" data-target="#collapseSix" aria-expanded="false" aria-controls="collapseSix">
                         <img class="aside_logo" src="../../images/icon_AC_m.svg" alt="">
@@ -97,9 +97,9 @@
                         <span>出版社主辦活動總表</span>
                     </button>
                 </div>
-            </div>
+            </div> -->
 
-            <div class="aside card">
+            <!-- <div class="aside card">
                 <button type="button" class="aside card-header btn btn-info" id="headingSeven">
                     <div class="aside_hover" data-toggle="collapse" data-target="#collapseSeven" aria-expanded="false" aria-controls="collapseSeven">
                         <img class="aside_logo" src="../../images/icon_PP_m.svg" alt="">
@@ -129,7 +129,7 @@
                         <span>紙娃娃系統</span>
                     </button>
                 </div>
-            </div>
+            </div> -->
         </div>
     </aside>
     <aside style="width:250px;height:100%"></aside>

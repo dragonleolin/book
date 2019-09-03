@@ -49,6 +49,7 @@ include __DIR__ . '/../../pbook_index/__navbar.php';
                         <h5 class="card-title">選擇活動類型</h5>
                         <button class="btn-light m-2 btn-lg" onclick="location.href = 'event_insert_gd.php'">商品折扣</button>
                         <button class="btn-light m-2 btn-lg" onclick="location.href = 'event_insert_pbd.php'">滿額折扣</button>
+                        <button class="btn-light m-2 btn-lg" onclick="location.href = 'event_insert_cd.php'">優惠券發送</button>
                         <button class="btn-light m-2 btn-lg" onclick="">套裝折扣</button>
                         <button class="btn-light m-2 btn-lg" onclick="">滿額贈品</button>
                         <button class="btn-light m-2 btn-lg" onclick="">商品贈品</button>
