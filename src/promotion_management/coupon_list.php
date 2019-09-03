@@ -49,7 +49,7 @@ include __DIR__ . '/../../pbook_index/__html_body.php';
 include __DIR__ . '/../../pbook_index/__navbar.php';
 ?>
 
-    <div class="container-fluid pt-3 pb-5">
+    <div class="container pt-3 pb-5">
 
         <nav class="navbar justify-content-between mb-3" style="padding: 0px;width: 80vw;">
             <div>
@@ -83,7 +83,7 @@ include __DIR__ . '/../../pbook_index/__navbar.php';
         </nav>
 
 
-        <table class="table table-striped table-bordered">
+        <table class="table table-striped table-bordered" style="width: 83vw">
             <thead>
             <tr>
                 <th scope="col">編號</th>
