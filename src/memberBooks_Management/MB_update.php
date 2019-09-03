@@ -89,7 +89,7 @@ $totalPages = ceil($totalRows / $per_page);
                         <div class="form-group">
                             <label for="mb_isbn">ISBN</label>
                             <span id="mb_isbnHelp" style="margin:0px 10px;color:red"></span>
-                            <input type="text" class="form-control" id="mb_isbn" name="mb_isbn" value="<?= htmlentities($row['mb_isbn']) ?>" readonly="readonly" />
+                            <input type="text" class="form-control" id="mb_isbn" name="mb_isbn" value="<?= htmlentities($row['mb_isbn']) ?>">
                         </div>
                         <div class="form-group">
                             <label for="mb_name">書名</label>
@@ -214,6 +214,7 @@ $totalPages = ceil($totalRows / $per_page);
         reader.readAsDataURL(file);
     })
 
+    //驗證欄位
     const require_fields = [{
             id: 'mb_isbn',
             pattern: /\d{6,13}/,

@@ -16,8 +16,10 @@ if(empty($_POST['mb_shelveMember'])){
     echo json_encode($result, JSON_UNESCAPED_UNICODE);
     exit;
 }
-
 // echo $_POST['mb_shelveMember'];
+
+
+//用輸入的欄位去核對表格的會員編號欄位
 $sql = "SELECT `MR_number` FROM `mr_information` WHERE MR_number = '".$_POST['mb_shelveMember']."'";
 
 

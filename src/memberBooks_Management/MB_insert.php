@@ -348,7 +348,10 @@ $mr_no = $mrNo_s->fetchAll();
         let memberNo = false;
         let fd = new FormData(document.form1);
 
+        //判斷ISBN碼正確性
         isPass = isbn_test();
+
+        //判斷會員編號的API
         fetch('MB_searchMember_api.php', {
                     method: 'POST',
                     body: fd,
@@ -362,6 +365,7 @@ $mr_no = $mrNo_s->fetchAll();
                         itemInfoEl.innerHTML = '';
                         memberNo = [true,isPass];
                         console.log("memberNo1=" + memberNo);
+                        //判斷各個選項的API，因為有執行順序問題所以用函式包起來
                         memberNoCheck(memberNo,isPass);
                         // return memberNoAndisPass;
                     } else {
