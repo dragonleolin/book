@@ -55,7 +55,7 @@ $user_level_const = [
 
     </style>
 
-    <div class="container-fluid pt-3 pb-5">
+    <div class="container pt-3 pb-5">
 
         <nav class="navbar justify-content-between mb-3" style="padding: 0px;width: 80vw;">
             <div>
@@ -89,7 +89,7 @@ $user_level_const = [
         </nav>
 
 
-        <table class="table table-striped table-bordered">
+        <table class="table table-striped table-bordered" style="width: 83vw">
             <thead>
             <tr>
                 <th scope="col">編號</th>

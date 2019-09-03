@@ -12,7 +12,8 @@ $_SESSION['event_insert_gd'] = $_POST;
 $cate_sql = "SELECT `sid`,`name` FROM `vb_categories` WHERE 1";
 $cate_row = $pdo->query($cate_sql)->fetchAll(PDO::FETCH_UNIQUE | PDO::FETCH_COLUMN);
 
-
+$cp_sql = "SELECT `sid`,`cp_name` FROM `cp_data_list` WHERE 1";
+$cp_row = $pdo->query($cp_sql)->fetchAll(PDO::FETCH_UNIQUE | PDO::FETCH_COLUMN);
 ?>
 
     <style>
@@ -24,7 +25,7 @@ $cate_row = $pdo->query($cate_sql)->fetchAll(PDO::FETCH_UNIQUE | PDO::FETCH_COLU
         }
     </style>
 
-    <div class="container-fluid pt-5">
+    <div class="container pt-5">
 
         <nav class="navbar justify-content-between">
             <div>
@@ -109,19 +110,21 @@ $cate_row = $pdo->query($cate_sql)->fetchAll(PDO::FETCH_UNIQUE | PDO::FETCH_COLU
 
                                             </tbody>
                                         </table>
+                                        <button id="submit_btn" type="submit" class="btn btn-primary mr-3 ml-3 mb-3">完成</button>
+
                                     </div>
                                     <div class="row mt-2 border-bottom pl-3">
                                         <div class="form-group form-inline mt-3 mb-3">
                                             <label class="mr-3" for="search_type">搜尋方式</label>
                                             <select class="form-control mr-3 border-0" name="search_type"
-                                                    id="search_type">
+                                                    id="search_type" onchange="search()">
                                                 <option value="1">ISBN</option>
                                                 <option value="2">書籍名稱</option>
                                                 <option value="3">分類</option>
                                                 <option value="4">作者</option>
                                                 <option value="5">出版社</option>
                                             </select>
-                                            <input class="mr-3" type="text" name="my_search" id="my_search">
+                                            <input class="mr-3" type="text" name="my_search" id="my_search" onkeydown="return !(event.key == 'Enter');">
                                             <a href="javascript:search()">搜尋</a>
                                         </div>
                                         <table class="table table-striped table-bordered">
@@ -157,6 +160,7 @@ $cate_row = $pdo->query($cate_sql)->fetchAll(PDO::FETCH_UNIQUE | PDO::FETCH_COLU
     <script>
         "use strict";
         let cate_row = <?= json_encode($cate_row); ?>;
+        let cp_row = <?= json_encode($cp_row);?>;
         let tbody = document.getElementById('books_list');
         let sel_books_ar = [];
 
@@ -176,7 +180,7 @@ $cate_row = $pdo->query($cate_sql)->fetchAll(PDO::FETCH_UNIQUE | PDO::FETCH_COLU
                 html += '<td>' + books[i].name + '</td>';
                 html += '<td>' + cate_row[books[i].categories] + '</td>';
                 html += '<td>' + books[i].author + '</td>';
-                html += '<td>' + books[i].publishing + '</td>';
+                html += '<td>' + cp_row[books[i].publishing] + '</td>';
                 html += '</tr>';
             }
             tbody.innerHTML = html;
@@ -185,16 +189,16 @@ $cate_row = $pdo->query($cate_sql)->fetchAll(PDO::FETCH_UNIQUE | PDO::FETCH_COLU
 
         let books;
 
+        let my_search = document.querySelector('#my_search');
         function search() {
             //取得搜尋字串
-            let my_search = document.querySelector('#my_search').value;
             let search_type = document.querySelector('#search_type').value;
             //ajax
             $.ajax({
                 method: "GET",
                 url: "./book_searching_api.php", //進api
                 data: {
-                    search: my_search,
+                    search: my_search.value,
                     search_type: search_type,
                 }
             })
@@ -205,6 +209,7 @@ $cate_row = $pdo->query($cate_sql)->fetchAll(PDO::FETCH_UNIQUE | PDO::FETCH_COLU
                 });
             return false;
         }
+        my_search.addEventListener('keyup',search);
 
 
         function checkForm() {
@@ -277,6 +282,15 @@ $cate_row = $pdo->query($cate_sql)->fetchAll(PDO::FETCH_UNIQUE | PDO::FETCH_COLU
             console.log('delete: '+book_id);
             sel_books_ar.splice(book_index,1);
         }
+
+        let books_list = document.querySelector('#books_list');
+        books_list.addEventListener('click',event=>{
+            if(event.path[1].id){
+                let tr_id = event.path[1].id;
+                let check_box = document.querySelector('#'+tr_id+" input");
+                check_box.click();
+            }
+        })
 
     </script>
 

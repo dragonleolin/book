@@ -23,7 +23,7 @@ $cp_data_list = $pdo->query($sql)->fetchAll(PDO::FETCH_UNIQUE | PDO::FETCH_COLUM
 
     </style>
 
-    <div class="container-fluid pt-5">
+    <div class="container pt-5">
 
         <nav class="navbar justify-content-between">
             <div>

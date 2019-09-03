@@ -19,7 +19,7 @@ include __DIR__ . '/../../pbook_index/__navbar.php';
 
     </style>
 
-    <div class="container-fluid pt-5">
+    <div class="container pt-5">
 
         <nav class="navbar justify-content-between">
             <div>
