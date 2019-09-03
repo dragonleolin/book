@@ -70,10 +70,10 @@ require __DIR__ . '/pbook_index/__admin_required.php';
                             <i class="fas fa-caret-right"></i>
                             <span>出版社總表</span>
                         </button>
-                        <button type="button" class="btn btn-light sub_aside_text">
+                        <!-- <button type="button" class="btn btn-light sub_aside_text">
                             <i class="fas fa-caret-right"></i>
                             <span>出版社訂單總表</span>
-                        </button>
+                        </button> -->
                     </div>
                 </div>
 
@@ -194,10 +194,10 @@ require __DIR__ . '/pbook_index/__admin_required.php';
                         </div>
                     </button>
                     <div id="collapseSeven" class="collapse" aria-labelledby="headingSeven" data-parent="#accordion">
-                        <button type="button" class="btn btn-light sub_aside_text">
+                        <!-- <button type="button" class="btn btn-light sub_aside_text">
                             <i class="fas fa-caret-right"></i>
                             <span>P幣系統</span>
-                        </button>
+                        </button> -->
                         <button type="button" class="btn btn-light sub_aside_text" onclick="location.href='src/promotion_management/event_list.php'">
                             <i class="fas fa-caret-right"></i>
                             <span>折扣系統</span>
