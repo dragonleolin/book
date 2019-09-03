@@ -204,7 +204,7 @@ $row = $t_stmt->fetchAll();
                     <?php endfor; ?>
                 <?php endif; ?>
                 <?php
-                if ($page >= $totalPages - 3 && ($page!=1)) :
+                if ($page >= $totalPages - 3 && ($page!=1) && ($page != 2)) :
                     for ($i = $totalPages - 6; $i <= $p_end; $i++) :
                         $params['page'] = $i;
                         if ($i < 1 or $i > $totalPages) continue;

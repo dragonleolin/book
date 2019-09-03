@@ -13,10 +13,6 @@ if (empty($_POST)) {
     exit;
 }
 
-echo '<pre>';
-print_r($_POST);
-echo '</pre>';
-
 
 //輸入活動
 $sql = "INSERT INTO `pm_event`
@@ -42,7 +38,6 @@ if ($stmt->rowCount() == 1) {
 
 
 $event_id = $pdo->lastInsertId();
-echo 'event_id:' . $event_id;
 
 //輸入折價條件
 $i = 1;
@@ -88,5 +83,4 @@ if ($_POST['user_level_type'] == 1) {
     }
 }
 
-
-echo json_encode($result, JSON_UNESCAPED_UNICODE);
+header('Location: result_page.php');
