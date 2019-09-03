@@ -1,4 +1,4 @@
-<nav class="navbar justify-content-between my_bg_seasongreen">
+<nav class="navbar justify-content-between my_bg_seasongreen fixed-top">
     <a class="navbar-brand" href="../../_index.php">
         <img class="book_logo" src="../../images/icon_logo.svg" alt="">
     </a>
@@ -24,11 +24,12 @@
         <?php endif; ?>
     </ul>
 </nav>
+<div style="height:60px;width:100%"></div>
 
 <div class="d-flex flex-row my_content">
     <!-- 左邊aside選單欄位 -->
     
-    <aside class="d-flex aside_heigh">
+    <aside class="d-flex aside_heigh" style="position:fixed;left:0px;height:100%">
         <div id="accordion">
             <div class="aside card">
                 <button type="button" class="aside card-header btn btn-info" id="headingOne">
@@ -191,3 +192,4 @@
             </div>
         </div>
     </aside>
+    <aside style="width:250px;height:100%"></aside>
