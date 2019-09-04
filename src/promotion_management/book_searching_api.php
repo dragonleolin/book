@@ -6,7 +6,6 @@ $search = $_GET['search'];
 $search_type = $_GET['search_type'];
 
 $search_type_const = [
-    "1",
     "sid",
     "isbn",
     "name",
