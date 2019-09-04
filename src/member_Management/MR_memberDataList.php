@@ -83,9 +83,10 @@ $rows = $stmt->fetchAll();
     ul li {
         list-style-type: none;
     }
-    .ww:active{
-        
-    }
+    .check_icon1{
+        top:0;
+        right: 0;
+    }   
 
     .modal-header {
         padding-left: 40px;
@@ -128,7 +129,7 @@ $rows = $stmt->fetchAll();
                     </li>
                     <li class="nav-item" style="flex-grow: 1">
                         <form name="form2" class="form-inline my-2 my-lg-0">
-                            <input class="search form-control mr-sm-2" id="search_bar" name="search" type="search" placeholder="請輸入會員編號、姓名、電子信、手機" aria-label="Search" style="width:320px"  >
+                            <input class="search form-control mr-sm-2" id="search_bar" name="search" type="search" placeholder="請輸入會員編號、姓名、電子信、手機" aria-label="Search" style="width:320px">
                             <button class="btn btn-outline-warning my-2 my-sm-0" type="submit">
                                 <i class="fas fa-search"></i>
                             </button>
@@ -152,7 +153,10 @@ $rows = $stmt->fetchAll();
                         <!-- <th><a href="" id="all_check">
                             <div style="width:15px;height:15px;border: 2px solid #bbb"></div>
                             <i class="fas fa-angle-down" style="color:#bbb;margin-left:5px"></i></a></th> -->
-                        <th><input type="checkbox" onclick="check_all(this,'c')"><i class="fas fa-angle-down" style="color:#bbb;margin-left:5px"></i></th>
+                        <th>
+                            <input type="checkbox" onclick="check_all(this,'c')" id="all_check">
+                            <i class="fas fa-angle-down" style="color:#bbb;margin-left:5px"></i>
+                        </th>
                         <?php for ($i = 0; $i < count($thead_item); $i++) : ?>
                             <th scope="col"><?= $thead_item[$i] ?></th>
                         <?php endfor ?>
@@ -167,8 +171,12 @@ $rows = $stmt->fetchAll();
                     $sid = [];
                     foreach ($rows as $a) : $sequence++ ?>
                         <tr>
-                            <td><input type="checkbox" name="check[]" id="check<?= $sequence ?>" value="<?= $a['sid'] ?>">
-                            <i class="far fa-square "></i></td>
+                            <td class="dis_relative">
+                                <input type="checkbox" name="check[]" id="check<?= $sequence ?>" value="<?= $a['sid'] ?>">
+                                <i class="far fa-square dis_absolute check_icon1" ></i>
+                                <i class="far fa-check-square dis_absolute check_icon2"></i>
+                            </td>
+
                             <td><?= $a['sid'] ?></td>
                             <td><?= htmlentities($a['MR_number']) ?></td>
                             <td><?php
@@ -322,46 +330,49 @@ $rows = $stmt->fetchAll();
 </div>
 
 <script>
-    // 全選刪除
-    let checkboxs = document.getElementsByName('check[]');
-    let all_check = document.querySelector('#all_check');
-    let delete1 = document.querySelector('#delete1');
-    let clicks = false;
-
-
-    function check_all(obj, cName) {
-        clicks = !clicks;
-        if (clicks) {
-            delete1.style.visibility = "visible";
+    // // 全選刪除
+    function check_all() {
+        if ($("#all_check").prop('checked')) {
+            // delete1.style.visibility = "visible";
+            $('#delete1').css('visibility', 'visible');
+            $("input[name='check[]']").each(function() {
+                $(this).prop('checked', true);
+            });
         } else {
-            delete1.style.visibility = "hidden";
-        }
-        for (let i = 0; i < checkboxs.length; i++) {
-            checkboxs[i].checked = obj.checked;
+            // delete1.style.visibility = "hidden";
+            $('#delete1').css('visibility', 'hidden');
+            $('input[name="check[]"]').each(function() {
+                $(this).prop('checked', false);
+            });
         }
     }
-
-    for (let i = 0; i < 10; i++) {
-        checkboxs[i].addEventListener('click', showButton);
-    }
-
-    function showButton() {
-        let s = '';
-        for (let i = 0; i < 10; i++) {
-            if (checkboxs[i].checked) {
-                s += 's';
-            }
-        }
-        if (s.length > 0) {
-            delete1.style.visibility = "visible";
+    $('input[name="check[]"]').click(function() {
+        if ($('input[name="check[]"]').prop('checked')) {
+            $('#delete1').css('visibility', 'visible');
         } else {
-            delete1.style.visibility = "hidden";
+            $('#delete1').css('visibility', 'hidden');
         }
-    }
+    });
+
+    // for (let i = 0; i < 10; i++) {
+    //     checkboxs[i].addEventListener('click', showButton);
+    // }
+    // function showButton() {
+    //     let s = '';
+    //     for (let i = 0; i < 10; i++) {
+    //         if (checkboxs[i].checked) {
+    //             s += 's';
+    //         }
+    //     }
+    //     if (s.length > 0) {
+    //         delete1.style.visibility = "visible";
+    //     } else {
+    //         delete1.style.visibility = "hidden";
+    //     }
+    // }
+
 
     // 刪除資料功能
-
-
     let delete_info = document.querySelector('#delete_info');
     let delete_confirm = document.querySelector('#delete_confirm')
 
