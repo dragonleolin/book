@@ -18,7 +18,7 @@ $exts = [
 
 $new_filename = '';
 $new_ext ='';
-$a=[];
+$pic=[];
 $fileCount = count($_FILES['mb_pic']['name']);
 
 for($i=0; $i<$fileCount; $i++){
@@ -32,14 +32,14 @@ for($i=0; $i<$fileCount; $i++){
                 //函式 : move_uploaded_file(要移动的文件名稱,移動文件的新位置。);
                 
                 // var_dump($fileCount);
-                $a[] = $new_filename.$new_ext;
+                $pic[] = $new_filename.$new_ext;
         }
     }
     
 }
 // print_r($a);
 
-$arr_pic = json_encode($a, JSON_UNESCAPED_UNICODE);
+$arr_pic = json_encode($pic, JSON_UNESCAPED_UNICODE);
 
 
 $result = [
@@ -76,7 +76,7 @@ $stmt->execute([
     $_POST['mb_page'],
     $_POST['mb_savingStatus'],
     $_POST['mb_shelveMember'],
-    $new_filename.$new_ext,
+    $arr_pic,
     $_POST['mb_categories'],
     $_POST['mb_remarks'],
 ]);

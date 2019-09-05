@@ -1,4 +1,9 @@
 <?php
+require __DIR__ . '/../../vendor/autoload.php';
+
+use Tracy\Debugger;
+
+Debugger::enable();
 
 require __DIR__ . '/__admin_required.php';
 
@@ -54,14 +59,16 @@ $row = $t_stmt->fetchAll();
         bottom: 3%;
         left: 50%;
     }
-    .textHidden{
-        overflow:hidden;
+
+    .textHidden {
+        overflow: hidden;
         white-space: nowrap;
         text-overflow: ellipsis;
     }
 </style>
 <?php include __DIR__ . '/../../pbook_index/__html_body.php' ?>
 <?php include __DIR__ . '/../../pbook_index/__navbar.php' ?>
+<link rel="stylesheet" href="dist/css/swiper.min.css">
 <!-- 右邊section資料欄位 -->
 <section class="position-relative">
     <div class="container">
@@ -138,9 +145,22 @@ $row = $t_stmt->fetchAll();
                                                     <span aria-hidden="true">&times;</span>
                                                 </button>
                                             </div>
-                                            <div class="modal-body" style="width:450px;width:450px;margin:0 auto">
-                                                <img style="object-fit: contain;width: 100%;height: 100%;" src="<?= 'mb_images/' . $r['mb_pic']; ?>" alt="">
+
+                                            <div id="carouselExampleFade" class="carousel slide" data-ride="carousel">
+                                                <div class="carousel-inner">
+                                                        <?php
+                                                            $a = json_decode($r['mb_pic']);
+                                                            // var_dump($a);
+                                                            for ($i = 0; $i < count($a); $i++) :
+                                                                // var_dump($a[$i]);
+                                                                ?>
+                                                             <div class="carousel-item <?= $i==0 ? 'active' : ''?>">
+                                                            <img src="<?= 'mb_images/' . $a[$i]; ?>" class="d-block w-100" alt="...">
+                                                            </div>
+                                                        <?php endfor; ?>
+                                                </div>
                                             </div>
+
                                             <div class="modal-footer">
                                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
                                                 <button type="button" class="btn btn-primary" onclick="change_img(<?= $r['mb_sid'] ?>)">修改圖片</button>
@@ -166,72 +186,75 @@ $row = $t_stmt->fetchAll();
                     <?php endforeach; ?>
                 </tbody>
             </table>
+
+
+
             <!-- 我是分頁按鈕列 請自取並調整頁面擺放位置 -->
             <nav aria-label="Page navigation example">
-            <ul class="pagination page-position ">
-                <li class="page-item">
-                    <a class="page-link" href="?page=1" aria-label="Previous">
-                        <i class="fas fa-angle-double-left"></i>
-                    </a>
-                </li>
-                <li class="page-item">
-                    <a class="page-link" href="?page=<?= $page - 1 ?>" aria-label="Previous">
-                        <i class="fas fa-angle-left"></i>
-                    </a>
-                </li>
-                <?php
-                $p_start = $page - 3;
-                $p_end = $page + 3;
-                if ($page < 5) :
-                    for ($i = $p_start; $i <= 7; $i++) :
-                        $params['page'] = $i;
-                        if ($i < 1 or $i > $totalPages) continue;
-                    ?>
-                        <li class="page-item">
-                            <a class="page-link" style="<?= $i == $page ? 'background: rgba(156, 197, 161, 0.5) ;color: #ffffff;' : '' ?>" href="?<?= http_build_query($params) ?>"><?= $i ?></a>
-                        </li>
-                    <?php endfor; ?>
+                <ul class="pagination page-position ">
+                    <li class="page-item">
+                        <a class="page-link" href="?page=1" aria-label="Previous">
+                            <i class="fas fa-angle-double-left"></i>
+                        </a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="?page=<?= $page - 1 ?>" aria-label="Previous">
+                            <i class="fas fa-angle-left"></i>
+                        </a>
+                    </li>
+                    <?php
+                    $p_start = $page - 3;
+                    $p_end = $page + 3;
+                    if ($page < 5) :
+                        for ($i = $p_start; $i <= 7; $i++) :
+                            $params['page'] = $i;
+                            if ($i < 1 or $i > $totalPages) continue;
+                            ?>
+                            <li class="page-item">
+                                <a class="page-link" style="<?= $i == $page ? 'background: rgba(156, 197, 161, 0.5) ;color: #ffffff;' : '' ?>" href="?<?= http_build_query($params) ?>"><?= $i ?></a>
+                            </li>
+                        <?php endfor; ?>
                     <?php endif; ?>
-                <?php
-                if ($page < $totalPages - 3 && $page >= 5) :
-                    for ($i = $p_start; $i <= $p_end; $i++) :
-                        $params['page'] = $i;
-                        if ($i < 1 or $i > $totalPages) continue;
-                    ?>
-                        <li class="page-item ">
-                            <a class="page-link" style="<?= $i == $page ? 'background: rgba(156, 197, 161, 0.5) ;color: #ffffff;' : '' ?>" href="?<?= http_build_query($params) ?>"><?= $i ?></a>
-                        </li>
-                    <?php endfor; ?>
-                <?php endif; ?>
-                <?php
-                if ($page >= $totalPages - 3 && ($page!=1) && ($page != 2)) :
-                    for ($i = $totalPages - 6; $i <= $p_end; $i++) :
-                        $params['page'] = $i;
-                        if ($i < 1 or $i > $totalPages) continue;
-                ?>
-                        <li class="page-item ">
-                            <a class="page-link" style="<?= $i == $page ? 'background: rgba(156, 197, 161, 0.5) ;color: #ffffff;' : '' ?>" href="?<?= http_build_query($params) ?>"><?= $i ?></a>
-                        </li>
-                    <?php endfor; ?>
-                <?php endif; ?>
-                <li class="page-item">
-                    <a class="page-link" href="?page=<?= $page + 1 ?>" aria-label="Next">
-                        <i class="fas fa-angle-right"></i>
-                    </a>
-                </li>
-                <li class="page-item">
-                    <a class="page-link" href="?page=<?= $totalPages ?>" aria-label="Next">
-                        <i class="fas fa-angle-double-right"></i>
-                    </a>
-                </li>
-            </ul>
-        </nav>
+                    <?php
+                    if ($page < $totalPages - 3 && $page >= 5) :
+                        for ($i = $p_start; $i <= $p_end; $i++) :
+                            $params['page'] = $i;
+                            if ($i < 1 or $i > $totalPages) continue;
+                            ?>
+                            <li class="page-item ">
+                                <a class="page-link" style="<?= $i == $page ? 'background: rgba(156, 197, 161, 0.5) ;color: #ffffff;' : '' ?>" href="?<?= http_build_query($params) ?>"><?= $i ?></a>
+                            </li>
+                        <?php endfor; ?>
+                    <?php endif; ?>
+                    <?php
+                    if ($page >= $totalPages - 3 && ($page != 1) && ($page != 2)) :
+                        for ($i = $totalPages - 6; $i <= $p_end; $i++) :
+                            $params['page'] = $i;
+                            if ($i < 1 or $i > $totalPages) continue;
+                            ?>
+                            <li class="page-item ">
+                                <a class="page-link" style="<?= $i == $page ? 'background: rgba(156, 197, 161, 0.5) ;color: #ffffff;' : '' ?>" href="?<?= http_build_query($params) ?>"><?= $i ?></a>
+                            </li>
+                        <?php endfor; ?>
+                    <?php endif; ?>
+                    <li class="page-item">
+                        <a class="page-link" href="?page=<?= $page + 1 ?>" aria-label="Next">
+                            <i class="fas fa-angle-right"></i>
+                        </a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="?page=<?= $totalPages ?>" aria-label="Next">
+                            <i class="fas fa-angle-double-right"></i>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
 
 
             <!-- 刪除提示框 -->
             <div class="delete update card" id="deleteType" style="display: none;">
                 <div class="delete card-body">
-                    <label class="delete_text">您確認要刪除資料嗎?</label>
+                    <label class="delete_text">您確認要刪除<?= $r['mb_sid'] ?>資料嗎?</label>
                     <div>
                         <button type="button" class="delete btn btn-danger" id="confirm">確認</button>
                         <button type="button" class="delete btn btn-warning" id="cancel">取消</button>
@@ -240,6 +263,8 @@ $row = $t_stmt->fetchAll();
             </div>
 
 </section>
+
+
 <script>
     let deleteType = document.querySelector('#deleteType');
     let confirm = document.querySelector('#confirm');

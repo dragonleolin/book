@@ -1,4 +1,11 @@
 <?php
+require __DIR__ . '/../../vendor/autoload.php';
+
+use Tracy\Debugger;
+
+Debugger::enable();
+
+
 require __DIR__ . '/__admin_required.php';
 require __DIR__ . '/__connect_db.php';
 $page_name = 'data_edit';
@@ -82,7 +89,7 @@ $totalPages = ceil($totalRows / $per_page);
 
         <div class="container">
 
-            <form name="form1" onsubmit="return checkForm();" style="margin-top: 10px;">
+            <form name="form1" onsubmit="return checkForm();" enctype="multipart/form-data" style="margin-top: 10px;">
                 <input type="hidden" name="mb_sid" value="<?= $row['mb_sid'] ?>">
                 <section name="" id="" class="d-flex">
                     <section style="min-width:700px;margin:0px 30px">
@@ -140,19 +147,27 @@ $totalPages = ceil($totalRows / $per_page);
                         </div>
 
                         <div class="form-group d-flex">
+                       
                             <div class="col-lg-5">
                                 <label for="mb_pic" style="font-size: 20px">・請選擇書籍照片</label>
-                                <input type="file" class="form-control-file" id="mb_pic" name="mb_pic" style="display:none">
+                                <input type="file" class="form-control-file" id="mb_pic" name="mb_pic[]" style="display:none" multiple>
                                 <br>
                                 <button class="btn btn-outline-primary my-2 my-sm-0" type="button" onclick="uploadFile()">
                                     <i class="fas fa-plus-circle" style="margin-right:5px"></i>選擇檔案
                                 </button>
                             </div>
-                            <div style="height: 230px;width: 230px;border: 1px solid #ddd">
-                                <img style="object-fit: contain;width: 100%;height: 100%" src="./mb_images/<?= htmlentities($row['mb_pic']) ?>" id="demo" />
-                            </div>
+                                <?php
+                                $a = json_decode($row['mb_pic']);
+                                // var_dump($a);
+                                for ($i = 0; $i < count($a); $i++) :
+                                    // var_dump($a[$i]);
+                                ?>
+                                <div style="height: 230px;width: 230px;border: 1px solid #ddd">
+                                    <img style="object-fit: contain;width: 100%;height: 100%" src="./mb_images/<?= $a[$i] ?>" id="demo" />
+                                </div>
+                            <?php endfor; ?>
                         </div>
-                       
+
                         <div class="form-group" style="margin: -50px -20px 10px 0px; padding: 20px 50px 20px 30px;">
                             <label for="mb_categories" class="update_label">分類</label>
                             <div class="d-flex flex-wrap" style="padding-left: 20px;">
@@ -160,11 +175,11 @@ $totalPages = ceil($totalRows / $per_page);
                                 foreach ($categories_data as $k => $v) :
                                     ?>
                                     <div style="width:150px">
-                                        <input class="form-check-input"  type="radio" name="mb_categories" id="mb_categories<?= $k ?>" value="<?= $k ?>" <?= ($row['mb_categories'] == $k ) ? 'checked' : '' ?>>
+                                        <input class="form-check-input" type="radio" name="mb_categories" id="mb_categories<?= $k ?>" value="<?= $k ?>" <?= ($row['mb_categories'] == $k) ? 'checked' : '' ?>>
                                         <label class="form-check-label" for="mb_categories<?= $k ?>"><?= $v ?></label>
-                                        
+
                                     </div>
-                                <?php endforeach ?>   
+                                <?php endforeach ?>
                             </div>
                         </div>
 
