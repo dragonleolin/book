@@ -102,6 +102,7 @@ $row = $t_stmt->fetchAll();
 
         <!-- 每個人填資料的區塊 -->
         <div style="margin-top: 1rem; min-width: 80vw">
+        <form name="form1" method="post" id="form1" enctype="multipart/form-data">
             <table class="table table-striped table-bordered" style="text-align: center ; ">
                 <thead>
                     <tr>
@@ -125,13 +126,12 @@ $row = $t_stmt->fetchAll();
                     </tr>
                 </thead>
                 <tbody>
-                <form name="form1" method="post" id="form1" enctype="multipart/form-data">
                     <?php 
                     $sequence = 0;
                     $sid = [];
                     foreach ($row as $r) : ?>
                         <tr>
-                            <td style="vertical-align:middle;"><input type="checkbox" class="j-checkbox" name="check[]" id="check<?= $r['sid'] ?>" value="<?= $r['sid'] ?>"></td>
+                            <td style="vertical-align:middle;"><input type="checkbox" class="j-checkbox" name="check[]" ></td>
                             <td id="sid"><?= $r['mb_sid'] ?></td>
                             <td><?= htmlentities($r['mb_isbn']) ?></td>
                             <td class="textHidden"><?= htmlentities($r['mb_name']) ?></td>
@@ -191,10 +191,10 @@ $row = $t_stmt->fetchAll();
                     <?php 
                     $sid[] = $r['mb_sid'];
                     endforeach; ?>
-                    </form>
+                   
                 </tbody>
             </table>
-
+            </form>
 
 
             <!-- 我是分頁按鈕列 請自取並調整頁面擺放位置 -->
@@ -288,9 +288,10 @@ $row = $t_stmt->fetchAll();
 <script>
     var form_send = document.getElementById('form1')
     var deleteAll = document.getElementById('delete_multiple') 
-    
-    deleteAll.addEventListener('click', ()=>{
-        form_send.action = 'MB_insert.php'
+
+
+    deleteAll.addEventListener('click', () => {
+        form_send.action = 'MB_deleteMultiple.php'
         form_send.submit();
     })
 
@@ -320,7 +321,7 @@ $row = $t_stmt->fetchAll();
     $(function() {
         $('#delete_multiple').click(function() {
             let sid = $('.j-checkbox:checked').val()
-            console.log(sid);
+            // console.log(sid);
             $('.j-checkbox:checked').each(function(i, ele){
                     
                 
@@ -355,21 +356,7 @@ $row = $t_stmt->fetchAll();
         })
     }
 
-    // function delete_multiple(event){
-    //     let delete_eventTarget = event.target;
-    //     console.log('11'+delete_eventTarget);
-    //     let ar = [];
-    //     for (i = 0; i < 10; i++) {
-    //         if (checkboxs[i].checked) {
-    //             ar.push(checkboxs[i].value);
-    //         }
-    //     }
-    //     let string1 = '';
-    //     for (i = 0; i < ar.length; i++) {
-    //         string1 += `${ar[i]}, `;
-    //     }
-    //     string1 = string1.slice(0, string1.length - 2);
-    //     delete_info.innerHTML = `確定要刪除編號 ${string1} 的資料嗎?`;
+   
         
 
     // }
