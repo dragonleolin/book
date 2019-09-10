@@ -379,7 +379,7 @@ $rows = $stmt->fetchAll();
     function delete_one(sid) {
         delete_confirm.style.display = "block";
         delete_info.innerHTML = `確定要刪除編號${sid}的資料嗎?`;
-        delete_sid = sid;
+        delete_sid = ids;
         // if (confirm(`確定要刪除編號${sid}的資料嗎?`)) {
         //     location.href = 'MR_memberData_delete.php?sid=' + sid;
         // }

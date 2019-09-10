@@ -68,7 +68,6 @@ $row = $t_stmt->fetchAll();
 </style>
 <?php include __DIR__ . '/../../pbook_index/__html_body.php' ?>
 <?php include __DIR__ . '/../../pbook_index/__navbar.php' ?>
-<link rel="stylesheet" href="dist/css/swiper.min.css">
 <!-- 右邊section資料欄位 -->
 <section class="position-relative">
     <div class="container">
@@ -85,7 +84,7 @@ $row = $t_stmt->fetchAll();
                     </div>
                 </li>
                 <li class="nav-item" style="margin: 0px 10px">
-                    <button class="btn btn-outline-primary my-2 my-sm-0" type="submit" onclick="data_insert()">
+                    <button class="btn btn-outline-primary my-2 my-sm-0" type="submit" id="addData">
                         <i class="fas fa-plus-circle"></i>
                         新增會員書籍
                     </button>
@@ -106,7 +105,8 @@ $row = $t_stmt->fetchAll();
             <table class="table table-striped table-bordered" style="text-align: center ; ">
                 <thead>
                     <tr>
-                        <th scope="col">sid</th>
+                        <th scope="col"><input type="checkbox" id="checkAll" name="checkAll"></th>
+                        <th scope="col">SID</th>
                         <th scope="col">ISBN</th>
                         <th scope="col">書籍名稱</th>
                         <th scope="col">書籍圖片</th>
@@ -125,9 +125,14 @@ $row = $t_stmt->fetchAll();
                     </tr>
                 </thead>
                 <tbody>
-                    <?php foreach ($row as $r) : ?>
+                <form name="form1" method="post" id="form1" enctype="multipart/form-data">
+                    <?php 
+                    $sequence = 0;
+                    $sid = [];
+                    foreach ($row as $r) : ?>
                         <tr>
-                            <td><?= $r['mb_sid'] ?></td>
+                            <td style="vertical-align:middle;"><input type="checkbox" class="j-checkbox" name="check[]" id="check<?= $r['sid'] ?>" value="<?= $r['sid'] ?>"></td>
+                            <td id="sid"><?= $r['mb_sid'] ?></td>
                             <td><?= htmlentities($r['mb_isbn']) ?></td>
                             <td class="textHidden"><?= htmlentities($r['mb_name']) ?></td>
                             <td>
@@ -146,18 +151,18 @@ $row = $t_stmt->fetchAll();
                                                 </button>
                                             </div>
 
-                                            <div id="carouselExampleFade" class="carousel slide" data-ride="carousel">
+                                            <div id="carouselExampleFade" class="carousel slide" data-ride="carousel" data-interval="1500">
                                                 <div class="carousel-inner">
-                                                        <?php
-                                                            $a = json_decode($r['mb_pic']);
-                                                            // var_dump($a);
-                                                            for ($i = 0; $i < count($a); $i++) :
-                                                                // var_dump($a[$i]);
-                                                                ?>
-                                                             <div class="carousel-item <?= $i==0 ? 'active' : ''?>">
+                                                    <?php
+                                                        $a = json_decode($r['mb_pic']);
+                                                        // var_dump($a);
+                                                        for ($i = 0; $i < count($a); $i++) :
+                                                            // var_dump($a[$i]);
+                                                            ?>
+                                                        <div class="carousel-item <?= $i == 0 ? 'active' : '' ?>">
                                                             <img src="<?= 'mb_images/' . $a[$i]; ?>" class="d-block w-100" alt="...">
-                                                            </div>
-                                                        <?php endfor; ?>
+                                                        </div>
+                                                    <?php endfor; ?>
                                                 </div>
                                             </div>
 
@@ -183,7 +188,10 @@ $row = $t_stmt->fetchAll();
                             <td><a href="MB_update.php?mb_sid=<?= $r['mb_sid'] ?>"><i class="fas fa-edit"></i></a></td>
                             <td><a href="javascript:delete_one(<?= $r['mb_sid'] ?>)"><i class="fas fa-trash-alt"></i></a></td>
                         </tr>
-                    <?php endforeach; ?>
+                    <?php 
+                    $sid[] = $r['mb_sid'];
+                    endforeach; ?>
+                    </form>
                 </tbody>
             </table>
 
@@ -254,7 +262,7 @@ $row = $t_stmt->fetchAll();
             <!-- 刪除提示框 -->
             <div class="delete update card" id="deleteType" style="display: none;">
                 <div class="delete card-body">
-                    <label class="delete_text">您確認要刪除<?= $r['mb_sid'] ?>資料嗎?</label>
+                    <label class="delete_text" id="delete_info"></label>
                     <div>
                         <button type="button" class="delete btn btn-danger" id="confirm">確認</button>
                         <button type="button" class="delete btn btn-warning" id="cancel">取消</button>
@@ -262,38 +270,109 @@ $row = $t_stmt->fetchAll();
                 </div>
             </div>
 
+            <nav class="navbar justify-content-between" style="padding: 0px;width: 20vw;margin:10px 0px -10px 0px">
+                <ul class="nav justify-content-between">
+                    <li class="nav-item">
+                        <div id="btnGroupDrop1" class="position-relative" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <button type="submit" class="btn btn-outline-dark" id="delete_multiple">
+                                <i class="fas fa-trash-alt"></i>&nbsp;&nbsp;&nbsp;批次刪除
+                            </button>
+                        </div>
+                    </li>
+                </ul>
+            </nav>
+
 </section>
 
 
 <script>
-    let deleteType = document.querySelector('#deleteType');
-    let confirm = document.querySelector('#confirm');
-    let cancel = document.querySelector('#cancel');
+    var form_send = document.getElementById('form1')
+    var deleteAll = document.getElementById('delete_multiple') 
+    
+    deleteAll.addEventListener('click', ()=>{
+        form_send.action = 'MB_insert.php'
+        form_send.submit();
+    })
 
-    function data_insert() {
-        location = "MB_insert.php";
-    }
+    $(function() {
+        //全選全不選功能模塊
+        $('#checkAll').change(function() {
+            // console.log($(this).prop('checked'))
+            $(".j-checkbox").prop("checked", $(this).prop('checked'))
+        })
+
+        //若複選按鈕個數為全部，要把全選按鈕打勾
+        $('.j-checkbox').change(function() {
+            // console.log($('.j-checkbox:checked').length);
+            //$('.j-checkbox').length小複選框的個數
+            if ($('.j-checkbox:checked').length === $('.j-checkbox').length) {
+                $('#checkAll').prop("checked", true)
+            } else {
+                $('#checkAll').prop("checked", false)
+            }
+        })
+    })
+
+
+
+
+
+    $(function() {
+        $('#delete_multiple').click(function() {
+            let sid = $('.j-checkbox:checked').val()
+            console.log(sid);
+            $('.j-checkbox:checked').each(function(i, ele){
+                    
+                
+            })
+            
+        })
+    })
+
+    $(function() {
+        $('#addData').click(function() {
+            location = "MB_insert.php";
+        })
+    })
+
 
     function change_img(mb_sid) {
         let b = mb_sid;
         location = 'MB_update.php?mb_sid=' + b;
     }
 
+
     function delete_one(mb_sid) {
+        let delete_info = document.querySelector('#delete_info');
+        $('#deleteType').css("display", "block")
 
-        deleteType.style.display = "block";
-
-        // if (confirm(`確定要刪除編號為 ${mb_sid} 的資料嗎?`)) {
-        //     location.href = 'MB_delete.php?mb_sid=' + mb_sid;
-        // }
-
-        confirm.addEventListener('click', function() {
+        delete_info.innerHTML = `確定要刪除編號${mb_sid}的資料嗎?`;
+        $('#confirm').click(function() {
             location.href = 'MB_delete.php?mb_sid=' + mb_sid;
         })
-        cancel.addEventListener('click', function() {
+        $('#cancel').click(function() {
             location.href = window.location.href;
         })
     }
+
+    // function delete_multiple(event){
+    //     let delete_eventTarget = event.target;
+    //     console.log('11'+delete_eventTarget);
+    //     let ar = [];
+    //     for (i = 0; i < 10; i++) {
+    //         if (checkboxs[i].checked) {
+    //             ar.push(checkboxs[i].value);
+    //         }
+    //     }
+    //     let string1 = '';
+    //     for (i = 0; i < ar.length; i++) {
+    //         string1 += `${ar[i]}, `;
+    //     }
+    //     string1 = string1.slice(0, string1.length - 2);
+    //     delete_info.innerHTML = `確定要刪除編號 ${string1} 的資料嗎?`;
+        
+
+    // }
 </script>
 </div>
 <?php include __DIR__ . '/../../pbook_index/__html_foot.php' ?>

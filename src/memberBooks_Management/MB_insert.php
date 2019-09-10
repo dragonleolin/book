@@ -190,8 +190,9 @@ $mr_no = $mrNo_s->fetchAll();
 <!-- 以下為修改或新增成功才會跳出來的顯示框 -->
 
 </div>
-<script>
 
+<script>
+let info_bar = document.querySelector('#info-bar');
     //檔案上傳
     function uploadFile() {
         document.querySelector('#mb_pic').click();
