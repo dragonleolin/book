@@ -14,12 +14,15 @@ $cate_row = $pdo->query($cate_sql)->fetchAll(PDO::FETCH_UNIQUE | PDO::FETCH_COLU
 
 $cp_sql = "SELECT `sid`,`cp_name` FROM `cp_data_list` WHERE 1";
 $cp_row = $pdo->query($cp_sql)->fetchAll(PDO::FETCH_UNIQUE | PDO::FETCH_COLUMN);
+
+$per_page = 10;
 ?>
 
     <style>
         body {
             background: url(../../images/bg.png) repeat center top;
         }
+
         small.form-text {
             color: red;
         }
@@ -69,11 +72,11 @@ $cp_row = $pdo->query($cp_sql)->fetchAll(PDO::FETCH_UNIQUE | PDO::FETCH_COLUMN);
                                         <label for="categories" class="update_label"></label>
                                         <div class="d-flex mt-2 mb-2">
                                             <button type="button" class="btn btn-info btn-sm mr-2"
-                                                    onclick="checkAll(true)">
+                                                    onclick="checkAll(true,'#bg_checkboxes')">
                                                 全選
                                             </button>
                                             <button type="button" class="btn btn-info btn-sm"
-                                                    onclick="checkAll(false)">
+                                                    onclick="checkAll(false,'#bg_checkboxes')">
                                                 全部取消
                                             </button>
                                         </div>
@@ -110,7 +113,9 @@ $cp_row = $pdo->query($cp_sql)->fetchAll(PDO::FETCH_UNIQUE | PDO::FETCH_COLUMN);
 
                                             </tbody>
                                         </table>
-                                        <button id="submit_btn" type="submit" class="btn btn-primary mr-3 ml-3 mb-3">完成</button>
+                                        <button id="submit_btn" type="submit" class="btn btn-primary mr-3 ml-3 mb-3">
+                                            完成
+                                        </button>
 
                                     </div>
                                     <div class="row mt-2 border-bottom pl-3">
@@ -125,13 +130,18 @@ $cp_row = $pdo->query($cp_sql)->fetchAll(PDO::FETCH_UNIQUE | PDO::FETCH_COLUMN);
                                                 <option value="4">作者</option>
                                                 <option value="5">出版社</option>
                                             </select>
-                                            <input class="mr-3" type="text" name="my_search" id="my_search" onkeydown="return !(event.key == 'Enter');">
+                                            <input class="mr-3" type="text" name="my_search" id="my_search"
+                                                   onkeydown="return !(event.key == 'Enter');">
                                             <a href="javascript:search()">搜尋</a>
                                         </div>
                                         <table class="table table-striped table-bordered">
                                             <thead>
                                             <tr>
-                                                <th scope="col">加入</th>
+                                                <th scope="col">
+                                                    <input id="book_list_checkAll" type="checkbox"
+                                                           onclick="javascript: checkAll($(this).prop('checked'),'#books_list');">
+                                                    <label for="book_list_checkAll">全選</label>
+                                                </th>
                                                 <th scope="col">#</th>
                                                 <th scope="col">ISBN</th>
                                                 <th scope="col">書籍名稱</th>
@@ -144,6 +154,11 @@ $cp_row = $pdo->query($cp_sql)->fetchAll(PDO::FETCH_UNIQUE | PDO::FETCH_COLUMN);
 
                                             </tbody>
                                         </table>
+                                        <nav aria-label="Page navigation example" id="page_nav">
+                                            <ul class="pagination">
+
+                                            </ul>
+                                        </nav>
                                     </div>
                                 </div>
                             </div>
@@ -160,22 +175,40 @@ $cp_row = $pdo->query($cp_sql)->fetchAll(PDO::FETCH_UNIQUE | PDO::FETCH_COLUMN);
     <script src="../../lib/jquery-3.4.1.js"></script>
     <script>
         "use strict";
+        let per_page = <?= $per_page; ?>;
         let cate_row = <?= json_encode($cate_row); ?>;
         let cp_row = <?= json_encode($cp_row);?>;
         let tbody = document.getElementById('books_list');
         let sel_books_ar = [];
+        let books;
 
-        function renderBooks(books) {
+        $("#page_nav").hide();
+
+        function render_books(page) {
+            $('#book_list_checkAll').prop('checked',false);
+            let total_rows = books.length;
+            let total_pages = Math.ceil(total_rows / per_page);
+            page=page<1?1:page;
+            page=page>total_pages?total_pages:page;
+            if (total_pages > 1) {
+                $("#page_nav").show();
+                render_page_nav(page, total_pages);
+            } else {
+                $("#page_nav").hide();
+            }
             let html = '';
-            for (let i = 0; i < books.length; i++) {
+            if(total_rows==0){
+                tbody.innerHTML = '<td style="text-align: center" colspan="7">無結果</td>';
+                return false;
+            }
+            for (let i = (page - 1) * per_page; i < page * per_page && i < total_rows; i++) {
                 html += '<tr id="book_list_id_' + books[i].sid + '">';
 
-                if($.inArray(books[i].sid, sel_books_ar) != -1) {
+                if ($.inArray(books[i].sid, sel_books_ar) != -1) {
                     html += '<td>' + '<input checked type="checkbox" onchange="addBook(' + i + ')">' + '</td>';
-                }else{
+                } else {
                     html += '<td>' + '<input type="checkbox" onchange="addBook(' + i + ')">' + '</td>';
                 }
-
                 html += '<td>' + books[i].sid + '</td>';
                 html += '<td>' + books[i].isbn + '</td>';
                 html += '<td>' + books[i].name + '</td>';
@@ -188,9 +221,55 @@ $cp_row = $pdo->query($cp_sql)->fetchAll(PDO::FETCH_UNIQUE | PDO::FETCH_COLUMN);
             return false;
         }
 
-        let books;
+        function render_page_nav(page, total_pages) {
+            let p_start, p_end;
+            if (total_pages <= 5) {
+                p_start = 1;
+                p_end = total_pages;
+            } else if ((page - 2) < 1) {
+                p_start = 1;
+                p_end = 5;
+            } else if ((page + 2) > total_pages) {
+                p_start = total_pages - 4;
+                p_end = total_pages;
+            } else {
+                p_start = page - 2;
+                p_end = page + 2;
+            }
+            let html = "";
+            html += `
+                <li class="page-item">
+                    <a class="page-link" onclick="render_books(1)"><i class="fas fa-angle-double-left"></i></a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" onclick="render_books(${page - 1})"><i class="fas fa-angle-left"></i></a>
+                </li>
+            `;
+            for (let i = p_start; i <= p_end; i++) {
+
+                html += `
+                    <li class="page-item ${page == i ? 'active' : ''} ?>">
+                        <a class="page-link" onclick="render_books(${i})">${i}</a>
+                    </li>
+                `;
+
+            }
+            html += `
+                <li class="page-item">
+                    <a class="page-link" onclick="render_books(${page + 1})"><i class="fas fa-angle-right"></i></a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" onclick="render_books(${total_pages})"><i class="fas fa-angle-double-right"></i></a>
+                </li>
+            `;
+
+            document.querySelector('#page_nav ul').innerHTML = html;
+
+        }
+
 
         let my_search = document.querySelector('#my_search');
+
         function search() {
             //取得搜尋字串
             let search_type = document.querySelector('#search_type').value;
@@ -206,11 +285,12 @@ $cp_row = $pdo->query($cp_sql)->fetchAll(PDO::FETCH_UNIQUE | PDO::FETCH_COLUMN);
 
                 .done(function (msg) {
                     books = JSON.parse(msg);
-                    renderBooks(books);
+                    render_books(1);
                 });
             return false;
         }
-        my_search.addEventListener('keyup',search);
+
+        my_search.addEventListener('keyup', search);
 
 
         function checkForm() {
@@ -226,28 +306,32 @@ $cp_row = $pdo->query($cp_sql)->fetchAll(PDO::FETCH_UNIQUE | PDO::FETCH_COLUMN);
         }
 
 
-        function checkAll(bool) {
-            let checkboxes = document.querySelectorAll('#bg_checkboxes input');
-            for (let i = 0; i < checkboxes.length; i++) {
-                checkboxes[i].checked = bool;
+        function checkAll(bool, check_area) {
+            if(bool) {
+                $(check_area + ' input:not(:checked)').click();
+            }else{
+                $(check_area + ' input:checked').click()
             }
         }
 
+
         function group_type_display() {
             let group_type = document.querySelector('#group_type');
-            let categories_block = document.querySelector('#bg_checkboxes');
-            let book_id_block = document.querySelector('#book_id_block');
             if (group_type.value == 0) {
-                checkAll(false);
-                categories_block.style.display = 'none';
-                book_id_block.style.display = 'none';
+                checkAll(false,'#bg_checkboxes');
+                checkAll(false,'#books_list');
+                $('#book_list_checkAll').prop('checked',false);
+                $('#bg_checkboxes').hide();
+                $('#book_id_block').hide();
             } else if (group_type.value == 1) {
-                categories_block.style.display = 'flex';
-                book_id_block.style.display = 'none';
+                checkAll(false,'#books_list');
+                $('#book_list_checkAll').prop('checked',false);
+                $('#bg_checkboxes').show();
+                $('#book_id_block').hide();
             } else {
-                checkAll(false);
-                categories_block.style.display = 'none';
-                book_id_block.style.display = 'flex';
+                checkAll(false,'#bg_checkboxes');
+                $('#bg_checkboxes').hide();
+                $('#book_id_block').show();
             }
         }
 
@@ -255,10 +339,9 @@ $cp_row = $pdo->query($cp_sql)->fetchAll(PDO::FETCH_UNIQUE | PDO::FETCH_COLUMN);
         let sel_books = document.querySelector('#sel_books');
 
         function addBook(search_id) {
-            if(document.querySelector('#book_list_id_' + books[search_id].sid + ' input').checked == false){
+            if (document.querySelector('#book_list_id_' + books[search_id].sid + ' input').checked == false) {
                 unSelBook(books[search_id].sid);
-            }
-            else if ($.inArray(books[search_id].sid, sel_books_ar) == -1) {
+            } else if ($.inArray(books[search_id].sid, sel_books_ar) == -1) {
                 sel_books_ar.push(books[search_id].sid);
                 let html = '';
                 html += '<tr id=book_sel_id_' + books[search_id].sid + '>';
@@ -279,15 +362,15 @@ $cp_row = $pdo->query($cp_sql)->fetchAll(PDO::FETCH_UNIQUE | PDO::FETCH_COLUMN);
             sel_books.removeChild(book_tr);
             let book_list_checkbox = document.querySelector('#book_list_id_' + book_id + ' input');
             book_list_checkbox.checked = false;
-            let book_index = $.inArray(""+book_id,sel_books_ar);
-            sel_books_ar.splice(book_index,1);
+            let book_index = $.inArray("" + book_id, sel_books_ar);
+            sel_books_ar.splice(book_index, 1);
         }
 
         let books_list = document.querySelector('#books_list');
-        books_list.addEventListener('click',event=>{
-            if(event.path[1].id){
+        books_list.addEventListener('click', event => {
+            if (event.path[1].id) {
                 let tr_id = event.path[1].id;
-                let check_box = document.querySelector('#'+tr_id+" input");
+                let check_box = document.querySelector('#' + tr_id + " input");
                 check_box.click();
             }
         })
