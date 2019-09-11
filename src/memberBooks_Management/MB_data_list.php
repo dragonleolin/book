@@ -102,98 +102,106 @@ $row = $t_stmt->fetchAll();
 
         <!-- 每個人填資料的區塊 -->
         <div style="margin-top: 1rem; min-width: 80vw">
-        <form name="form1" method="post" id="form1" enctype="multipart/form-data">
-            <table class="table table-striped table-bordered" style="text-align: center ; ">
-                <thead>
-                    <tr>
-                        <th scope="col"><input type="checkbox" id="checkAll" name="checkAll"></th>
-                        <th scope="col">SID</th>
-                        <th scope="col">ISBN</th>
-                        <th scope="col">書籍名稱</th>
-                        <th scope="col">書籍圖片</th>
-                        <th scope="col">分類</th>
-                        <th scope="col">作者</th>
-                        <th scope="col">出版社</th>
-                        <th scope="col">出版日期</th>
-                        <th scope="col">版次</th>
-                        <th scope="col" class="textHidden">定價</th>
-                        <th scope="col" class="textHidden">頁數</th>
-                        <th scope="col">狀況</th>
-                        <th scope="col">上架會員</th>
-                        <th scope="col">上架時間</th>
-                        <th scope="col" class="textHidden">修改</th>
-                        <th scope="col" class="textHidden">刪除</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php 
-                    $sequence = 0;
-                    $sid = [];
-                    foreach ($row as $r) : ?>
+            <form method="post" id="form1" enctype="multipart/form-data" action="">
+                <table class="table table-striped table-bordered" style="text-align: center ; ">
+                    <thead>
                         <tr>
-                            <td style="vertical-align:middle;"><input type="checkbox" class="j-checkbox" name="check[]" ></td>
-                            <td id="sid"><?= $r['mb_sid'] ?></td>
-                            <td><?= htmlentities($r['mb_isbn']) ?></td>
-                            <td class="textHidden"><?= htmlentities($r['mb_name']) ?></td>
-                            <td>
-                                <button type="button" class="btn btn-outline-primary textHidden" data-toggle="modal" data-target="#<?= 'book' . $r['mb_sid']; ?>">
-                                    <i class="fas fa-plus-circle"></i>
-                                    顯示
-                                </button>
-                                <div class="modal fade" id="<?= 'book' . $r['mb_sid']; ?>" tabindex="-1" role="dialog" aria-labelledby="<?= 'book' . $r['mb_sid']; ?>Title" aria-hidden="true">
-                                    <div class="modal-dialog modal-dialog-centered" role="document">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h5 class="modal-title" id="<?= 'book' . $r['mb_sid']; ?>Title"><?= $r['mb_name']; ?></h5>
+                            <th scope="col"><input type="checkbox" id="checkAll" name="checkAll"></th>
+                            <th scope="col">SID</th>
+                            <th scope="col">ISBN</th>
+                            <th scope="col">書籍名稱</th>
+                            <th scope="col">書籍圖片</th>
+                            <th scope="col">分類</th>
+                            <th scope="col">作者</th>
+                            <th scope="col">出版社</th>
+                            <th scope="col">出版日期</th>
+                            <th scope="col">版次</th>
+                            <th scope="col" class="textHidden">定價</th>
+                            <th scope="col" class="textHidden">頁數</th>
+                            <th scope="col">狀況</th>
+                            <th scope="col">上架會員</th>
+                            <th scope="col">上架時間</th>
+                            <th scope="col" class="textHidden">修改</th>
+                            <th scope="col" class="textHidden">刪除</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php
+                        foreach ($row as $r) : ?>
+                            <tr>
+                                <td style="vertical-align:middle;"><input type="checkbox" class="j-checkbox" name="check[]" value="<?= $r['mb_sid']?>"></td>
+                                <td id="sid"><?= $r['mb_sid'] ?></td>
+                                <td><?= htmlentities($r['mb_isbn']) ?></td>
+                                <td class="textHidden"><?= htmlentities($r['mb_name']) ?></td>
+                                <td>
+                                    <button type="button" class="btn btn-outline-primary textHidden" data-toggle="modal" data-target="#<?= 'book' . $r['mb_sid']; ?>">
+                                        <i class="fas fa-plus-circle"></i>
+                                        顯示
+                                    </button>
+                                    <div class="modal fade" id="<?= 'book' . $r['mb_sid']; ?>" tabindex="-1" role="dialog" aria-labelledby="<?= 'book' . $r['mb_sid']; ?>Title" aria-hidden="true">
+                                        <div class="modal-dialog modal-dialog-centered" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="<?= 'book' . $r['mb_sid']; ?>Title"><?= $r['mb_name']; ?></h5>
 
-                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                    <span aria-hidden="true">&times;</span>
-                                                </button>
-                                            </div>
-
-                                            <div id="carouselExampleFade" class="carousel slide" data-ride="carousel" data-interval="1500">
-                                                <div class="carousel-inner">
-                                                    <?php
-                                                        $a = json_decode($r['mb_pic']);
-                                                        // var_dump($a);
-                                                        for ($i = 0; $i < count($a); $i++) :
-                                                            // var_dump($a[$i]);
-                                                            ?>
-                                                        <div class="carousel-item <?= $i == 0 ? 'active' : '' ?>">
-                                                            <img src="<?= 'mb_images/' . $a[$i]; ?>" class="d-block w-100" alt="...">
-                                                        </div>
-                                                    <?php endfor; ?>
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
                                                 </div>
-                                            </div>
 
-                                            <div class="modal-footer">
-                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
-                                                <button type="button" class="btn btn-primary" onclick="change_img(<?= $r['mb_sid'] ?>)">修改圖片</button>
+                                                <div id="carouselExampleFade" class="carousel slide" data-ride="carousel" data-interval="1500">
+                                                    <div class="carousel-inner">
+                                                        <?php
+                                                            $a = json_decode($r['mb_pic']);
+                                                            // var_dump($a);
+                                                            for ($i = 0; $i < count($a); $i++) :
+                                                                // var_dump($a[$i]);
+                                                                ?>
+                                                            <div class="carousel-item <?= $i == 0 ? 'active' : '' ?>">
+                                                                <img src="<?= 'mb_images/' . $a[$i]; ?>" class="d-block w-100" alt="...">
+                                                            </div>
+                                                        <?php endfor; ?>
+                                                    </div>
+                                                </div>
+
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                                                    <button type="button" class="btn btn-primary" onclick="change_img(<?= $r['mb_sid'] ?>)">修改圖片</button>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                            </td>
+                                </td>
 
-                            <td class="textHidden"><?= htmlentities($r['categories_name']) ?></td>
-                            <td class="textHidden"><?= htmlentities($r['mb_author']) ?></td>
-                            <td class="textHidden"><?= htmlentities($r['mb_publishing']) ?></td>
-                            <td class="textHidden"><?= htmlentities($r['mb_publishDate']) ?></td>
-                            <td class="textHidden"><?= htmlentities($r['mb_version']) ?></td>
-                            <td><?= htmlentities($r['mb_fixedPrice']) ?></td>
-                            <td><?= htmlentities($r['mb_page']) ?></td>
-                            <td class="textHidden"><?= htmlentities($r['mb_savingStatus']) ?></td>
-                            <td class="textHidden"><?= htmlentities($r['mb_shelveMember']) ?></td>
-                            <td class="textHidden"><?= htmlentities($r['mb_shelveDate']) ?></td>
-                            <td><a href="MB_update.php?mb_sid=<?= $r['mb_sid'] ?>"><i class="fas fa-edit"></i></a></td>
-                            <td><a href="javascript:delete_one(<?= $r['mb_sid'] ?>)"><i class="fas fa-trash-alt"></i></a></td>
-                        </tr>
-                    <?php 
-                    $sid[] = $r['mb_sid'];
-                    endforeach; ?>
-                   
-                </tbody>
-            </table>
+                                <td class="textHidden"><?= htmlentities($r['categories_name']) ?></td>
+                                <td class="textHidden"><?= htmlentities($r['mb_author']) ?></td>
+                                <td class="textHidden"><?= htmlentities($r['mb_publishing']) ?></td>
+                                <td class="textHidden"><?= htmlentities($r['mb_publishDate']) ?></td>
+                                <td class="textHidden"><?= htmlentities($r['mb_version']) ?></td>
+                                <td><?= htmlentities($r['mb_fixedPrice']) ?></td>
+                                <td><?= htmlentities($r['mb_page']) ?></td>
+                                <td class="textHidden"><?= htmlentities($r['mb_savingStatus']) ?></td>
+                                <td class="textHidden"><?= htmlentities($r['mb_shelveMember']) ?></td>
+                                <td class="textHidden"><?= htmlentities($r['mb_shelveDate']) ?></td>
+                                <td><a href="MB_update.php?mb_sid=<?= $r['mb_sid'] ?>"><i class="fas fa-edit"></i></a></td>
+                                <td><a href="javascript:delete_one(<?= $r['mb_sid'] ?>)"><i class="fas fa-trash-alt"></i></a></td>
+                            </tr>
+                        <?php
+                        endforeach; ?>
+
+                    </tbody>
+                </table>
+                <nav class="navbar justify-content-between" style="padding: 0px;width: 20vw;margin:10px 0px -10px 0px">
+                    <ul class="nav justify-content-between">
+                        <li class="nav-item">
+                            <div id="btnGroupDrop1" class="position-relative" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <button type="submit" class="btn btn-outline-dark" id="delete_multiple">
+                                    <i class="fas fa-trash-alt"></i>&nbsp;&nbsp;&nbsp;批次刪除
+                                </button>
+                            </div>
+                        </li>
+                    </ul>
+                </nav>
             </form>
 
 
@@ -270,31 +278,10 @@ $row = $t_stmt->fetchAll();
                 </div>
             </div>
 
-            <nav class="navbar justify-content-between" style="padding: 0px;width: 20vw;margin:10px 0px -10px 0px">
-                <ul class="nav justify-content-between">
-                    <li class="nav-item">
-                        <div id="btnGroupDrop1" class="position-relative" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <button type="submit" class="btn btn-outline-dark" id="delete_multiple">
-                                <i class="fas fa-trash-alt"></i>&nbsp;&nbsp;&nbsp;批次刪除
-                            </button>
-                        </div>
-                    </li>
-                </ul>
-            </nav>
-
 </section>
 
 
 <script>
-    var form_send = document.getElementById('form1')
-    var deleteAll = document.getElementById('delete_multiple') 
-
-
-    deleteAll.addEventListener('click', () => {
-        form_send.action = 'MB_deleteMultiple.php'
-        form_send.submit();
-    })
-
     $(function() {
         //全選全不選功能模塊
         $('#checkAll').change(function() {
@@ -314,7 +301,16 @@ $row = $t_stmt->fetchAll();
         })
     })
 
+    var form_send = document.getElementById('form1')
+    var deleteAll = document.getElementById('delete_multiple')
 
+
+    deleteAll.addEventListener('click', () => {
+        form_send.action = 'MB_deleteMuti.php'
+        console.log('form_send.action=' + form_send.action);
+        
+        form_send.submit();
+    })
 
 
 
@@ -322,11 +318,11 @@ $row = $t_stmt->fetchAll();
         $('#delete_multiple').click(function() {
             let sid = $('.j-checkbox:checked').val()
             // console.log(sid);
-            $('.j-checkbox:checked').each(function(i, ele){
-                    
-                
+            $('.j-checkbox:checked').each(function(i, ele) {
+
+
             })
-            
+
         })
     })
 
@@ -356,8 +352,8 @@ $row = $t_stmt->fetchAll();
         })
     }
 
-   
-        
+
+
 
     // }
 </script>
