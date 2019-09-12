@@ -166,7 +166,7 @@ $row = $t_stmt->fetchAll();
 
                                                 <div class="modal-footer">
                                                     <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
-                                                    <button type="button" class="btn btn-primary" onclick="change_img(<?= $r['mb_sid'] ?>)">修改圖片</button>
+                                                    <button type="button" id="changeImg" class="btn btn-primary" onclick="(<?= $r['mb_sid'] ?>)">修改圖片</button>
                                                 </div>
                                             </div>
                                         </div>
@@ -285,46 +285,36 @@ $row = $t_stmt->fetchAll();
     $(function() {
         //全選全不選功能模塊
         $('#checkAll').change(function() {
-            // console.log($(this).prop('checked'))
             $(".j-checkbox").prop("checked", $(this).prop('checked'))
+            $("tr").css("background", "transparent")
+            $(":checked").closest('tr').css("background", "#9cc5a1")
         })
 
         //若複選按鈕個數為全部，要把全選按鈕打勾
         $('.j-checkbox').change(function() {
-            // console.log($('.j-checkbox:checked').length);
-            //$('.j-checkbox').length小複選框的個數
             if ($('.j-checkbox:checked').length === $('.j-checkbox').length) {
                 $('#checkAll').prop("checked", true)
             } else {
                 $('#checkAll').prop("checked", false)
             }
+            $("tr").css("background", "transparent")
+            $(":checked").closest('tr').css("background", "#9cc5a1")
         })
-    })
 
-    var form_send = document.getElementById('form1')
-    var deleteAll = document.getElementById('delete_multiple')
-
-
-    deleteAll.addEventListener('click', () => {
-        form_send.action = 'MB_deleteMuti.php'
-        console.log('form_send.action=' + form_send.action);
-        
-        form_send.submit();
     })
 
 
-
-    $(function() {
-        $('#delete_multiple').click(function() {
-            let sid = $('.j-checkbox:checked').val()
-            // console.log(sid);
-            $('.j-checkbox:checked').each(function(i, ele) {
-
-
-            })
-
-        })
+    // var form = document.getElementById('form1')
+    //JQ的getElement要使用[0]
+    let form = $('#form1')[0]
+    
+    $('#delete_multiple').click(function(){
+        form.action = 'MB_deleteMuti.php'
+        console.log(form.action)
+        form.submit();
     })
+
+
 
     $(function() {
         $('#addData').click(function() {
@@ -337,6 +327,7 @@ $row = $t_stmt->fetchAll();
         let b = mb_sid;
         location = 'MB_update.php?mb_sid=' + b;
     }
+
 
 
     function delete_one(mb_sid) {
