@@ -103,24 +103,24 @@ $row = $t_stmt->fetchAll();
         <!-- 每個人填資料的區塊 -->
         <div style="margin-top: 1rem; min-width: 80vw">
             <form method="post" id="form1" enctype="multipart/form-data" action="">
-                <table class="table table-striped table-bordered" style="text-align: center ; ">
+                <table class="table table-striped table-bordered" style="text-align: center ; " id="sortable">
                     <thead>
                         <tr>
                             <th scope="col"><input type="checkbox" id="checkAll" name="checkAll"></th>
-                            <th scope="col">SID</th>
-                            <th scope="col">ISBN</th>
-                            <th scope="col">書籍名稱</th>
+                            <th scope="col" data-sort="number">SID</th>
+                            <th scope="col" data-sort="number">ISBN</th>
+                            <th scope="col" data-sort="name">書籍名稱</th>
                             <th scope="col">書籍圖片</th>
                             <th scope="col">分類</th>
-                            <th scope="col">作者</th>
-                            <th scope="col">出版社</th>
-                            <th scope="col">出版日期</th>
+                            <th scope="col" data-sort="name">作者</th>
+                            <th scope="col" data-sort="name">出版社</th>
+                            <th scope="col" data-sort="date">出版日期</th>
                             <th scope="col">版次</th>
                             <th scope="col" class="textHidden">定價</th>
                             <th scope="col" class="textHidden">頁數</th>
                             <th scope="col">狀況</th>
-                            <th scope="col">上架會員</th>
-                            <th scope="col">上架時間</th>
+                            <th scope="col" data-sort="name">上架會員</th>
+                            <th scope="col" data-sort="date">上架時間</th>
                             <th scope="col" class="textHidden">修改</th>
                             <th scope="col" class="textHidden">刪除</th>
                         </tr>
@@ -166,7 +166,7 @@ $row = $t_stmt->fetchAll();
 
                                                 <div class="modal-footer">
                                                     <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
-                                                    <button type="button" id="changeImg" class="btn btn-primary" onclick="(<?= $r['mb_sid'] ?>)">修改圖片</button>
+                                                    <button type="button" id="changeImg" class="btn btn-primary" onclick="change_img(<?= $r['mb_sid'] ?>)">修改圖片</button>
                                                 </div>
                                             </div>
                                         </div>
@@ -280,7 +280,7 @@ $row = $t_stmt->fetchAll();
 
 </section>
 
-
+<!-- <script src="MB_sort.js"></script> -->
 <script>
     $(function() {
         //全選全不選功能模塊
@@ -325,7 +325,7 @@ $row = $t_stmt->fetchAll();
 
     function change_img(mb_sid) {
         let b = mb_sid;
-        location = 'MB_update.php?mb_sid=' + b;
+        location = "MB_update.php?mb_sid=" + b;
     }
 
 

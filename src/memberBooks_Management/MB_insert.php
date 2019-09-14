@@ -62,6 +62,21 @@ $mr_no = $mrNo_s->fetchAll();
         top: 250px;
         left: 500px;
     }
+
+    .pre_img {
+        position: flex;
+        justify-content: left;
+        object-fit: contain;
+        width: 100%;
+        height: 100%
+    }
+
+    .pre_pic {
+        display: flex;
+        height: 230px;
+        width: 200px;
+        /* border: 1px solid #ddd; */
+    }
 </style>
 <?php include __DIR__ . '/../../pbook_index/__html_body.php' ?>
 <?php include __DIR__ . '/../../pbook_index/__navbar.php' ?>
@@ -136,17 +151,21 @@ $mr_no = $mrNo_s->fetchAll();
                         </div>
 
                         <div class="form-group d-flex">
-                            <div class="col-lg-5">
+                            <div id="chose_pic" class="col-lg-4">
                                 <label for="mb_pic" style="font-size: 20px">・請選擇書籍照片</label>
                                 <input type="file" class="form-control-file" id="mb_pic" name="mb_pic[]" style="display:none" multiple>
                                 <br>
                                 <button class="btn btn-outline-primary my-2 my-sm-0" type="button" onclick="uploadFile()">
                                     <i class="fas fa-plus-circle" style="margin-right:5px"></i>選擇檔案
                                 </button>
+                                <div style="height:50px; margin-top:10px">
+                                    <span style="margin:0px 20px" class="my_text_blacktea_fifty">最多上傳三張圖片</span>
+                                </div>
                             </div>
-                            <div style="height: 230px;width: 230px;border: 1px solid #ddd">
-                                <img style="object-fit: contain;width: 100%;height: 100%" id="demo" />
+                            <div class="pre_pic col-lg-3">
+                                <!-- <img style="object-fit: contain;width: 100%;height: 100%" id="demo" /> -->
                             </div>
+
                         </div>
                         <div class="form-group" style="margin: -50px -20px 10px 0px; padding: 20px 50px 20px 30px;">
                             <label for="mb_categories" class="update_label">分類</label>
@@ -170,7 +189,7 @@ $mr_no = $mrNo_s->fetchAll();
                             <label for="mb_remarks" class="update_label">備註</label>
                             <span style="margin:0px 20px" class="my_text_blacktea_fifty"></span>
                             <span style="margin:0px -10px;color:red" id="introductionHelp"></span>
-                            <textarea class="update form-control" name="mb_remarks" id="mb_remarks" rows="5" style="width:700px;height:90px;resize:none"></textarea>
+                            <textarea class="update form-control" name="mb_remarks" id="mb_remarks" rows="5" style="width:650px;height:90px;resize:none"></textarea>
                         </div>
                     </section>
                 </section>
@@ -192,20 +211,33 @@ $mr_no = $mrNo_s->fetchAll();
 </div>
 
 <script>
-let info_bar = document.querySelector('#info-bar');
-    //檔案上傳
+    let info_bar = document.querySelector('#info-bar');
+
     function uploadFile() {
         document.querySelector('#mb_pic').click();
 
     }
-
     $('#mb_pic').change(function() {
-        var file = $('#mb_pic')[0].files[0];
-        var reader = new FileReader;
-        reader.onload = function(e) {
-            $('#demo').attr('src', e.target.result);
+        $('.pre_pic').find(".pre_img").remove();
+        let input_file = document.getElementById('mb_pic')
+        let files_len = input_file.files.length
+        // console.log(files_len);
+        if (files_len <= 3) {
+            for (let i = 0; i < files_len; i++) {
+                var file = input_file.files[i];
+                console.log(file);
+                var reader = new FileReader;
+                reader.readAsDataURL(file);
+                reader.onload = function(e) {
+                    // $('#demo').attr('src', e.target.result);
+                    let img = $("<img>").addClass("pre_img").attr('src', e.target.result)
+                    $('.pre_pic').append(img)
+                }
+            }
+        } else {
+            alert('最多只能三張')
         }
-        reader.readAsDataURL(file);
+
     })
 
     function isbn_test() {
@@ -239,7 +271,7 @@ let info_bar = document.querySelector('#info-bar');
         } else {
             console.log('格式錯誤');
         }
-        
+
 
         var isbn_border = document.querySelector('#mb_isbn');
         if (!isPass) {
@@ -256,7 +288,7 @@ let info_bar = document.querySelector('#info-bar');
         return isPass;
     }
 
-  
+
 
 
     function checkForm() {
@@ -267,9 +299,8 @@ let info_bar = document.querySelector('#info-bar');
         let i, s, item;
 
         let isPass = true;
-        
-        const require_fields = [
-            {
+
+        const require_fields = [{
                 id: 'mb_isbn',
                 pattern: /(^\d{10}$)|(^\d{13}$)/,
                 info: '請填寫正確ISBN碼格式',
@@ -354,62 +385,62 @@ let info_bar = document.querySelector('#info-bar');
 
         //判斷會員編號的API
         fetch('MB_searchMember_api.php', {
-                    method: 'POST',
-                    body: fd,
-                })
-                .then(response => {
-                    return response.json();
-                })
-                .then(json => {
-                    if (json.success) {
-                        itemEl.style.border = '1px solid #CCCCCC';
-                        itemInfoEl.innerHTML = '';
-                        memberNo = [true,isPass];
-                        console.log("memberNo1=" + memberNo);
-                        //判斷各個選項的API，因為有執行順序問題所以用函式包起來
-                        memberNoCheck(memberNo,isPass);
-                        // return memberNoAndisPass;
-                    } else {
-                        
-                        itemEl.style.border = '1px solid red';
-                        itemInfoEl.innerHTML = json.info;
-                        memberNo = false;
-                        console.log("memberNo2=" + memberNo);
-                    }
-                })
-                // .then( memberNoAndisPass =>{
-                //     if(memberNoAndisPass[0]==true && memberNoAndisPass[]==true){
-                //         console.log(377);
-                //     }
-                // })
+                method: 'POST',
+                body: fd,
+            })
+            .then(response => {
+                return response.json();
+            })
+            .then(json => {
+                if (json.success) {
+                    itemEl.style.border = '1px solid #CCCCCC';
+                    itemInfoEl.innerHTML = '';
+                    memberNo = [true, isPass];
+                    console.log("memberNo1=" + memberNo);
+                    //判斷各個選項的API，因為有執行順序問題所以用函式包起來
+                    memberNoCheck(memberNo, isPass);
+                    // return memberNoAndisPass;
+                } else {
+
+                    itemEl.style.border = '1px solid red';
+                    itemInfoEl.innerHTML = json.info;
+                    memberNo = false;
+                    console.log("memberNo2=" + memberNo);
+                }
+            })
+        // .then( memberNoAndisPass =>{
+        //     if(memberNoAndisPass[0]==true && memberNoAndisPass[]==true){
+        //         console.log(377);
+        //     }
+        // })
 
 
-        
-        
-       
 
-        function memberNoCheck(memberNo,isPass){
+
+
+
+        function memberNoCheck(memberNo, isPass) {
             console.log("isPass=" + isPass);
             console.log("memberNo3=" + memberNo);
-            if( memberNo && isPass){
+            if (memberNo && isPass) {
                 fetch('MB_insert_api.php', {
-                    method: 'POST',
-                    body: fd,
-                })
-                .then(response => {
-                    return response.json();
-                })
-                .then(json => {
-                    success_bar.style.display = 'block';
-                    info_bar.innerHTML = json.info;
-                    if (json.success) {
-                        setTimeout(function() {
-                            location.href = 'MB_data_list.php?page=<?= $totalPages ?>';
-                        }, 1000);
-                    } else {
-                        success_bar.style.display = 'none'
-                    }
-                });
+                        method: 'POST',
+                        body: fd,
+                    })
+                    .then(response => {
+                        return response.json();
+                    })
+                    .then(json => {
+                        success_bar.style.display = 'block';
+                        info_bar.innerHTML = json.info;
+                        if (json.success) {
+                            setTimeout(function() {
+                                location.href = 'MB_data_list.php?page=<?= $totalPages ?>';
+                            }, 1000);
+                        } else {
+                            success_bar.style.display = 'none'
+                        }
+                    });
             }
         }
 

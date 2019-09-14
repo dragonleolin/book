@@ -76,7 +76,7 @@ $stmt->execute([
     $_POST['mb_page'],
     $_POST['mb_savingStatus'],
     $_POST['mb_shelveMember'],
-    $new_filename.$new_ext,
+    $arr_pic,
     $_POST['mb_categories'],
     $_POST['mb_remarks'],
 ]);
