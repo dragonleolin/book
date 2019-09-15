@@ -179,7 +179,7 @@ $totalPages = ceil($totalRows / $per_page);
                                 for ($i = 0; $i < count($a); $i++) :
                                     // var_dump($a[$i]);
                                 ?>
-                                    <img style="object-fit: contain;width: 100%;height: 100%" src="./mb_images/<?= $a[$i] ?>" />
+                                    <img style="object-fit: contain;width: 100%;height: 100%; margin-right:5px" src="./mb_images/<?= $a[$i] ?>" />
                                     <?php endfor; ?>
                                 </div>
 

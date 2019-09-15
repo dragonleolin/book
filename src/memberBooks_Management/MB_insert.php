@@ -120,7 +120,7 @@ $mr_no = $mrNo_s->fetchAll();
                         <div class="form-group">
                             <label for="mb_publishDate">出版日期</label>
                             <span id="mb_publishDateHelp" style="margin:0px 10px;color:red"></span>
-                            <input type="text" class="form-control" id="mb_publishDate" name="mb_publishDate">
+                            <input type="date" class="form-control" id="mb_publishDate" name="mb_publishDate">
                         </div>
                         <div class="form-group">
                             <label for="mb_version">版本</label>
