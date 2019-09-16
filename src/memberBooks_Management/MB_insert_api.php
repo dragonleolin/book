@@ -1,4 +1,9 @@
 <?php
+require __DIR__ . '/../../vendor/autoload.php';
+
+use Tracy\Debugger;
+
+Debugger::enable();
 
 require __DIR__ . '/__admin_required.php';
 require __DIR__ . '/__connect_db.php';

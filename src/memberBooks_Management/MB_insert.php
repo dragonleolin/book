@@ -1,4 +1,9 @@
 <?php
+require __DIR__ . '/../../vendor/autoload.php';
+
+use Tracy\Debugger;
+
+Debugger::enable();
 
 require __DIR__ . '/__admin_required.php';
 require __DIR__ . '/__connect_db.php';
@@ -68,7 +73,9 @@ $mr_no = $mrNo_s->fetchAll();
         justify-content: left;
         object-fit: contain;
         width: 100%;
-        height: 100%
+        height: 100%;
+        padding-left: 5px; 
+        
     }
 
     .pre_pic {
@@ -120,7 +127,7 @@ $mr_no = $mrNo_s->fetchAll();
                         <div class="form-group">
                             <label for="mb_publishDate">出版日期</label>
                             <span id="mb_publishDateHelp" style="margin:0px 10px;color:red"></span>
-                            <input type="date" class="form-control" id="mb_publishDate" name="mb_publishDate">
+                            <input type="text" class="form-control" id="mb_publishDate" name="mb_publishDate">
                         </div>
                         <div class="form-group">
                             <label for="mb_version">版本</label>
