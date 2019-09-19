@@ -17,21 +17,28 @@ $exts = [
 
 $new_filename = '';
 $new_ext ='';
+$pic=[];
+$fileCount = count($_FILES['mb_pic']['name']);
 
-$pic_sql = sprintf("SELECT `mb_pic` FROM `mb_books` WHERE `mb_sid` = %s", $_POST['mb_sid']);
-$pic_stmt = $pdo->query($pic_sql);
-$new_filename = $pic_stmt->fetch()['mb_pic'];
+for($i=0; $i<$fileCount; $i++){
 
-if(!empty($_FILES['mb_pic'])){ //檔案有沒有上傳
-    if(in_array($_FILES['mb_pic']['type'],$allowed_types)){  //上傳檔案類型是否符合
-
-        $new_filename = sha1(uniqid(). $_FILES['mb_pic']['name']); //為了避免檔案重名(因為重名新的會覆蓋掉舊的),所以將上傳檔案重新命名
-        $new_ext = $exts[$_FILES['mb_pic']['type']];
-
-        move_uploaded_file($_FILES['mb_pic']['tmp_name'], $upload_dir. $new_filename. $new_ext);
-        //函式 : move_uploaded_file(要移动的文件名稱,移動文件的新位置。);
+    if(!empty($_FILES['mb_pic'])){ //檔案有沒有上傳
+        if(in_array($_FILES['mb_pic']['type'][$i],$allowed_types)){  //上傳檔案類型是否符合
+            
+                $new_filename = sha1(uniqid(). $_FILES['mb_pic']['name'][$i]); //為了避免檔案重名(因為重名新的會覆蓋掉舊的),所以將上傳檔案重新命名
+                $new_ext = $exts[$_FILES['mb_pic']['type'][$i]];
+                move_uploaded_file($_FILES['mb_pic']['tmp_name'][$i], $upload_dir. $new_filename. $new_ext);
+                //函式 : move_uploaded_file(要移动的文件名稱,移動文件的新位置。);
+                
+                // var_dump($fileCount);
+                $pic[] = $new_filename.$new_ext;
+        }
     }
+    
 }
+// print_r($a);
+
+$arr_pic = json_encode($pic, JSON_UNESCAPED_UNICODE);
 
 $result = [
     'success'=> false,
@@ -77,7 +84,7 @@ $stmt->execute([
     $_POST['mb_page'],
     $_POST['mb_savingStatus'],
     $_POST['mb_shelveMember'],
-    $new_filename.$new_ext,
+    $arr_pic,
     $_POST['mb_categories'],
     $_POST['mb_remarks'],
     $_POST['mb_sid'],

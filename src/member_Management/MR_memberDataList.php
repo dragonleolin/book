@@ -84,6 +84,11 @@ $rows = $stmt->fetchAll();
         list-style-type: none;
     }
 
+    .check_icon1 {
+        top: 0;
+        right: 0;
+    }
+
     .modal-header {
         padding-left: 40px;
     }
@@ -125,7 +130,7 @@ $rows = $stmt->fetchAll();
                     </li>
                     <li class="nav-item" style="flex-grow: 1">
                         <form name="form2" class="form-inline my-2 my-lg-0">
-                            <input class="search form-control mr-sm-2" id="search_bar" name="search" type="search" placeholder="Search" aria-label="Search">
+                            <input class="search form-control mr-sm-2" id="search_bar" name="search" type="search" placeholder="請輸入會員編號、姓名、電子信、手機" aria-label="Search" style="width:320px">
                             <button class="btn btn-outline-warning my-2 my-sm-0" type="submit">
                                 <i class="fas fa-search"></i>
                             </button>
@@ -141,18 +146,18 @@ $rows = $stmt->fetchAll();
             <table class="table table-striped table-bordered" style="text-align: center">
                 <thead>
                     <tr>
-                        <ul style="visibility:hidden">
-                            <li></li>
-                        </ul>
-                        <ul class="nav" style="display:none" id="delete1">
-                            <button class="btn btn-outline-primary my-2 my-sm-0 " id="multi_delete" onclick="delete_multiple(event)">刪除</button>
+                        <ul class="nav" style="visibility: hidden" id="delete1">
+                            <button class="btn btn-outline-primary my-2 my-sm-0 " id="multi_delete" onclick="delete_multiple(event)"><i class="fas fa-trash-alt"></i> &nbsp刪除</button>
                         </ul>
                     </tr>
                     <tr>
                         <!-- <th><a href="" id="all_check">
                             <div style="width:15px;height:15px;border: 2px solid #bbb"></div>
                             <i class="fas fa-angle-down" style="color:#bbb;margin-left:5px"></i></a></th> -->
-                        <th><input type="checkbox" onclick="check_all(this,'c')"><i class="fas fa-angle-down" style="color:#bbb;margin-left:5px"></i></th>
+                        <th>
+                            <input type="checkbox" onclick="check_all(this,'c')" id="all_check">
+                            <i class="fas fa-angle-down" style="color:#bbb;margin-left:5px"></i>
+                        </th>
                         <?php for ($i = 0; $i < count($thead_item); $i++) : ?>
                             <th scope="col"><?= $thead_item[$i] ?></th>
                         <?php endfor ?>
@@ -167,7 +172,12 @@ $rows = $stmt->fetchAll();
                     $sid = [];
                     foreach ($rows as $a) : $sequence++ ?>
                         <tr>
-                            <td><input type="checkbox" name="check[]" id="check<?= $sequence ?>" value="<?= $a['sid'] ?>"></td>
+                            <td class="dis_relative">
+                                <input type="checkbox" name="check[]" id="check<?= $sequence ?>" value="<?= $a['sid'] ?>">
+                                <!-- <i class="far fa-square dis_absolute check_icon1" ></i>
+                                <i class="far fa-check-square dis_absolute check_icon2"></i> -->
+                            </td>
+
                             <td><?= $a['sid'] ?></td>
                             <td><?= htmlentities($a['MR_number']) ?></td>
                             <td><?php
@@ -195,7 +205,7 @@ $rows = $stmt->fetchAll();
                 </tbody>
             </table>
         </div>
-        <nav class="" aria-label="Page navigation example ">
+        <nav class="mt-5" aria-label="Page navigation example ">
             <ul class="pagination justify-content-center">
                 <li class="page-item">
                     <a class="page-link my_text_blacktea" href="?page=1" aria-label="Next">
@@ -321,68 +331,48 @@ $rows = $stmt->fetchAll();
 </div>
 
 <script>
+    
     // 全選刪除
-    let checkboxs = document.getElementsByName('check[]');
-    let all_check = document.querySelector('#all_check');
-    let delete1 = document.querySelector('#delete1');
-    let clicks = false;
-
-
-    function check_all(obj, cName) {
-        clicks = !clicks;
-        if (clicks) {
-            delete1.style.display = "block";
+    function check_all() {
+        if ($("#all_check").prop('checked')) {
+            $('#delete1').css('visibility', 'visible');
+            $("input[name='check[]']").each(function() {
+                $(this).prop('checked', true);
+            });
         } else {
-            delete1.style.display = "none";
-        }
-        console.log(clicks);
-        for (let i = 0; i < checkboxs.length; i++) {
-            checkboxs[i].checked = obj.checked;
+            $('#delete1').css('visibility', 'hidden');
+            $('input[name="check[]"]').each(function() {
+                $(this).prop('checked', false);
+            });
         }
     }
 
-    for (let i = 0; i < 10; i++) {
-        checkboxs[i].addEventListener('click', showButton);
-    }
-
-    function showButton() {
-        let s = '';
+    $('input[name="check[]"]').click(function() {
+        let state = false;
         for (let i = 0; i < 10; i++) {
-            if (checkboxs[i].checked) {
-                s += 's';
-            }
+            state = $('input[name="check[]"]').eq(i).prop('checked') ? true : false;
+            if(state) break;
         }
-        if (s.length > 0) {
-            delete1.style.display = "block";
-        } else {
-            delete1.style.display = "none";
+        if(state) {
+            $('#delete1').css('visibility', 'visible');
+        } else{
+            $('#delete1').css('visibility', 'hidden');
         }
-    }
+    });
 
     // 刪除資料功能
-
-
-    let delete_info = document.querySelector('#delete_info');
-    let delete_confirm = document.querySelector('#delete_confirm')
-
+    let delete_sid,delete_eventTarget;
+    let ar = [];
     function delete_one(sid) {
-        delete_confirm.style.display = "block";
-        delete_info.innerHTML = `確定要刪除編號${sid}的資料嗎?`;
+        $("#delete_confirm").css("display","block");
+        $("#delete_info").text(`確定要刪除編號${sid}的資料嗎?`);
         delete_sid = sid;
-        // if (confirm(`確定要刪除編號${sid}的資料嗎?`)) {
-        //     location.href = 'MR_memberData_delete.php?sid=' + sid;
-        // }
     }
-    let delete_sid;
-    let deltet_yes = document.querySelector('#deltet_yes');
-    let deltet_no = document.querySelector('#deltet_no');
-    let muti_delete = document.querySelector('#multi_delete');
-
-    deltet_yes.addEventListener('click', delete_yes);
-    deltet_no.addEventListener('click', delete_no);
-
-
-    function delete_yes(event) {
+    $("#deltet_no").click(function(){
+        $("#delete_confirm").css("display","none");
+    });
+    
+    $("#deltet_yes").click(function(){
         if (event.target == deltet_yes) {
             location.href = 'MR_memberData_delete.php?sid=' + delete_sid;
         }
@@ -390,48 +380,27 @@ $rows = $stmt->fetchAll();
             document.cookie = "delete_sid=" + ar;
             location.href = 'MR_memberData_delete.php';
         }
-    }
-
-
-    function delete_no(event) {
-        delete_confirm.style.display = "none";
-    }
-    let ar = [];
-    let delete_eventTarget;
-
+    });
+     
     function delete_multiple(event) {
         delete_eventTarget = event.target;
         ar = [];
         for (i = 0; i < 10; i++) {
-            if (checkboxs[i].checked) {
-                ar.push(checkboxs[i].value);
+            let input=$('input[name="check[]"]').eq(i);
+            if (input.prop('checked')){
+                console.log(input.prop('value'))
+                ar.push(input.prop('value'));
             }
         }
-        delete_confirm.style.display = "block";
+        $("#delete_confirm").css("display","block");
         let string1 = '';
         for (i = 0; i < ar.length; i++) {
             string1 += `${ar[i]}, `;
         }
         string1 = string1.slice(0, string1.length - 2);
-        delete_info.innerHTML = `確定要刪除編號 ${string1} 的資料嗎?`;
-
-        // delete_sid = sid;
-        // if (confirm(`確定要刪除編號${sid}的資料嗎?`)) {
-        //     location.href = 'MR_memberData_delete.php?sid=' + sid;
-        // }
+        $("#delete_info").text(`確定要刪除編號 ${string1} 的資料嗎?`);
     }
 
-    //二手書連結
-    let hand2_number = document.querySelector('#hand2_number');
-    let MR_number = hand2_number.value;
-
-    function secondHandBook() {
-        location.href = `MR_MBList.php?MR_number=${MR_number}`;
-    }
-
-    function fans() {
-        location.href = `MR_BRDataList.php?MR_number=${MR_number}`;
-    }
 </script>
 
 <?php include '../../pbook_index/__html_foot.php' ?>

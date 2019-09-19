@@ -43,9 +43,9 @@ $event_id = $pdo->lastInsertId();
 $i = 1;
 do {
     $sql = "INSERT INTO `pm_price_break_discounts`
-    (`event_id`, `type`, `price_limit`, `discounts`, `discount_type`) 
+    (`event_id`, `type`, `price_limit`, `discounts`, `discount_type`,`stage`) 
     VALUES 
-    (?,?,?,?,?)";
+    (?,?,?,?,?,?)";
     $stmt = $pdo->prepare($sql);
     $stmt->execute([
         $event_id,
@@ -53,6 +53,7 @@ do {
         $_POST['price_condition' . $i],
         $_POST['discount_amount' . $i],
         $_POST['discount_type'],
+        $i,
     ]);
     if ($stmt->rowCount() == 1) {
         $result['success'] = true;

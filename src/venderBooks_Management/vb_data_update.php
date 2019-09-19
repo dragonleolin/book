@@ -1,5 +1,5 @@
 <?php
-require __DIR__ . '/__admin_required.php';
+// require __DIR__ . '/__admin_required.php';
 require __DIR__ . '/__connect_db.php';
 $page_name = 'vb_data_update';
 $page_title = '修改出版社書籍';
@@ -186,6 +186,7 @@ foreach ($row as $r => $s) {
         <div class="success update card" style="box-shadow:0px 0px 10px red">
             <div class="success card-body">
                 <label class="success_text" style="background:transparent;color:rgb(228, 63, 63)">修改失敗,不可以偷偷來喔!</label>
+                <div><img class="success_img" src="../../images/icon_false.svg"></div>
             </div>
         </div>
     </div>
