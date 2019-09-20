@@ -13,7 +13,7 @@ $item_switch = [
     'MR_number' => '會員編號',
     'MR_name' => '會員姓名',
     'MR_password' => '會員密碼',
-    'MR_nickname' => '暱稱',
+    'MR_nickname' => '暱&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp稱',
     'MR_email' => '電子信箱',
     'MR_gender' => '性&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp別',
     'MR_birthday' => '生&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp日',
@@ -26,7 +26,6 @@ $item_switch = [
     'MR_personLevel' => '會員等級',
     'MR_createdDate' => '創建日期'
 ];
-
 $a_level = [
     '',
     '品書會員',
@@ -193,11 +192,9 @@ $rows = $stmt->fetchAll();
                             <td><?= (htmlentities($a['MR_gender'])) ? '男' : '女' ?></td>
                             <td><?= htmlentities($a['MR_birthday']) ?></td>
                             <td><?= htmlentities($a['MR_mobile']) ?></td>
-                            <td>
-                                <a href="" class="showDetails" data-toggle="modal" data-target="#exampleModalCenter" data-sid="<?= $a['sid'] ?>">
+                            <td><a href="" data-toggle="modal" data-target="#exampleModalCenter<?= $sequence ?>">
                                     <i class="fas fa-plus-circle"></i>&nbsp&nbsp顯示
-                                </a>
-                            </td>
+                                </a></td>
                             <td><a href="MR_memberData_update.php?sid=<?= $a['sid'] ?>"><i class="fas fa-edit"></i></a></td>
                             <td><a href="javascript:delete_one(<?= $a['sid'] ?>)"><i class="fas fa-trash-alt"></i></a></td>
                             <input type="hidden" id=`tdsid<?= $a['sid'] ?>` value="<?= $a['sid'] ?>">
@@ -249,6 +246,67 @@ $rows = $stmt->fetchAll();
             <input type="hidden" name="json">
         </form>
 
+        <!-- Modal -->
+        <?php for ($i = 0; $i < count($rows); $i++) : ?>
+            <?php $details = $rows[$i]; ?>
+            <?php $MR_number = $details['MR_number']; ?>
+            <div class="modal fade" id="exampleModalCenter<?= $i + 1; ?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document" style="max-width:1200px">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalCenterTitle">會員資料 </h5>
+                            <div class="nav-item" style="margin-left:50px">
+                                <button class="btn btn-outline-primary my-2 my-sm-0" onclick=" location.href = `MR_MBList.php?MR_number=<?= $MR_number ?>`">
+                                    <i class="fas fa-arrow-circle-right"></i>
+                                    會員二手書清單
+                                </button>
+                                <button class="btn btn-outline-primary my-2 my-sm-0" onclick="location.href = `MR_BRDataList.php?MR_number=<?= $MR_number ?>`;">
+                                    <i class="fas fa-arrow-circle-right"></i>
+                                    追蹤書評人清單
+                                </button>
+                            </div>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body" style="min-height:500px">
+                            <!-- body -->
+                            <?php foreach ($details as $k => $v) : ?>
+                                <?php if ($k == 'MR_imageloactionX' or $k == 'MR_imageloactionY') continue; ?>
+                                <ul class="d-flex">
+                                    <li class="" style="text-align:right">
+                                        <h5><?= $item_switch[$k]; ?>
+                                            <?php
+                                                    if ($k == 'MR_number') {
+                                                        echo "<input type='hidden' value='${v}' id='hand2_number'>";
+                                                    }
+                                                    // strlen($k)>3 ? substr($k, 3, strlen($k) - 3): $k
+                                                    ?> &nbsp : &nbsp </h5>
+                                    </li>
+                                    <li><?php if ($k == 'MR_gender') {
+                                                    echo  $v == 1 ? '男' : '女';
+                                                } else if ($k == 'MR_personLevel') {
+                                                    if ($a['MR_personLevel'] > 0 && $a['MR_personLevel'] <= 5) {
+                                                        echo htmlentities($a_level[$a['MR_personLevel']]);
+                                                    }
+                                                } else {
+                                                    echo $v;
+                                                }; ?>
+                                    </li>
+                                </ul>
+                            <?php endforeach ?>
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="location.href='MR_memberData_update.php?sid=<?= $sid[$i]; ?>'">修改內容</button>
+                            <button type="button" class="btn btn-primary" data-dismiss="modal" aria-label="Close">Close</button>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        <?php endfor ?>
+
 
         <!-- 刪除提示框 -->
         <div class="delete update card" id="delete_confirm" style="display:none">
@@ -272,92 +330,8 @@ $rows = $stmt->fetchAll();
     </div>
 </div>
 
-<!-- Modal -->
-<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document" style="max-width:1200px">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalCenterTitle">會員資料</h5>
-                <div class="nav-item" style="margin-left:50px">
-                    <button class="btn btn-outline-primary my-2 my-sm-0" id="MBList" >
-                        <i class="fas fa-arrow-circle-right"></i>
-                        會員二手書清單
-                    </button>
-                    <button class="btn btn-outline-primary my-2 my-sm-0"  id="BRList">
-                        <i class="fas fa-arrow-circle-right"></i>
-                        追蹤書評人清單
-                    </button>
-                </div>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div id="modal-body" class="modal-body" style="min-height:500px">
-
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
-            </div>
-        </div>
-    </div>
-</div>
-
 <script>
-    //顯示details
-    let item_switch = <?= json_encode($item_switch, JSON_UNESCAPED_UNICODE) ?>;
-    // let itemCount=Object.keys(item_switch).length;
-    
-    $(".showDetails").click(function() {
-        setTimeout(() => {
-            let sid = $(this).data("sid");
-            fetch(`MR_detail.php?sid=${sid}`)
-                .then(Response => {
-                    return Response.json();
-                })
-                .then(json => {
-                    showDetails(json);
-                });
-            return false;
-        }, 100);
-
-    });
-
-    function showDetails(json) {
-        $("#modal-body").empty();
-        let data = json[0];
-        let contents = '';
-        $("#MBList").attr("data-num",data['MR_number']);
-        $("#BRList").attr("data-num",data['MR_number']);
-        for (let item in data) {
-            let value = data[item]
-            let title = item_switch[item];
-            if (item == 'MR_gender') {
-                if (value == 2) value = "女";
-                if (value == 1) value = "男";
-            }
-            let content = ` <ul class="d-flex" ">
-                                           <li class="" style="width:110px">
-                                              <h5 style="width:100%;text-align: justify">${title} &nbsp : &nbsp</h5>
-                                           </li>
-                                           <li>${value}</li>
-                                        </ul>`;
-            contents += content;
-        }
-        $("#modal-body").append(contents);
-    }
-    // details二手書連結
-     $("#MBList").click(function(){
-        let num=$(this).data("num");
-        location.href = `MR_MBList.php?MR_number=${num}`;
-     });
-     $("#BRList").click(function(){
-        let num=$(this).data("num");
-        location.href = `MR_BRDataList.php?MR_number=${num}`;
-     });
-
-
-    // 全選刪除
+    // // 全選刪除
     function check_all() {
         if ($("#all_check").prop('checked')) {
             $('#delete1').css('visibility', 'visible');
@@ -376,29 +350,37 @@ $rows = $stmt->fetchAll();
         let state = false;
         for (let i = 0; i < 10; i++) {
             state = $('input[name="check[]"]').eq(i).prop('checked') ? true : false;
-            if (state) break;
+            if(state) break;
         }
-        if (state) {
+        if(state) {
             $('#delete1').css('visibility', 'visible');
-        } else {
+        } else{
             $('#delete1').css('visibility', 'hidden');
         }
     });
 
     // 刪除資料功能
-    let delete_sid, delete_eventTarget;
+    let delete_sid,delete_eventTarget;
     let ar = [];
-
     function delete_one(sid) {
-        $("#delete_confirm").css("display", "block");
+<<<<<<< HEAD
+        $("#delete_confirm").css("display","block");
         $("#delete_info").text(`確定要刪除編號${sid}的資料嗎?`);
         delete_sid = sid;
+=======
+        delete_confirm.style.display = "block";
+        delete_info.innerHTML = `確定要刪除編號${sid}的資料嗎?`;
+        delete_sid = ids;
+        // if (confirm(`確定要刪除編號${sid}的資料嗎?`)) {
+        //     location.href = 'MR_memberData_delete.php?sid=' + sid;
+        // }
+>>>>>>> 53949e2569c532fdc1ca39b51537a4b77a57ab0a
     }
-    $("#deltet_no").click(function() {
-        $("#delete_confirm").css("display", "none");
+    $("#deltet_no").click(function(){
+        $("#delete_confirm").css("display","none");
     });
-
-    $("#deltet_yes").click(function() {
+    
+    $("#deltet_yes").click(function(){
         if (event.target == deltet_yes) {
             location.href = 'MR_memberData_delete.php?sid=' + delete_sid;
         }
@@ -407,18 +389,18 @@ $rows = $stmt->fetchAll();
             location.href = 'MR_memberData_delete.php';
         }
     });
-
+     
     function delete_multiple(event) {
         delete_eventTarget = event.target;
         ar = [];
         for (i = 0; i < 10; i++) {
-            let input = $('input[name="check[]"]').eq(i);
-            if (input.prop('checked')) {
+            let input=$('input[name="check[]"]').eq(i);
+            if (input.prop('checked')){
                 console.log(input.prop('value'))
                 ar.push(input.prop('value'));
             }
         }
-        $("#delete_confirm").css("display", "block");
+        $("#delete_confirm").css("display","block");
         let string1 = '';
         for (i = 0; i < ar.length; i++) {
             string1 += `${ar[i]}, `;
@@ -426,6 +408,7 @@ $rows = $stmt->fetchAll();
         string1 = string1.slice(0, string1.length - 2);
         $("#delete_info").text(`確定要刪除編號 ${string1} 的資料嗎?`);
     }
+
 </script>
 
 <?php include '../../pbook_index/__html_foot.php' ?>
