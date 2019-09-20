@@ -184,12 +184,24 @@ $per_page = 10;
 
         $("#page_nav").hide();
 
+        function render_book_row(i) {
+            let html = '';
+            html += '<td>' + books[i].sid + '</td>';
+            html += '<td>' + books[i].isbn + '</td>';
+            html += '<td>' + books[i].name + '</td>';
+            html += '<td>' + cate_row[books[i].categories] + '</td>';
+            html += '<td>' + books[i].author + '</td>';
+            html += '<td>' + cp_row[books[i].publishing] + '</td>';
+            html += '</tr>';
+            return html;
+        }
+
         function render_books(page) {
-            $('#book_list_checkAll').prop('checked',false);
+            $('#book_list_checkAll').prop('checked', false);
             let total_rows = books.length;
             let total_pages = Math.ceil(total_rows / per_page);
-            page=page<1?1:page;
-            page=page>total_pages?total_pages:page;
+            page = page < 1 ? 1 : page;
+            page = page > total_pages ? total_pages : page;
             if (total_pages > 1) {
                 $("#page_nav").show();
                 render_page_nav(page, total_pages);
@@ -197,7 +209,7 @@ $per_page = 10;
                 $("#page_nav").hide();
             }
             let html = '';
-            if(total_rows==0){
+            if (total_rows == 0) {
                 tbody.innerHTML = '<td style="text-align: center" colspan="7">無結果</td>';
                 return false;
             }
@@ -209,13 +221,7 @@ $per_page = 10;
                 } else {
                     html += '<td>' + '<input type="checkbox" onchange="addBook(' + i + ')">' + '</td>';
                 }
-                html += '<td>' + books[i].sid + '</td>';
-                html += '<td>' + books[i].isbn + '</td>';
-                html += '<td>' + books[i].name + '</td>';
-                html += '<td>' + cate_row[books[i].categories] + '</td>';
-                html += '<td>' + books[i].author + '</td>';
-                html += '<td>' + cp_row[books[i].publishing] + '</td>';
-                html += '</tr>';
+                html += render_book_row(i);
             }
             tbody.innerHTML = html;
             return false;
@@ -246,13 +252,11 @@ $per_page = 10;
                 </li>
             `;
             for (let i = p_start; i <= p_end; i++) {
-
                 html += `
                     <li class="page-item ${page == i ? 'active' : ''} ?>">
                         <a class="page-link" onclick="render_books(${i})">${i}</a>
                     </li>
                 `;
-
             }
             html += `
                 <li class="page-item">
@@ -262,23 +266,20 @@ $per_page = 10;
                     <a class="page-link" onclick="render_books(${total_pages})"><i class="fas fa-angle-double-right"></i></a>
                 </li>
             `;
-
-            document.querySelector('#page_nav ul').innerHTML = html;
-
+            $('#page_nav ul').html(html);
         }
 
-
-        let my_search = document.querySelector('#my_search');
+        let my_search = $('#my_search');
 
         function search() {
             //取得搜尋字串
-            let search_type = document.querySelector('#search_type').value;
+            let search_type = $('#search_type').val();
             //ajax
             $.ajax({
                 method: "GET",
                 url: "./book_searching_api.php", //進api
                 data: {
-                    search: my_search.value,
+                    search: my_search.val(),
                     search_type: search_type,
                 }
             })
@@ -290,27 +291,20 @@ $per_page = 10;
             return false;
         }
 
-        my_search.addEventListener('keyup', search);
+        my_search.on('keyup', search);
 
 
         function checkForm() {
-            let isPass = true;
-            let book_group = document.querySelector('#book_group');
-            book_group.value = JSON.stringify(sel_books_ar);
-
-            if (isPass) {
-                return true;
-            } else {
-                return false;
-            }
+            $('#book_group').val(JSON.stringify(sel_books_ar));
+            return true;
         }
 
 
         function checkAll(bool, check_area) {
-            if(bool) {
+            if (bool) {
                 $(check_area + ' input:not(:checked)').click();
-            }else{
-                $(check_area + ' input:checked').click()
+            } else {
+                $(check_area + ' input:checked').click();
             }
         }
 
@@ -318,18 +312,18 @@ $per_page = 10;
         function group_type_display() {
             let group_type = document.querySelector('#group_type');
             if (group_type.value == 0) {
-                checkAll(false,'#bg_checkboxes');
-                checkAll(false,'#books_list');
-                $('#book_list_checkAll').prop('checked',false);
+                checkAll(false, '#bg_checkboxes');
+                checkAll(false, '#books_list');
+                $('#book_list_checkAll').prop('checked', false);
                 $('#bg_checkboxes').hide();
                 $('#book_id_block').hide();
             } else if (group_type.value == 1) {
-                checkAll(false,'#books_list');
-                $('#book_list_checkAll').prop('checked',false);
+                checkAll(false, '#books_list');
+                $('#book_list_checkAll').prop('checked', false);
                 $('#bg_checkboxes').show();
                 $('#book_id_block').hide();
             } else {
-                checkAll(false,'#bg_checkboxes');
+                checkAll(false, '#bg_checkboxes');
                 $('#bg_checkboxes').hide();
                 $('#book_id_block').show();
             }
@@ -346,13 +340,7 @@ $per_page = 10;
                 let html = '';
                 html += '<tr id=book_sel_id_' + books[search_id].sid + '>';
                 html += '<td>' + '<input type="checkbox" onchange="unSelBook(' + books[search_id].sid + ')">' + '</td>';
-                html += '<td>' + books[search_id].sid + '</td>';
-                html += '<td>' + books[search_id].isbn + '</td>';
-                html += '<td>' + books[search_id].name + '</td>';
-                html += '<td>' + cate_row[books[search_id].categories] + '</td>';
-                html += '<td>' + books[search_id].author + '</td>';
-                html += '<td>' + books[search_id].publishing + '</td>';
-                html += '</tr>';
+                html += render_book_row(search_id);
                 sel_books.innerHTML += html;
             }
         }
@@ -366,12 +354,10 @@ $per_page = 10;
             sel_books_ar.splice(book_index, 1);
         }
 
-        let books_list = document.querySelector('#books_list');
-        books_list.addEventListener('click', event => {
+        $('#books_list').click(function () {
             if (event.path[1].id) {
                 let tr_id = event.path[1].id;
-                let check_box = document.querySelector('#' + tr_id + " input");
-                check_box.click();
+                $('#' + tr_id + " input").click();
             }
         })
 
