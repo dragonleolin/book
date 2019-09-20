@@ -15,11 +15,11 @@ $item_switch = [
     'MR_password' => '會員密碼',
     'MR_nickname' => '暱稱',
     'MR_email' => '電子信箱',
-    'MR_gender' => '性&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp別',
-    'MR_birthday' => '生&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp日',
-    'MR_mobile' => '手&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp機',
-    'MR_career' => '職&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp業',
-    'MR_address' => '地&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp址',
+    'MR_gender' => '性別',
+    'MR_birthday' => '生日',
+    'MR_mobile' => '手機',
+    'MR_career' => '職業',
+    'MR_address' => '地址',
     'MR_pic' => '頭像路徑',
     'MR_imageloactionX' => '頭像位置X',
     'MR_imageloactionY' => '頭像位置Y',
@@ -152,9 +152,6 @@ $rows = $stmt->fetchAll();
                         </ul>
                     </tr>
                     <tr>
-                        <!-- <th><a href="" id="all_check">
-                            <div style="width:15px;height:15px;border: 2px solid #bbb"></div>
-                            <i class="fas fa-angle-down" style="color:#bbb;margin-left:5px"></i></a></th> -->
                         <th>
                             <input type="checkbox" onclick="check_all(this,'c')" id="all_check">
                             <i class="fas fa-angle-down" style="color:#bbb;margin-left:5px"></i>
@@ -167,44 +164,8 @@ $rows = $stmt->fetchAll();
                         <th scope="col">刪除</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody id="tbody">
 
-                    <?php $sequence = 0;
-                    $sid = [];
-                    foreach ($rows as $a) : $sequence++ ?>
-                        <tr>
-                            <td class="dis_relative">
-                                <input type="checkbox" name="check[]" id="check<?= $sequence ?>" value="<?= $a['sid'] ?>">
-                                <!-- <i class="far fa-square dis_absolute check_icon1" ></i>
-                                <i class="far fa-check-square dis_absolute check_icon2"></i> -->
-                            </td>
-
-                            <td><?= $a['sid'] ?></td>
-                            <td><?= htmlentities($a['MR_number']) ?></td>
-                            <td><?php
-                                    if ($a['MR_personLevel'] > 0 && $a['MR_personLevel'] <= 5) {
-                                        echo htmlentities($a_level[$a['MR_personLevel']]);
-                                    } else {
-                                        echo '';
-                                    } ?></td>
-                            <td><?= htmlentities($a['MR_name']) ?></td>
-                            <td><?= htmlentities($a['MR_nickname']) ?></td>
-                            <td><?= htmlentities($a['MR_email']) ?></td>
-                            <td><?= (htmlentities($a['MR_gender'])) ? '男' : '女' ?></td>
-                            <td><?= htmlentities($a['MR_birthday']) ?></td>
-                            <td><?= htmlentities($a['MR_mobile']) ?></td>
-                            <td>
-                                <a href="" class="showDetails" data-toggle="modal" data-target="#exampleModalCenter" data-sid="<?= $a['sid'] ?>">
-                                    <i class="fas fa-plus-circle"></i>&nbsp&nbsp顯示
-                                </a>
-                            </td>
-                            <td><a href="MR_memberData_update.php?sid=<?= $a['sid'] ?>"><i class="fas fa-edit"></i></a></td>
-                            <td><a href="javascript:delete_one(<?= $a['sid'] ?>)"><i class="fas fa-trash-alt"></i></a></td>
-                            <input type="hidden" id=`tdsid<?= $a['sid'] ?>` value="<?= $a['sid'] ?>">
-
-                        </tr>
-                    <?php $sid[] = $a['sid'];
-                    endforeach ?>
                 </tbody>
             </table>
         </div>
@@ -279,11 +240,11 @@ $rows = $stmt->fetchAll();
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalCenterTitle">會員資料</h5>
                 <div class="nav-item" style="margin-left:50px">
-                    <button class="btn btn-outline-primary my-2 my-sm-0" id="MBList" >
+                    <button class="btn btn-outline-primary my-2 my-sm-0" id="MBList">
                         <i class="fas fa-arrow-circle-right"></i>
                         會員二手書清單
                     </button>
-                    <button class="btn btn-outline-primary my-2 my-sm-0"  id="BRList">
+                    <button class="btn btn-outline-primary my-2 my-sm-0" id="BRList">
                         <i class="fas fa-arrow-circle-right"></i>
                         追蹤書評人清單
                     </button>
@@ -304,10 +265,44 @@ $rows = $stmt->fetchAll();
 </div>
 
 <script>
+    // 生成頁面
+    let rows = <?= json_encode($rows, JSON_UNESCAPED_UNICODE) ?>;
+    console.log(rows);
+    dataList(rows);
+    function dataList(data) {
+        let new_tr = "";
+        data.forEach(function(element, index){
+            let tr = `
+            <tr>
+                <td>
+                     <input type="checkbox" name="check[]" id="check${index}" value="${element.sid}">
+                </td>
+                <td>${index+1}</td>
+                <td>${element['MR_number']}</td>
+                <td>${element['MR_personLevel']}</td>
+                <td>${element['MR_name']}</td>
+                <td>${element['MR_nickname']}</td>
+                <td>${element['MR_gender']}</td>
+                <td>${element['MR_birthday']}</td>
+                <td>${element['MR_mobile']}</td>
+                <td>
+                    <a href="" class="showDetails" data-toggle="modal" data-target="#exampleModalCenter" data-sid="${element.sid}">
+                    <i class="fas fa-plus-circle"></i>&nbsp&nbsp顯示
+                    </a>
+                </td>
+                <td><a href="MR_memberData_update.php?sid=${element.sid}"><i class="fas fa-edit"></i></a></td>
+                <td><a href="javascript:delete_one(${element.sid})"><i class="fas fa-trash-alt"></i></a></td>
+                <input type="hidden" id='tdsid${element.sid}' value="${element.sid}">
+            </tr>`;
+            new_tr += tr;
+        });
+        $("#tbody").append(new_tr);
+    };
+
     //顯示details
     let item_switch = <?= json_encode($item_switch, JSON_UNESCAPED_UNICODE) ?>;
     // let itemCount=Object.keys(item_switch).length;
-    
+
     $(".showDetails").click(function() {
         setTimeout(() => {
             let sid = $(this).data("sid");
@@ -326,9 +321,10 @@ $rows = $stmt->fetchAll();
     function showDetails(json) {
         $("#modal-body").empty();
         let data = json[0];
+        console.log(json)
         let contents = '';
-        $("#MBList").attr("data-num",data['MR_number']);
-        $("#BRList").attr("data-num",data['MR_number']);
+        $("#MBList").attr("data-num", data['MR_number']);
+        $("#BRList").attr("data-num", data['MR_number']);
         for (let item in data) {
             let value = data[item]
             let title = item_switch[item];
@@ -347,14 +343,14 @@ $rows = $stmt->fetchAll();
         $("#modal-body").append(contents);
     }
     // details二手書連結
-     $("#MBList").click(function(){
-        let num=$(this).data("num");
+    $("#MBList").click(function() {
+        let num = $(this).data("num");
         location.href = `MR_MBList.php?MR_number=${num}`;
-     });
-     $("#BRList").click(function(){
-        let num=$(this).data("num");
+    });
+    $("#BRList").click(function() {
+        let num = $(this).data("num");
         location.href = `MR_BRDataList.php?MR_number=${num}`;
-     });
+    });
 
 
     // 全選刪除
