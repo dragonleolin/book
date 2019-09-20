@@ -7456,11 +7456,8 @@ vendor/tracy/tracy/src/Tracy/Dumper/Dumper.php
 vendor/tracy/tracy/src/Tracy/Logger/FireLogger.php
 *.css
 vendor/tracy/tracy/src/Tracy/BlueScreen/BlueScreen.php
-*.php
 *.phtml
 *.yml
-*.js
-*.json
 *.lock
 *.md
 vendor/composer/LICENSE
