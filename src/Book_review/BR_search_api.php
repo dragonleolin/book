@@ -7,7 +7,7 @@ $search = $_POST['search'];
 //搜尋解析
 $search = $pdo->quote("%$search%");
 //搜尋規則
-$sql = "SELECT * FROM `br_create` WHERE (`BR_name` LIKE $search OR `sid` LIKE $search)";
+$sql = "SELECT * FROM `br_create` WHERE (`BR_name` LIKE $search OR `sid` LIKE $search OR `BR_job` LIKE $search)";
 
 //PDO
 $stmt = $pdo->prepare($sql);

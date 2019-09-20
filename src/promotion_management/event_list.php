@@ -13,6 +13,11 @@ $total_rows = $t_stmt->fetch(PDO::FETCH_NUM)[0];
 $per_page = 10;
 $total_pages = ceil($total_rows / $per_page);
 
+$sql = "UPDATE `pm_event` SET `status` = 1 WHERE `status`= 0 AND `start_time`<= CURRENT_DATE;
+UPDATE `pm_event` SET `status`= -1 WHERE `status`= 1 AND `end_time` < CURRENT_DATE;";
+$pdo->query($sql);
+
+
 if ($page < 1) {
     header('Location: event_list.php');
 }
