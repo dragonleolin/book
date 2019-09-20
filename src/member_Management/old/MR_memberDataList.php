@@ -363,18 +363,9 @@ $rows = $stmt->fetchAll();
     let delete_sid,delete_eventTarget;
     let ar = [];
     function delete_one(sid) {
-<<<<<<< HEAD
         $("#delete_confirm").css("display","block");
         $("#delete_info").text(`確定要刪除編號${sid}的資料嗎?`);
         delete_sid = sid;
-=======
-        delete_confirm.style.display = "block";
-        delete_info.innerHTML = `確定要刪除編號${sid}的資料嗎?`;
-        delete_sid = ids;
-        // if (confirm(`確定要刪除編號${sid}的資料嗎?`)) {
-        //     location.href = 'MR_memberData_delete.php?sid=' + sid;
-        // }
->>>>>>> 53949e2569c532fdc1ca39b51537a4b77a57ab0a
     }
     $("#deltet_no").click(function(){
         $("#delete_confirm").css("display","none");
