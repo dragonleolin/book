@@ -257,8 +257,8 @@ $rows = $stmt->fetchAll();
 
             </div>
             <div class="modal-footer">
+                <button type="button" class="btn btn-primary">修改資料</button>
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
             </div>
         </div>
     </div>
@@ -267,8 +267,9 @@ $rows = $stmt->fetchAll();
 <script>
     // 生成頁面
     let rows = <?= json_encode($rows, JSON_UNESCAPED_UNICODE) ?>;
-    console.log(rows);
     dataList(rows);
+
+
     function dataList(data) {
         let new_tr = "";
         data.forEach(function(element, index){
@@ -282,6 +283,7 @@ $rows = $stmt->fetchAll();
                 <td>${element['MR_personLevel']}</td>
                 <td>${element['MR_name']}</td>
                 <td>${element['MR_nickname']}</td>
+                <td>${element['MR_email']}</td>
                 <td>${element['MR_gender']}</td>
                 <td>${element['MR_birthday']}</td>
                 <td>${element['MR_mobile']}</td>
