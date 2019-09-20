@@ -192,4 +192,4 @@
             </div>
         </div>
     </aside>
-    <aside style="width:250px;height:100%"></aside>
+    <aside style="min-width:250px;height:80vh"></aside>
