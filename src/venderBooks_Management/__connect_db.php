@@ -2,6 +2,7 @@
 // $db_host = '127.0.0.1';
 $db_host = '192.168.27.186';
 $db_name = 'pbook';
+// $db_name = 'nana_vb_project';
 $db_user = 'Nana';
 $db_pass = 'addme';
 // $db_host = '192.168.0.108';
