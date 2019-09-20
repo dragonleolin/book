@@ -18,7 +18,16 @@ $search_type_const = [
 //搜尋解析
 $search = $pdo->quote("%$search%");
 //搜尋規則
-if ($search_type == 3) {
+if($search_type == 0){
+    $ac_sql = "SELECT b.* FROM `vb_books` b
+    JOIN `vb_categories` cate ON cate.`sid` = b.`categories`
+    JOIN `cp_data_list` cp ON cp.`sid` = b.`publishing`
+    WHERE `isbn` LIKE $search
+    OR b.`name` LIKE $search
+    OR cate.`name` LIKE $search
+    OR `author` LIKE $search
+    OR cp.`cp_name` LIKE $search";
+}elseif ($search_type == 3) {
     $ac_sql = "SELECT b.* FROM `vb_books` b 
     JOIN `vb_categories` c ON c.`sid` = b.`categories` 
     WHERE (c.`name` LIKE $search)";

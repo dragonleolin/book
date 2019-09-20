@@ -89,6 +89,7 @@ foreach ($cates as $r) {
                 <thead>
                     <tr>
                         <th scope="col"><input type="checkbox" id="all_check" value="all_check" name="all_check" onclick="check_all(this,'check[]')"></th>
+<<<<<<< HEAD
                         <th scope="col">SID</th>
                         <th scope="col">ISBN</th>
                         <th scope="col">書籍名稱</th>
@@ -101,6 +102,38 @@ foreach ($cates as $r) {
                         <th scope="col">定價</th>
                         <th scope="col">頁數</th>
                         <th scope="col">庫存</th>
+=======
+                        <th scope="col">No.</th>
+                        <th scope="col">
+                            <i class="fas fa-sort-amount-down-alt" style="<?= ($col == 'sid' &&  $ord == 'ASC') ? 'display:inline-block;color:#ffc408' : 'display:none;' ?>"></i>
+                            <i class="fas fa-sort-amount-down" style="<?= ($col == 'sid' && $ord == 'DESC') ? 'display:inline-block;color:#ffc408' : 'display:none;' ?>"></i>
+                            SID</th>
+                        <th scope="col">ISBN</th>
+                        <th scope="col">書籍名稱</th>
+                        <th scope="col">詳細資料</th>
+                        <th scope="col">
+                            <i class="fas fa-sort-amount-down-alt" style="<?= ($col == 'categories' &&  $ord == 'ASC') ? 'display:inline-block;;color:#ffc408' : 'display:none;' ?>"></i>
+                            <i class="fas fa-sort-amount-down" style="<?= ($col == 'categories' && $ord == 'DESC') ? 'display:inline-block;color:#ffc408' : 'display:none;' ?>"></i>
+                            分類</th>
+                        <th scope="col">作者</th>
+                        <th scope="col">
+                            <i class="fas fa-sort-amount-down-alt" style="<?= ($col == 'publishing' &&  $ord == 'ASC') ? 'display:inline-block;color:#ffc408' : 'display:none;' ?>"></i>
+                            <i class="fas fa-sort-amount-down" style="<?= ($col == 'publishing' && $ord == 'DESC') ? 'display:inline-block;color:#ffc408' : 'display:none;' ?>"></i>
+                            出版社</th>
+                        <th scope="col">
+                            <i class="fas fa-sort-amount-down-alt" style="<?= ($col == 'publish_date' &&  $ord == 'ASC') ? 'display:inline-block;color:#ffc408' : 'display:none;' ?>"></i>
+                            <i class="fas fa-sort-amount-down" style="<?= ($col == 'publish_date' && $ord == 'DESC') ? 'display:inline-block;color:#ffc408' : 'display:none;' ?>"></i>
+                            出版日期</th>
+                        <th scope="col">
+                            <i class="fas fa-sort-amount-down-alt" style="<?= ($col == 'fixed_price' &&  $ord == 'ASC') ? 'display:inline-block;color:#ffc408' : 'display:none;' ?>"></i>
+                            <i class="fas fa-sort-amount-down" style="<?= ($col == 'fixed_price' && $ord == 'DESC') ? 'display:inline-block;color:#ffc408' : 'display:none;' ?>"></i>
+                            定價</th>
+                        <th scope="col">狀態</th>
+                        <th scope="col">
+                            <i class="fas fa-sort-amount-down-alt" style="<?= ($col == 'stock' &&  $ord == 'ASC') ? 'display:inline-block;color:#ffc408' : 'display:none;' ?>"></i>
+                            <i class="fas fa-sort-amount-down" style="<?= ($col == 'stock' && $ord == 'DESC') ? 'display:inline-block;color:#ffc408' : 'display:none;' ?>"></i>
+                            庫存</th>
+>>>>>>> 6dee688bfd23993737a985c4f5538930fce72557
                         <th scope="col">修改</th>
                         <th scope="col">刪除</th>
                     </tr>
@@ -122,21 +155,39 @@ foreach ($cates as $r) {
                                     顯示
                                 </button>
                                 <div class="modal fade" id="<?= 'book' . $row[$i]['sid']; ?>" tabindex="-1" role="dialog" aria-labelledby="<?= 'book' . $row[$i]['sid']; ?>Title" aria-hidden="true">
-                                    <div class="modal-dialog modal-dialog-centered" role="document">
+                                    <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
                                         <div class="modal-content">
                                             <div class="modal-header">
                                                 <h5 class="modal-title" id="<?= 'book' . $row[$i]['sid']; ?>Title"><?= $row[$i]['name']; ?></h5>
-
                                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                     <span aria-hidden="true">&times;</span>
                                                 </button>
                                             </div>
-                                            <div class="modal-body" style="width:450px;width:450px;margin:0 auto">
-                                                <img style="object-fit: contain;width: 100%;height: 100%;" src="<?= 'vb_images/' . $row[$i]['pic']; ?>" alt="">
+                                            <div class="d-flex" style="padding:20px">
+                                                <div style="width:350px">
+                                                    <img style="object-fit: contain;width: 100%;height: 100%;" src="<?= 'vb_images/' . $row[$i]['pic']; ?>" alt="">
+                                                </div>
+                                                <div style="text-align:left;width:300px">
+                                                    <h5>・ISBN：<?= $row[$i]['isbn']; ?></h5>
+                                                    <h5>・分類：<?= $cate_dict[$row[$i]['categories']]; ?></h5>
+                                                    <h5>・作者：<?= $row[$i]['author']; ?></h5>
+                                                    <h5>・出版社：<?= $row[$i]['publishing']; ?></h5>
+                                                    <h5>・出版日期：<?= $row[$i]['publish_date']; ?></h5>
+                                                    <h5>・版次：<?= $row[$i]['version']; ?></h5>
+                                                    <h5>・定價：NT<?= $row[$i]['fixed_price']; ?></h5>
+                                                    <h5>・頁數：<?= $row[$i]['page']; ?>頁</h5>
+                                                </div>
+                                                <div style="text-align:left;width:400px;z-index:999">
+                                                    <h5>書籍簡介：</h5>
+                                                    <h5><?= $row[$i]['introduction']; ?></h5>
+                                                </div>
+                                                <div style="width:130px;height:130px;position:absolute;bottom:15%;right:3%;">
+                                                    <img style="object-fit: contain;width: 100%;height: 100%;" src="../../images/品書印章.png" alt="">
+                                                </div>
                                             </div>
                                             <div class="modal-footer">
                                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
-                                                <button type="button" class="btn btn-primary" onclick="change_img(<?= $row[$i]['sid'] ?>)">修改圖片</button>
+                                                <button type="button" class="btn btn-primary" onclick="change_data(<?= $row[$i]['sid'] ?>)">修改資料</button>
                                             </div>
                                         </div>
                                     </div>
@@ -146,9 +197,8 @@ foreach ($cates as $r) {
                             <td style="vertical-align:middle;"><?= $row[$i]['author']; ?></td>
                             <td style="vertical-align:middle;"><?= $row[$i]['publishing']; ?></td>
                             <td style="vertical-align:middle;"><?= $row[$i]['publish_date']; ?></td>
-                            <td style="vertical-align:middle;"><?= $row[$i]['version']; ?></td>
                             <td style="vertical-align:middle;"><?= $row[$i]['fixed_price']; ?></td>
-                            <td style="vertical-align:middle;"><?= $row[$i]['page']; ?></td>
+                            <td style="vertical-align:middle;"><?= $row[$i]['status']; ?></td>
                             <td style="vertical-align:middle;"><?= $row[$i]['stock']; ?></td>
                             <td style="vertical-align:middle;"><a href="vb_data_update.php?sid=<?= $row[$i]['sid'] ?>"><i class="fas fa-edit"></i></a></td>
                             <td style="vertical-align:middle;"><a href="#" onclick="delete_one(<?= $row[$i]['sid'] ?>)" id="btn_delete"><i class="fas fa-trash-alt"></i></a></td>
@@ -158,6 +208,101 @@ foreach ($cates as $r) {
             </table>
         </div>
 
+<<<<<<< HEAD
+=======
+        <!-- 我是分頁按鈕列 請自取並調整頁面擺放位置 -->
+        <nav aria-label="Page navigation example" class="page-position">
+            <ul class="pagination">
+                <li class="page-item">
+                    <a class="page-link" href="?<?php
+                                                $params['page'] = 1;
+                                                $params['col'] = isset($_GET['col']) ? $_GET['col'] : '';
+                                                $params['ord'] = isset($_GET['ord']) ? $_GET['ord'] : '';
+                                                echo http_build_query($params) ?>" aria-label="Next">
+                        <i class="fas fa-angle-double-left"></i>
+                    </a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="?<?php
+                                                $params['page'] = $page - 1;
+                                                $params['col'] = isset($_GET['col']) ? $_GET['col'] : '';
+                                                $params['ord'] = isset($_GET['ord']) ? $_GET['ord'] : '';
+                                                echo http_build_query($params) ?>"><i class="fas fa-angle-left"></i></a>
+                </li>
+                <?php
+                if ($totalPages <= 5) {
+                    $p_start = 1;
+                    $p_end = $totalPages;
+                } else if (($page - 2) < 1) {
+                    $p_start = 1;
+                    $p_end = 5;
+                } else if (($page + 2) > $totalPages) {
+                    $p_start = $totalPages - 4;
+                    $p_end = $totalPages;
+                } else {
+                    $p_start = $page - 2;
+                    $p_end = $page + 2;
+                }
+                for (
+                    $i = $p_start;
+                    $i <= $p_end;
+                    $i++
+                ) : $params['page'] = $i;
+                    // if ($i < 1 or $i > $totalPages) {
+                    //     continue;
+                    // }
+                    ?>
+                    <li class="page-item <?= $page == $i ? 'active' : '' ?>">
+                        <a class="page-link" href="?<?php
+                                                        $params['col'] = isset($_GET['col']) ? $_GET['col'] : '';
+                                                        $params['ord'] = isset($_GET['ord']) ? $_GET['ord'] : '';
+                                                        echo http_build_query($params) ?>"><?= $i < 10 ? '0' . $i : $i ?></a>
+                    </li>
+                <?php endfor; ?>
+                <li class="page-item">
+                    <a class="page-link" href="?<?php
+                                                $params['page'] = $page + 1;
+                                                $params['col'] = isset($_GET['col']) ? $_GET['col'] : '';
+                                                $params['ord'] = isset($_GET['ord']) ? $_GET['ord'] : '';
+                                                echo http_build_query($params) ?>"><i class="fas fa-angle-right"></i></a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="?<?php
+                                                $params['page'] = $totalPages;
+                                                $params['col'] = isset($_GET['col']) ? $_GET['col'] : '';
+                                                $params['ord'] = isset($_GET['ord']) ? $_GET['ord'] : '';
+                                                echo http_build_query($params) ?>"><i class="fas fa-angle-double-right"></i></a>
+                </li>
+            </ul>
+        </nav>
+
+        <nav class="navbar justify-content-between" style="padding: 0px;width: 20vw;margin:10px 0px -10px 0px">
+            <ul class="nav justify-content-between">
+                <li class="nav-item">
+                    <div id="btnGroupDrop1" class="position-relative" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <button type="submit" class="btn btn-outline-dark" onclick="vb_data_delete('check[]')">
+                            <i class="fas fa-trash-alt"></i>&nbsp;&nbsp;&nbsp;批次刪除
+                        </button>
+                    </div>
+                </li>
+                <!-- <li class="nav-item">
+                    <div id="btnGroupDrop1" class="position-relative" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <button type="button" class="btn btn-outline-dark" onclick="vb_data_update('check[]')">
+                            <i class="fas fa-edit"></i>&nbsp;&nbsp;&nbsp;修改
+                        </button>
+                    </div>
+                </li> -->
+                <!-- <li class="nav-item">
+                    <div id="btnGroupDrop1" class="position-relative" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <button type="submit" class="btn btn-outline-dark">
+                            <i class="fas fa-copy"></i>&nbsp;&nbsp;&nbsp;複製
+                        </button>
+                    </div>
+                </li> -->
+            </ul>
+        </nav>
+
+>>>>>>> 6dee688bfd23993737a985c4f5538930fce72557
     </div>
 </section>
 </div>
@@ -191,15 +336,18 @@ foreach ($cates as $r) {
 
 
     let b;
-
-    function change_img(sid) {
+    function change_data(sid) {
         b = sid;
         location = 'vb_data_update.php?sid=' + b;
     }
 
+    function next_data(i){
+        i++;
+        return i;
+    }
+
 
     let a;
-
     function delete_one(sid) {
         a = sid;
         let my_delete = document.querySelector('#my_delete');

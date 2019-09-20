@@ -52,14 +52,25 @@ if (empty($row)) {
         left: 20%;
         display: none;
     }
+    .btn_zoomIn {
+        position: absolute;
+        bottom: 40px;
+        right: 0;
+    }
+
+    .btn_zoomOut {
+        position: absolute;
+        bottom: 10px;
+        right: 0;
+    }
 </style>
 <?php include '../../pbook_index/__html_body.php' ?>
 <?php include '../../pbook_index/__navbar.php' ?>
 <div>
 
 </div>
-<section class="p-4 container-fluid dis_relative">
-    <nav class="navbar justify-content-between" style="padding: 0px;width: 80vw; margin-left:25px;">
+<section class="p-4 container dis_relative" >
+    <nav class="navbar justify-content-between" style="padding: 0px;width: 83vw; margin-left:25px;">
         <div class="d-flex">
             <div>
                 <h4>修改會員資料</h4>
@@ -190,11 +201,19 @@ if (empty($row)) {
                     <div class="">
                         <label for="pic">會員頭像</label>
                         <div class="d-flex ">
-                            <figure id="demo-fig">
-                                <img src="./MR_uploads_img/<?= $row['MR_pic'] ?>" alt="" id="demo" style="transform: translate3d(
+                            <div class="dis_relative">
+                                <figure id="demo-fig">
+
+                                    <img src="./MR_uploads_img/<?= $row['MR_pic'] ?>" alt="" id="demo" style="transform: translate3d(
                                     <?= $row['MR_imageloactionX'] ?>px,
                                     <?= $row['MR_imageloactionY'] ?>px, 0)">
-                            </figure>
+
+                                    <button type="button" class="btn btn_zoomIn " style="padding:3px;" onclick="imgZoomIn()">
+                                        <i class="fas fa-search-plus"></i></button>
+                                    <button type="button" class="btn btn_zoomOut " style="padding:3px;" onclick="imgZoomOut()">
+                                        <i class="fas fa-search-minus"></i></button>
+                                </figure>
+                            </div>
                             <input type="file" class="form-control-file" id="pic" name="pic">
                             <input type="hidden" class="form-control-file" id="pic1" name="pic1" value="<?= $row['MR_pic'] ?>">
                             <input type="hidden" name="imageLocationX" id="imageLocationX" value="0">
@@ -328,6 +347,36 @@ if (empty($row)) {
         initialX = currentX;
         initialY = currentY;
         active = false;
+    }
+
+
+    //圖片遠近
+    let times = 1;
+    let one = 100;
+    let result = '';
+
+    function imgZoomIn() {
+        if (times > 0) {
+            one += 25;
+            demo.style.width = demo.style.height = one + result + '%';
+
+        } else {
+            one -= 25;
+            demo.style.width = demo.style.height = one + result + '%';
+        }
+        console.log(`${result+one}+'%'`);
+    }
+
+    function imgZoomOut() {
+        console.log(one);
+        if (times < 0) {
+            one += 25;
+            demo.style.width = demo.style.height = one + result + '%';
+        } else {
+            one -= 25;
+            demo.style.width = demo.style.height = one + result + '%';
+        };
+        console.log(`${one+result}+'%'`);
     }
 
 

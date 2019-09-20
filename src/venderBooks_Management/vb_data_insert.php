@@ -1,5 +1,5 @@
 <?php
-require __DIR__ . '/__admin_required.php';
+// require __DIR__ . '/__admin_required.php';
 require __DIR__ . '/__connect_db.php';
 $page_name = 'vb_data_insert';
 $page_title = '新增出版社書籍';
@@ -180,6 +180,7 @@ $totalPages = ceil($totalRows / $per_page); //取得總頁數
     <div class="success update card" style="box-shadow:0px 0px 10px red">
         <div class="success card-body">
             <label class="success_text" style="background:transparent;color:rgb(228, 63, 63)">新增失敗,不可以偷偷來喔!</label>
+            <div><img class="success_img" src="../../images/icon_false.svg"></div>
         </div>
     </div>
 </div>

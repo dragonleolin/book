@@ -21,6 +21,10 @@ $cp_data_list = $pdo->query($sql)->fetchAll(PDO::FETCH_UNIQUE | PDO::FETCH_COLUM
             color: red;
         }
 
+        .inputFalse {
+            border: 1px solid red;
+        }
+
     </style>
 
     <div class="container pt-5">
@@ -212,57 +216,53 @@ $cp_data_list = $pdo->query($sql)->fetchAll(PDO::FETCH_UNIQUE | PDO::FETCH_COLUM
             },
         ];
 
-        for (let s in required_fields) {
-            item = required_fields[s];
-            item.el = document.querySelector('#' + item.id);
-            item.infoEl = item.el.closest('.form-group').querySelector('small');
-        }
 
         function checkForm() {
             let isPass = true;
-            submit_btn.style.display = 'none';
+            $("#submit_btn").hide();
 
             for (let s in required_fields) {
-
                 //先重置
-                item = required_fields[s];
-                item.el.style.border = '1px solid #ccc';
-                item.infoEl.innerText = '';
-
+                let item = $('#'+required_fields[s].id);
+                item.removeClass("inputFalse");
+                item.siblings('small').text("");
                 //再檢查
-                if (!item.pattern.test(item.el.value)) {
-                    item.el.style.border = '1px solid red';
-                    item.infoEl.innerText = item.info;
+                if (!required_fields[s].pattern.test(item.val())) {
+                    item.addClass("inputFalse");
+                    item.siblings('small').text(required_fields[s].info);
                     isPass = false;
                 }
             }
 
 
             //檢查會員等級選項
-
-            let user_level_help = document.querySelector('#user_level_row small');
-            let user_level_type = document.querySelector('#user_level_type');
-            let user_level_checkboxes = document.querySelectorAll('#user_level_row input');
-            let user_level_ischeck = 0;
-            user_level_help.innerHTML = '';
-            for (let i = 0; i < 5; i++) {
-                if (user_level_checkboxes[i].checked == true) {
-                    user_level_ischeck++;
-                }
-            }
-            if (user_level_type.value == '1' && user_level_ischeck == 0) {
+            $('#user_level_row small').text('');
+            if ($('#user_level_type').val() == '1' && $('#user_level_row input:checked').length == 0) {
                 isPass = false;
-                user_level_help.innerHTML = '請勾選會員等級需求';
+                $('#user_level_row small').text('請勾選會員等級需求');
             }
+
 
             if (isPass) {
                 return true;
             } else {
-                submit_btn.style.display = 'inline-block';
+                $("#submit_btn").show();
                 return false;
             }
         }
 
+        //顯示會員等級選項
+        function display_user_level_row() {
+            if ($('#user_level_type').val() == '1') {
+                $('#user_level_row').show();
+            } else {
+                $('#user_level_row input').prop("checked", false);
+                $('#user_level_row').hide();
+            }
+        }
+
+
+        //自動輸入當天日期
         function formatDate(date) {
             let d = new Date(date),
                 month = '' + (d.getMonth() + 1),
@@ -274,48 +274,24 @@ $cp_data_list = $pdo->query($sql)->fetchAll(PDO::FETCH_UNIQUE | PDO::FETCH_COLUM
 
             return [year, month, day].join('-');
         }
-
-        //顯示會員等級選項
-        function display_user_level_row() {
-            let user_level_type = document.querySelector('#user_level_type');
-            let user_level_row = document.querySelector('#user_level_row');
-            if (user_level_type.value == '1') {
-                user_level_row.style.display = 'flex';
-            } else {
-                let user_level_checkboxes = document.querySelectorAll('#user_level_row input')
-                for (let i = 0; i < 5; i++) {
-                    user_level_checkboxes[i].checked = false;
-                }
-                user_level_row.style.display = 'none';
-            }
-        }
-
-
-        //自動輸入當天日期
-        document.querySelector('#event_start_time').value = formatDate(new Date());
-        document.querySelector('#event_end_time').value = formatDate(new Date());
+        $('#event_start_time').val(formatDate(new Date()));
+        $('#event_end_time').val(formatDate(new Date()));
 
 
         //顯示廠商選項
         function cp_group_display() {
-            let cp_group_set = document.querySelector('#cp_group_set');
-            let cp_checkboxes_row = document.querySelector('#cp_checkboxes_row');
-            if (cp_group_set.value == 1) {
-                cp_checkboxes_row.style.display = 'flex';
+            if ($('#cp_group_set').val() == 1) {
+                $('#cp_checkboxes_row').show();
             } else {
                 checkAll(false);
-                cp_checkboxes_row.style.display = 'none';
+                $('#cp_checkboxes_row').hide();
             }
         }
 
-        //自動勾選
+        //自動勾選廠商
         function checkAll(bool) {
-            let cp_checkboxes = document.querySelectorAll('#cp_checkboxes_row input');
-            for (let i = 0; i < cp_checkboxes.length; i++) {
-                cp_checkboxes[i].checked = bool;
-            }
+            $('#cp_checkboxes_row input').prop("checked",bool);
         }
-
 
     </script>
 
