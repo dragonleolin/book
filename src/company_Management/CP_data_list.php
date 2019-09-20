@@ -47,6 +47,7 @@ foreach ($rows as $r) {
 }
 ?>
 <?php include __DIR__ . '/../../pbook_index/__html_head.php' ?>
+<link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
 <style>
     body {
         background: url(../../images/bg.png) repeat center top;
@@ -82,13 +83,24 @@ foreach ($rows as $r) {
     }
 </style>
 <?php include __DIR__ . '/../../pbook_index/__html_body.php' ?>
-<div style="z-index:999;width:100vw;height:100vh;display:none;background:rgba(0,0,0,0.2)" id="delete_confirm" class="position-absolute">
+<div style="z-index:999;width:100vw;height:100vh;display:none;background:rgba(0,0,0,0.2)" class="position-absolute delete_confirm">
     <div class="delete update card">
         <div class="delete card-body">
             <label class="delete_text">您確認要刪除資料嗎?</label>
             <div>
-                <button type="button" class="delete btn btn-danger" onclick="delete_yes()">確認</button>
-                <button type="button" class="delete btn btn-warning" onclick="delete_no()">取消</button>
+                <button type="button" class="delete btn btn-danger" id="yes1">確認</button>
+                <button type="button" class="delete btn btn-warning no">取消</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div style="z-index:999;width:100vw;height:100vh;display:none;background:rgba(0,0,0,0.2)" class="position-absolute delete_confirm">
+    <div class="delete update card">
+        <div class="delete card-body">
+            <label class="delete_text">您確認要刪除資料嗎?</label>
+            <div>
+                <button type="button" class="delete btn btn-danger" id="yes2">確認</button>
+                <button type="button" class="delete btn btn-warning no">取消</button>
             </div>
         </div>
     </div>
@@ -117,12 +129,12 @@ foreach ($rows as $r) {
                             <i class="fas fa-sort"></i>&nbsp;&nbsp;&nbsp;sid
                         </button>
                         <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-                            <a class="dropdown-item" href="#" onclick="goto_orderby('<?php $params['col'] = 'sid';
+                            <a class="dropdown-item goto_orderby" href="#" data-order="<?php $params['col'] = 'sid';
                                                                                         $params['ord'] = 'ASC';
-                                                                                        echo http_build_query($params) ?>')">小→大</a>
-                            <a class="dropdown-item" href="#" onclick="goto_orderby('<?php $params['col'] = 'sid';
+                                                                                        echo http_build_query($params) ?>">小→大</a>
+                            <a class="dropdown-item goto_orderby" href="#" data-order="<?php $params['col'] = 'sid';
                                                                                         $params['ord'] = 'DESC';
-                                                                                        echo http_build_query($params) ?>')">大→小</a>
+                                                                                        echo http_build_query($params) ?>">大→小</a>
                         </div>
                     </div>
                 </li>
@@ -132,12 +144,12 @@ foreach ($rows as $r) {
                             <i class="fas fa-sort"></i>&nbsp;&nbsp;&nbsp;出版社名
                         </button>
                         <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-                            <a class="dropdown-item" href="#" onclick="goto_orderby('<?php $params['col'] = 'cp_name';
+                            <a class="dropdown-item goto_orderby" href="#" data-order="<?php $params['col'] = 'cp_name';
                                                                                         $params['ord'] = 'ASC';
-                                                                                        echo http_build_query($params) ?>')">小→大</a>
-                            <a class="dropdown-item" href="#" onclick="goto_orderby('<?php $params['col'] = 'cp_name';
+                                                                                        echo http_build_query($params) ?>">小→大</a>
+                            <a class="dropdown-item goto_orderby" href="#" data-order="<?php $params['col'] = 'cp_name';
                                                                                         $params['ord'] = 'DESC';
-                                                                                        echo http_build_query($params) ?>')">大→小</a>
+                                                                                        echo http_build_query($params) ?>">大→小</a>
                         </div>
                     </div>
                 </li>
@@ -147,12 +159,12 @@ foreach ($rows as $r) {
                             <i class="fas fa-sort"></i>&nbsp;&nbsp;&nbsp;註冊日期
                         </button>
                         <div class="dropdown-menu" aria-labelledby="">
-                            <a class="dropdown-item" href="#" onclick="goto_orderby('<?php $params['col'] = 'cp_created_date';
+                            <a class="dropdown-item goto_orderby" href="#" data-order="<?php $params['col'] = 'cp_created_date';
                                                                                         $params['ord'] = 'ASC';
-                                                                                        echo http_build_query($params) ?>')">小→大</a>
-                            <a class="dropdown-item" href="#" onclick="goto_orderby('<?php $params['col'] = 'cp_created_date';
+                                                                                        echo http_build_query($params) ?>">小→大</a>
+                            <a class="dropdown-item goto_orderby" href="#" data-order="<?php $params['col'] = 'cp_created_date';
                                                                                         $params['ord'] = 'DESC';
-                                                                                        echo http_build_query($params) ?>')">大→小</a>
+                                                                                        echo http_build_query($params) ?>">大→小</a>
                         </div>
                     </div>
                 </li>
@@ -165,7 +177,7 @@ foreach ($rows as $r) {
                     </div>
                 </li>
                 <li class="nav-item" style="margin: 0px 10px">
-                    <button class="btn btn-outline-primary my-2 my-sm-0" type="submit" onclick="data_insert()">
+                    <button class="btn btn-outline-primary my-2 my-sm-0" type="submit" id="data_insert">
                         <i class="fas fa-plus-circle"></i>
                         新增出版社
                     </button>
@@ -183,96 +195,107 @@ foreach ($rows as $r) {
 
         <!-- 每個人填資料的區塊 -->
         <div style="margin-top: 1rem">
-            <table class="table table-striped table-bordered" style="width: 83vw ; text-align: center; font-size:16px; max-height:75vh">
-                <thead>
-                    <tr>
-                        <th scope="col">
-                        <input type="checkbox" id="all_check" value="all_check" name="all_check" onclick="check_all(this,'check[]')">
-                        </th>
-                        <th scope="col">
-                            <i class="fas fa-sort-amount-down-alt" style="<?= ($col == 'sid' &&  $ord == 'ASC') ? 'display:inline-block;color:#ffc408' : 'display:none;' ?>"></i>
-                            <i class="fas fa-sort-amount-down" style="<?= ($col == 'sid' && $ord == 'DESC') ? 'display:inline-block;color:#ffc408' : 'display:none;' ?>"></i>
-                            #
-                        </th>
-                        <th scope="col">
-                            <i class="fas fa-sort-amount-down-alt" style="<?= ($col == 'cp_name' &&  $ord == 'ASC') ? 'display:inline-block;color:#ffc408' : 'display:none;' ?>"></i>
-                            <i class="fas fa-sort-amount-down" style="<?= ($col == 'cp_name' && $ord == 'DESC') ? 'display:inline-block;color:#ffc408' : 'display:none;' ?>"></i>
-                            出版社名
-                        </th>
-                        <th scope="col">聯絡人</th>
-                        <th scope="col">電話</th>
-                        <th scope="col">電子郵件</th>
-                        <th scope="col">地址</th>
-                        <th scope="col">統一編號</th>
-                        <th scope="col">
-                            <i class="fas fa-sort-amount-down-alt" style="<?= ($col == 'cp_stock' &&  $ord == 'ASC') ? 'display:inline-block;color:#ffc408' : 'display:none;' ?>"></i>
-                            <i class="fas fa-sort-amount-down" style="<?= ($col == 'cp_stock' && $ord == 'DESC') ? 'display:inline-block;color:#ffc408' : 'display:none;' ?>"></i>
-                            庫存</th>
-                        <th scope="col">帳號</th>
-                        <th scope="col">密碼</th>
-                        <th scope="col">
-                            <i class="fas fa-sort-amount-down-alt" style="<?= ($col == 'cp_created_date' &&  $ord == 'ASC') ? 'display:inline-block;color:#ffc408' : 'display:none;' ?>"></i>
-                            <i class="fas fa-sort-amount-down" style="<?= ($col == 'cp_created_date' && $ord == 'DESC') ? 'display:inline-block;color:#ffc408' : 'display:none;' ?>"></i>
-                            註冊日期</th>
-                        <th scope="col">logo</th>
-                        <th scope="col">修改</th>
-                        <th scope="col">刪除</th>
-                    </tr>
-                </thead>
-                <tbody class="vertical">
-                    <?php foreach ($rows as $r) : ?>
+            <form method="post" id="delete_form" enctype="multipart/form-data" action="">
+                <table class="table table-striped table-bordered" style="width: 83vw ; text-align: center; font-size:16px; max-height:75vh">
+                    <thead>
                         <tr>
-                            <td><input type="checkbox" name="check[]" id="check<?= $r['sid'] ?>" value="<?= $r['sid'] ?>"></td>
-                            <td><?= $r['sid'] ?></td>
-                            <td><?= htmlentities($r['cp_name']) ?></td>
-                            <td><?= htmlentities($r['cp_contact_p']) ?></td>
-                            <td><?= htmlentities($r['cp_phone']) ?></td>
-                            <td><?= htmlentities($r['cp_email']) ?></td>
-                            <td><?= htmlentities($r['cp_address']) ?></td>
-                            <td><?= htmlentities($r['cp_tax_id']) ?></td>
-                            <td style="width:3vw"><?= htmlentities($stock[$r['sid']]["SUM(`vb_books`.`stock`)"]) ?></td>
-                            <td><?= htmlentities($r['cp_account']) ?></td>
-                            <td><?= htmlentities($r['cp_password']) ?></td>
-                            <td><?= htmlentities($r['cp_created_date']) ?></td>
-                            <td style="width:5.3vw">
-                                <button type="button" class="btn btn-outline-primary" data-toggle="modal" data-target="#<?= 'logo' .  $r['sid']; ?>">
-                                    <i class="fas fa-plus-circle"></i>
-                                    顯示
-                                </button>
-                                <div class="modal fade" id="<?= 'logo' . $r['sid']; ?>" tabindex="-1" role="dialog" aria-labelledby="<?= 'logo' .  $r['sid']; ?>Title" aria-hidden="true">
-                                    <div class="modal-dialog modal-dialog-centered" role="document">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h5 class="modal-title" id="<?= $r['cp_name']; ?>Title"><?= $r['cp_name']; ?></h5>
-                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                    <span aria-hidden="true">&times;</span>
-                                                </button>
-                                            </div>
-                                            <div class="modal-body" style="width:450px;width:450px;margin:0 auto">
-                                                <img style="object-fit: contain;width: 100%;height: 100%;" src="<?= 'logo/' . $r['cp_logo']; ?>" alt="">
+                            <th scope="col">
+                                <input type="checkbox" id="checkAll" value="checkAll" name="checkAll">
+                            </th>
+                            <th scope="col">
+                                <i class="fas fa-sort-amount-down-alt" style="<?= ($col == 'sid' &&  $ord == 'ASC') ? 'display:inline-block;color:#ffc408' : 'display:none;' ?>"></i>
+                                <i class="fas fa-sort-amount-down" style="<?= ($col == 'sid' && $ord == 'DESC') ? 'display:inline-block;color:#ffc408' : 'display:none;' ?>"></i>
+                                #
+                            </th>
+                            <th scope="col">
+                                <i class="fas fa-sort-amount-down-alt" style="<?= ($col == 'cp_name' &&  $ord == 'ASC') ? 'display:inline-block;color:#ffc408' : 'display:none;' ?>"></i>
+                                <i class="fas fa-sort-amount-down" style="<?= ($col == 'cp_name' && $ord == 'DESC') ? 'display:inline-block;color:#ffc408' : 'display:none;' ?>"></i>
+                                出版社名
+                            </th>
+                            <th scope="col">聯絡人</th>
+                            <th scope="col">電話</th>
+                            <th scope="col">電子郵件</th>
+                            <th scope="col">地址</th>
+                            <th scope="col">統一編號</th>
+                            <th scope="col">
+                                <i class="fas fa-sort-amount-down-alt" style="<?= ($col == 'cp_stock' &&  $ord == 'ASC') ? 'display:inline-block;color:#ffc408' : 'display:none;' ?>"></i>
+                                <i class="fas fa-sort-amount-down" style="<?= ($col == 'cp_stock' && $ord == 'DESC') ? 'display:inline-block;color:#ffc408' : 'display:none;' ?>"></i>
+                                庫存</th>
+                            <th scope="col">帳號</th>
+                            <th scope="col">密碼</th>
+                            <th scope="col">
+                                <i class="fas fa-sort-amount-down-alt" style="<?= ($col == 'cp_created_date' &&  $ord == 'ASC') ? 'display:inline-block;color:#ffc408' : 'display:none;' ?>"></i>
+                                <i class="fas fa-sort-amount-down" style="<?= ($col == 'cp_created_date' && $ord == 'DESC') ? 'display:inline-block;color:#ffc408' : 'display:none;' ?>"></i>
+                                註冊日期</th>
+                            <th scope="col">logo</th>
+                            <th scope="col">修改</th>
+                            <th scope="col">刪除</th>
+                        </tr>
+                    </thead>
+                    <tbody class="vertical">
+                        <?php foreach ($rows as $r) : ?>
+                            <tr>
+                                <td><input type="checkbox" name="check[]" id="check<?= $r['sid'] ?>" value="<?= $r['sid'] ?>"></td>
+                                <td><?= $r['sid'] ?></td>
+                                <td><?= htmlentities($r['cp_name']) ?></td>
+                                <td><?= htmlentities($r['cp_contact_p']) ?></td>
+                                <td><?= htmlentities($r['cp_phone']) ?></td>
+                                <td><?= htmlentities($r['cp_email']) ?></td>
+                                <td><?= htmlentities($r['cp_address']) ?></td>
+                                <td><?= htmlentities($r['cp_tax_id']) ?></td>
+                                <td style="width:3vw"><?= htmlentities($stock[$r['sid']]["SUM(`vb_books`.`stock`)"]) ?></td>
+                                <td><?= htmlentities($r['cp_account']) ?></td>
+                                <td><?= htmlentities($r['cp_password']) ?></td>
+                                <td><?= htmlentities($r['cp_created_date']) ?></td>
+                                <td style="width:5.3vw">
+                                    <button type="button" class="btn btn-outline-primary" data-toggle="modal" data-target="#<?= 'logo' .  $r['sid']; ?>">
+                                        <i class="fas fa-plus-circle"></i>
+                                        顯示
+                                    </button>
+                                    <div class="modal fade" id="<?= 'logo' . $r['sid']; ?>" tabindex="-1" role="dialog" aria-labelledby="<?= 'logo' .  $r['sid']; ?>Title" aria-hidden="true">
+                                        <div class="modal-dialog modal-dialog-centered" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="<?= $r['cp_name']; ?>Title"><?= $r['cp_name']; ?></h5>
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body" style="width:450px;width:450px;margin:0 auto">
+                                                    <img style="object-fit: contain;width: 100%;height: 100%;" src="<?= 'logo/' . $r['cp_logo']; ?>" alt="">
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                            </td>
-                            <td>
-                                <a href="CP_data_edit.php?sid=<?= $r['sid'] ?>">
-                                    <button type="button" class="btn btn-outline-primary">
-                                        <i class="fas fa-edit"></i>
-                                    </button>
-                                </a>
-                            </td>
-                            <td>
-                                <a href="javascript:delete_one(<?= $r['sid'] ?>)">
-                                    <button type="button" class="btn btn-outline-primary">
+                                </td>
+                                <td>
+                                    <a href="CP_data_edit.php?sid=<?= $r['sid'] ?>">
+                                        <button type="button" class="btn btn-outline-primary">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                    </a>
+                                </td>
+                                <td>
+                                    <button type="button" class="btn btn-outline-primary delete_one" data-sid="<?= $r['sid'] ?>">
                                         <i class="fas fa-trash-alt"></i>
                                     </button>
-                                </a>
-                            </td>
-                        </tr>
-                    <?php endforeach; ?>
-                </tbody>
-            </table>
+                                </td>
+                            </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+                <nav class="navbar justify-content-between" style="padding: 0px;width: 20vw;margin:10px 0px -10px 0px">
+                    <ul class="nav justify-content-between">
+                        <li class="nav-item">
+                            <div id="btnGroupDrop1" class="position-relative" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <button type="submit" class="btn btn-outline-dark" id="cp_data_delete">
+                                    <i class="fas fa-trash-alt"></i>&nbsp;&nbsp;&nbsp;批次刪除
+                                </button>
+                            </div>
+                        </li>
+                    </ul>
+                </nav>
+            </form>
         </div>
 
         <!-- 我是分頁按鈕列 請自取並調整頁面擺放位置 -->
@@ -344,96 +367,50 @@ foreach ($rows as $r) {
             </li>
             </ul>
         </nav>
-        <nav class="navbar justify-content-between" style="padding: 0px;width: 20vw;margin:10px 0px -10px 0px">
-            <ul class="nav justify-content-between">
-                <!-- <li class="nav-item">
-                    <div style="padding: 0.375rem 0.75rem;">
-                        批次：
-                    </div>
-                </li> -->
-                <!-- <li class="nav-item form-check form-check-inline">
-                    <input class="form-check-input" type="checkbox" id="all_check" value="all_check" name="all_check" onclick="check_all(this,'check[]')">
-                    <label class="form-check-label" for="inlineCheckbox1">全選</label>
-                </li> -->
-                <!-- <li class="nav-item">
-                    <div id="btnGroupDrop1" class="position-relative" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <button type="button" class="btn btn-outline-dark" onclick="vb_data_update('check[]')">
-                            <i class="fas fa-edit"></i>&nbsp;&nbsp;&nbsp;修改
-                        </button>
-                    </div>
-                </li> -->
-                <li class="nav-item">
-                    <div id="btnGroupDrop1" class="position-relative" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <button type="submit" class="btn btn-outline-dark" onclick="cp_data_delete('check[]')">
-                            <i class="fas fa-trash-alt"></i>&nbsp;&nbsp;&nbsp;批次刪除
-                        </button>
-                    </div>
-                </li>
-                <!-- <li class="nav-item">
-                    <div id="btnGroupDrop1" class="position-relative" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <button type="submit" class="btn btn-outline-dark">
-                            <i class="fas fa-copy"></i>&nbsp;&nbsp;&nbsp;複製
-                        </button>
-                    </div>
-                </li> -->
-            </ul>
-        </nav>
+
 </section>
 </div>
 <script>
-     function check_all(obj, cName) {
-        var checkboxes = document.getElementsByName(cName);
-        for (var i = 0; i < checkboxes.length; i++) {
-            checkboxes[i].checked = obj.checked;
-        }
-    }
+    $("tbody :checkbox").click(function() {
+        $("tbody tr").length == $("tbody :checked").length ? $("#checkAll").prop("checked", true) : $("#checkAll").prop("checked", false);
+    });
 
-    //未完成的批次修改 
-    // function vb_data_update(cName) {
-    //     var checkboxes = document.getElementsByName(cName);
-    //     let ar = [];
-    //     for (var i = 0; i < checkboxes.length; i++) {
-    //          if(checkboxes[i].checked){
-    //              ar.push(checkboxes[i].value);
-    //          }
-    //     }
-    //     document.cookie = "checkbox_sid=" + ar;
-    // location = "vb_data_update.php";
-    // }
+    $("#checkAll").click(function() {
+        $("tbody :checkbox").prop("checked", $(this).prop("checked"));
+    });
 
-    function cp_data_delete(cName) {
-        var checkboxes = document.getElementsByName(cName);
-        let ar = [];
-        for (var i = 0; i < checkboxes.length; i++) {
-            if (checkboxes[i].checked) {
-                ar.push(checkboxes[i].value);
-            }
-        }
-        document.cookie = "checkbox_sid=" + ar;
-        location = "cp_data_delete.php";
-    }
+    $("#cp_data_delete").click(function() {
+        $(".delete_confirm").css("display", "block");
+    });
+    
+    $("#yes1").click(function() {
+        $("#delete_form")[0].action = 'CP_data_mutidelete.php'
+        $("#delete_form")[0].submit();
+    });
 
-    function data_insert() {
+    $("#data_insert").click(function() {
         location = "CP_data_insert.php";
-    }
-    let delete_confirm = document.querySelector('#delete_confirm');
+    });
+
     let a;
 
-    function delete_one(sid) {
-        a = sid;
-        delete_confirm.style.display = 'block';
-    }
+    $(".delete_one").click(function() {
+        a = $(this).data("sid");
+        $(".delete_confirm").css("display", "block");
+    });
 
-    function delete_yes() {
+    $("#yes2").click(function() {
         location.href = 'CP_data_delete.php?sid=' + a;
-    }
+    });
 
-    function delete_no() {
+    $(".no").click(function() {
         location.href = window.location.href;
-    }
+    });
 
-    function goto_orderby(str) {
-        location.href = '?' + str;
-    }
+    $('.goto_orderby').click(function() {
+        console.log($(this).data("order"));
+        location.href = '?' + $(this).data("order");
+    });
 </script>
+<script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
 <?php include __DIR__ . '/../../pbook_index/__html_foot.php' ?>
