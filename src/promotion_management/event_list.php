@@ -2,30 +2,19 @@
 
 $page_name = 'event_list';
 $page_title = '活動列表';
-$page = isset($_GET['page']) ? intval($_GET['page']) : 1;
 
 require __DIR__ . '/__connect_db.php';
 
 $t_sql = 'SELECT COUNT(1) FROM `pm_event`;';
 $t_stmt = $pdo->query($t_sql);
-$total_rows = $t_stmt->fetch(PDO::FETCH_NUM)[0];
 
-$per_page = 10;
-$total_pages = ceil($total_rows / $per_page);
 
 $sql = "UPDATE `pm_event` SET `status` = 1 WHERE `status`= 0 AND `start_time`<= CURRENT_DATE;
 UPDATE `pm_event` SET `status`= -1 WHERE `status`= 1 AND `end_time` < CURRENT_DATE;";
 $pdo->query($sql);
 
 
-if ($page < 1) {
-    header('Location: event_list.php');
-}
-if ($page > $total_pages) {
-    header("Location: event_list.php?page=$total_pages");
-}
-
-$sql = sprintf('SELECT * FROM `pm_event` ORDER BY `sid` DESC LIMIT %s, %s', ($page - 1) * $per_page, $per_page);
+$sql = 'SELECT * FROM `pm_event` ORDER BY `sid`';
 $stmt = $pdo->query($sql);
 $rows = $stmt->fetchAll();
 
@@ -36,7 +25,7 @@ $cate_const = $pdo->query($sql)->fetchAll(PDO::FETCH_UNIQUE);
 
 
 <?php
-include __DIR__ . '/../../pbook_index/__html_head.php';
+include __DIR__ . '/__html_head.php';
 include __DIR__ . '/../../pbook_index/__html_body.php';
 include __DIR__ . '/../../pbook_index/__navbar.php';
 
@@ -60,7 +49,7 @@ $user_level_const = [
 
     </style>
 
-    <div class="container pt-3 pb-5">
+    <div class="container-fluid ml-5 pt-3 pb-5">
 
         <nav class="navbar justify-content-between mb-3" style="padding: 0px;width: 80vw;">
             <div>
@@ -68,12 +57,6 @@ $user_level_const = [
                 <div class="title_line"></div>
             </div>
             <ul class="nav justify-content-between">
-                <li class="nav-item">
-                    <div style="padding: 0.375rem 0.75rem;">
-                        <i class="fas fa-check"></i>
-                        目前總計<?= $total_rows ?>筆資料
-                    </div>
-                </li>
                 <li class="nav-item" style="margin: 0px 10px">
                     <button class="btn btn-outline-primary my-2 my-sm-0" type="submit"
                             onclick="location.href='event_insert.php'">
@@ -81,20 +64,11 @@ $user_level_const = [
                         新增活動
                     </button>
                 </li>
-                <li class="nav-item" style="flex-grow: 1">
-                    <form class="form-inline my-2 my-lg-0">
-                        <input class="search form-control mr-sm-2" type="search" placeholder="Search"
-                               aria-label="Search">
-                        <button class="btn btn-outline-warning my-2 my-sm-0" type="submit">
-                            <i class="fas fa-search"></i>
-                        </button>
-                    </form>
-                </li>
             </ul>
         </nav>
 
 
-        <table class="table table-striped table-bordered" style="width: 83vw">
+        <table class="table table-striped table-bordered" id="eventList">
             <thead>
             <tr>
                 <th scope="col">編號</th>
@@ -317,7 +291,7 @@ $user_level_const = [
                         </div>
                     </td>
 
-                    <td><a href="event_edit.php?event_id=<?= $r['sid'] . ' & page = ' . $page ?>"><i
+                    <td><a href="event_edit.php?event_id=<?= $r['sid']?>"><i
                                     class="fas fa-edit"></i></a>
                     </td>
                     <td><a href="javascript:delete_one(<?= $r['sid'] ?>)"><i class="fas fa-trash-alt"></i></a>
@@ -326,54 +300,18 @@ $user_level_const = [
             <?php endforeach; ?>
         </table>
 
-        <nav aria-label="Page navigation example">
-            <ul class="pagination">
-                <li class="page-item">
-                    <a class="page-link" href="?page=1"><i class="fas fa-angle-double-left"></i></a>
-                </li>
-                <li class="page-item">
-                    <a class="page-link" href="?page=<?= $page - 1 ?>"><i class="fas fa-angle-left"></i></a>
-                </li>
-                <?php
-                if ($total_pages <= 5) {
-                    $p_start = 1;
-                    $p_end = $total_pages;
-                } else if (($page - 2) < 1) {
-                    $p_start = 1;
-                    $p_end = 5;
-                } else if (($page + 2) > $total_pages) {
-                    $p_start = $total_pages - 4;
-                    $p_end = $total_pages;
-                } else {
-                    $p_start = $page - 2;
-                    $p_end = $page + 2;
-                }
-                for ($i = $p_start;
-                     $i <= $p_end;
-                     $i++) :
-                    // if ($i < 1 or $i > $total_pages) {
-                    //     continue;
-                    // }
-                    ?>
-                    <li class="page-item <?= $page == $i ? 'active' : '' ?>">
-                        <a class="page-link" href="?page=<?= $i ?>"><?= $i ?></a>
-                    </li>
-                <?php endfor; ?>
-                <li class="page-item">
-                    <a class="page-link" href="?page=<?= $page + 1 ?>"><i class="fas fa-angle-right"></i></a>
-                </li>
-                <li class="page-item">
-                    <a class="page-link" href="?page=<?= $total_pages ?>"><i class="fas fa-angle-double-right"></i></a>
-                </li>
-            </ul>
-        </nav>
-
     </div>
-
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.js"></script>
     <script>
+        let dataTableLanguage = <?php include('data-table-language.json'); ?>;
+        $("#eventList").DataTable({
+            "order": [[ 0, "desc" ]],
+            "language" : dataTableLanguage,
+        });
+
         function delete_one(event_id) {
             if (confirm(`是否刪除編號為${event_id}的資料？`)) {
-                location.href = "event_delete.php?event_id=" + event_id + ' & page = ' + <?= $page ?>;
+                location.href = "event_delete.php?event_id=" + event_id;
             }
         }
     </script>
