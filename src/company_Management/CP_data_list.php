@@ -83,7 +83,7 @@ foreach ($rows as $r) {
     }
 </style>
 <?php include __DIR__ . '/../../pbook_index/__html_body.php' ?>
-<div style="z-index:999;width:100vw;height:100vh;display:none;background:rgba(0,0,0,0.2)" class="position-absolute delete_confirm">
+<div style="z-index:999;width:100vw;height:100vh;display:none;background:rgba(0,0,0,0.2)" id="delete_confirm1" class="position-absolute">
     <div class="delete update card">
         <div class="delete card-body">
             <label class="delete_text">您確認要刪除資料嗎?</label>
@@ -94,7 +94,7 @@ foreach ($rows as $r) {
         </div>
     </div>
 </div>
-<div style="z-index:999;width:100vw;height:100vh;display:none;background:rgba(0,0,0,0.2)" class="position-absolute delete_confirm">
+<div style="z-index:999;width:100vw;height:100vh;display:none;background:rgba(0,0,0,0.2)" id="delete_confirm2" class="position-absolute">
     <div class="delete update card">
         <div class="delete card-body">
             <label class="delete_text">您確認要刪除資料嗎?</label>
@@ -380,9 +380,9 @@ foreach ($rows as $r) {
     });
 
     $("#cp_data_delete").click(function() {
-        $(".delete_confirm").css("display", "block");
+        $("#delete_confirm1").css("display", "block");
     });
-    
+
     $("#yes1").click(function() {
         $("#delete_form")[0].action = 'CP_data_mutidelete.php'
         $("#delete_form")[0].submit();
@@ -396,7 +396,7 @@ foreach ($rows as $r) {
 
     $(".delete_one").click(function() {
         a = $(this).data("sid");
-        $(".delete_confirm").css("display", "block");
+        $("#delete_confirm2").css("display", "block");
     });
 
     $("#yes2").click(function() {
