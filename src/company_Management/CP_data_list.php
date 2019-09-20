@@ -83,13 +83,24 @@ foreach ($rows as $r) {
     }
 </style>
 <?php include __DIR__ . '/../../pbook_index/__html_body.php' ?>
-<div style="z-index:999;width:100vw;height:100vh;display:none;background:rgba(0,0,0,0.2)" id="delete_confirm" class="position-absolute">
+<div style="z-index:999;width:100vw;height:100vh;display:none;background:rgba(0,0,0,0.2)" class="position-absolute delete_confirm">
     <div class="delete update card">
         <div class="delete card-body">
             <label class="delete_text">您確認要刪除資料嗎?</label>
             <div>
-                <button type="button" class="delete btn btn-danger">確認</button>
-                <button type="button" class="delete btn btn-warning">取消</button>
+                <button type="button" class="delete btn btn-danger" id="yes1">確認</button>
+                <button type="button" class="delete btn btn-warning no">取消</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div style="z-index:999;width:100vw;height:100vh;display:none;background:rgba(0,0,0,0.2)" class="position-absolute delete_confirm">
+    <div class="delete update card">
+        <div class="delete card-body">
+            <label class="delete_text">您確認要刪除資料嗎?</label>
+            <div>
+                <button type="button" class="delete btn btn-danger" id="yes2">確認</button>
+                <button type="button" class="delete btn btn-warning no">取消</button>
             </div>
         </div>
     </div>
@@ -151,7 +162,7 @@ foreach ($rows as $r) {
                             <a class="dropdown-item goto_orderby" href="#" data-order="<?php $params['col'] = 'cp_created_date';
                                                                                         $params['ord'] = 'ASC';
                                                                                         echo http_build_query($params) ?>">小→大</a>
-                            <a class="dropdown-item goto_orderby" href="#"data-order="<?php $params['col'] = 'cp_created_date';
+                            <a class="dropdown-item goto_orderby" href="#" data-order="<?php $params['col'] = 'cp_created_date';
                                                                                         $params['ord'] = 'DESC';
                                                                                         echo http_build_query($params) ?>">大→小</a>
                         </div>
@@ -265,11 +276,9 @@ foreach ($rows as $r) {
                                     </a>
                                 </td>
                                 <td>
-                                    <a href="javascript:delete_one(<?= $r['sid'] ?>)">
-                                        <button type="button" class="btn btn-outline-primary">
-                                            <i class="fas fa-trash-alt"></i>
-                                        </button>
-                                    </a>
+                                    <button type="button" class="btn btn-outline-primary delete_one" data-sid="<?= $r['sid'] ?>">
+                                        <i class="fas fa-trash-alt"></i>
+                                    </button>
                                 </td>
                             </tr>
                         <?php endforeach; ?>
@@ -368,33 +377,40 @@ foreach ($rows as $r) {
 
     $("#checkAll").click(function() {
         $("tbody :checkbox").prop("checked", $(this).prop("checked"));
-    })
+    });
 
     $("#cp_data_delete").click(function() {
+        $(".delete_confirm").css("display", "block");
+    });
+    
+    $("#yes1").click(function() {
         $("#delete_form")[0].action = 'CP_data_mutidelete.php'
         $("#delete_form")[0].submit();
-    })
+    });
 
     $("#data_insert").click(function() {
         location = "CP_data_insert.php";
-    })
+    });
+
     let a;
 
-    function delete_one(sid) {
-        a = sid;
-        $("#delete_confirm").css("display", "block");
-    }
+    $(".delete_one").click(function() {
+        a = $(this).data("sid");
+        $(".delete_confirm").css("display", "block");
+    });
 
-    $(".delete.btn.btn-danger").click(function() {
+    $("#yes2").click(function() {
         location.href = 'CP_data_delete.php?sid=' + a;
-    })
-    $(".delete.btn.btn-warning").click(function() {
+    });
+
+    $(".no").click(function() {
         location.href = window.location.href;
-    })
+    });
+
     $('.goto_orderby').click(function() {
         console.log($(this).data("order"));
         location.href = '?' + $(this).data("order");
-    })
+    });
 </script>
 <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
 <?php include __DIR__ . '/../../pbook_index/__html_foot.php' ?>
