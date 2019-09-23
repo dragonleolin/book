@@ -1,4 +1,9 @@
 <?php
+require __DIR__ . '/../../vendor/autoload.php';
+
+use Tracy\Debugger;
+
+Debugger::enable();
 
 require __DIR__ . '/__admin_required.php';
 require __DIR__ . '/__connect_db.php';
@@ -76,7 +81,7 @@ $stmt->execute([
     $_POST['mb_page'],
     $_POST['mb_savingStatus'],
     $_POST['mb_shelveMember'],
-    $new_filename.$new_ext,
+    $arr_pic,
     $_POST['mb_categories'],
     $_POST['mb_remarks'],
 ]);

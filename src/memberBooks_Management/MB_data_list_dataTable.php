@@ -16,8 +16,15 @@ $page = isset($_GET['page']) ? intval($_GET['page']) : 1;
 
 $per_page = 10;
 
-
+//搜尋功能
+$search = isset($_GET['search']) ? $_GET['search'] : '';
+$params = [];
 $where = ' WHERE 1 ';
+if (!empty($search)) {
+    $params['search'] = $search;
+    $search = $pdo->quote("%$search%");
+    $where .= " AND (`mb_name` LIKE $search  OR `mb_categories` LIKE $search OR `mb_author` LIKE $search OR `mb_publishing` LIKE $search OR `mb_shelveMember` LIKE $search) ";
+}
 
 $t_sql = "SELECT COUNT(1) FROM `mb_books` $where";
 
@@ -28,14 +35,14 @@ $totalPages = ceil($totalRows / $per_page);
 
 
 $page_sql = "SELECT `mb_books`.*, `vb_categories`.`name` categories_name 
-FROM `mb_books`  LEFT JOIN `vb_categories` ON `mb_books`.`mb_categories` = `vb_categories`.`sid` $where ORDER BY `mb_sid` ";
+FROM `mb_books`  LEFT JOIN `vb_categories` ON `mb_books`.`mb_categories` = `vb_categories`.`sid` $where ORDER BY `mb_sid`";
 
 $t_stmt = $pdo->query($page_sql);
 $row = $t_stmt->fetchAll();
 ?>
 
 <?php include __DIR__ . '/../../pbook_index/__html_head.php' ?>
-<link href="//cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css" rel="stylesheet" />
+<link rel="stylesheet" href="//cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
 <link href="./css/lightbox.css" rel="stylesheet" />
 <style>
     body {
@@ -56,6 +63,7 @@ $row = $t_stmt->fetchAll();
 </style>
 <?php include __DIR__ . '/../../pbook_index/__html_body.php' ?>
 <?php include __DIR__ . '/../../pbook_index/__navbar.php' ?>
+
 <!-- 右邊section資料欄位 -->
 <section class="position-relative">
     <div class="container">
@@ -83,24 +91,24 @@ $row = $t_stmt->fetchAll();
         <!-- 每個人填資料的區塊 -->
         <div style="margin-top: 1rem; min-width: 80vw">
             <form method="post" id="form1" enctype="multipart/form-data" action="">
-                <table class="table table-striped table-bordered" style="text-align: center ;" id="sortable">
+                <table class="table table-striped table-bordered" style="text-align: center ; " id="sortable">
                     <thead>
                         <tr>
                             <th scope="col"><input type="checkbox" id="checkAll" name="checkAll"></th>
-                            <th scope="col">SID</th>
-                            <th scope="col">ISBN</th>
-                            <th scope="col">書籍名稱</th>
+                            <th scope="col" data-sort="number">SID</th>
+                            <th scope="col" data-sort="number">ISBN</th>
+                            <th scope="col" data-sort="name">書籍名稱</th>
                             <th scope="col">書籍圖片</th>
                             <th scope="col">分類</th>
-                            <th scope="col">作者</th>
-                            <th scope="col">出版社</th>
-                            <th scope="col">出版日期</th>
+                            <th scope="col" data-sort="name">作者</th>
+                            <th scope="col" data-sort="name">出版社</th>
+                            <th scope="col" data-sort="date">出版日期</th>
                             <th scope="col">版次</th>
                             <th scope="col" class="textHidden">定價</th>
                             <th scope="col" class="textHidden">頁數</th>
                             <th scope="col">狀況</th>
-                            <th scope="col">上架會員</th>
-                            <th scope="col">上架時間</th>
+                            <th scope="col" data-sort="name">上架會員</th>
+                            <th scope="col" data-sort="date">上架時間</th>
                             <th scope="col" class="textHidden">修改</th>
                             <th scope="col" class="textHidden">刪除</th>
                         </tr>
@@ -109,7 +117,7 @@ $row = $t_stmt->fetchAll();
                         <?php
                         foreach ($row as $r) : ?>
                             <tr>
-                                <td style="vertical-align:middle;"><input type="checkbox" class="j-checkbox" name="check[]" value="<?= $r['mb_sid']?>"></td>
+                                <td style="vertical-align:middle;"><input type="checkbox" class="j-checkbox" name="check[]" value="<?= $r['mb_sid'] ?>"></td>
                                 <td id="sid"><?= $r['mb_sid'] ?></td>
                                 <td><?= htmlentities($r['mb_isbn']) ?></td>
                                 <td class="textHidden"><?= htmlentities($r['mb_name']) ?></td>
@@ -129,6 +137,7 @@ $row = $t_stmt->fetchAll();
                                                     </button>
                                                 </div>
 
+
                                                 <?php
                                                     $a = json_decode($r['mb_pic']);
                                                     ?>
@@ -142,9 +151,10 @@ $row = $t_stmt->fetchAll();
                                                     <img src="<?= 'mb_images/' . $a[2]; ?>" class="d-block w-100" alt="...">
                                                 </a>
 
+                                                
                                                 <div class="modal-footer">
                                                     <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
-                                                    <button type="button" id="changeImg" class="btn btn-primary" onclick="(<?= $r['mb_sid'] ?>)">修改圖片</button>
+                                                    <button type="button" id="changeImg" class="btn btn-primary" onclick="change_img(<?= $r['mb_sid'] ?>)">修改圖片</button>
                                                 </div>
                                             </div>
                                         </div>
@@ -184,6 +194,7 @@ $row = $t_stmt->fetchAll();
 
 
 
+
             <!-- 刪除提示框 -->
             <div class="delete update card" id="deleteType" style="display: none;">
                 <div class="delete card-body">
@@ -207,7 +218,7 @@ $row = $t_stmt->fetchAll();
     })
 </script>
 <script>
-     $(document).ready(function() {
+    $(document).ready(function() {
         $('#sortable').DataTable();
     });
 
@@ -215,8 +226,8 @@ $row = $t_stmt->fetchAll();
         //全選全不選功能模塊
         $('#checkAll').change(function() {
             $(".j-checkbox").prop("checked", $(this).prop('checked'))
-            $("tr").css("background", "transparent")
-            $(":checked").closest('tr').css("background", "#9cc5a1")
+            // $("tr").css("background", "transparent")
+            // $(":checked").closest('tr').css("background", "#9cc5a1")
         })
 
         //若複選按鈕個數為全部，要把全選按鈕打勾
@@ -226,8 +237,8 @@ $row = $t_stmt->fetchAll();
             } else {
                 $('#checkAll').prop("checked", false)
             }
-            $("tr").css("background", "transparent")
-            $(":checked").closest('tr').css("background", "#9cc5a1")
+            // $("tr").css("background", "transparent")
+            // $(":checked").closest('tr').css("background", "#9cc5a1")
         })
 
     })
@@ -236,8 +247,8 @@ $row = $t_stmt->fetchAll();
     // var form = document.getElementById('form1')
     //JQ的getElement要使用[0]
     let form = $('#form1')[0]
-    
-    $('#delete_multiple').click(function(){
+
+    $('#delete_multiple').click(function() {
         form.action = 'MB_deleteMuti.php'
         console.log(form.action)
         form.submit();
@@ -254,7 +265,7 @@ $row = $t_stmt->fetchAll();
 
     function change_img(mb_sid) {
         let b = mb_sid;
-        location = 'MB_update.php?mb_sid=' + b;
+        location = "MB_update.php?mb_sid=" + b;
     }
 
 

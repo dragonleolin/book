@@ -29,8 +29,6 @@ if ($fd['group_type'] == 1 and empty($fd['categories'])) {
     $fd['group_type'] = 0;
 } else if ($fd['group_type'] == 2 and empty($fd['book_group'])) {
     $fd['group_type'] = 0;
-} else {
-    $fd['group_type'] = 0;
 }
 
 

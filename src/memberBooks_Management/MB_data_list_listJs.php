@@ -12,37 +12,13 @@ require __DIR__ . '/__connect_db.php';
 $page_name = 'MB_data_list';
 $page_title = '會員書籍總表';
 
-$page = isset($_GET['page']) ? intval($_GET['page']) : 1;
-
-$per_page = 10;
-
-//搜尋功能
-$search = isset($_GET['search']) ? $_GET['search'] : '';
-$params = [];
 $where = ' WHERE 1 ';
-if (!empty($search)) {
-    $params['search'] = $search;
-    $search = $pdo->quote("%$search%");
-    $where .= " AND (`mb_name` LIKE $search  OR `mb_categories` LIKE $search OR `mb_author` LIKE $search OR `mb_publishing` LIKE $search OR `mb_shelveMember` LIKE $search) ";
-}
-
 $t_sql = "SELECT COUNT(1) FROM `mb_books` $where";
 
 $totalRows = $pdo->query($t_sql)->fetch(PDO::FETCH_NUM)[0];
-$totalPages = ceil($totalRows / $per_page);
-
-if ($page < 1) {
-    header('Location:MB_data_list.php');
-    exit;
-}
-if ($page > $totalPages) {
-    header('Location:MB_data_list.php?page=' . $totalPages);
-    exit;
-}
-
 
 $page_sql = "SELECT `mb_books`.*, `vb_categories`.`name` categories_name 
-FROM `mb_books`  LEFT JOIN `vb_categories` ON `mb_books`.`mb_categories` = `vb_categories`.`sid` $where ORDER BY `mb_sid` ASC LIMIT " . (($page - 1) * $per_page) . "," . $per_page;
+FROM `mb_books`  LEFT JOIN `vb_categories` ON `mb_books`.`mb_categories` = `vb_categories`.`sid` $where ORDER BY `mb_sid`";
 
 $t_stmt = $pdo->query($page_sql);
 $row = $t_stmt->fetchAll();
@@ -64,6 +40,23 @@ $row = $t_stmt->fetchAll();
         overflow: hidden;
         white-space: nowrap;
         text-overflow: ellipsis;
+    }
+    #sortHead th{
+    }
+    #sortHead th:after{
+        content: "";
+        width: 0;
+        height: 0;
+        border-style: solid;
+        border-width: .3em .25em 0 .25em;
+        border-color: grey transparent transparent transparent;
+        margin-left: .2em;
+        display: inline-block;
+        vertical-align: middle;
+    }
+    #sortHead th .asc:after{
+    border-width: 0 .25em .3em .25em;
+      border-color: transparent transparent grey transparent
     }
 </style>
 <?php include __DIR__ . '/../../pbook_index/__html_body.php' ?>
@@ -99,12 +92,13 @@ $row = $t_stmt->fetchAll();
                 </li>
             </ul>
         </nav>
+        
 
         <!-- 每個人填資料的區塊 -->
         <div style="margin-top: 1rem; min-width: 80vw">
             <form method="post" id="form1" enctype="multipart/form-data" action="">
                 <table class="table table-striped table-bordered" style="text-align: center ; " id="sortable">
-                    <thead>
+                    <thead id="sortHead">
                         <tr>
                             <th scope="col"><input type="checkbox" id="checkAll" name="checkAll"></th>
                             <th scope="col" data-sort="number">SID</th>
@@ -176,7 +170,7 @@ $row = $t_stmt->fetchAll();
                                 <td class="textHidden"><?= htmlentities($r['categories_name']) ?></td>
                                 <td class="textHidden"><?= htmlentities($r['mb_author']) ?></td>
                                 <td class="textHidden"><?= htmlentities($r['mb_publishing']) ?></td>
-                                <td class="textHidden"><?= htmlentities($r['mb_publishDate']) ?></td>
+                                <td class="textHidden date"><?= htmlentities($r['mb_publishDate']) ?></td>
                                 <td class="textHidden"><?= htmlentities($r['mb_version']) ?></td>
                                 <td><?= htmlentities($r['mb_fixedPrice']) ?></td>
                                 <td><?= htmlentities($r['mb_page']) ?></td>
@@ -205,68 +199,6 @@ $row = $t_stmt->fetchAll();
             </form>
 
 
-            <!-- 我是分頁按鈕列 請自取並調整頁面擺放位置 -->
-            <nav aria-label="Page navigation example">
-                <ul class="pagination page-position ">
-                    <li class="page-item">
-                        <a class="page-link" href="?page=1" aria-label="Previous">
-                            <i class="fas fa-angle-double-left"></i>
-                        </a>
-                    </li>
-                    <li class="page-item">
-                        <a class="page-link" href="?page=<?= $page - 1 ?>" aria-label="Previous">
-                            <i class="fas fa-angle-left"></i>
-                        </a>
-                    </li>
-                    <?php
-                    $p_start = $page - 3;
-                    $p_end = $page + 3;
-                    if ($page < 5) :
-                        for ($i = $p_start; $i <= 7; $i++) :
-                            $params['page'] = $i;
-                            if ($i < 1 or $i > $totalPages) continue;
-                            ?>
-                            <li class="page-item">
-                                <a class="page-link" style="<?= $i == $page ? 'background: rgba(156, 197, 161, 0.5) ;color: #ffffff;' : '' ?>" href="?<?= http_build_query($params) ?>"><?= $i ?></a>
-                            </li>
-                        <?php endfor; ?>
-                    <?php endif; ?>
-                    <?php
-                    if ($page < $totalPages - 3 && $page >= 5) :
-                        for ($i = $p_start; $i <= $p_end; $i++) :
-                            $params['page'] = $i;
-                            if ($i < 1 or $i > $totalPages) continue;
-                            ?>
-                            <li class="page-item ">
-                                <a class="page-link" style="<?= $i == $page ? 'background: rgba(156, 197, 161, 0.5) ;color: #ffffff;' : '' ?>" href="?<?= http_build_query($params) ?>"><?= $i ?></a>
-                            </li>
-                        <?php endfor; ?>
-                    <?php endif; ?>
-                    <?php
-                    if ($page >= $totalPages - 3 && ($page != 1) && ($page != 2)) :
-                        for ($i = $totalPages - 6; $i <= $p_end; $i++) :
-                            $params['page'] = $i;
-                            if ($i < 1 or $i > $totalPages) continue;
-                            ?>
-                            <li class="page-item ">
-                                <a class="page-link" style="<?= $i == $page ? 'background: rgba(156, 197, 161, 0.5) ;color: #ffffff;' : '' ?>" href="?<?= http_build_query($params) ?>"><?= $i ?></a>
-                            </li>
-                        <?php endfor; ?>
-                    <?php endif; ?>
-                    <li class="page-item">
-                        <a class="page-link" href="?page=<?= $page + 1 ?>" aria-label="Next">
-                            <i class="fas fa-angle-right"></i>
-                        </a>
-                    </li>
-                    <li class="page-item">
-                        <a class="page-link" href="?page=<?= $totalPages ?>" aria-label="Next">
-                            <i class="fas fa-angle-double-right"></i>
-                        </a>
-                    </li>
-                </ul>
-            </nav>
-
-
             <!-- 刪除提示框 -->
             <div class="delete update card" id="deleteType" style="display: none;">
                 <div class="delete card-body">
@@ -280,7 +212,13 @@ $row = $t_stmt->fetchAll();
 
 </section>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/list.js/1.5.0/list.min.js"></script>
 <!-- <script src="MB_sort.js"></script> -->
+<script>
+    var options = {
+        valueNames: ['date']
+    }, userList = new List('sortable', options)
+</script>
 <script>
     $(function() {
         //全選全不選功能模塊
