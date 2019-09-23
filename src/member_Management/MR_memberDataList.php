@@ -53,14 +53,17 @@ $a_level = [
     .modal-header {
         padding-left: 40px;
     }
-    .display-none{
-        display:none;
+
+    .display-none {
+        display: none;
     }
-    .display-block{
-        display:block;
+
+    .display-block {
+        display: block;
     }
-    .pages .active{
-        background: rgba(156, 197, 161, 0.5) ;
+
+    .page-link.active {
+        background: rgba(156, 197, 161, 0.5);
         color: #ffffff;
     }
 </style>
@@ -75,20 +78,20 @@ $a_level = [
                         <h4>會員列表</h4>
                         <div class="title_line"></div>
                     </div>
-                        <ul class="nav justify-content-between display-none prep-page">
-                            <li class="nav-item" style="margin: 0px 10px">
-                                <button class="btn btn-outline-primary my-2 my-sm-0" type="button" onclick='location.href = "MR_memberDataList.php"'>
-                                    <i class="fas fa-arrow-circle-left"></i>
-                                    回到上一頁
-                                </button>
-                            </li>
-                        </ul>
+                    <ul class="nav justify-content-between display-none prep-page">
+                        <li class="nav-item" style="margin: 0px 10px">
+                            <button class="btn btn-outline-primary my-2 my-sm-0" type="button" onclick='location.href = "MR_memberDataList.php"'>
+                                <i class="fas fa-arrow-circle-left"></i>
+                                回到上一頁
+                            </button>
+                        </li>
+                    </ul>
                 </div>
                 <ul class="nav justify-content-between">
                     <li class="nav-item">
                         <div style="padding: 0.375rem 0.75rem;">
                             <i class="fas fa-check"></i>
-                            目前總計 <span id="totalRows" ></span> &nbsp筆資料
+                            目前總計 <span id="totalRows"></span> &nbsp筆資料
                         </div>
                     </li>
                     <li class="nav-item" style="margin: 0px 10px">
@@ -139,23 +142,24 @@ $a_level = [
         <nav class="mt-5" aria-label="Page navigation example ">
             <ul class="pagination justify-content-center">
                 <li class="page-item">
-                    <a class="page-link my_text_blacktea" href="?page=1" aria-label="Next">
+                    <a class="page-link my_text_blacktea" href="" data-page="1" aria-label="Next">
                         <i class="fas fa-angle-double-left"></i>
                     </a>
                 </li>
-                <li class="page-item">
-                    <a class="page-link" href="?page=<?= ($page - 1 <= 0) ? 1 : $page - 1 ?>">
+                <li class="page-item ">
+                    <a class="page-link my_text_blacktea" id="prep-page" href="">
                         <i class="fas fa-angle-left"></i>
                     </a>
                 </li>
-                
+                <li class="page-item d-flex" id="pages">
+                </li>
                 <li class="page-item">
-                    <a class="page-link my_text_blacktea" href="?page=<?= ($page + 1 > $totalPage) ? $totalPage : $page + 1 ?> ?>" aria-label="Next">
+                    <a class="page-link my_text_blacktea" id="next-page" href="" aria-label="Next">
                         <i class="fas fa-angle-right"></i>
                     </a>
                 </li>
                 <li class="page-item">
-                    <a class="page-link my_text_blacktea" href="?page=<?= $totalPage ?>" aria-label="Next">
+                    <a class="page-link my_text_blacktea" id="last-page" href="" aria-label="Next">
                         <i class="fas fa-angle-double-right"></i>
                     </a>
                 </li>
@@ -209,7 +213,7 @@ $a_level = [
 
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary">修改資料</button>
+                <button type="button" class="btn btn-primary" id="detailUpdate">修改資料</button>
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
             </div>
         </div>
@@ -221,19 +225,21 @@ $a_level = [
     let a_level = <?= json_encode($a_level, JSON_UNESCAPED_UNICODE) ?>;
     let delete_sid, delete_eventTarget; // 刪除資料功能
     let ar = [];
+    let nowPage = 1;
+    let page = 1;
+    let search = $("#search_input").val();
     // 讀取完成生成頁面
     $(function() {
         fetch("MR_DataListAPI.php")
-        .then(Response=>{
-        return Response.json();
-        })
-        .then(json => {
-            $("#totalRows").text(`${json.totalRows}`)
-            dataList(json.rows);
-            pages(json);
+            .then(Response => {
+                return Response.json();
+            })
+            .then(json => {
+                dataList(json);
+                pagination(json);
             })
     });
-    
+
 
     //全選刪除 
     $('input[name="check[]"]').click(function() {
@@ -252,11 +258,9 @@ $a_level = [
     //顯示details
     // let itemCount=Object.keys(item_switch).length;
 
-    $("#tbody").on("click",".showDetails",function() {
-        console.log("sid");
+    $("#tbody").on("click", ".showDetails", function() {
         setTimeout(() => {
             let sid = $(this).data("sid");
-            console.log(sid);
             fetch(`MR_detailAPI.php?sid=${sid}`)
                 .then(Response => {
                     return Response.json();
@@ -268,8 +272,8 @@ $a_level = [
         }, 100);
 
     });
-    
-    // details二手書連結
+
+    // details連結
     $("#MBList").click(function() {
         let num = $(this).data("num");
         location.href = `MR_MBList.php?MR_number=${num}`;
@@ -278,62 +282,83 @@ $a_level = [
         let num = $(this).data("num");
         location.href = `MR_BRDataList.php?MR_number=${num}`;
     });
-    //分頁按鈕
-    // style="'background: rgba(156, 197, 161, 0.5) ;color: #ffffff;' : ''"
-    function pages(json){
-        let t_Page=json.totalPage;
-        let page_items='';
+    $("#detailUpdate").click(function() {
+        let sid = $(this).data("sid");
+        location.href = `MR_memberData_update.php?sid=${sid}`;
+    })
 
-        for (let i=0;i<t_Page;i++){
-            let page=`
-            <li class="page-item ">
-                <a class="page-link pages" href="?page=${i+1}" data-page="${i+1}">${i+1}</a>
-            </li>`;
-            page_items+=page;
+    //分頁按鈕事件
+    $(".page-item").on("click", ".page-link", function() {
+        page = $(this).data('page');
+        if (nowPage != page) {
+            if (search) {
+                checkSearch();
+            } else {
+                fetch(`MR_DataListAPI.php?page=${page}`)
+                    .then(Response => {
+                        return Response.json();
+                    })
+                    .then(json => {
+                        dataList(json);
+                        pagination(json);
+                    });
+            }
         }
-        $(".pagination").append(page_items);
-        $(".pagination").append($(".pagination li").eq(2));
-        $(".pagination").append($(".pagination li").eq(2));
-        $(".pages").removeClass("active");
-        let page= (json.page==1)? 1:parseInt(json.page);
-        $(".pages").eq(page-1).addClass("active"); 
-        
-                // $p_start = $page - 3;
-                // $p_end = $page + 3;
-                // if ($p_start <= 0) $p_end += -($p_start) + 1;
-                // if ($p_end > $totalPage) $p_start -= -($totalPage - $p_end);
-                // for ($i = $p_start; $i <= $p_end; $i++) :
-                //     if ($i < 1 or $i > $totalPage) continue;
-                //     //continue跳過該次迴圈
-                //     $params['page'] = $i;
-                                        
+        return false;
+    });
+
+    //分頁按鈕生成
+    function pagination(json) {
+        let t_Page = json.totalPage;
+        let page_items = '';
+        let page = (json.page == 1) ? 1 : parseInt(json.page);
+        $("#pages").empty();
+        for (let i = 0; i < t_Page; i++) {
+            let page = `<a class="page-link" href="" data-page="${i+1}">${i+1}</a>`;
+            page_items += page;
+        }
+        $("#pages").append(page_items);
+        $('#prep-page').data('page', `${(page - 1 <= 0) ? 1 : page - 1}`);
+        $('#next-page').data('page', `${(page + 1 > t_Page) ? t_Page : page + 1}`);
+        $('#last-page').data('page', `${t_Page}`);
+        pageActive(page);
+        nowPage = page;
+
+    }
+    //分頁按鈕active
+    function pageActive(page) {
+        $("#pages .page-link").removeClass("active");
+        $("#pages .page-link").eq(page - 1).addClass("active");
     }
 
-    
+
     // 搜尋功能
-    function checkSearch(){
+    function checkSearch() {
+        search = $("#search_input").val();
+        if (search) {
+            $("#tbody").empty();
 
-        let search = $("#search_input").val();
-        if(search) {
-        $("#tbody").empty();
-
-        $(".prep-page").removeClass("display-none");
-        $(".prep-page").addClass("display-block");
-        fetch(`MR_searchAPI.php?search=${search}`)
+            $(".prep-page").removeClass("display-none");
+            $(".prep-page").addClass("display-block");
+            fetch(`MR_searchAPI.php?search=${search}&page=${page}`)
                 .then(Response => {
                     return Response.json();
                 })
                 .then(json => {
                     dataList(json);
+                    pagination(json);
                 });
-            }
+        }
         return false;
     }
 
     // 頁面生成
-    function dataList(data) {
+    function dataList(json) {
+        $("#totalRows").text(`${json.totalRows}`);
+        let data = json.rows;
         let new_tr = "";
-        data.forEach(function(element, index){
+        $("#tbody").empty();
+        data.forEach(function(element, index) {
             let tr = `
             <tr>
                 <td>
@@ -370,6 +395,7 @@ $a_level = [
         let contents = '';
         $("#MBList").attr("data-num", data['MR_number']);
         $("#BRList").attr("data-num", data['MR_number']);
+        $("#detailUpdate").attr("data-sid", data['sid']);
         for (let item in data) {
             let value = data[item]
             let title = item_switch[item];
@@ -377,8 +403,8 @@ $a_level = [
                 if (value == 2) value = "女";
                 if (value == 1) value = "男";
             }
-            if(item == 'MR_personLevel') {
-                value= a_level[value];
+            if (item == 'MR_personLevel') {
+                value = a_level[value];
             }
             let content = ` <ul class="d-flex" ">
                                            <li class="" style="width:120px">
@@ -405,8 +431,6 @@ $a_level = [
             });
         }
     }
-
-    
 
     // 刪除資料功能
 

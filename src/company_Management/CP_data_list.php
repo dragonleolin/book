@@ -83,28 +83,19 @@ foreach ($rows as $r) {
     }
 </style>
 <?php include __DIR__ . '/../../pbook_index/__html_body.php' ?>
-<div style="z-index:999;width:100vw;height:100vh;display:none;background:rgba(0,0,0,0.2)" id="delete_confirm1" class="position-absolute">
+<?php for ($i = 1; $i <= 2; $i++) :?>
+<div style="z-index:999;width:100vw;height:100vh;display:none;background:rgba(0,0,0,0.2)" id="delete_confirm<?=$i?>" class="position-absolute">
     <div class="delete update card">
         <div class="delete card-body">
             <label class="delete_text">您確認要刪除資料嗎?</label>
             <div>
-                <button type="button" class="delete btn btn-danger" id="yes1">確認</button>
+                <button type="button" class="delete btn btn-danger" id="yes<?=$i?>">確認</button>
                 <button type="button" class="delete btn btn-warning no">取消</button>
             </div>
         </div>
     </div>
 </div>
-<div style="z-index:999;width:100vw;height:100vh;display:none;background:rgba(0,0,0,0.2)" id="delete_confirm2" class="position-absolute">
-    <div class="delete update card">
-        <div class="delete card-body">
-            <label class="delete_text">您確認要刪除資料嗎?</label>
-            <div>
-                <button type="button" class="delete btn btn-danger" id="yes2">確認</button>
-                <button type="button" class="delete btn btn-warning no">取消</button>
-            </div>
-        </div>
-    </div>
-</div>
+<?php endfor;?>
 <?php include __DIR__ . '/../../pbook_index/__navbar.php' ?>
 <!-- 右邊section資料欄位 -->
 <section class="position-relative test">
