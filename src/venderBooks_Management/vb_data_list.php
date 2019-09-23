@@ -57,6 +57,9 @@ foreach ($cates as $r) {
     $cate_dict[$r['sid']] = $r['name'];
 }
 
+$status_sql = "SELECT * FROM `vb_status`";
+$status_sql = $pdo->query($status_sql)->fetchAll();
+
 ?>
 
 <?php include __DIR__ . '/../../pbook_index/__html_head.php' ?>
@@ -79,17 +82,6 @@ foreach ($cates as $r) {
     }
 </style>
 <?php include __DIR__ . '/../../pbook_index/__html_body.php' ?>
-<!-- <div style="z-index:999;width:100vw;height:100vh;display:none;background:rgba(0,0,0,0.2)" id="my_delete" class="position-absolute">
-    <div class="delete update card">
-        <div class="delete card-body">
-            <label class="delete_text">您確認要刪除資料嗎?</label>
-            <div>
-                <button type="button" class="delete btn btn-danger" onclick="delete_yes()">確認</button>
-                <button type="button" class="delete btn btn-warning" onclick="delete_no()">取消</button>
-            </div>
-        </div>
-    </div>
-</div> -->
 <?php include __DIR__ . '/../../pbook_index/__navbar.php' ?>
 <!-- 右邊section資料欄位 -->
 <section>
@@ -185,6 +177,21 @@ foreach ($cates as $r) {
                 <li class="nav-item">
                     <div id="btnGroupDrop1" class="position-relative" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <button type="button" class="btn btn-outline-dark">
+                            <i class="fas fa-sort"></i>&nbsp;&nbsp;&nbsp;依狀態
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+                            <a class="dropdown-item" href="#" onclick="goto_orderby('<?php $params['col'] = 'status';
+                                                                                        $params['ord'] = 'ASC';
+                                                                                        echo http_build_query($params) ?>')">上架中</a>
+                            <a class="dropdown-item" href="#" onclick="goto_orderby('<?php $params['col'] = 'status';
+                                                                                        $params['ord'] = 'DESC';
+                                                                                        echo http_build_query($params) ?>')">下架中</a>
+                        </div>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <div id="btnGroupDrop1" class="position-relative" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <button type="button" class="btn btn-outline-dark">
                             <i class="fas fa-sort"></i>&nbsp;&nbsp;&nbsp;依庫存
                         </button>
                         <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
@@ -250,12 +257,14 @@ foreach ($cates as $r) {
                                 <i class="fas fa-sort-amount-down-alt" style="<?= ($col == 'publish_date' &&  $ord == 'ASC') ? 'display:inline-block;color:#ffc408' : 'display:none;' ?>"></i>
                                 <i class="fas fa-sort-amount-down" style="<?= ($col == 'publish_date' && $ord == 'DESC') ? 'display:inline-block;color:#ffc408' : 'display:none;' ?>"></i>
                                 出版日期</th>
-                            <th scope="col">版次</th>
                             <th scope="col">
                                 <i class="fas fa-sort-amount-down-alt" style="<?= ($col == 'fixed_price' &&  $ord == 'ASC') ? 'display:inline-block;color:#ffc408' : 'display:none;' ?>"></i>
                                 <i class="fas fa-sort-amount-down" style="<?= ($col == 'fixed_price' && $ord == 'DESC') ? 'display:inline-block;color:#ffc408' : 'display:none;' ?>"></i>
                                 定價</th>
-                            <th scope="col">頁數</th>
+                            <th scope="col">
+                                <i class="fas fa-sort-amount-down-alt" style="<?= ($col == 'status' &&  $ord == 'ASC') ? 'display:inline-block;color:#ffc408' : 'display:none;' ?>"></i>
+                                <i class="fas fa-sort-amount-down" style="<?= ($col == 'status' && $ord == 'DESC') ? 'display:inline-block;color:#ffc408' : 'display:none;' ?>"></i>
+                                狀態</th>
                             <th scope="col">
                                 <i class="fas fa-sort-amount-down-alt" style="<?= ($col == 'stock' &&  $ord == 'ASC') ? 'display:inline-block;color:#ffc408' : 'display:none;' ?>"></i>
                                 <i class="fas fa-sort-amount-down" style="<?= ($col == 'stock' && $ord == 'DESC') ? 'display:inline-block;color:#ffc408' : 'display:none;' ?>"></i>
@@ -323,9 +332,10 @@ foreach ($cates as $r) {
                                 <td style="vertical-align:middle;"><?= $row[$i]['author']; ?></td>
                                 <td style="vertical-align:middle;"><?= $row[$i]['publishing']; ?></td>
                                 <td style="vertical-align:middle;"><?= $row[$i]['publish_date']; ?></td>
-                                <td style="vertical-align:middle;"><?= $row[$i]['version']; ?></td>
                                 <td style="vertical-align:middle;"><?= $row[$i]['fixed_price']; ?></td>
-                                <td style="vertical-align:middle;"><?= $row[$i]['page']; ?></td>
+                                <td style="vertical-align:middle;">
+                                <?= ($row[$i]['status'] == $status_sql[0]['sid']) && ($row[$i]['stock'] != 0) ?  $status_sql[0]['name']  :  $status_sql[1]['name'] ; ?>           
+                                </td>
                                 <td style="vertical-align:middle;"><?= $row[$i]['stock']; ?></td>
                                 <td style="vertical-align:middle;"><a href="vb_data_update.php?sid=<?= $row[$i]['sid'] ?>"><i class="fas fa-edit"></i></a></td>
                                 <td style="vertical-align:middle;"><a href="#" onclick="delete_one(<?= $row[$i]['sid'] ?>)" id="btn_delete"><i class="fas fa-trash-alt"></i></a></td>
