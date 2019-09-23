@@ -18,13 +18,12 @@ $data_item = [
     '建立時間' => 'createdDate',
 ];
 
-$a_level = [
-    '品書會員',
-    '品書學徒',
-    '品書專家',
-    '品書大師',
-    '品書至尊',
-];
+$sql = "SELECT `MR_levelName` FROM `mr_level`";
+$level = $pdo->query($sql)->fetchAll();
+$a_level = [];
+for ($i = 0; $i < count($level); $i++) {
+    $a_level[$i] = $level[$i]['MR_levelName'];
+};
 
 $sid = isset($_GET['sid']) ? intval($_GET['sid']) : 0;
 
@@ -102,7 +101,7 @@ if (empty($row)) {
                     </div>
                     <label class="form-group">
                         <label for="personLevel">會員等級 : </label>
-                        <?php for ($i = 0; $i < 5; $i++) : ?>
+                        <?php for ($i = 0; $i < count($a_level); $i++) : ?>
                             <div class="form-check form-check-inline">
                                 <input class="form-check-input" type="radio" name="personLevel" value="<?= $i ?>" id="personLevel<?= $i ?>" <?= ($i == $row['MR_personLevel']) ? 'checked' : '' ?>>
                                 <label class="form-check-label" for="personLevel<?= $i ?>"><?= $a_level[$i] ?> </label>

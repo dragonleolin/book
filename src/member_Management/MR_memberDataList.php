@@ -24,15 +24,21 @@ $item_switch = [
     'MR_personLevel' => '會員等級',
     'MR_createdDate' => '創建日期'
 ];
-
-$a_level = [
-    '',
-    '品書會員',
-    '品書學徒',
-    '品書專家',
-    '品書大師',
-    '品書至尊',
-];
+// 會員等級項目獲取和轉換
+$sql = "SELECT `MR_levelName` FROM `mr_level`";
+$level = $pdo->query($sql)->fetchAll();
+$a_level = [];
+for ($i = 0; $i < count($level); $i++) {
+    $a_level[$i] = $level[$i]['MR_levelName'];
+};
+// $a_level = [
+//     '',
+//     '品書會員',
+//     '品書學徒',
+//     '品書專家',
+//     '品書大師',
+//     '品書至尊',
+// ];
 
 ?>
 <?php include '../../pbook_index/__html_head.php' ?>
@@ -164,7 +170,9 @@ $a_level = [
                     </a>
                 </li>
             </ul>
-            <div class="d-flex"><p id="showT_Pages" style="margin:0 auto;"></p></div>
+            <div class="d-flex">
+                <p id="showT_Pages" style="margin:0 auto;"></p>
+            </div>
         </nav>
         <!-- 刪除提示框 -->
         <div class="delete update card" id="delete_confirm" style="display:none">
@@ -222,6 +230,7 @@ $a_level = [
         <script>
             let item_switch = <?= json_encode($item_switch, JSON_UNESCAPED_UNICODE) ?>; // 表格title
             let a_level = <?= json_encode($a_level, JSON_UNESCAPED_UNICODE) ?>;
+            console.log(a_level);
             let delete_sid, delete_eventTarget; // 刪除資料功能
             let ar = [];
             let nowPage = 1;
@@ -237,6 +246,10 @@ $a_level = [
                         dataList(json);
                         pagination(json);
                     })
+                $('input').iCheck({
+                    checkboxClass: 'icheckbox_flat',
+                    radioClass: 'iradio_flat'
+                });
             });
 
 
@@ -291,7 +304,7 @@ $a_level = [
                 page = $(this).data('page');
                 if (nowPage != page) {
                     if (search) {
-                        s_page=page;
+                        s_page = page;
                         checkSearch();
                     } else {
                         fetch(`MR_DataListAPI.php?page=${page}`)
@@ -360,6 +373,7 @@ $a_level = [
                 let new_tr = "";
                 $("#tbody").empty();
                 data.forEach(function(element, index) {
+
                     let tr = `
             <tr>
                 <td>
@@ -367,11 +381,11 @@ $a_level = [
                 </td>
                 <td>${index+1}</td>
                 <td>${element['MR_number']}</td>
-                <td>${element['MR_personLevel']}</td>
+                <td>${a_level[element['MR_personLevel']-1]}</td>
                 <td>${element['MR_name']}</td>
                 <td>${element['MR_nickname']}</td>
                 <td>${element['MR_email']}</td>
-                <td>${element['MR_gender']}</td>
+                <td>${element['MR_gender']==1?"男":"女"}</td>
                 <td>${element['MR_birthday']}</td>
                 <td>${element['MR_mobile']}</td>
                 <td>
@@ -405,7 +419,7 @@ $a_level = [
                         if (value == 1) value = "男";
                     }
                     if (item == 'MR_personLevel') {
-                        value = a_level[value];
+                        value = a_level[value - 1];
                     }
                     let content = ` <li class="d-flex justify-content-start" style="width:50%">
                                 <h5 class="d-flex justify-content-between" style="width:18% ;"> <span>${title}</span> <span>:</span></h5>
