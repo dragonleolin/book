@@ -2,6 +2,7 @@
 
 $page_name = 'event_list';
 $page_title = '活動列表';
+$page = isset($_GET['page']) ? intval($_GET['page']) : 0;
 
 require __DIR__ . '/__connect_db.php';
 
@@ -125,15 +126,15 @@ $user_level_const = [
                                 }
                             }
                         }
-                        if($r['rule']==6 or $r['rule']==7) {
+                        if ($r['rule'] == 6 or $r['rule'] == 7) {
                             $sql = "SELECT d.* 
                                     FROM `pm_general_discounts` d JOIN `pm_event` e ON 
                                     d.`event_id` = e.`sid` WHERE e.`sid` = {$r['sid']}";
                             $discount_row = $pdo->query($sql)->fetch();
                             if ($r['rule'] == 6) {
                                 echo '折價' . $discount_row['discounts'] . '%';
-                            }else{
-                                echo '限時特價'.$discount_row['discounts'].'元';
+                            } else {
+                                echo '限時特價' . $discount_row['discounts'] . '元';
                             }
                         }
                         ?>
@@ -205,15 +206,15 @@ $user_level_const = [
                                         <?php
                                         if ($r['group_type'] == 1) {
                                             foreach ($book_group as $k => $v) {
-                                                echo $k<9?'0'.($k+1):($k+1);
+                                                echo $k < 9 ? '0' . ($k + 1) : ($k + 1);
                                                 echo " &nbsp";
                                                 echo $cate_const[$v['categories_id']]['name'] . '<br>';
                                             }
                                         } elseif ($r['group_type'] == 2) {
                                             $sql = "SELECT b.`name` FROM `vb_books` b JOIN `pm_books_group` g ON b.`sid` = g.`books_id` WHERE g.`event_id` = {$r['sid']}";
                                             $book_group_data = $pdo->query($sql)->fetchAll(PDO::FETCH_COLUMN);
-                                            foreach ($book_group_data as $k => $v){
-                                                echo $k<9?'0'.($k+1):($k+1);
+                                            foreach ($book_group_data as $k => $v) {
+                                                echo $k < 9 ? '0' . ($k + 1) : ($k + 1);
                                                 echo " &nbsp";
                                                 echo $v;
                                                 echo '<br>';
@@ -252,6 +253,11 @@ $user_level_const = [
                         }
                         if (empty($cp_group)):?>
                             所有出版社
+                        <?php elseif (count($cp_group) < 3):
+                            foreach ($cp_group as $k => $v) {
+                                echo ($k < 9 ? '0' . ($k + 1) : ($k + 1)) . " &nbsp" . $cp_data_list[$v] . '<br>';
+                            }
+                            ?>
                         <?php else: ?>
                             <button type="button" class="btn btn-outline-primary" data-toggle="modal"
                                     data-target="#cp_groupModal<?= $r['sid']; ?>">
@@ -291,7 +297,7 @@ $user_level_const = [
                         </div>
                     </td>
 
-                    <td><a href="event_edit.php?event_id=<?= $r['sid']?>"><i
+                    <td><a href="event_edit.php?event_id=<?= $r['sid'] ?>"><i
                                     class="fas fa-edit"></i></a>
                     </td>
                     <td><a href="javascript:delete_one(<?= $r['sid'] ?>)"><i class="fas fa-trash-alt"></i></a>
@@ -301,17 +307,22 @@ $user_level_const = [
         </table>
 
     </div>
-    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.js"></script>
+    <script type="text/javascript" charset="utf8"
+            src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.js"></script>
+    <script src="src/jquery.tabledit.js"></script>
     <script>
         let dataTableLanguage = <?php include('data-table-language.json'); ?>;
-        $("#eventList").DataTable({
-            "order": [[ 0, "desc" ]],
-            "language" : dataTableLanguage,
+
+        // DataTable
+        let table = $("#eventList").DataTable({
+            "order": [[0, "desc"]],
+            "language": dataTableLanguage,
         });
+        table.page(<?= $page ?>).draw("page");
 
         function delete_one(event_id) {
             if (confirm(`是否刪除編號為${event_id}的資料？`)) {
-                location.href = "event_delete.php?event_id=" + event_id;
+                location.href = "event_delete.php?event_id=" + event_id + "&page=" + table.page();
             }
         }
     </script>

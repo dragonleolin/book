@@ -1,5 +1,5 @@
 <?php
-// require __DIR__ . '/__admin_required.php';
+require __DIR__ . '/__admin_required.php';
 require __DIR__ . '/__connect_db.php';
 $page_name = 'vb_data_list';
 $page_title = '出版社書籍總表';
@@ -227,7 +227,7 @@ foreach ($cates as $r) {
             <table class="table table-striped table-bordered" style="text-align: center;width:83vw">
                 <thead>
                     <tr>
-                        <th scope="col"><input type="checkbox" id="all_check" value="all_check" name="all_check" onclick="check_all(this,'check[]')"></th>
+                        <th scope="col"><input type="checkbox" id="all_check" value="all_check" name="all_check"></th>
                         <th scope="col">No.</th>
                         <th scope="col">
                             <i class="fas fa-sort-amount-down-alt" style="<?= ($col == 'sid' &&  $ord == 'ASC') ? 'display:inline-block;color:#ffc408' : 'display:none;' ?>"></i>
@@ -267,9 +267,9 @@ foreach ($cates as $r) {
                     <?php
                     $row = $books_stmt->fetchAll();
                     for ($i = 0; $i < count($row); $i++) : ?>
-                    
+
                         <tr>
-                            <td style="vertical-align:middle;"><input type="checkbox" name="check[]" id="check<?= $row[$i]['sid'] ?>" value="<?= $row[$i]['sid'] ?>"></td>
+                            <td style="vertical-align:middle;"><input class="checkbox" type="checkbox" name="check[]" id="check<?= $row[$i]['sid'] ?>" value="<?= $row[$i]['sid'] ?>"></td>
                             <td style="vertical-align:middle;"><?= (($page - 1) * $per_page) + ($i + 1) ?></td>
                             <td style="vertical-align:middle;"><?= $row[$i]['sid']; ?></td>
                             <td style="vertical-align:middle;"><?= $row[$i]['isbn']; ?></td>
@@ -416,10 +416,29 @@ foreach ($cates as $r) {
 </section>
 </div>
 <script>
-    function check_all(obj, cName) {
-        var checkboxes = document.getElementsByName(cName);
-        for (var i = 0; i < checkboxes.length; i++) {
-            checkboxes[i].checked = obj.checked;
+    $("#all_check").click(function() {
+        let checkAll = $(this).prop("checked");
+        $("tbody .checkbox").prop("checked", checkAll);
+        $("tbody .checkbox").prop("checked") ? $("tbody .checkbox").closest("tr").addClass('table-active') : $("tbody .checkbox").closest("tr").removeClass('table-active');
+    })
+
+    $("tbody").on("click", ".checkbox", function() {
+        dataCount()
+        let checked = $(this).prop("checked");
+        if (checked) {
+            $(this).closest("tr").addClass("table-active");
+        } else {
+            $(this).closest("tr").removeClass("table-active");
+        }
+    })
+
+    function dataCount() {
+        let dataCount = $("tbody .checkbox").length;
+        let checkedCount = $("tbody :checked").length;
+        if (checkedCount == dataCount) {
+            $("#all_check").prop("checked", true)
+        } else {
+            $("#all_check").prop("checked", false)
         }
     }
 

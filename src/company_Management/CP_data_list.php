@@ -6,7 +6,7 @@ $page = isset($_GET['page']) ? intval($_GET['page']) : 1;
 $search = isset($_GET['search']) ? $_GET['search'] : '';
 $col = isset($_GET['col']) ? $_GET['col'] : '';
 $ord = isset($_GET['ord']) ? $_GET['ord'] : '';
-$per_page = 8;    //一頁10筆
+$per_page = 8;    //一頁8筆
 $params = [];
 $where = ' WHERE 1 ';
 if (!empty($search)) {
@@ -45,6 +45,11 @@ foreach ($rows as $r) {
     $every_sid = $r['sid'];
     $stock[$r['sid']] = $pdo->query("SELECT SUM(`vb_books`.`stock`) FROM `vb_books` JOIN `cp_data_list` ON  $every_sid = `vb_books`.`publishing` AND  $every_sid = `cp_data_list`.`sid`")->fetch();
 }
+$order_data = [
+    'sid' => 'sid',
+    '出版社名' => 'cp_name',
+    '註冊日期' => 'cp_created_date',
+];
 ?>
 <?php include __DIR__ . '/../../pbook_index/__html_head.php' ?>
 <link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
@@ -83,19 +88,19 @@ foreach ($rows as $r) {
     }
 </style>
 <?php include __DIR__ . '/../../pbook_index/__html_body.php' ?>
-<?php for ($i = 1; $i <= 2; $i++) :?>
-<div style="z-index:999;width:100vw;height:100vh;display:none;background:rgba(0,0,0,0.2)" id="delete_confirm<?=$i?>" class="position-absolute">
-    <div class="delete update card">
-        <div class="delete card-body">
-            <label class="delete_text">您確認要刪除資料嗎?</label>
-            <div>
-                <button type="button" class="delete btn btn-danger" id="yes<?=$i?>">確認</button>
-                <button type="button" class="delete btn btn-warning no">取消</button>
+<?php for ($i = 1; $i <= 2; $i++) : ?>
+    <div style="z-index:999;width:100vw;height:100vh;display:none;background:rgba(0,0,0,0.2)" id="delete_confirm<?= $i ?>" class="position-absolute">
+        <div class="delete update card">
+            <div class="delete card-body">
+                <label class="delete_text">您確認要刪除資料嗎?</label>
+                <div>
+                    <button type="button" class="delete btn btn-danger" id="yes<?= $i ?>">確認</button>
+                    <button type="button" class="delete btn btn-warning no">取消</button>
+                </div>
             </div>
         </div>
     </div>
-</div>
-<?php endfor;?>
+<?php endfor; ?>
 <?php include __DIR__ . '/../../pbook_index/__navbar.php' ?>
 <!-- 右邊section資料欄位 -->
 <section class="position-relative test">
@@ -114,51 +119,23 @@ foreach ($rows as $r) {
                         資料排序：
                     </div>
                 </li>
-                <li class="nav-item">
-                    <div id="btnGroupDrop1" class="position-relative" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <button type="button" class="btn btn-outline-dark">
-                            <i class="fas fa-sort"></i>&nbsp;&nbsp;&nbsp;sid
-                        </button>
-                        <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-                            <a class="dropdown-item goto_orderby" href="#" data-order="<?php $params['col'] = 'sid';
-                                                                                        $params['ord'] = 'ASC';
-                                                                                        echo http_build_query($params) ?>">小→大</a>
-                            <a class="dropdown-item goto_orderby" href="#" data-order="<?php $params['col'] = 'sid';
-                                                                                        $params['ord'] = 'DESC';
-                                                                                        echo http_build_query($params) ?>">大→小</a>
+                <?php foreach ($order_data as $k => $v) : ?>
+                    <li class="nav-item">
+                        <div id="btnGroupDrop1" class="position-relative" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <button type="button" class="btn btn-outline-dark">
+                                <i class="fas fa-sort"></i>&nbsp;&nbsp;&nbsp;<?=$k?>
+                            </button>
+                            <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+                                <a class="dropdown-item goto_orderby" href="#" data-order="<?php $params['col'] = $v;
+                                                                                                $params['ord'] = 'ASC';
+                                                                                                echo http_build_query($params) ?>">小→大</a>
+                                <a class="dropdown-item goto_orderby" href="#" data-order="<?php $params['col'] = $v;
+                                                                                                $params['ord'] = 'DESC';
+                                                                                                echo http_build_query($params) ?>">大→小</a>
+                            </div>
                         </div>
-                    </div>
-                </li>
-                <li class="nav-item">
-                    <div id="btnGroupDrop1" class="position-relative" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <button type="button" class="btn btn-outline-dark">
-                            <i class="fas fa-sort"></i>&nbsp;&nbsp;&nbsp;出版社名
-                        </button>
-                        <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-                            <a class="dropdown-item goto_orderby" href="#" data-order="<?php $params['col'] = 'cp_name';
-                                                                                        $params['ord'] = 'ASC';
-                                                                                        echo http_build_query($params) ?>">小→大</a>
-                            <a class="dropdown-item goto_orderby" href="#" data-order="<?php $params['col'] = 'cp_name';
-                                                                                        $params['ord'] = 'DESC';
-                                                                                        echo http_build_query($params) ?>">大→小</a>
-                        </div>
-                    </div>
-                </li>
-                <li class="nav-item">
-                    <div id="" class="position-relative" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <button type="button" class="btn btn-outline-dark">
-                            <i class="fas fa-sort"></i>&nbsp;&nbsp;&nbsp;註冊日期
-                        </button>
-                        <div class="dropdown-menu" aria-labelledby="">
-                            <a class="dropdown-item goto_orderby" href="#" data-order="<?php $params['col'] = 'cp_created_date';
-                                                                                        $params['ord'] = 'ASC';
-                                                                                        echo http_build_query($params) ?>">小→大</a>
-                            <a class="dropdown-item goto_orderby" href="#" data-order="<?php $params['col'] = 'cp_created_date';
-                                                                                        $params['ord'] = 'DESC';
-                                                                                        echo http_build_query($params) ?>">大→小</a>
-                        </div>
-                    </div>
-                </li>
+                    </li>
+                <?php endforeach; ?>
             </ul>
             <ul class="nav justify-content-between">
                 <li class="nav-item">
@@ -279,7 +256,7 @@ foreach ($rows as $r) {
                     <ul class="nav justify-content-between">
                         <li class="nav-item">
                             <div id="btnGroupDrop1" class="position-relative" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <button type="submit" class="btn btn-outline-dark" id="cp_data_delete">
+                                <button type="submit" class="btn btn-outline-dark" id="delete_muti">
                                     <i class="fas fa-trash-alt"></i>&nbsp;&nbsp;&nbsp;批次刪除
                                 </button>
                             </div>
@@ -370,7 +347,7 @@ foreach ($rows as $r) {
         $("tbody :checkbox").prop("checked", $(this).prop("checked"));
     });
 
-    $("#cp_data_delete").click(function() {
+    $("#delete_muti").click(function() {
         $("#delete_confirm1").css("display", "block");
     });
 

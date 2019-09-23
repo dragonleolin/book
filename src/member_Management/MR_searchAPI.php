@@ -13,16 +13,23 @@ $per_page = isset($_GET['per_page']) ? intval($_GET['per_page']) : 10; // 每頁
 if (!empty($search1)) {
     $search = $pdo->quote("%$search1%");
     $where .= " AND (`MR_name` LIKE $search OR `MR_email` LIKE $search OR `MR_mobile` LIKE $search OR `MR_number` LIKE $search )";
-    
+
     $sql = "SELECT * FROM `mr_information` $where ORDER BY `sid` LIMIT " . ($page - 1) * $per_page . "," . $per_page;
     $rows = $pdo->query($sql)->fetchAll();
-    
+
     $count = "SELECT COUNT(1) FROM `mr_information` $where"; //用count計算出總筆數
     $totalRows = $pdo->query($count)->fetch(PDO::FETCH_NUM)[0];
     // echo "$totalRows <br>";
     $totalPage = ceil($totalRows / $per_page); //ceil()無條件進位
+    echo 'totalRows='.$totalRows;
 
+    // if ($totalRows == 0) {
+    //     echo 'totalRows='.$totalRows;
+    //     header('Location: searchFail.php');
+    //     exit;
+    // }
 }
+
 $result = [
     'params' => http_build_query($params),
     'totalPage' => $totalPage,
