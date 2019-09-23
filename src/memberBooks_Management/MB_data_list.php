@@ -48,6 +48,7 @@ $t_stmt = $pdo->query($page_sql);
 $row = $t_stmt->fetchAll();
 ?>
 
+
 <?php include __DIR__ . '/../../pbook_index/__html_head.php' ?>
 <style>
     body {

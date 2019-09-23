@@ -246,6 +246,7 @@ $mr_no = $mrNo_s->fetchAll();
         }
 
     })
+    
 
     function isbn_test() {
         let mb_isbn = document.querySelector('#mb_isbn').value;

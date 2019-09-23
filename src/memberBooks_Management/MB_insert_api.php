@@ -70,6 +70,7 @@ $sql = "INSERT INTO `mb_books`(
 
 $stmt = $pdo->prepare($sql); 
 
+
 $stmt->execute([
     $_POST['mb_isbn'],
     $_POST['mb_name'],
