@@ -141,14 +141,14 @@ require __DIR__ . '/pbook_index/__admin_required.php';
                     <button type="button" class="aside card-header btn btn-info" id="headingFive">
                         <div class="aside_hover" data-toggle="collapse" data-target="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
                             <img class="aside_logo" src="images/icon_BR_m.svg" alt="">
-                            <span class="aside_text">書評人管理</span>
+                            <span class="aside_text">書評家管理</span>
                             <i class="fas fa-caret-down"></i>
                         </div>
                     </button>
                     <div id="collapseFive" class="collapse" aria-labelledby="headingFive" data-parent="#accordion">
                         <button type="button" class="btn btn-light sub_aside_text" onclick="location.href='src/Book_review/BR_data_list.php'">
                             <i class="fas fa-caret-right"></i>
-                            <span>書評人總表</span>
+                            <span>書評總表</span>
                         </button>
                         <button type="button" class="btn btn-light sub_aside_text" onclick="location.href='src/Book_review/BR_insert.php'">
                             <i class="fas fa-caret-right"></i>
