@@ -22,7 +22,8 @@ body {
             <!-- 每個人填資料的區塊 -->
             <div class="container">
                 <section class="d-flex" style="min-width:600px;">
-                    <form name="BR_form" onsubmit="return check_form()" style=" visibility:visible" id="main_datalist" class="row">
+                    <form name="BR_form" style=" visibility:visible" id="main_datalist" class="row" method="post"
+                        onsubmit="return check_form()">
                         <div class="col-4">
                             <div class="form-group">
                                 <label for="BR_name" class="update_label">書評人姓名</label>
@@ -93,8 +94,8 @@ body {
                                     <div style="height: 200px;width: 230px; padding: 5px;">
                                         <img style="object-fit: contain;width: 100%;height: 100%" id="demo" />
                                     </div>
-                                    <button class="btn btn-outline-primary my-2 my-sm-0" type="button"
-                                        onclick="selUpload()">
+                                    <button id="photo_upload" class="btn btn-outline-primary my-2 my-sm-0"
+                                        type="button">
                                         <i class="fas fa-plus-circle" style="margin-right:5px"></i>選擇檔案
                                     </button>
                                 </div>
@@ -128,9 +129,10 @@ body {
 
 
     <script>
-    function selUpload() {
-        document.querySelector('#BR_photo').click();
-    }
+    $('#photo_upload').click(function() {
+        $('#BR_photo').click();
+    })
+
 
 
 
@@ -151,48 +153,53 @@ body {
     let photo_insert = document.querySelector('#photo_insert');
     let i, s, item;
 
-    const error_text = [{
-            id: 'BR_name',
-            checker: /^\S{2,}/,
-            info: '請輸入正確姓名格式'
-        },
-        {
-            id: 'BR_phone',
-            checker: /^09\d{2}\-?\d{3}\-?\d{3}$/,
-            info: '請輸入正確電話格式'
-        },
-        {
-            id: 'BR_password',
-            checker: /\w{8}/,
-            info: '請輸入正確密碼格式'
-        },
-        {
-            id: 'BR_email',
-            checker: /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i,
-            info: '請輸入正確信箱格式'
-        },
-        {
-            id: 'BR_birthday',
-            checker: /^\d{4}-\d{2}-\d{2}$/,
-            info: '請輸入生日格式'
-        },
-        {
-            id: 'BR_address',
-            checker: /.+/,
-            info: '請輸入地址格式'
-        },
-    ];
+
+
+
 
 
     //拿到對應輸入欄位 ID 顯示訊息的小文字框
-    for (i in error_text) {
-        item = error_text[i];
-        item.el = document.querySelector('#' + item.id);
-        item.error_info = document.querySelector('#' + item.id + 'Help');
-    }
+
 
     function check_form() {
-        let fd = new FormData(document.BR_form);
+
+        const error_text = [{
+                id: 'BR_name',
+                checker: /^\S{2,}/,
+                info: '請輸入正確姓名格式'
+            },
+            {
+                id: 'BR_phone',
+                checker: /^09\d{2}\-?\d{3}\-?\d{3}$/,
+                info: '請輸入正確電話格式'
+            },
+            {
+                id: 'BR_password',
+                checker: /\w{8}/,
+                info: '請輸入正確密碼格式'
+            },
+            {
+                id: 'BR_email',
+                checker: /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i,
+                info: '請輸入正確信箱格式'
+            },
+            {
+                id: 'BR_birthday',
+                checker: /^\d{4}-\d{2}-\d{2}$/,
+                info: '請輸入生日格式'
+            },
+            {
+                id: 'BR_address',
+                checker: /\S+/,
+                info: '請輸入地址格式'
+            },
+        ];
+
+        for (i in error_text) {
+            item = error_text[i];
+            item.el = document.querySelector('#' + item.id);
+            item.error_info = document.querySelector('#' + item.id + 'Help');
+        }
 
 
         for (i in error_text) {
@@ -201,8 +208,9 @@ body {
             item.error_info.innerHTML = '';
         }
 
-        insert_btn.style.display = 'none';
-        let passcheck = true;
+        // insert_btn.style.display = 'none';
+        let check_pass = true;
+
         for (i in error_text) {
             item = error_text[i];
 
@@ -210,34 +218,24 @@ body {
                 item.el.style.border = '1px solid red';
                 item.error_info.style.color = 'red';
                 item.error_info.innerHTML = item.info;
-                passcheck = false;
+                check_pass = false
             }
-
         }
-
-        if (passcheck) {
-            fetch('BR_insert_api.php', {
-                    method: 'POST',
-                    body: fd,
-                })
-                .then(response => {
-                    return response.json();
-                })
-                .then(json => {
-                    insert_btn.style.display = 'block';
-                    if (json.success) {
-                        main_datalist_hidden.style.visibility = 'hidden';
-                        photo_insert.style.visibility = 'hidden';
-                        insert_info.style.display = 'block'
-                        setTimeout(function() {
-                            location.href = 'BR_data_list.php';
-                        }, 1500);
-
-                    } else {
-                        console.log('1')
-                    }
-
-                });
+        if (check_pass) {
+            $.ajax({
+                url: 'BR_insert_api.php',
+                method: 'POST',
+                data: $('#main_datalist').serialize(),
+                success: function(data) {
+                    console.log(data)
+                    $('#main_datalist').css('visibility', 'hidden')
+                    $('#photo_insert').css('visibility', 'hidden')
+                    $('#success_insert').css('display', 'block')
+                    setTimeout(function() {
+                        location.href = 'BR_data_list.php';
+                    }, 1500)
+                }
+            })
         } else {
             insert_btn.style.display = 'block';
         }
