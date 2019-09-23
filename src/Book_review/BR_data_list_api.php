@@ -2,7 +2,7 @@
 require __DIR__. '/BR__connect_db.php';
 
 
-$sql = "SELECT * FROM `br_create` ORDER BY `br_create`.`sid` ASC";
+$sql = "SELECT * FROM `mr_information` WHERE `MR_personLevel`= '6'";
 
 //PDO
 $stmt = $pdo->prepare($sql);
