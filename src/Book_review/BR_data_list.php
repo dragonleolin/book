@@ -21,7 +21,7 @@ $page_title = '書評人資料總表';
         <div class="container">
             <nav class="navbar justify-content-between" style="padding: 0px;width: 80vw;">
                 <div>
-                    <h4>書評人總表</h4>
+                    <h4>書評總表</h4>
                     <div class="title_line"></div>
                 </div>
                 <ul class="nav justify-content-between">
