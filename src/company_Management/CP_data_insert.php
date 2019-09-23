@@ -256,22 +256,23 @@ $form_data2 = [
     let s, item;
     for (s in required_fields) {
         item = required_fields[s];
-        item.el = document.querySelector('#' + item.id);
-        item.infoEl = document.querySelector('#' + item.id + 'Help');
+        item.el = $('#' + item.id);
+        item.infoEl = $('#' + item.id + 'Help');
     }
 
     function checkForm() {
         for (s in required_fields) {
             item = required_fields[s];
-            item.el.style.border = '1px solid #ccc';
-            item.infoEl.innerHTML = '';
+            // item.el.style.border = '1px solid #ccc';
+            item.el.css("border", "1px solid #ccc");
+            item.infoEl.text("");
         }
         let isPass = true;
         for (s in required_fields) {
             item = required_fields[s];
-            if (!item.pattern.test(item.el.value)) {
-                item.el.style.border = '1px solid red';
-                item.infoEl.innerHTML = item.info;
+            if (!item.pattern.test(item.el.val())) {
+                item.el.css("border", "1px solid red");
+                item.infoEl.text(item.info);
                 isPass = false;
             }
         }

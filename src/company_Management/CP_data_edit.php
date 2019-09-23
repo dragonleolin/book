@@ -176,22 +176,22 @@ foreach ($stmt2 as $k => $v) {
     let s, item;
     for (s in required_fields) {
         item = required_fields[s];
-        item.el = $('#' + item.id); //item.el拿到input的id
-        item.info_el = $('#' + item.id + 'Help'); //item.info_el拿到small的id
+        item.el = $('#' + item.id);
+        item.infoEl = $('#' + item.id + 'Help');
     }
 
     function checkForm() {
         for (s in required_fields) {
             item = required_fields[s];
             item.el.css("border", "1px solid #ccc");
-            item.info_el.text("");
+            item.infoEl.text("");
         }
         let isPass = true;
         for (s in required_fields) {
             item = required_fields[s];
-            if (!item.pattern.test(item.el.value)) {
-                tem.el.css("border", "1px solid red");
-                item.info_el.text(item.info);
+            if (!item.pattern.test(item.el.val())) {
+                item.el.css("border", "1px solid red");
+                item.infoEl.text(item.info);
                 isPass = false;
             }
         }
