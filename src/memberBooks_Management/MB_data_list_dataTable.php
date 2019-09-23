@@ -16,6 +16,7 @@ $page = isset($_GET['page']) ? intval($_GET['page']) : 1;
 
 $per_page = 10;
 
+
 //搜尋功能
 $search = isset($_GET['search']) ? $_GET['search'] : '';
 $params = [];

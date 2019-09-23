@@ -214,7 +214,6 @@ $mr_no = $mrNo_s->fetchAll();
     </div>
 </section>
 <!-- 以下為修改或新增成功才會跳出來的顯示框 -->
-
 </div>
 
 <script>

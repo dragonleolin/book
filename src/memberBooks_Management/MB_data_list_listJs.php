@@ -20,6 +20,7 @@ $totalRows = $pdo->query($t_sql)->fetch(PDO::FETCH_NUM)[0];
 $page_sql = "SELECT `mb_books`.*, `vb_categories`.`name` categories_name 
 FROM `mb_books`  LEFT JOIN `vb_categories` ON `mb_books`.`mb_categories` = `vb_categories`.`sid` $where ORDER BY `mb_sid`";
 
+
 $t_stmt = $pdo->query($page_sql);
 $row = $t_stmt->fetchAll();
 ?>
