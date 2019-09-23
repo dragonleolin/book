@@ -35,7 +35,7 @@ $totalPages = ceil($totalRows / $per_page);
 
 
 $page_sql = "SELECT `mb_books`.*, `vb_categories`.`name` categories_name 
-FROM `mb_books`  LEFT JOIN `vb_categories` ON `mb_books`.`mb_categories` = `vb_categories`.`sid` $where ORDER BY `mb_sid`" ;
+FROM `mb_books`  LEFT JOIN `vb_categories` ON `mb_books`.`mb_categories` = `vb_categories`.`sid` $where ORDER BY `mb_sid`";
 
 $t_stmt = $pdo->query($page_sql);
 $row = $t_stmt->fetchAll();
@@ -43,6 +43,7 @@ $row = $t_stmt->fetchAll();
 
 <?php include __DIR__ . '/../../pbook_index/__html_head.php' ?>
 <link rel="stylesheet" href="//cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
+<link href="./css/lightbox.css" rel="stylesheet" />
 <style>
     body {
         background: url(../../images/bg.png) repeat center top;
@@ -116,7 +117,7 @@ $row = $t_stmt->fetchAll();
                         <?php
                         foreach ($row as $r) : ?>
                             <tr>
-                                <td style="vertical-align:middle;"><input type="checkbox" class="j-checkbox" name="check[]" value="<?= $r['mb_sid']?>"></td>
+                                <td style="vertical-align:middle;"><input type="checkbox" class="j-checkbox" name="check[]" value="<?= $r['mb_sid'] ?>"></td>
                                 <td id="sid"><?= $r['mb_sid'] ?></td>
                                 <td><?= htmlentities($r['mb_isbn']) ?></td>
                                 <td class="textHidden"><?= htmlentities($r['mb_name']) ?></td>
@@ -136,21 +137,21 @@ $row = $t_stmt->fetchAll();
                                                     </button>
                                                 </div>
 
-                                                <div id="carouselExampleFade" class="carousel slide" data-ride="carousel" data-interval="1500">
-                                                    <div class="carousel-inner">
-                                                        <?php
-                                                            $a = json_decode($r['mb_pic']);
-                                                            // var_dump($a);
-                                                            for ($i = 0; $i < count($a); $i++) :
-                                                                // var_dump($a[$i]);
-                                                                ?>
-                                                            <div class="carousel-item <?= $i == 0 ? 'active' : '' ?>">
-                                                                <img src="<?= 'mb_images/' . $a[$i]; ?>" class="d-block w-100" alt="...">
-                                                            </div>
-                                                        <?php endfor; ?>
-                                                    </div>
-                                                </div>
 
+                                                <?php
+                                                    $a = json_decode($r['mb_pic']);
+                                                    ?>
+                                                <a href="<?= 'mb_images/' . $a[0]; ?>" data-lightbox="image">
+                                                    <img src="<?= 'mb_images/' . $a[0]; ?>" class="d-block w-100" alt="...">
+                                                </a>
+                                                <a href="<?= 'mb_images/' . $a[1]; ?>" data-lightbox="image">
+                                                    <img src="<?= 'mb_images/' . $a[1]; ?>" class="d-block w-100" alt="...">
+                                                </a>
+                                                <a href="<?= 'mb_images/' . $a[2]; ?>" data-lightbox="image">
+                                                    <img src="<?= 'mb_images/' . $a[2]; ?>" class="d-block w-100" alt="...">
+                                                </a>
+
+                                                
                                                 <div class="modal-footer">
                                                     <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
                                                     <button type="button" id="changeImg" class="btn btn-primary" onclick="change_img(<?= $r['mb_sid'] ?>)">修改圖片</button>
@@ -208,11 +209,18 @@ $row = $t_stmt->fetchAll();
 </section>
 
 <script src="//cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
-<!-- <script src="MB_sort.js"></script> -->
+<script src="./js/lightbox.js"></script>
 <script>
-    $(document).ready( function () {
-    $('#sortable').DataTable(); 
-    } );
+    lightbox.option({
+        'resizeDuration': 200,
+        'wrapAround': false,
+        'showImageNumberLabel': false
+    })
+</script>
+<script>
+    $(document).ready(function() {
+        $('#sortable').DataTable();
+    });
 
     $(function() {
         //全選全不選功能模塊
@@ -239,8 +247,8 @@ $row = $t_stmt->fetchAll();
     // var form = document.getElementById('form1')
     //JQ的getElement要使用[0]
     let form = $('#form1')[0]
-    
-    $('#delete_multiple').click(function(){
+
+    $('#delete_multiple').click(function() {
         form.action = 'MB_deleteMuti.php'
         console.log(form.action)
         form.submit();
