@@ -28,7 +28,7 @@
 
 <div class="d-flex flex-row my_content">
     <!-- 左邊aside選單欄位 -->
-    
+
     <aside class="d-flex aside_heigh" style="position:fixed;left:0px;height:100%">
         <div id="accordion">
             <div class="aside card">
@@ -192,4 +192,4 @@
             </div>
         </div>
     </aside>
-    <aside style="width:250px;height:100%"></aside>
+    <aside style="min-width:250px;height:100%"></aside>

@@ -57,7 +57,6 @@ foreach ($cates as $r) {
     $cate_dict[$r['sid']] = $r['name'];
 }
 
-
 ?>
 
 <?php include __DIR__ . '/../../pbook_index/__html_head.php' ?>
@@ -236,7 +235,7 @@ foreach ($cates as $r) {
                             SID</th>
                         <th scope="col">ISBN</th>
                         <th scope="col">書籍名稱</th>
-                        <th scope="col">詳細資料</th>
+                        <th scope="col">詳細內容</th>
                         <th scope="col">
                             <i class="fas fa-sort-amount-down-alt" style="<?= ($col == 'categories' &&  $ord == 'ASC') ? 'display:inline-block;;color:#ffc408' : 'display:none;' ?>"></i>
                             <i class="fas fa-sort-amount-down" style="<?= ($col == 'categories' && $ord == 'DESC') ? 'display:inline-block;color:#ffc408' : 'display:none;' ?>"></i>
@@ -250,11 +249,12 @@ foreach ($cates as $r) {
                             <i class="fas fa-sort-amount-down-alt" style="<?= ($col == 'publish_date' &&  $ord == 'ASC') ? 'display:inline-block;color:#ffc408' : 'display:none;' ?>"></i>
                             <i class="fas fa-sort-amount-down" style="<?= ($col == 'publish_date' && $ord == 'DESC') ? 'display:inline-block;color:#ffc408' : 'display:none;' ?>"></i>
                             出版日期</th>
+                        <th scope="col">版次</th>
                         <th scope="col">
                             <i class="fas fa-sort-amount-down-alt" style="<?= ($col == 'fixed_price' &&  $ord == 'ASC') ? 'display:inline-block;color:#ffc408' : 'display:none;' ?>"></i>
                             <i class="fas fa-sort-amount-down" style="<?= ($col == 'fixed_price' && $ord == 'DESC') ? 'display:inline-block;color:#ffc408' : 'display:none;' ?>"></i>
                             定價</th>
-                        <th scope="col">狀態</th>
+                        <th scope="col">頁數</th>
                         <th scope="col">
                             <i class="fas fa-sort-amount-down-alt" style="<?= ($col == 'stock' &&  $ord == 'ASC') ? 'display:inline-block;color:#ffc408' : 'display:none;' ?>"></i>
                             <i class="fas fa-sort-amount-down" style="<?= ($col == 'stock' && $ord == 'DESC') ? 'display:inline-block;color:#ffc408' : 'display:none;' ?>"></i>
@@ -267,6 +267,7 @@ foreach ($cates as $r) {
                     <?php
                     $row = $books_stmt->fetchAll();
                     for ($i = 0; $i < count($row); $i++) : ?>
+                    
                         <tr>
                             <td style="vertical-align:middle;"><input type="checkbox" name="check[]" id="check<?= $row[$i]['sid'] ?>" value="<?= $row[$i]['sid'] ?>"></td>
                             <td style="vertical-align:middle;"><?= (($page - 1) * $per_page) + ($i + 1) ?></td>
@@ -321,8 +322,9 @@ foreach ($cates as $r) {
                             <td style="vertical-align:middle;"><?= $row[$i]['author']; ?></td>
                             <td style="vertical-align:middle;"><?= $row[$i]['publishing']; ?></td>
                             <td style="vertical-align:middle;"><?= $row[$i]['publish_date']; ?></td>
+                            <td style="vertical-align:middle;"><?= $row[$i]['version']; ?></td>
                             <td style="vertical-align:middle;"><?= $row[$i]['fixed_price']; ?></td>
-                            <td style="vertical-align:middle;"><?= $row[$i]['status']; ?></td>
+                            <td style="vertical-align:middle;"><?= $row[$i]['page']; ?></td>
                             <td style="vertical-align:middle;"><?= $row[$i]['stock']; ?></td>
                             <td style="vertical-align:middle;"><a href="vb_data_update.php?sid=<?= $row[$i]['sid'] ?>"><i class="fas fa-edit"></i></a></td>
                             <td style="vertical-align:middle;"><a href="#" onclick="delete_one(<?= $row[$i]['sid'] ?>)" id="btn_delete"><i class="fas fa-trash-alt"></i></a></td>
@@ -407,20 +409,6 @@ foreach ($cates as $r) {
                         </button>
                     </div>
                 </li>
-                <!-- <li class="nav-item">
-                    <div id="btnGroupDrop1" class="position-relative" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <button type="button" class="btn btn-outline-dark" onclick="vb_data_update('check[]')">
-                            <i class="fas fa-edit"></i>&nbsp;&nbsp;&nbsp;修改
-                        </button>
-                    </div>
-                </li> -->
-                <!-- <li class="nav-item">
-                    <div id="btnGroupDrop1" class="position-relative" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <button type="submit" class="btn btn-outline-dark">
-                            <i class="fas fa-copy"></i>&nbsp;&nbsp;&nbsp;複製
-                        </button>
-                    </div>
-                </li> -->
             </ul>
         </nav>
 
@@ -454,18 +442,15 @@ foreach ($cates as $r) {
 
 
     let b;
+
     function change_data(sid) {
         b = sid;
         location = 'vb_data_update.php?sid=' + b;
     }
 
-    function next_data(i){
-        i++;
-        return i;
-    }
-
 
     let a;
+
     function delete_one(sid) {
         a = sid;
         let my_delete = document.querySelector('#my_delete');
