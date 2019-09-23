@@ -214,110 +214,112 @@ foreach ($cates as $r) {
 
         <!-- 每個人填資料的區塊 -->
         <div style="margin-top: 1.5rem">
-            <table class="table table-striped table-bordered" style="text-align: center;width:83vw">
-                <thead>
-                    <tr>
-                        <th scope="col"><input type="checkbox" id="all_check" value="all_check" name="all_check"></th>
-                        <th scope="col">No.</th>
-                        <th scope="col">
-                            <i class="fas fa-sort-amount-down-alt" style="<?= ($col == 'sid' &&  $ord == 'ASC') ? 'display:inline-block;color:#ffc408' : 'display:none;' ?>"></i>
-                            <i class="fas fa-sort-amount-down" style="<?= ($col == 'sid' && $ord == 'DESC') ? 'display:inline-block;color:#ffc408' : 'display:none;' ?>"></i>
-                            SID</th>
-                        <th scope="col">ISBN</th>
-                        <th scope="col">書籍名稱</th>
-                        <th scope="col">詳細內容</th>
-                        <th scope="col">
-                            <i class="fas fa-sort-amount-down-alt" style="<?= ($col == 'categories' &&  $ord == 'ASC') ? 'display:inline-block;;color:#ffc408' : 'display:none;' ?>"></i>
-                            <i class="fas fa-sort-amount-down" style="<?= ($col == 'categories' && $ord == 'DESC') ? 'display:inline-block;color:#ffc408' : 'display:none;' ?>"></i>
-                            分類</th>
-                        <th scope="col">作者</th>
-                        <th scope="col">出版社</th>
-                        <th scope="col">
-                            <i class="fas fa-sort-amount-down-alt" style="<?= ($col == 'publish_date' &&  $ord == 'ASC') ? 'display:inline-block;color:#ffc408' : 'display:none;' ?>"></i>
-                            <i class="fas fa-sort-amount-down" style="<?= ($col == 'publish_date' && $ord == 'DESC') ? 'display:inline-block;color:#ffc408' : 'display:none;' ?>"></i>
-                            出版日期</th>
-                        <th scope="col">版次</th>
-                        <th scope="col">
-                            <i class="fas fa-sort-amount-down-alt" style="<?= ($col == 'fixed_price' &&  $ord == 'ASC') ? 'display:inline-block;color:#ffc408' : 'display:none;' ?>"></i>
-                            <i class="fas fa-sort-amount-down" style="<?= ($col == 'fixed_price' && $ord == 'DESC') ? 'display:inline-block;color:#ffc408' : 'display:none;' ?>"></i>
-                            定價</th>
-                        <th scope="col">頁數</th>
-                        <th scope="col">
-                            <i class="fas fa-sort-amount-down-alt" style="<?= ($col == 'stock' &&  $ord == 'ASC') ? 'display:inline-block;color:#ffc408' : 'display:none;' ?>"></i>
-                            <i class="fas fa-sort-amount-down" style="<?= ($col == 'stock' && $ord == 'DESC') ? 'display:inline-block;color:#ffc408' : 'display:none;' ?>"></i>
-                            庫存</th>
-                        <th scope="col">修改</th>
-                        <th scope="col">刪除</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php
-                    $row = $books_stmt->fetchAll();
-                    for ($i = 0; $i < count($row); $i++) : ?>
+            <form method="post" id="delete_form" enctype="multipart/form-data">
+                <table class="table table-striped table-bordered" style="text-align: center;width:83vw">
+                    <thead>
                         <tr>
-                            <td style="vertical-align:middle;"><input class="checkbox" type="checkbox" name="check[]" id="check<?= $row[$i]['sid'] ?>" value="<?= $row[$i]['sid'] ?>"></td>
-                            <td style="vertical-align:middle;"><?= (($page - 1) * $per_page) + ($i + 1) ?></td>
-                            <td style="vertical-align:middle;"><?= $row[$i]['sid']; ?></td>
-                            <td style="vertical-align:middle;"><?= $row[$i]['isbn']; ?></td>
-                            <td style="vertical-align:middle;"><?= $row[$i]['name']; ?></td>
-                            <td style="vertical-align:middle;">
-                                <button type="button" class="btn btn-outline-primary" data-toggle="modal" data-target="#<?= 'book' . $row[$i]['sid']; ?>">
-                                    <i class="fas fa-plus-circle"></i>
-                                    顯示
-                                </button>
-                                <div class="modal fade" id="<?= 'book' . $row[$i]['sid']; ?>" tabindex="-1" role="dialog" aria-labelledby="<?= 'book' . $row[$i]['sid']; ?>Title" aria-hidden="true">
-                                    <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h5 class="modal-title" id="<?= 'book' . $row[$i]['sid']; ?>Title"><?= $row[$i]['name']; ?></h5>
-                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                    <span aria-hidden="true">&times;</span>
-                                                </button>
-                                            </div>
-                                            <div class="d-flex" style="padding:20px">
-                                                <div style="width:350px">
-                                                    <img style="object-fit: contain;width: 100%;height: 100%;" src="<?= '../venderBooks_Management/vb_images/' . $row[$i]['pic']; ?>" alt="">
+                            <th scope="col"><input type="checkbox" id="all_check" value="all_check" name="all_check"></th>
+                            <th scope="col">No.</th>
+                            <th scope="col">
+                                <i class="fas fa-sort-amount-down-alt" style="<?= ($col == 'sid' &&  $ord == 'ASC') ? 'display:inline-block;color:#ffc408' : 'display:none;' ?>"></i>
+                                <i class="fas fa-sort-amount-down" style="<?= ($col == 'sid' && $ord == 'DESC') ? 'display:inline-block;color:#ffc408' : 'display:none;' ?>"></i>
+                                SID</th>
+                            <th scope="col">ISBN</th>
+                            <th scope="col">書籍名稱</th>
+                            <th scope="col">詳細內容</th>
+                            <th scope="col">
+                                <i class="fas fa-sort-amount-down-alt" style="<?= ($col == 'categories' &&  $ord == 'ASC') ? 'display:inline-block;;color:#ffc408' : 'display:none;' ?>"></i>
+                                <i class="fas fa-sort-amount-down" style="<?= ($col == 'categories' && $ord == 'DESC') ? 'display:inline-block;color:#ffc408' : 'display:none;' ?>"></i>
+                                分類</th>
+                            <th scope="col">作者</th>
+                            <th scope="col">出版社</th>
+                            <th scope="col">
+                                <i class="fas fa-sort-amount-down-alt" style="<?= ($col == 'publish_date' &&  $ord == 'ASC') ? 'display:inline-block;color:#ffc408' : 'display:none;' ?>"></i>
+                                <i class="fas fa-sort-amount-down" style="<?= ($col == 'publish_date' && $ord == 'DESC') ? 'display:inline-block;color:#ffc408' : 'display:none;' ?>"></i>
+                                出版日期</th>
+                            <th scope="col">版次</th>
+                            <th scope="col">
+                                <i class="fas fa-sort-amount-down-alt" style="<?= ($col == 'fixed_price' &&  $ord == 'ASC') ? 'display:inline-block;color:#ffc408' : 'display:none;' ?>"></i>
+                                <i class="fas fa-sort-amount-down" style="<?= ($col == 'fixed_price' && $ord == 'DESC') ? 'display:inline-block;color:#ffc408' : 'display:none;' ?>"></i>
+                                定價</th>
+                            <th scope="col">頁數</th>
+                            <th scope="col">
+                                <i class="fas fa-sort-amount-down-alt" style="<?= ($col == 'stock' &&  $ord == 'ASC') ? 'display:inline-block;color:#ffc408' : 'display:none;' ?>"></i>
+                                <i class="fas fa-sort-amount-down" style="<?= ($col == 'stock' && $ord == 'DESC') ? 'display:inline-block;color:#ffc408' : 'display:none;' ?>"></i>
+                                庫存</th>
+                            <th scope="col">修改</th>
+                            <th scope="col">刪除</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php
+                        $row = $books_stmt->fetchAll();
+                        for ($i = 0; $i < count($row); $i++) : ?>
+                            <tr>
+                                <td style="vertical-align:middle;"><input class="checkbox" type="checkbox" name="check[]" id="check<?= $row[$i]['sid'] ?>" value="<?= $row[$i]['sid'] ?>"></td>
+                                <td style="vertical-align:middle;"><?= (($page - 1) * $per_page) + ($i + 1) ?></td>
+                                <td style="vertical-align:middle;"><?= $row[$i]['sid']; ?></td>
+                                <td style="vertical-align:middle;"><?= $row[$i]['isbn']; ?></td>
+                                <td style="vertical-align:middle;"><?= $row[$i]['name']; ?></td>
+                                <td style="vertical-align:middle;">
+                                    <button type="button" class="btn btn-outline-primary" data-toggle="modal" data-target="#<?= 'book' . $row[$i]['sid']; ?>">
+                                        <i class="fas fa-plus-circle"></i>
+                                        顯示
+                                    </button>
+                                    <div class="modal fade" id="<?= 'book' . $row[$i]['sid']; ?>" tabindex="-1" role="dialog" aria-labelledby="<?= 'book' . $row[$i]['sid']; ?>Title" aria-hidden="true">
+                                        <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="<?= 'book' . $row[$i]['sid']; ?>Title"><?= $row[$i]['name']; ?></h5>
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
                                                 </div>
-                                                <div style="text-align:left;width:300px">
-                                                    <h5>・ISBN：<?= $row[$i]['isbn']; ?></h5>
-                                                    <h5>・分類：<?= $cate_dict[$row[$i]['categories']]; ?></h5>
-                                                    <h5>・作者：<?= $row[$i]['author']; ?></h5>
-                                                    <h5>・出版社：<?= $row[$i]['publishing']; ?></h5>
-                                                    <h5>・出版日期：<?= $row[$i]['publish_date']; ?></h5>
-                                                    <h5>・版次：<?= $row[$i]['version']; ?></h5>
-                                                    <h5>・定價：NT<?= $row[$i]['fixed_price']; ?></h5>
-                                                    <h5>・頁數：<?= $row[$i]['page']; ?>頁</h5>
+                                                <div class="d-flex" style="padding:20px">
+                                                    <div style="width:350px">
+                                                        <img style="object-fit: contain;width: 100%;height: 100%;" src="<?= '../venderBooks_Management/vb_images/' . $row[$i]['pic']; ?>" alt="">
+                                                    </div>
+                                                    <div style="text-align:left;width:300px">
+                                                        <h5>・ISBN：<?= $row[$i]['isbn']; ?></h5>
+                                                        <h5>・分類：<?= $cate_dict[$row[$i]['categories']]; ?></h5>
+                                                        <h5>・作者：<?= $row[$i]['author']; ?></h5>
+                                                        <h5>・出版社：<?= $row[$i]['publishing']; ?></h5>
+                                                        <h5>・出版日期：<?= $row[$i]['publish_date']; ?></h5>
+                                                        <h5>・版次：<?= $row[$i]['version']; ?></h5>
+                                                        <h5>・定價：NT<?= $row[$i]['fixed_price']; ?></h5>
+                                                        <h5>・頁數：<?= $row[$i]['page']; ?>頁</h5>
+                                                    </div>
+                                                    <div style="text-align:left;width:400px;z-index:999">
+                                                        <h5>書籍簡介：</h5>
+                                                        <h5><?= $row[$i]['introduction']; ?></h5>
+                                                    </div>
+                                                    <div style="width:130px;height:130px;position:absolute;bottom:15%;right:3%;">
+                                                        <img style="object-fit: contain;width: 100%;height: 100%;" src="../../images/品書印章.png" alt="">
+                                                    </div>
                                                 </div>
-                                                <div style="text-align:left;width:400px;z-index:999">
-                                                    <h5>書籍簡介：</h5>
-                                                    <h5><?= $row[$i]['introduction']; ?></h5>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                                                    <button type="button" class="btn btn-primary" onclick="change_data(<?= $row[$i]['sid'] ?>)">修改資料</button>
                                                 </div>
-                                                <div style="width:130px;height:130px;position:absolute;bottom:15%;right:3%;">
-                                                    <img style="object-fit: contain;width: 100%;height: 100%;" src="../../images/品書印章.png" alt="">
-                                                </div>
-                                            </div>
-                                            <div class="modal-footer">
-                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
-                                                <button type="button" class="btn btn-primary" onclick="change_data(<?= $row[$i]['sid'] ?>)">修改資料</button>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                            </td>
-                            <td style="vertical-align:middle;"><?= $cate_dict[$row[$i]['categories']]; ?></td>
-                            <td style="vertical-align:middle;"><?= $row[$i]['author']; ?></td>
-                            <td style="vertical-align:middle;"><?= $row[$i]['publishing']; ?></td>
-                            <td style="vertical-align:middle;"><?= $row[$i]['publish_date']; ?></td>
-                            <td style="vertical-align:middle;"><?= $row[$i]['version']; ?></td>
-                            <td style="vertical-align:middle;"><?= $row[$i]['fixed_price']; ?></td>
-                            <td style="vertical-align:middle;"><?= $row[$i]['page']; ?></td>
-                            <td style="vertical-align:middle;"><?= $row[$i]['stock']; ?></td>
-                            <td style="vertical-align:middle;"><a href="vb_data_update.php?sid=<?= $row[$i]['sid'] ?>"><i class="fas fa-edit"></i></a></td>
-                            <td style="vertical-align:middle;"><a href="#" onclick="delete_one(<?= $row[$i]['sid'] ?>)" id="btn_delete"><i class="fas fa-trash-alt"></i></a></td>
-                        </tr>
-                    <?php endfor; ?>
-                </tbody>
-            </table>
+                                </td>
+                                <td style="vertical-align:middle;"><?= $cate_dict[$row[$i]['categories']]; ?></td>
+                                <td style="vertical-align:middle;"><?= $row[$i]['author']; ?></td>
+                                <td style="vertical-align:middle;"><?= $row[$i]['publishing']; ?></td>
+                                <td style="vertical-align:middle;"><?= $row[$i]['publish_date']; ?></td>
+                                <td style="vertical-align:middle;"><?= $row[$i]['version']; ?></td>
+                                <td style="vertical-align:middle;"><?= $row[$i]['fixed_price']; ?></td>
+                                <td style="vertical-align:middle;"><?= $row[$i]['page']; ?></td>
+                                <td style="vertical-align:middle;"><?= $row[$i]['stock']; ?></td>
+                                <td style="vertical-align:middle;"><a href="vb_data_update.php?sid=<?= $row[$i]['sid'] ?>"><i class="fas fa-edit"></i></a></td>
+                                <td style="vertical-align:middle;"><a href="#" onclick="delete_one(<?= $row[$i]['sid'] ?>)" id="btn_delete"><i class="fas fa-trash-alt"></i></a></td>
+                            </tr>
+                        <?php endfor; ?>
+                    </tbody>
+                </table>
+            </form>
         </div>
 
         <!-- 我是分頁按鈕列 請自取並調整頁面擺放位置 -->
@@ -388,7 +390,7 @@ foreach ($cates as $r) {
             <ul class="nav justify-content-between">
                 <li class="nav-item">
                     <div id="btnGroupDrop1" class="position-relative" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <button type="submit" class="btn btn-outline-dark" onclick="vb_data_delete('check[]')">
+                        <button type="submit" class="btn btn-outline-dark" onclick="vb_data_delete()">
                             <i class="fas fa-trash-alt"></i>&nbsp;&nbsp;&nbsp;批次刪除
                         </button>
                     </div>
@@ -428,7 +430,8 @@ foreach ($cates as $r) {
         }
     }
 
-    function vb_data_delete(cName) {
+
+    function vb_data_delete() {
         Swal.fire({
             title: '您確認要刪除資料嗎?',
             text: "刪除後無法恢復原狀喔!",
@@ -446,7 +449,8 @@ foreach ($cates as $r) {
                     'success'
                 )
                 setTimeout(function() {
-                    location.href = 'vb_data_delete.php?sid=' + sid;
+                    $("#delete_form")[0].action = 'vb_data_delete.php'
+                    $("#delete_form")[0].submit();
                 }, 2000)
             }
         })
