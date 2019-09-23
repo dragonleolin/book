@@ -217,7 +217,7 @@ foreach ($cates as $r) {
             <table class="table table-striped table-bordered" style="text-align: center;width:83vw">
                 <thead>
                     <tr>
-                        <th scope="col">#</th>
+                        <th scope="col"><input type="checkbox" id="all_check" value="all_check" name="all_check"></th>
                         <th scope="col">No.</th>
                         <th scope="col">
                             <i class="fas fa-sort-amount-down-alt" style="<?= ($col == 'sid' &&  $ord == 'ASC') ? 'display:inline-block;color:#ffc408' : 'display:none;' ?>"></i>
@@ -255,7 +255,7 @@ foreach ($cates as $r) {
                     $row = $books_stmt->fetchAll();
                     for ($i = 0; $i < count($row); $i++) : ?>
                         <tr>
-                            <td style="vertical-align:middle;"><input type="checkbox" name="check[]" id="check<?= $row[$i]['sid'] ?>" value="<?= $row[$i]['sid'] ?>"></td>
+                            <td style="vertical-align:middle;"><input class="checkbox" type="checkbox" name="check[]" id="check<?= $row[$i]['sid'] ?>" value="<?= $row[$i]['sid'] ?>"></td>
                             <td style="vertical-align:middle;"><?= (($page - 1) * $per_page) + ($i + 1) ?></td>
                             <td style="vertical-align:middle;"><?= $row[$i]['sid']; ?></td>
                             <td style="vertical-align:middle;"><?= $row[$i]['isbn']; ?></td>
@@ -266,21 +266,39 @@ foreach ($cates as $r) {
                                     顯示
                                 </button>
                                 <div class="modal fade" id="<?= 'book' . $row[$i]['sid']; ?>" tabindex="-1" role="dialog" aria-labelledby="<?= 'book' . $row[$i]['sid']; ?>Title" aria-hidden="true">
-                                    <div class="modal-dialog modal-dialog-centered" role="document">
+                                    <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
                                         <div class="modal-content">
                                             <div class="modal-header">
                                                 <h5 class="modal-title" id="<?= 'book' . $row[$i]['sid']; ?>Title"><?= $row[$i]['name']; ?></h5>
-
                                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                     <span aria-hidden="true">&times;</span>
                                                 </button>
                                             </div>
-                                            <div class="modal-body" style="width:450px;width:450px;margin:0 auto">
-                                                <img style="object-fit: contain;width: 100%;height: 100%;" src="<?= '../venderBooks_Management/vb_images/' . $row[$i]['pic']; ?>" alt="">
+                                            <div class="d-flex" style="padding:20px">
+                                                <div style="width:350px">
+                                                    <img style="object-fit: contain;width: 100%;height: 100%;" src="<?= '../venderBooks_Management/vb_images/' . $row[$i]['pic']; ?>" alt="">
+                                                </div>
+                                                <div style="text-align:left;width:300px">
+                                                    <h5>・ISBN：<?= $row[$i]['isbn']; ?></h5>
+                                                    <h5>・分類：<?= $cate_dict[$row[$i]['categories']]; ?></h5>
+                                                    <h5>・作者：<?= $row[$i]['author']; ?></h5>
+                                                    <h5>・出版社：<?= $row[$i]['publishing']; ?></h5>
+                                                    <h5>・出版日期：<?= $row[$i]['publish_date']; ?></h5>
+                                                    <h5>・版次：<?= $row[$i]['version']; ?></h5>
+                                                    <h5>・定價：NT<?= $row[$i]['fixed_price']; ?></h5>
+                                                    <h5>・頁數：<?= $row[$i]['page']; ?>頁</h5>
+                                                </div>
+                                                <div style="text-align:left;width:400px;z-index:999">
+                                                    <h5>書籍簡介：</h5>
+                                                    <h5><?= $row[$i]['introduction']; ?></h5>
+                                                </div>
+                                                <div style="width:130px;height:130px;position:absolute;bottom:15%;right:3%;">
+                                                    <img style="object-fit: contain;width: 100%;height: 100%;" src="../../images/品書印章.png" alt="">
+                                                </div>
                                             </div>
                                             <div class="modal-footer">
                                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
-                                                <button type="button" class="btn btn-primary" onclick="change_img(<?= $row[$i]['sid'] ?>)">修改圖片</button>
+                                                <button type="button" class="btn btn-primary" onclick="change_data(<?= $row[$i]['sid'] ?>)">修改資料</button>
                                             </div>
                                         </div>
                                     </div>
@@ -369,35 +387,12 @@ foreach ($cates as $r) {
         <nav class="navbar justify-content-between" style="padding: 0px;width: 20vw;margin:10px 0px -10px 0px">
             <ul class="nav justify-content-between">
                 <li class="nav-item">
-                    <div style="padding: 0.375rem 0.75rem;">
-                        批次：
-                    </div>
-                </li>
-                <li class="nav-item form-check form-check-inline">
-                    <input class="form-check-input" type="checkbox" id="all_check" value="all_check" name="all_check" onclick="check_all(this,'check[]')">
-                    <label class="form-check-label" for="inlineCheckbox1">全選</label>
-                </li>
-                <!-- <li class="nav-item">
-                    <div id="btnGroupDrop1" class="position-relative" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <button type="button" class="btn btn-outline-dark" onclick="vb_data_update('check[]')">
-                            <i class="fas fa-edit"></i>&nbsp;&nbsp;&nbsp;修改
-                        </button>
-                    </div>
-                </li> -->
-                <li class="nav-item">
                     <div id="btnGroupDrop1" class="position-relative" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <button type="submit" class="btn btn-outline-dark" onclick="vb_data_delete('check[]')">
-                            <i class="fas fa-trash-alt"></i>&nbsp;&nbsp;&nbsp;刪除
+                            <i class="fas fa-trash-alt"></i>&nbsp;&nbsp;&nbsp;批次刪除
                         </button>
                     </div>
                 </li>
-                <!-- <li class="nav-item">
-                    <div id="btnGroupDrop1" class="position-relative" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <button type="submit" class="btn btn-outline-dark">
-                            <i class="fas fa-copy"></i>&nbsp;&nbsp;&nbsp;複製
-                        </button>
-                    </div>
-                </li> -->
             </ul>
         </nav>
 
@@ -406,25 +401,31 @@ foreach ($cates as $r) {
 
 </div>
 <script>
-    function check_all(obj, cName) {
-        var checkboxes = document.getElementsByName(cName);
-        for (var i = 0; i < checkboxes.length; i++) {
-            checkboxes[i].checked = obj.checked;
+    $("#all_check").click(function() {
+        let checkAll = $(this).prop("checked");
+        $("tbody .checkbox").prop("checked", checkAll);
+        $("tbody .checkbox").prop("checked") ? $("tbody .checkbox").closest("tr").addClass('table-active') : $("tbody .checkbox").closest("tr").removeClass('table-active');
+    })
+
+    $("tbody").on("click", ".checkbox", function() {
+        dataCount()
+        let checked = $(this).prop("checked");
+        if (checked) {
+            $(this).closest("tr").addClass("table-active");
+        } else {
+            $(this).closest("tr").removeClass("table-active");
+        }
+    })
+
+    function dataCount() {
+        let dataCount = $("tbody .checkbox").length;
+        let checkedCount = $("tbody :checked").length;
+        if (checkedCount == dataCount) {
+            $("#all_check").prop("checked", true)
+        } else {
+            $("#all_check").prop("checked", false)
         }
     }
-
-    //未完成的批次修改 
-    // function vb_data_update(cName) {
-    //     var checkboxes = document.getElementsByName(cName);
-    //     let ar = [];
-    //     for (var i = 0; i < checkboxes.length; i++) {
-    //          if(checkboxes[i].checked){
-    //              ar.push(checkboxes[i].value);
-    //          }
-    //     }
-    //     document.cookie = "checkbox_sid=" + ar;
-    // location = "vb_data_update.php";
-    // }
 
     function vb_data_delete(cName) {
         var checkboxes = document.getElementsByName(cName);
@@ -445,7 +446,7 @@ foreach ($cates as $r) {
 
     let b;
 
-    function change_img(sid) {
+    function change_data(sid) {
         b = sid;
         location = 'vb_data_update.php?sid=' + b;
     }

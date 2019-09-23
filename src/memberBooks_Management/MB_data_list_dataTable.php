@@ -31,24 +31,19 @@ $t_sql = "SELECT COUNT(1) FROM `mb_books` $where";
 $totalRows = $pdo->query($t_sql)->fetch(PDO::FETCH_NUM)[0];
 $totalPages = ceil($totalRows / $per_page);
 
-if ($page < 1) {
-    header('Location:MB_data_list.php');
-    exit;
-}
-if ($page > $totalPages) {
-    header('Location:MB_data_list.php?page=' . $totalPages);
-    exit;
-}
+
 
 
 $page_sql = "SELECT `mb_books`.*, `vb_categories`.`name` categories_name 
-FROM `mb_books`  LEFT JOIN `vb_categories` ON `mb_books`.`mb_categories` = `vb_categories`.`sid` $where ORDER BY `mb_sid` ASC LIMIT " . (($page - 1) * $per_page) . "," . $per_page;
+FROM `mb_books`  LEFT JOIN `vb_categories` ON `mb_books`.`mb_categories` = `vb_categories`.`sid` $where ORDER BY `mb_sid`";
 
 $t_stmt = $pdo->query($page_sql);
 $row = $t_stmt->fetchAll();
 ?>
 
 <?php include __DIR__ . '/../../pbook_index/__html_head.php' ?>
+<link rel="stylesheet" href="//cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
+<link href="./css/lightbox.css" rel="stylesheet" />
 <style>
     body {
         background: url(../../images/bg.png) repeat center top;
@@ -68,6 +63,7 @@ $row = $t_stmt->fetchAll();
 </style>
 <?php include __DIR__ . '/../../pbook_index/__html_body.php' ?>
 <?php include __DIR__ . '/../../pbook_index/__navbar.php' ?>
+
 <!-- 右邊section資料欄位 -->
 <section class="position-relative">
     <div class="container">
@@ -88,14 +84,6 @@ $row = $t_stmt->fetchAll();
                         <i class="fas fa-plus-circle"></i>
                         新增會員書籍
                     </button>
-                </li>
-                <li class="nav-item" style="flex-grow: 1">
-                    <form class="form-inline my-2 my-lg-0" name="form1">
-                        <input class="search form-control mr-sm-2" type="search" autocomplete="off" placeholder="Search" aria-label="Search" id="search" name="search">
-                        <button class="btn btn-outline-warning my-2 my-sm-0" type="submit">
-                            <i class="fas fa-search"></i>
-                        </button>
-                    </form>
                 </li>
             </ul>
         </nav>
@@ -129,7 +117,7 @@ $row = $t_stmt->fetchAll();
                         <?php
                         foreach ($row as $r) : ?>
                             <tr>
-                                <td style="vertical-align:middle;"><input type="checkbox" class="j-checkbox" name="check[]" value="<?= $r['mb_sid']?>"></td>
+                                <td style="vertical-align:middle;"><input type="checkbox" class="j-checkbox" name="check[]" value="<?= $r['mb_sid'] ?>"></td>
                                 <td id="sid"><?= $r['mb_sid'] ?></td>
                                 <td><?= htmlentities($r['mb_isbn']) ?></td>
                                 <td class="textHidden"><?= htmlentities($r['mb_name']) ?></td>
@@ -149,21 +137,21 @@ $row = $t_stmt->fetchAll();
                                                     </button>
                                                 </div>
 
-                                                <div id="carouselExampleFade" class="carousel slide" data-ride="carousel" data-interval="1500">
-                                                    <div class="carousel-inner">
-                                                        <?php
-                                                            $a = json_decode($r['mb_pic']);
-                                                            // var_dump($a);
-                                                            for ($i = 0; $i < count($a); $i++) :
-                                                                // var_dump($a[$i]);
-                                                                ?>
-                                                            <div class="carousel-item <?= $i == 0 ? 'active' : '' ?>">
-                                                                <img src="<?= 'mb_images/' . $a[$i]; ?>" class="d-block w-100" alt="...">
-                                                            </div>
-                                                        <?php endfor; ?>
-                                                    </div>
-                                                </div>
 
+                                                <?php
+                                                    $a = json_decode($r['mb_pic']);
+                                                    ?>
+                                                <a href="<?= 'mb_images/' . $a[0]; ?>" data-lightbox="image">
+                                                    <img src="<?= 'mb_images/' . $a[0]; ?>" class="d-block w-100" alt="...">
+                                                </a>
+                                                <a href="<?= 'mb_images/' . $a[1]; ?>" data-lightbox="image">
+                                                    <img src="<?= 'mb_images/' . $a[1]; ?>" class="d-block w-100" alt="...">
+                                                </a>
+                                                <a href="<?= 'mb_images/' . $a[2]; ?>" data-lightbox="image">
+                                                    <img src="<?= 'mb_images/' . $a[2]; ?>" class="d-block w-100" alt="...">
+                                                </a>
+
+                                                
                                                 <div class="modal-footer">
                                                     <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
                                                     <button type="button" id="changeImg" class="btn btn-primary" onclick="change_img(<?= $r['mb_sid'] ?>)">修改圖片</button>
@@ -205,66 +193,6 @@ $row = $t_stmt->fetchAll();
             </form>
 
 
-            <!-- 我是分頁按鈕列 請自取並調整頁面擺放位置 -->
-            <nav aria-label="Page navigation example">
-                <ul class="pagination page-position ">
-                    <li class="page-item">
-                        <a class="page-link" href="?page=1" aria-label="Previous">
-                            <i class="fas fa-angle-double-left"></i>
-                        </a>
-                    </li>
-                    <li class="page-item">
-                        <a class="page-link" href="?page=<?= $page - 1 ?>" aria-label="Previous">
-                            <i class="fas fa-angle-left"></i>
-                        </a>
-                    </li>
-                    <?php
-                    $p_start = $page - 3;
-                    $p_end = $page + 3;
-                    if ($page < 5) :
-                        for ($i = $p_start; $i <= 7; $i++) :
-                            $params['page'] = $i;
-                            if ($i < 1 or $i > $totalPages) continue;
-                            ?>
-                            <li class="page-item">
-                                <a class="page-link" style="<?= $i == $page ? 'background: rgba(156, 197, 161, 0.5) ;color: #ffffff;' : '' ?>" href="?<?= http_build_query($params) ?>"><?= $i ?></a>
-                            </li>
-                        <?php endfor; ?>
-                    <?php endif; ?>
-                    <?php
-                    if ($page < $totalPages - 3 && $page >= 5) :
-                        for ($i = $p_start; $i <= $p_end; $i++) :
-                            $params['page'] = $i;
-                            if ($i < 1 or $i > $totalPages) continue;
-                            ?>
-                            <li class="page-item ">
-                                <a class="page-link" style="<?= $i == $page ? 'background: rgba(156, 197, 161, 0.5) ;color: #ffffff;' : '' ?>" href="?<?= http_build_query($params) ?>"><?= $i ?></a>
-                            </li>
-                        <?php endfor; ?>
-                    <?php endif; ?>
-                    <?php
-                    if ($page >= $totalPages - 3 && ($page != 1) && ($page != 2)) :
-                        for ($i = $totalPages - 6; $i <= $p_end; $i++) :
-                            $params['page'] = $i;
-                            if ($i < 1 or $i > $totalPages) continue;
-                            ?>
-                            <li class="page-item ">
-                                <a class="page-link" style="<?= $i == $page ? 'background: rgba(156, 197, 161, 0.5) ;color: #ffffff;' : '' ?>" href="?<?= http_build_query($params) ?>"><?= $i ?></a>
-                            </li>
-                        <?php endfor; ?>
-                    <?php endif; ?>
-                    <li class="page-item">
-                        <a class="page-link" href="?page=<?= $page + 1 ?>" aria-label="Next">
-                            <i class="fas fa-angle-right"></i>
-                        </a>
-                    </li>
-                    <li class="page-item">
-                        <a class="page-link" href="?page=<?= $totalPages ?>" aria-label="Next">
-                            <i class="fas fa-angle-double-right"></i>
-                        </a>
-                    </li>
-                </ul>
-            </nav>
 
 
             <!-- 刪除提示框 -->
@@ -280,14 +208,26 @@ $row = $t_stmt->fetchAll();
 
 </section>
 
-<!-- <script src="MB_sort.js"></script> -->
+<script src="//cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+<script src="./js/lightbox.js"></script>
 <script>
+    lightbox.option({
+        'resizeDuration': 200,
+        'wrapAround': false,
+        'showImageNumberLabel': false
+    })
+</script>
+<script>
+    $(document).ready(function() {
+        $('#sortable').DataTable();
+    });
+
     $(function() {
         //全選全不選功能模塊
         $('#checkAll').change(function() {
             $(".j-checkbox").prop("checked", $(this).prop('checked'))
-            $("tr").css("background", "transparent")
-            $(":checked").closest('tr').css("background", "#9cc5a1")
+            // $("tr").css("background", "transparent")
+            // $(":checked").closest('tr').css("background", "#9cc5a1")
         })
 
         //若複選按鈕個數為全部，要把全選按鈕打勾
@@ -297,8 +237,8 @@ $row = $t_stmt->fetchAll();
             } else {
                 $('#checkAll').prop("checked", false)
             }
-            $("tr").css("background", "transparent")
-            $(":checked").closest('tr').css("background", "#9cc5a1")
+            // $("tr").css("background", "transparent")
+            // $(":checked").closest('tr').css("background", "#9cc5a1")
         })
 
     })
@@ -307,8 +247,8 @@ $row = $t_stmt->fetchAll();
     // var form = document.getElementById('form1')
     //JQ的getElement要使用[0]
     let form = $('#form1')[0]
-    
-    $('#delete_multiple').click(function(){
+
+    $('#delete_multiple').click(function() {
         form.action = 'MB_deleteMuti.php'
         console.log(form.action)
         form.submit();

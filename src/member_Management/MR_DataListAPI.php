@@ -20,7 +20,6 @@ $totalPage = ceil($totalRows / $per_page); //ceil()無條件進位
 //     exit;
 // }
 
-// http_build_query($params)
 
 $sql = "SELECT * FROM `mr_information` ORDER BY `sid` LIMIT " . ($page - 1) * $per_page . "," . $per_page;
 $stmt = $pdo->query($sql)->fetchAll();
