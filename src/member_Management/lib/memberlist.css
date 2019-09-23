@@ -24,12 +24,16 @@ small {
 
 .input_width {
     width: 300px;
+    margin-left: 20px;
 }
 
 .input_width2 {
     width: 500px;
 }
-
+.right-column{
+    padding-left: 20px;
+    margin-left: 20px; 
+}
 .right_input {
     margin: 0 0 0 20px;
 }
