@@ -256,22 +256,22 @@ $form_data2 = [
     let s, item;
     for (s in required_fields) {
         item = required_fields[s];
-        item.el = $("#" + item.id); //item.el拿到input的id
-        item.info_el = $('#' + item.id + 'Help'); //item.info_el拿到small的id
+        item.el = document.querySelector('#' + item.id);
+        item.infoEl = document.querySelector('#' + item.id + 'Help');
     }
 
     function checkForm() {
         for (s in required_fields) {
             item = required_fields[s];
-            item.el.css("border", "1px solid #ccc");
-            item.info_el.text("");
+            item.el.style.border = '1px solid #ccc';
+            item.infoEl.innerHTML = '';
         }
         let isPass = true;
         for (s in required_fields) {
             item = required_fields[s];
             if (!item.pattern.test(item.el.value)) {
-                item.el.css("border", "1px solid red");
-                item.info_el.text(item.info);
+                item.el.style.border = '1px solid red';
+                item.infoEl.innerHTML = item.info;
                 isPass = false;
             }
         }
