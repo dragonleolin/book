@@ -1,5 +1,5 @@
 <?php
-require __DIR__. '/__admin_required.php';
+require __DIR__ . '/__admin_required.php';
 require __DIR__ . '/__connect_db.php';
 $page_title = '資料修改';
 
@@ -65,21 +65,21 @@ foreach ($stmt2 as $k => $v) {
                     <div class="form-group d-flex">
                         <div class="container">
                             <?php foreach ($form_data1 as $k => $v) : ?>
-                            <label for="<?= $v ?>" class="update_label pt-3"><?= $k ?></label>
-                            <input type="text" class="update form-control" id="<?= $v ?>" name="<?= $v ?>" value="<?= htmlentities($row[$v]) ?>">
-                            <small id="<?= $v ?>Help" class="update form-text"></small>
+                                <label for="<?= $v ?>" class="update_label pt-3"><?= $k ?></label>
+                                <input type="text" class="update form-control" id="<?= $v ?>" name="<?= $v ?>" value="<?= htmlentities($row[$v]) ?>">
+                                <small id="<?= $v ?>Help" class="update form-text"></small>
                             <?php endforeach; ?>
                         </div>
                         <div class="container">
                             <?php foreach ($form_data2 as $k => $v) : ?>
-                            <label for="<?= $v ?>" class="update_label pt-3"><?= $k ?></label>
-                            <?php if ($v == 'cp_password') { ?>
-                            <!-- 密碼用password type -->
-                            <input type="password" class="update form-control" id="cp_password" name="cp_password" autocomplete="new-password" value="<?= htmlentities($row[$v]) ?>">
-                            <small id="cp_passwordHelp" class="update form-text"></small>
-                            <?php } else { ?>
-                            <input type="text" class="update form-control" id="<?= $v ?>" name="<?= $v ?>" value="<?= htmlentities($row[$v]) ?>">
-                            <small id="<?= $v ?>Help" class="update form-text"></small>
+                                <label for="<?= $v ?>" class="update_label pt-3"><?= $k ?></label>
+                                <?php if ($v == 'cp_password') { ?>
+                                    <!-- 密碼用password type -->
+                                    <input type="password" class="update form-control" id="cp_password" name="cp_password" autocomplete="new-password" value="<?= htmlentities($row[$v]) ?>">
+                                    <small id="cp_passwordHelp" class="update form-text"></small>
+                                <?php } else { ?>
+                                    <input type="text" class="update form-control" id="<?= $v ?>" name="<?= $v ?>" value="<?= htmlentities($row[$v]) ?>">
+                                    <small id="<?= $v ?>Help" class="update form-text"></small>
                             <?php }
                             endforeach; ?>
                             <div class="form-group d-flex mt-5">
@@ -92,18 +92,18 @@ foreach ($stmt2 as $k => $v) {
                                     </button>
                                 </div>
                                 <div style="height: 230px;width: 230px;border: 1px solid #ddd">
-                                    <img style="object-fit: contain;width: 100%;height: 100%"src="./logo/<?= htmlentities($row['cp_logo']) ?>"  id="demo">
+                                    <img style="object-fit: contain;width: 100%;height: 100%" src="./logo/<?= htmlentities($row['cp_logo']) ?>" id="demo">
                                 </div>
                             </div>
                         </div>
-                        </div>
                     </div>
-                    <div style="text-align: center" id="btn1">
-                        <button type="submit" class="btn btn-warning" id="submit_btn">&nbsp;確&nbsp;認&nbsp;修&nbsp;改&nbsp;</button>
-                    </div>
-                </form>
             </div>
+            <div style="text-align: center" id="btn1">
+                <button type="submit" class="btn btn-warning" id="submit_btn">&nbsp;確&nbsp;認&nbsp;修&nbsp;改&nbsp;</button>
+            </div>
+            </form>
         </div>
+    </div>
     </div>
 
     <!-- 以下為修改或新增成功才會跳出來的顯示框 -->
@@ -127,10 +127,6 @@ foreach ($stmt2 as $k => $v) {
         };
         reader.readAsDataURL(file);
     });
-    let btn1 = document.querySelector('#btn1');
-    let form1 = document.querySelector('#form1');
-    let info_bar = document.querySelector('#info_bar');
-    let info_position = document.querySelector('#info_position');
     const required_fields = [{
             id: 'cp_name',
             pattern: /^\S{2,}/,
@@ -180,22 +176,22 @@ foreach ($stmt2 as $k => $v) {
     let s, item;
     for (s in required_fields) {
         item = required_fields[s];
-        item.el = document.querySelector('#' + item.id); //item.el拿到input的id
-        item.info_el = document.querySelector('#' + item.id + 'Help'); //item.info_el拿到small的id
+        item.el = $('#' + item.id); //item.el拿到input的id
+        item.info_el = $('#' + item.id + 'Help'); //item.info_el拿到small的id
     }
 
     function checkForm() {
         for (s in required_fields) {
             item = required_fields[s];
-            item.el.style.border = '1px solid #CCCCCC';
-            item.info_el.innerHTML = '';
+            item.el.css("border", "1px solid #ccc");
+            item.info_el.text("");
         }
         let isPass = true;
         for (s in required_fields) {
             item = required_fields[s];
             if (!item.pattern.test(item.el.value)) {
-                item.el.style.border = '1px solid red';
-                item.info_el.innerHTML = item.info;
+                tem.el.css("border", "1px solid red");
+                item.info_el.text(item.info);
                 isPass = false;
             }
         }
@@ -210,17 +206,17 @@ foreach ($stmt2 as $k => $v) {
                 })
                 .then(json => {
                     console.log(json);
-                    info_position.style.display = 'block';
-                    info_bar.innerHTML = json.info;
+                    $("#info_position").css("display", "block");
+                    $("#info_bar").text(json.info);
                     if (json.success) {
-                        info_position.style.display = 'block';
-                        btn1.style.display = 'none';
-                        form1.style.display = 'none';
-                        setTimeout(function(){
-                                location.href = 'CP_data_list.php?page=<?= $previous_page ?>';
+                        $("#info_position").css("display", "block");
+                        $(".btn").css("display", "none");
+                        $("#form1").css("display", "none");
+                        setTimeout(function() {
+                            location.href = 'CP_data_list.php?page=<?= $previous_page ?>';
                         }, 1000);
                     } else {
-                        info_position.style.display = 'none';
+                        $("#info_position").css("display", "none");
                     }
                 });
         }
