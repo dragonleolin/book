@@ -2,9 +2,7 @@
 ?>
 <?php require  'MR_db_connect.php' ?>
 <?php
-$thead_item = [
-    '#', '編號', '等級', '姓名', '暱稱', '電子信箱', '性別', '生日', '手機',
-];
+$thead_item = ['#', '編號', '等級', '姓名', '暱稱', '電子信箱', '性別', '生日', '手機'];
 
 $page_title = '資料列表';
 
@@ -36,44 +34,6 @@ $a_level = [
     '品書至尊',
 ];
 
-$page = isset($_GET['page']) ? intval($_GET['page']) : 1;
-
-
-$per_page = 10; // 每頁顯示的筆數
-
-$search = isset($_GET['search']) ? $_GET['search'] : '';
-$params = [];
-$where = ' WHERE 1 ';
-if (!empty($search)) {
-    $params['search'] = $search;
-    $search1 = $pdo->quote("%$search%");
-    $where .= " AND (`MR_name` LIKE $search1 OR `MR_email` LIKE $search1 OR `MR_mobile` LIKE $search1 OR `MR_number` LIKE $search1 )";
-}
-
-$count = "SELECT COUNT(1) FROM `mr_information` $where"; //用count計算出總筆數
-
-$totalRows = $pdo->query($count)->fetch(PDO::FETCH_NUM)[0];
-
-// echo "$totalRows <br>";
-$totalPage = ceil($totalRows / $per_page); //ceil()無條件進位
-
-
-if (($page < 1) | ($totalPage == 0)) {
-    // header('Refresh:2; url=MR_memberDataList.php');
-    header('Location: searchFail.php');
-    exit;
-}
-
-if ($page > $totalPage) {
-    header('Location: MR_memberDataList.php?page=' . $totalPage);
-    exit;
-}
-
-
-$sql = "SELECT * FROM `mr_information` $where ORDER BY `sid` LIMIT " . ($page - 1) * $per_page . "," . $per_page;
-$stmt = $pdo->query($sql);
-$rows = $stmt->fetchAll();
-
 ?>
 <?php include '../../pbook_index/__html_head.php' ?>
 <style>
@@ -93,6 +53,19 @@ $rows = $stmt->fetchAll();
     .modal-header {
         padding-left: 40px;
     }
+
+    .display-none {
+        display: none;
+    }
+
+    .display-block {
+        display: block;
+    }
+
+    .page-link.active {
+        background: rgba(156, 197, 161, 0.5);
+        color: #ffffff;
+    }
 </style>
 <?php include '../../pbook_index/__html_body.php' ?>
 <?php include '../../pbook_index/__navbar.php' ?>
@@ -105,22 +78,20 @@ $rows = $stmt->fetchAll();
                         <h4>會員列表</h4>
                         <div class="title_line"></div>
                     </div>
-                    <?php if (!empty($search)) : ?>
-                        <ul class="nav justify-content-between">
-                            <li class="nav-item" style="margin: 0px 10px">
-                                <button class="btn btn-outline-primary my-2 my-sm-0" type="button" onclick='location.href = "MR_memberDataList.php"'>
-                                    <i class="fas fa-arrow-circle-left"></i>
-                                    回到上一頁
-                                </button>
-                            </li>
-                        </ul>
-                    <?php endif ?>
+                    <ul class="nav justify-content-between display-none prep-page">
+                        <li class="nav-item" style="margin: 0px 10px">
+                            <button class="btn btn-outline-primary my-2 my-sm-0" type="button" onclick='location.href = "MR_memberDataList.php"'>
+                                <i class="fas fa-arrow-circle-left"></i>
+                                回到上一頁
+                            </button>
+                        </li>
+                    </ul>
                 </div>
                 <ul class="nav justify-content-between">
                     <li class="nav-item">
                         <div style="padding: 0.375rem 0.75rem;">
                             <i class="fas fa-check"></i>
-                            目前總計 <?= $totalRows ?> &nbsp筆資料
+                            目前總計 <span id="totalRows"></span> &nbsp筆資料
                         </div>
                     </li>
                     <li class="nav-item" style="margin: 0px 10px">
@@ -130,8 +101,8 @@ $rows = $stmt->fetchAll();
                         </button>
                     </li>
                     <li class="nav-item" style="flex-grow: 1">
-                        <form name="form2" class="form-inline my-2 my-lg-0">
-                            <input class="search form-control mr-sm-2" id="search_bar" name="search" type="search" placeholder="請輸入會員編號、姓名、電子信、手機" aria-label="Search" style="width:320px">
+                        <form name="form" class="form-inline my-2 my-lg-0" onsubmit="return checkSearch()">
+                            <input class="search form-control mr-sm-2" id="search_input" name="search" type="search" placeholder="請輸入會員編號、姓名、電子信、手機" aria-label="Search" style="width:320px">
                             <button class="btn btn-outline-warning my-2 my-sm-0" type="submit">
                                 <i class="fas fa-search"></i>
                             </button>
@@ -142,8 +113,6 @@ $rows = $stmt->fetchAll();
         </div>
         <!-- 每個人填資料的區塊 -->
         <div class="container-fluid" style="margin-top: 1rem">
-
-
             <table class="table table-striped table-bordered" style="text-align: center">
                 <thead>
                     <tr>
@@ -169,46 +138,33 @@ $rows = $stmt->fetchAll();
                 </tbody>
             </table>
         </div>
+        <!-- 分頁按鈕列 -->
         <nav class="mt-5" aria-label="Page navigation example ">
             <ul class="pagination justify-content-center">
                 <li class="page-item">
-                    <a class="page-link my_text_blacktea" href="?page=1" aria-label="Next">
+                    <a class="page-link my_text_blacktea" href="" data-page="1" aria-label="Next">
                         <i class="fas fa-angle-double-left"></i>
                     </a>
                 </li>
-                <li class="page-item">
-                    <a class="page-link" href="?page=<?= ($page - 1 <= 0) ? 1 : $page - 1 ?>">
+                <li class="page-item ">
+                    <a class="page-link my_text_blacktea" id="prep-page" href="">
                         <i class="fas fa-angle-left"></i>
                     </a>
                 </li>
-                <?php
-                $p_start = $page - 3;
-                $p_end = $page + 3;
-                if ($p_start <= 0) $p_end += -($p_start) + 1;
-                if ($p_end > $totalPage) $p_start -= -($totalPage - $p_end);
-                for ($i = $p_start; $i <= $p_end; $i++) :
-                    if ($i < 1 or $i > $totalPage) continue;
-                    //continue跳過該次迴圈
-                    $params['page'] = $i;
-                    ?>
-                    <li class="page-item " style="<?= $i == $page ? 'background: rgba(156, 197, 161, 0.5) ;color: #ffffff;' : '' ?>">
-                        <a class="page-link" href="?<?= http_build_query($params) ?>"><?= $i ?></a></li>
-                <?php endfor; ?>
+                <li class="page-item d-flex" id="pages">
+                </li>
                 <li class="page-item">
-                    <a class="page-link my_text_blacktea" href="?page=<?= ($page + 1 > $totalPage) ? $totalPage : $page + 1 ?> ?>" aria-label="Next">
+                    <a class="page-link my_text_blacktea" id="next-page" href="" aria-label="Next">
                         <i class="fas fa-angle-right"></i>
                     </a>
                 </li>
                 <li class="page-item">
-                    <a class="page-link my_text_blacktea" href="?page=<?= $totalPage ?>" aria-label="Next">
+                    <a class="page-link my_text_blacktea" id="last-page" href="" aria-label="Next">
                         <i class="fas fa-angle-double-right"></i>
                     </a>
                 </li>
             </ul>
         </nav>
-        <form action="" method="POST" name="form2">
-            <input type="hidden" name="json">
-        </form>
 
 
         <!-- 刪除提示框 -->
@@ -257,7 +213,7 @@ $rows = $stmt->fetchAll();
 
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary">修改資料</button>
+                <button type="button" class="btn btn-primary" id="detailUpdate">修改資料</button>
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
             </div>
         </div>
@@ -265,14 +221,144 @@ $rows = $stmt->fetchAll();
 </div>
 
 <script>
-    // 生成頁面
-    let rows = <?= json_encode($rows, JSON_UNESCAPED_UNICODE) ?>;
-    dataList(rows);
+    let item_switch = <?= json_encode($item_switch, JSON_UNESCAPED_UNICODE) ?>; // 表格title
+    let a_level = <?= json_encode($a_level, JSON_UNESCAPED_UNICODE) ?>;
+    let delete_sid, delete_eventTarget; // 刪除資料功能
+    let ar = [];
+    let nowPage = 1;
+    let page = 1;
+    let search = $("#search_input").val();
+    // 讀取完成生成頁面
+    $(function() {
+        fetch("MR_DataListAPI.php")
+            .then(Response => {
+                return Response.json();
+            })
+            .then(json => {
+                dataList(json);
+                pagination(json);
+            })
+    });
 
 
-    function dataList(data) {
+    //全選刪除 
+    $('input[name="check[]"]').click(function() {
+        let state = false;
+        for (let i = 0; i < 10; i++) {
+            state = $('input[name="check[]"]').eq(i).prop('checked') ? true : false;
+            if (state) break;
+        }
+        if (state) {
+            $('#delete1').css('visibility', 'visible');
+        } else {
+            $('#delete1').css('visibility', 'hidden');
+        }
+    });
+
+    //顯示details
+    // let itemCount=Object.keys(item_switch).length;
+
+    $("#tbody").on("click", ".showDetails", function() {
+        setTimeout(() => {
+            let sid = $(this).data("sid");
+            fetch(`MR_detailAPI.php?sid=${sid}`)
+                .then(Response => {
+                    return Response.json();
+                })
+                .then(json => {
+                    showDetails(json);
+                });
+            return false;
+        }, 100);
+
+    });
+
+    // details連結
+    $("#MBList").click(function() {
+        let num = $(this).data("num");
+        location.href = `MR_MBList.php?MR_number=${num}`;
+    });
+    $("#BRList").click(function() {
+        let num = $(this).data("num");
+        location.href = `MR_BRDataList.php?MR_number=${num}`;
+    });
+    $("#detailUpdate").click(function() {
+        let sid = $(this).data("sid");
+        location.href = `MR_memberData_update.php?sid=${sid}`;
+    })
+
+    //分頁按鈕事件
+    $(".page-item").on("click", ".page-link", function() {
+        page = $(this).data('page');
+        if (nowPage != page) {
+            if (search) {
+                checkSearch();
+            } else {
+                fetch(`MR_DataListAPI.php?page=${page}`)
+                    .then(Response => {
+                        return Response.json();
+                    })
+                    .then(json => {
+                        dataList(json);
+                        pagination(json);
+                    });
+            }
+        }
+        return false;
+    });
+
+    //分頁按鈕生成
+    function pagination(json) {
+        let t_Page = json.totalPage;
+        let page_items = '';
+        let page = (json.page == 1) ? 1 : parseInt(json.page);
+        $("#pages").empty();
+        for (let i = 0; i < t_Page; i++) {
+            let page = `<a class="page-link" href="" data-page="${i+1}">${i+1}</a>`;
+            page_items += page;
+        }
+        $("#pages").append(page_items);
+        $('#prep-page').data('page', `${(page - 1 <= 0) ? 1 : page - 1}`);
+        $('#next-page').data('page', `${(page + 1 > t_Page) ? t_Page : page + 1}`);
+        $('#last-page').data('page', `${t_Page}`);
+        pageActive(page);
+        nowPage = page;
+
+    }
+    //分頁按鈕active
+    function pageActive(page) {
+        $("#pages .page-link").removeClass("active");
+        $("#pages .page-link").eq(page - 1).addClass("active");
+    }
+
+
+    // 搜尋功能
+    function checkSearch() {
+        search = $("#search_input").val();
+        if (search) {
+            $("#tbody").empty();
+
+            $(".prep-page").removeClass("display-none");
+            $(".prep-page").addClass("display-block");
+            fetch(`MR_searchAPI.php?search=${search}&page=${page}`)
+                .then(Response => {
+                    return Response.json();
+                })
+                .then(json => {
+                    dataList(json);
+                    pagination(json);
+                });
+        }
+        return false;
+    }
+
+    // 頁面生成
+    function dataList(json) {
+        $("#totalRows").text(`${json.totalRows}`);
+        let data = json.rows;
         let new_tr = "";
-        data.forEach(function(element, index){
+        $("#tbody").empty();
+        data.forEach(function(element, index) {
             let tr = `
             <tr>
                 <td>
@@ -302,24 +388,6 @@ $rows = $stmt->fetchAll();
     };
 
     //顯示details
-    let item_switch = <?= json_encode($item_switch, JSON_UNESCAPED_UNICODE) ?>;
-    // let itemCount=Object.keys(item_switch).length;
-
-    $(".showDetails").click(function() {
-        setTimeout(() => {
-            let sid = $(this).data("sid");
-            fetch(`MR_detail.php?sid=${sid}`)
-                .then(Response => {
-                    return Response.json();
-                })
-                .then(json => {
-                    showDetails(json);
-                });
-            return false;
-        }, 100);
-
-    });
-
     function showDetails(json) {
         $("#modal-body").empty();
         let data = json[0];
@@ -327,6 +395,7 @@ $rows = $stmt->fetchAll();
         let contents = '';
         $("#MBList").attr("data-num", data['MR_number']);
         $("#BRList").attr("data-num", data['MR_number']);
+        $("#detailUpdate").attr("data-sid", data['sid']);
         for (let item in data) {
             let value = data[item]
             let title = item_switch[item];
@@ -334,8 +403,11 @@ $rows = $stmt->fetchAll();
                 if (value == 2) value = "女";
                 if (value == 1) value = "男";
             }
+            if (item == 'MR_personLevel') {
+                value = a_level[value];
+            }
             let content = ` <ul class="d-flex" ">
-                                           <li class="" style="width:110px">
+                                           <li class="" style="width:120px">
                                               <h5 style="width:100%;text-align: justify">${title} &nbsp : &nbsp</h5>
                                            </li>
                                            <li>${value}</li>
@@ -344,16 +416,6 @@ $rows = $stmt->fetchAll();
         }
         $("#modal-body").append(contents);
     }
-    // details二手書連結
-    $("#MBList").click(function() {
-        let num = $(this).data("num");
-        location.href = `MR_MBList.php?MR_number=${num}`;
-    });
-    $("#BRList").click(function() {
-        let num = $(this).data("num");
-        location.href = `MR_BRDataList.php?MR_number=${num}`;
-    });
-
 
     // 全選刪除
     function check_all() {
@@ -370,22 +432,7 @@ $rows = $stmt->fetchAll();
         }
     }
 
-    $('input[name="check[]"]').click(function() {
-        let state = false;
-        for (let i = 0; i < 10; i++) {
-            state = $('input[name="check[]"]').eq(i).prop('checked') ? true : false;
-            if (state) break;
-        }
-        if (state) {
-            $('#delete1').css('visibility', 'visible');
-        } else {
-            $('#delete1').css('visibility', 'hidden');
-        }
-    });
-
     // 刪除資料功能
-    let delete_sid, delete_eventTarget;
-    let ar = [];
 
     function delete_one(sid) {
         $("#delete_confirm").css("display", "block");
