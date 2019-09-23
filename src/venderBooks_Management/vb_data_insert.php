@@ -29,7 +29,7 @@ $totalPages = ceil($totalRows / $per_page); //取得總頁數
 ?>
 
 <?php include __DIR__ . '/../../pbook_index/__html_head.php' ?>
-
+<script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
 <style>
     body {
         background: url(../../images/bg.png) repeat center top;

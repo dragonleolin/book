@@ -84,17 +84,6 @@ foreach ($cates as $r) {
     }
 </style>
 <?php include __DIR__ . '/__html_body.php' ?>
-<!-- <div style="z-index:999;width:100vw;height:100vh;display:none;background:rgba(0,0,0,0.2)" id="my_delete" class="position-absolute">
-    <div class="delete update card">
-        <div class="delete card-body">
-            <label class="delete_text">您確認要刪除資料嗎?</label>
-            <div>
-                <button type="button" class="delete btn btn-danger" onclick="delete_yes()">確認</button>
-                <button type="button" class="delete btn btn-warning" onclick="delete_no()">取消</button>
-            </div>
-        </div>
-    </div>
-</div> -->
 <?php include __DIR__ . '/__navbar.php' ?>
 <!-- 右邊section資料欄位 -->
 <div>
@@ -456,7 +445,6 @@ foreach ($cates as $r) {
         })
     }
 
-
     function vb_data_insert() {
         location = "vb_data_insert.php";
     }
@@ -467,8 +455,6 @@ foreach ($cates as $r) {
         b = sid;
         location = 'vb_data_update.php?sid=' + b;
     }
-
-    let a;
 
     function delete_one(sid) {
         Swal.fire({

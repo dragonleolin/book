@@ -30,9 +30,13 @@ foreach ($row as $r => $s) {
     }
 }
 
+$status_sql = "SELECT * FROM `vb_status`";
+$status_sql = $pdo->query($status_sql)->fetchAll();
+
 ?>
 
 <?php include __DIR__ . '/../../pbook_index/__html_head.php' ?>
+
 
 <style>
     body {
@@ -116,32 +120,33 @@ foreach ($row as $r => $s) {
                         <span style="margin:0px -10px;color:red" id="pageHelp"></span>
                         <input type="text" class="update form-control" id="page" name="page" value="<?= htmlentities($update_row['page']) ?>">
                     </div>
-                </div>
-
-                <div style="min-width:700px;margin:0px 30px">
-
                     <div class="form-group">
                         <label for="stock" class="update_label">・庫存</label>
                         <span style="margin:0px 20px" class="my_text_blacktea_fifty">請填寫阿拉伯數字</span>
                         <span style="margin:0px -10px;color:red" id="stockHelp"></span>
                         <input type="text" class="update form-control" id="stock" name="stock" value="<?= htmlentities($update_row['stock']) ?>">
                     </div>
-
+                    <div class="form-group">
+                        <label for="stock" class="update_label">・狀態</label>
+                        <select class="custom-select">
+                            <option value="1" selected><?= $status_sql[0]['name'] ?></option>
+                            <option value="2"><?= $status_sql[1]['name'] ?></option>
+                        </select>
+                    </div>
                     <div class="form-group d-flex">
                         <div class="col-lg-5">
-                            <label for="pic" style="font-size: 20px">・請選擇書籍封面照片</label>
+                            <label for="pic" style="font-size: 20px;margin-left:-14px">・請選擇書籍封面照片</label>
                             <input type="file" class="form-control-file" id="pic" name="pic" style="display:none">
                             <br>
                             <button class="btn btn-outline-primary my-2 my-sm-0" type="button" onclick="selUpload()">
                                 <i class="fas fa-plus-circle" style="margin-right:5px"></i>選擇檔案
                             </button>
                         </div>
-                        <div style="height: 230px;width: 230px;border: 1px solid #ddd">
+                        <div style="height: 230px;width: 230px;border: 1px solid #ddd;margin-top:10px">
                             <img style="object-fit: contain;width: 100%;height: 100%" src="./vb_images/<?= htmlentities($update_row['pic']) ?>" id="demo" />
                         </div>
                     </div>
-
-                    <div class="form-group" style="margin:-30px 0px 0px 0px">
+                    <div class="form-group">
                         <label for="categories" class="update_label">・分類</label>
                         <div class="d-flex flex-wrap">
                             <?php foreach ($new_row as $k => $v) : ?>
@@ -153,13 +158,20 @@ foreach ($row as $r => $s) {
                         </div>
                     </div>
 
+                </div>
+
+                <div style="min-width:700px;margin:0px 30px">
+
+
+
+
                     <div class="form-group">
                         <label for="introduction" class="update_label">・書籍簡介</label>
                         <span style="margin:0px 20px" class="my_text_blacktea_fifty">限制200字以內</span>
                         <span style="margin:0px -10px;color:red" id="introductionHelp"></span>
                         <textarea class="update form-control" id="introduction" rows="3" style="width:700px;height:200px;resize:none" name="introduction" placeholder="<?= htmlentities($update_row['introduction']) ?>"></textarea>
                     </div>
-
+                    <textarea name="editor1"></textarea>
 
                     <div>
                         <button style="margin:5px 0px 0px -80px" type="submit" class="btn btn-warning" id="submit_btn">
@@ -361,5 +373,9 @@ foreach ($row as $r => $s) {
         return false;
     }
 </script>
-
+<!-- html編輯器 -->
+<script src="https://cdn.ckeditor.com/4.12.1/standard/ckeditor.js"></script>
+<script>
+    CKEDITOR.replace('editor1');
+</script>
 <?php include __DIR__ . '/../../pbook_index/__html_foot.php' ?>
