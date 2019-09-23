@@ -166,8 +166,7 @@ foreach ($cates as $r) {
                             <td style="vertical-align:middle;"><?= $row[$i]['version']; ?></td>
                             <td style="vertical-align:middle;"><?= $row[$i]['page']; ?></td>
                             <td style="vertical-align:middle;"><?= $row[$i]['publish_date']; ?></td>
-                            <td style="vertical-align:middle;"><?= $row[$i]['fixed_price']; ?></td>
-                            
+                            <td style="vertical-align:middle;"><?= $row[$i]['fixed_price']; ?></td>                         
                             <td style="vertical-align:middle;"><?= $row[$i]['stock']; ?></td>
                             <td style="vertical-align:middle;"><a href="vb_data_update.php?sid=<?= $row[$i]['sid'] ?>"><i class="fas fa-edit"></i></a></td>
                             <td style="vertical-align:middle;"><a href="#" onclick="delete_one(<?= $row[$i]['sid'] ?>)" id="btn_delete"><i class="fas fa-trash-alt"></i></a></td>
