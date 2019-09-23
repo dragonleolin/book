@@ -84,7 +84,7 @@ foreach ($cates as $r) {
     }
 </style>
 <?php include __DIR__ . '/__html_body.php' ?>
-<div style="z-index:999;width:100vw;height:100vh;display:none;background:rgba(0,0,0,0.2)" id="my_delete" class="position-absolute">
+<!-- <div style="z-index:999;width:100vw;height:100vh;display:none;background:rgba(0,0,0,0.2)" id="my_delete" class="position-absolute">
     <div class="delete update card">
         <div class="delete card-body">
             <label class="delete_text">您確認要刪除資料嗎?</label>
@@ -94,7 +94,7 @@ foreach ($cates as $r) {
             </div>
         </div>
     </div>
-</div>
+</div> -->
 <?php include __DIR__ . '/__navbar.php' ?>
 <!-- 右邊section資料欄位 -->
 <div>
@@ -225,7 +225,7 @@ foreach ($cates as $r) {
                             SID</th>
                         <th scope="col">ISBN</th>
                         <th scope="col">書籍名稱</th>
-                        <th scope="col">封面</th>
+                        <th scope="col">詳細內容</th>
                         <th scope="col">
                             <i class="fas fa-sort-amount-down-alt" style="<?= ($col == 'categories' &&  $ord == 'ASC') ? 'display:inline-block;;color:#ffc408' : 'display:none;' ?>"></i>
                             <i class="fas fa-sort-amount-down" style="<?= ($col == 'categories' && $ord == 'DESC') ? 'display:inline-block;color:#ffc408' : 'display:none;' ?>"></i>
@@ -400,6 +400,7 @@ foreach ($cates as $r) {
 </div>
 
 </div>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
 <script>
     $("#all_check").click(function() {
         let checkAll = $(this).prop("checked");
@@ -428,15 +429,27 @@ foreach ($cates as $r) {
     }
 
     function vb_data_delete(cName) {
-        var checkboxes = document.getElementsByName(cName);
-        let ar = [];
-        for (var i = 0; i < checkboxes.length; i++) {
-            if (checkboxes[i].checked) {
-                ar.push(checkboxes[i].value);
+        Swal.fire({
+            title: '您確認要刪除資料嗎?',
+            text: "刪除後無法恢復原狀喔!",
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: '確認!',
+            cancelButtonText: '取消!',
+        }).then((result) => {
+            if (result.value) {
+                Swal.fire(
+                    '確認刪除!',
+                    '您所選取的資料已經成功刪除',
+                    'success'
+                )
+                setTimeout(function() {
+                    location.href = 'vb_data_delete.php?sid=' + sid;
+                }, 2000)
             }
-        }
-        document.cookie = "checkbox_sid=" + ar;
-        location = "vb_data_delete.php";
+        })
     }
 
 
@@ -454,19 +467,29 @@ foreach ($cates as $r) {
     let a;
 
     function delete_one(sid) {
-        a = sid;
-        let my_delete = document.querySelector('#my_delete');
-        my_delete.style.display = 'block';
-        no_touch1.style.pointerEvents = "none";
+        Swal.fire({
+            title: '您確認要刪除資料嗎?',
+            text: "刪除後無法恢復原狀喔!",
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: '確認!',
+            cancelButtonText: '取消!',
+        }).then((result) => {
+            if (result.value) {
+                Swal.fire(
+                    '確認刪除!',
+                    '您所選取的資料已經成功刪除',
+                    'success'
+                )
+                setTimeout(function() {
+                    location.href = 'vb_data_delete.php?sid=' + sid;
+                }, 2000)
+            }
+        })
     }
 
-    function delete_yes() {
-        location.href = 'vb_data_delete.php?sid=' + a;
-    }
-
-    function delete_no() {
-        location.href = 'vb_data_list.php?page=' + <?= $page ?>;
-    }
 
     function goto_orderby(str) {
         location.href = '?' + str;
