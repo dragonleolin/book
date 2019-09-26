@@ -140,17 +140,12 @@ $row = $t_stmt->fetchAll();
 
                                                 <?php
                                                     $a = json_decode($r['mb_pic']);
+                                                    for($i=0; $i<count($a); $i++):
                                                     ?>
-                                                <a href="<?= 'mb_images/' . $a[0]; ?>" data-lightbox="image">
-                                                    <img src="<?= 'mb_images/' . $a[0]; ?>" class="d-block w-100" alt="...">
+                                                <a href="<?= 'mb_images/' . $a[$i]; ?>" data-lightbox="image">
+                                                    <img src="<?= 'mb_images/' . $a[$i]; ?>" class="d-block w-100" alt="...">
                                                 </a>
-                                                <a href="<?= 'mb_images/' . $a[1]; ?>" data-lightbox="image">
-                                                    <img src="<?= 'mb_images/' . $a[1]; ?>" class="d-block w-100" alt="...">
-                                                </a>
-                                                <a href="<?= 'mb_images/' . $a[2]; ?>" data-lightbox="image">
-                                                    <img src="<?= 'mb_images/' . $a[2]; ?>" class="d-block w-100" alt="...">
-                                                </a>
-
+                                                    <?php endfor; ?>
                                                 
                                                 <div class="modal-footer">
                                                     <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
