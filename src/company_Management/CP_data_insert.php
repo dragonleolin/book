@@ -116,7 +116,7 @@ $form_data2 = [
 </div>
 <script>
     function selUpload() {
-        document.querySelector('#cp_logo').click();
+        $('#cp_logo').click();
     }
     $('#cp_logo').change(function() {
         var file = $('#cp_logo')[0].files[0];
@@ -130,8 +130,7 @@ $form_data2 = [
     function getRandom(min, max) {
         return Math.floor(Math.random() * (max - min + 1)) + min;
     };
-
-    function rand_data() {
+    $("#btn2").click(function() {
         let rand_phone = "";
         for (let i = 0; i < 8; i++) {
             let d = getRandom(0, 9);
@@ -200,24 +199,18 @@ $form_data2 = [
             }
             rand_pass = rand_pass + b;
         };
-        document.querySelector('#cp_phone').value = '09' + rand_phone;
-        document.querySelector('#cp_email').value = rand_email + '@gmail.com';
-        document.querySelector('#cp_tax_id').value = rand_tax;
-        document.querySelector('#cp_stock').value = rand_stock;
-        document.querySelector('#cp_account').value = rand_acc;
-        document.querySelector('#cp_password').value = rand_pass;
-    }
-    let info_bar = document.querySelector('#info_bar');
-    let info_bar2 = document.querySelector('#info_bar2');
-    let info_position = document.querySelector('#info_position');
-    let info_position2 = document.querySelector('#info_position2');
-    let btn1 = document.querySelector('#btn1');
-    let btn2 = document.querySelector('#btn2');
-    let form1 = document.querySelector('#form1');
+        $("#cp_phone").val("09" + rand_phone);
+        $("#cp_email").val(rand_email + "@gmail.com");
+        $("#cp_tax_id").val(rand_tax);
+        $("#cp_stock").val(rand_stock);
+        $("#cp_account").val(rand_acc);
+        $("#cp_password").val(rand_pass);
+    })
+
     const required_fields = [{
             id: 'cp_name',
             pattern: /^\S{2,}/,
-            info: '請輸入正確名字',
+            info: '請輸入正確社名',
         },
         {
             id: 'cp_contact_p',
@@ -263,22 +256,23 @@ $form_data2 = [
     let s, item;
     for (s in required_fields) {
         item = required_fields[s];
-        item.el = document.querySelector('#' + item.id); //item.el拿到input的id
-        item.info_el = document.querySelector('#' + item.id + 'Help'); //item.info_el拿到small的id
+        item.el = $('#' + item.id);
+        item.infoEl = $('#' + item.id + 'Help');
     }
 
     function checkForm() {
         for (s in required_fields) {
             item = required_fields[s];
-            item.el.style.border = '1px solid #CCCCCC';
-            item.info_el.innerHTML = '';
+            // item.el.style.border = '1px solid #ccc';
+            item.el.css("border", "1px solid #ccc");
+            item.infoEl.text("");
         }
         let isPass = true;
         for (s in required_fields) {
             item = required_fields[s];
-            if (!item.pattern.test(item.el.value)) {
-                item.el.style.border = '1px solid red';
-                item.info_el.innerHTML = item.info;
+            if (!item.pattern.test(item.el.val())) {
+                item.el.css("border", "1px solid red");
+                item.infoEl.text(item.info);
                 isPass = false;
             }
         }
@@ -293,19 +287,18 @@ $form_data2 = [
                 })
                 .then(json => {
                     console.log(json);
-                    info_position.style.display = 'block';
-                    info_bar.innerHTML = json.info;
-                    info_bar2.innerHTML = json.info;
+                    $("#info_position").css("display", "block");
+                    $("#info_bar").text(json.info);
+                    $("#info_bar2").text(json.info);
                     if (json.success) {
-                        info_position.style.display = 'block';
-                        btn1.style.display = 'none';
-                        btn2.style.display = 'none';
-                        form1.style.display = 'none';
+                        $("#info_position").css("display", "block");
+                        $(".btn").css("display", "none");
+                        $("#form1").css("display", "none");
                         setTimeout(function() {
                             location.href = 'CP_data_list.php';
                         }, 1000);
                     } else {
-                        info_position2.style.display = 'block';
+                        $("#info_position2").css("display", "block");
                         setTimeout(function() {
                             location.href = 'CP_data_insert.php';
                         }, 1000);

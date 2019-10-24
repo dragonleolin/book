@@ -28,7 +28,7 @@
 
 <div class="d-flex flex-row my_content">
     <!-- 左邊aside選單欄位 -->
-    
+
     <aside class="d-flex aside_heigh" style="position:fixed;left:0px;height:100%">
         <div id="accordion">
             <div class="aside card">
@@ -100,7 +100,7 @@
                     </div>
                 </button>
                 <div id="collapseFour" class="collapse" aria-labelledby="headingFour" data-parent="#accordion">
-                    <button type="button" class="btn btn-light sub_aside_text" onclick="location.href='../memberBooks_Management/MB_data_list.php'">
+                    <button type="button" class="btn btn-light sub_aside_text" onclick="location.href='../memberBooks_Management/MB_data_list_dataTable.php'">
                         <i class="fas fa-caret-right"></i>
                         <span>會員書籍總表</span>
                     </button>
@@ -115,18 +115,14 @@
             <button type="button" class="aside card-header btn btn-info" id="headingFive">
                 <div class="aside_hover" data-toggle="collapse" data-target="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
                     <img class="aside_logo" src="../../images/icon_BR_m.svg" alt="">
-                    <span class="aside_text">書評人管理</span>
+                    <span class="aside_text">書評管理</span>
                     <i class="fas fa-caret-down"></i>
                 </div>
             </button>
             <div id="collapseFive" class="collapse" aria-labelledby="headingFive" data-parent="#accordion">
                 <button type="button" class="btn btn-light sub_aside_text" onclick="location.href='../Book_review/BR_data_list.php'">
                     <i class="fas fa-caret-right"></i>
-                    <span>書評人總表</span>
-                </button>
-                <button type="button" class="btn btn-light sub_aside_text " onclick="location.href='../Book_review/BR_insert.php'">
-                    <i class="fas fa-caret-right"></i>
-                    <span>新增書評人</span>
+                    <span>書評家總表</span>
                 </button>
                 <button type="button" class="btn btn-light sub_aside_text" onclick="location.href='../Book_review/BR_bookreview_list.php'">
                     <i class="fas fa-caret-right"></i>
@@ -192,4 +188,4 @@
             </div>
         </div>
     </aside>
-    <aside style="width:250px;height:100%"></aside>
+    <aside style="min-width:250px;height:100%"></aside>

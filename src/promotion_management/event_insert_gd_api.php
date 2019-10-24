@@ -22,6 +22,15 @@ echo '<pre>';
 print_r($fd);
 echo '</pre>';
 
+//檢查欄位
+$fd['user_level_type'] = empty($fd['user_level']) ? 0 : $fd['user_level_type'];
+$fd['cp_group_set'] = empty($fd['cp_group']) ? 0 : $fd['cp_group_set'];
+if ($fd['group_type'] == 1 and empty($fd['categories'])) {
+    $fd['group_type'] = 0;
+} else if ($fd['group_type'] == 2 and empty($fd['book_group'])) {
+    $fd['group_type'] = 0;
+}
+
 
 //輸入活動
 $sql = "INSERT INTO `pm_event`
@@ -87,7 +96,6 @@ if ($fd['user_level_type'] == 1) {
         $result['info'] = '會員條件輸入成功';
     }
 }
-
 
 
 //輸入參與廠商

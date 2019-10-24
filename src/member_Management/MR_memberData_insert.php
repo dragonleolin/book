@@ -1,6 +1,7 @@
 <?php require __DIR__ . '/__admin_required.php' ?>
 <?php require  'MR_db_connect.php' ?>
 <?php
+$page_title = '新增資料';
 
 $data_item = [
     '#' => 'sid',
@@ -17,13 +18,12 @@ $data_item = [
     '建立時間' => 'createdDate',
 ];
 
-$a_level = [
-    '品書會員',
-    '品書學徒',
-    '品書專家',
-    '品書大師',
-    '品書至尊',
-];
+$sql = "SELECT `MR_levelName` FROM `mr_level`";
+$level = $pdo->query($sql)->fetchAll();
+$a_level = [];
+for ($i = 0; $i < count($level); $i++) {
+    $a_level[$i] = $level[$i]['MR_levelName'];
+};
 
 $number_blank = 'MR00000';
 $count = "SELECT COUNT(1) FROM `mr_information`";
@@ -88,7 +88,7 @@ $new_number = substr($number_blank, 0, strlen($number_blank) - strlen($totalRows
                     </div>
                     <label class="form-group">
                         <label for="personLevel">會員等級 : </label>
-                        <?php for ($i = 0; $i < 5; $i++) : ?>
+                        <?php for ($i = 0; $i < count($a_level); $i++) : ?>
                             <div class="form-check form-check-inline">
                                 <input class="form-check-input" type="radio" name="personLevel" value="<?= $i ?>" id="personLevel<?= $i ?>">
                                 <label class="form-check-label" for="personLevel<?= $i ?>"><?= $a_level[$i] ?> </label>
@@ -182,7 +182,7 @@ $new_number = substr($number_blank, 0, strlen($number_blank) - strlen($totalRows
                         </button>
                     </div>
                 </div>
-                <div class="">
+                <div class="right-column">
                     <div class="">
                         <label for="pic">會員頭像</label>
                         <div class="d-flex ">
@@ -320,16 +320,16 @@ $new_number = substr($number_blank, 0, strlen($number_blank) - strlen($totalRows
     //圖片遠近
     let times = 1;
     let one = 100;
-    let result='';
+    let result = '';
 
     function imgZoomIn() {
         if (times > 0) {
-            one += 25 ;
-            demo.style.width = demo.style.height = one+result+'%';
-            
+            one += 25;
+            demo.style.width = demo.style.height = one + result + '%';
+
         } else {
-            one -= 25 ;
-            demo.style.width = demo.style.height = one+result+'%';
+            one -= 25;
+            demo.style.width = demo.style.height = one + result + '%';
         }
         console.log(`${result+one}+'%'`);
     }
@@ -337,11 +337,11 @@ $new_number = substr($number_blank, 0, strlen($number_blank) - strlen($totalRows
     function imgZoomOut() {
         console.log(one);
         if (times < 0) {
-            one += 25 ;
-            demo.style.width = demo.style.height =one+result+'%';
+            one += 25;
+            demo.style.width = demo.style.height = one + result + '%';
         } else {
             one -= 25;
-            demo.style.width = demo.style.height = one+result+'%';
+            demo.style.width = demo.style.height = one + result + '%';
         };
         console.log(`${one+result}+'%'`);
     }

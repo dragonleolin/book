@@ -3,7 +3,7 @@ $page_name = 'event_insert_gd2';
 $page_title = '選擇折扣適用商品';
 require __DIR__ . '/__connect_db.php';
 
-include __DIR__ . '/../../pbook_index/__html_head.php';
+include __DIR__ . '/__html_head.php';
 include __DIR__ . '/../../pbook_index/__html_body.php';
 include __DIR__ . '/../../pbook_index/__navbar.php';
 
@@ -15,7 +15,6 @@ $cate_row = $pdo->query($cate_sql)->fetchAll(PDO::FETCH_UNIQUE | PDO::FETCH_COLU
 $cp_sql = "SELECT `sid`,`cp_name` FROM `cp_data_list` WHERE 1";
 $cp_row = $pdo->query($cp_sql)->fetchAll(PDO::FETCH_UNIQUE | PDO::FETCH_COLUMN);
 
-$per_page = 10;
 ?>
 
     <style>
@@ -154,11 +153,6 @@ $per_page = 10;
 
                                             </tbody>
                                         </table>
-                                        <nav aria-label="Page navigation example" id="page_nav">
-                                            <ul class="pagination">
-
-                                            </ul>
-                                        </nav>
                                     </div>
                                 </div>
                             </div>
@@ -171,114 +165,80 @@ $per_page = 10;
         </div>
 
     </div>
-
     <script src="../../lib/jquery-3.4.1.js"></script>
+    <script type="text/javascript" charset="utf8"
+            src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.js"></script>
     <script>
         "use strict";
-        let per_page = <?= $per_page; ?>;
         let cate_row = <?= json_encode($cate_row); ?>;
         let cp_row = <?= json_encode($cp_row);?>;
         let tbody = document.getElementById('books_list');
         let sel_books_ar = [];
         let books;
 
-        $("#page_nav").hide();
+        //dataTable
+        let dataTableLanguage = <?php include('data-table-language.json'); ?>;
+        let table = $("#books_list").closest("table").DataTable({
+            "searching": false,
+            "language": dataTableLanguage,
+            "drawCallback": function() {
+                book_checked();
+            },
+        });
 
-        function render_books(page) {
-            $('#book_list_checkAll').prop('checked',false);
-            let total_rows = books.length;
-            let total_pages = Math.ceil(total_rows / per_page);
-            page=page<1?1:page;
-            page=page>total_pages?total_pages:page;
-            if (total_pages > 1) {
-                $("#page_nav").show();
-                render_page_nav(page, total_pages);
-            } else {
-                $("#page_nav").hide();
-            }
+
+        function render_book_row(i) {
             let html = '';
-            if(total_rows==0){
+            html += '<td>' + books[i].sid + '</td>';
+            html += '<td>' + books[i].isbn + '</td>';
+            html += '<td>' + books[i].name + '</td>';
+            html += '<td>' + cate_row[books[i].categories] + '</td>';
+            html += '<td>' + books[i].author + '</td>';
+            html += '<td>' + cp_row[books[i].publishing] + '</td>';
+            html += '</tr>';
+            return html;
+        }
+
+        function render_books() {
+            table.destroy();
+            $('#book_list_checkAll').prop('checked', false);
+            let total_rows = books.length;
+            let html = '';
+            if (total_rows == 0) {
                 tbody.innerHTML = '<td style="text-align: center" colspan="7">無結果</td>';
                 return false;
             }
-            for (let i = (page - 1) * per_page; i < page * per_page && i < total_rows; i++) {
-                html += '<tr id="book_list_id_' + books[i].sid + '">';
-
+            for (let i = 0; i < total_rows; i++) {
+                html += `<tr data-sid="${books[i].sid}" id="book_list_id_${books[i].sid}">`;
                 if ($.inArray(books[i].sid, sel_books_ar) != -1) {
                     html += '<td>' + '<input checked type="checkbox" onchange="addBook(' + i + ')">' + '</td>';
                 } else {
                     html += '<td>' + '<input type="checkbox" onchange="addBook(' + i + ')">' + '</td>';
                 }
-                html += '<td>' + books[i].sid + '</td>';
-                html += '<td>' + books[i].isbn + '</td>';
-                html += '<td>' + books[i].name + '</td>';
-                html += '<td>' + cate_row[books[i].categories] + '</td>';
-                html += '<td>' + books[i].author + '</td>';
-                html += '<td>' + cp_row[books[i].publishing] + '</td>';
-                html += '</tr>';
+                html += render_book_row(i);
             }
             tbody.innerHTML = html;
+            table = $("#books_list").closest("table").DataTable({
+                "searching": false,
+                "language": dataTableLanguage,
+                "drawCallback": function() {
+                    book_checked();
+                },
+            });
             return false;
         }
 
-        function render_page_nav(page, total_pages) {
-            let p_start, p_end;
-            if (total_pages <= 5) {
-                p_start = 1;
-                p_end = total_pages;
-            } else if ((page - 2) < 1) {
-                p_start = 1;
-                p_end = 5;
-            } else if ((page + 2) > total_pages) {
-                p_start = total_pages - 4;
-                p_end = total_pages;
-            } else {
-                p_start = page - 2;
-                p_end = page + 2;
-            }
-            let html = "";
-            html += `
-                <li class="page-item">
-                    <a class="page-link" onclick="render_books(1)"><i class="fas fa-angle-double-left"></i></a>
-                </li>
-                <li class="page-item">
-                    <a class="page-link" onclick="render_books(${page - 1})"><i class="fas fa-angle-left"></i></a>
-                </li>
-            `;
-            for (let i = p_start; i <= p_end; i++) {
-
-                html += `
-                    <li class="page-item ${page == i ? 'active' : ''} ?>">
-                        <a class="page-link" onclick="render_books(${i})">${i}</a>
-                    </li>
-                `;
-
-            }
-            html += `
-                <li class="page-item">
-                    <a class="page-link" onclick="render_books(${page + 1})"><i class="fas fa-angle-right"></i></a>
-                </li>
-                <li class="page-item">
-                    <a class="page-link" onclick="render_books(${total_pages})"><i class="fas fa-angle-double-right"></i></a>
-                </li>
-            `;
-
-            document.querySelector('#page_nav ul').innerHTML = html;
-
-        }
-
-
-        let my_search = document.querySelector('#my_search');
+        let my_search = $('#my_search');
 
         function search() {
             //取得搜尋字串
-            let search_type = document.querySelector('#search_type').value;
+            let search_type = $('#search_type').val();
             //ajax
             $.ajax({
                 method: "GET",
                 url: "./book_searching_api.php", //進api
                 data: {
-                    search: my_search.value,
+                    search: my_search.val(),
                     search_type: search_type,
                 }
             })
@@ -290,27 +250,20 @@ $per_page = 10;
             return false;
         }
 
-        my_search.addEventListener('keyup', search);
+        my_search.on('keyup', search);
 
 
         function checkForm() {
-            let isPass = true;
-            let book_group = document.querySelector('#book_group');
-            book_group.value = JSON.stringify(sel_books_ar);
-
-            if (isPass) {
-                return true;
-            } else {
-                return false;
-            }
+            $('#book_group').val(JSON.stringify(sel_books_ar));
+            return true;
         }
 
 
         function checkAll(bool, check_area) {
-            if(bool) {
+            if (bool) {
                 $(check_area + ' input:not(:checked)').click();
-            }else{
-                $(check_area + ' input:checked').click()
+            } else {
+                $(check_area + ' input:checked').click();
             }
         }
 
@@ -318,18 +271,18 @@ $per_page = 10;
         function group_type_display() {
             let group_type = document.querySelector('#group_type');
             if (group_type.value == 0) {
-                checkAll(false,'#bg_checkboxes');
-                checkAll(false,'#books_list');
-                $('#book_list_checkAll').prop('checked',false);
+                checkAll(false, '#bg_checkboxes');
+                checkAll(false, '#books_list');
+                $('#book_list_checkAll').prop('checked', false);
                 $('#bg_checkboxes').hide();
                 $('#book_id_block').hide();
             } else if (group_type.value == 1) {
-                checkAll(false,'#books_list');
-                $('#book_list_checkAll').prop('checked',false);
+                checkAll(false, '#books_list');
+                $('#book_list_checkAll').prop('checked', false);
                 $('#bg_checkboxes').show();
                 $('#book_id_block').hide();
             } else {
-                checkAll(false,'#bg_checkboxes');
+                checkAll(false, '#bg_checkboxes');
                 $('#bg_checkboxes').hide();
                 $('#book_id_block').show();
             }
@@ -346,13 +299,7 @@ $per_page = 10;
                 let html = '';
                 html += '<tr id=book_sel_id_' + books[search_id].sid + '>';
                 html += '<td>' + '<input type="checkbox" onchange="unSelBook(' + books[search_id].sid + ')">' + '</td>';
-                html += '<td>' + books[search_id].sid + '</td>';
-                html += '<td>' + books[search_id].isbn + '</td>';
-                html += '<td>' + books[search_id].name + '</td>';
-                html += '<td>' + cate_row[books[search_id].categories] + '</td>';
-                html += '<td>' + books[search_id].author + '</td>';
-                html += '<td>' + books[search_id].publishing + '</td>';
-                html += '</tr>';
+                html += render_book_row(search_id);
                 sel_books.innerHTML += html;
             }
         }
@@ -360,20 +307,27 @@ $per_page = 10;
         function unSelBook(book_id) {
             let book_tr = document.querySelector('#book_sel_id_' + book_id);
             sel_books.removeChild(book_tr);
-            let book_list_checkbox = document.querySelector('#book_list_id_' + book_id + ' input');
-            book_list_checkbox.checked = false;
             let book_index = $.inArray("" + book_id, sel_books_ar);
             sel_books_ar.splice(book_index, 1);
+            book_checked();
         }
 
-        let books_list = document.querySelector('#books_list');
-        books_list.addEventListener('click', event => {
+        $('tbody').click(function () {
             if (event.path[1].id) {
                 let tr_id = event.path[1].id;
-                let check_box = document.querySelector('#' + tr_id + " input");
-                check_box.click();
+                $('#' + tr_id + " input").click();
             }
         })
+
+        function book_checked() {
+            $("#books_list tr").each(function () {
+                if ($.inArray( ""+$(this).data("sid"),sel_books_ar)!=-1) {
+                    $(this).find("input").prop("checked", true);
+                } else {
+                    $(this).find("input").prop("checked", false);
+                }
+            })
+        }
 
     </script>
 

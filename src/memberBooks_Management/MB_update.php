@@ -73,6 +73,19 @@ $totalPages = ceil($totalRows / $per_page);
         top: 250px;
         left: 500px;
     }
+    .pre_pic {
+        display: flex;
+        height: 230px;
+        width: 200px;
+        /* border: 1px solid #ddd; */
+    }
+    .pre_img{
+        object-fit: contain;
+        width: 100%;
+        height: 100%;
+        margin: 0 5px;
+    }
+    
 </style>
 <?php include __DIR__ . '/../../pbook_index/__html_body.php' ?>
 <?php include __DIR__ . '/../../pbook_index/__navbar.php' ?>
@@ -146,26 +159,30 @@ $totalPages = ceil($totalRows / $per_page);
                             <input type="text" class="form-control" id="mb_shelveMember" name="mb_shelveMember" value="<?= htmlentities($row['mb_shelveMember']) ?>" readonly="readonly" />
                         </div>
 
-                        <div class="form-group d-flex">
                        
-                            <div class="col-lg-5">
+                        <div class="form-group d-flex">
+                            <div id="chose_pic" class="col-lg-4">
                                 <label for="mb_pic" style="font-size: 20px">・請選擇書籍照片</label>
                                 <input type="file" class="form-control-file" id="mb_pic" name="mb_pic[]" style="display:none" multiple>
                                 <br>
                                 <button class="btn btn-outline-primary my-2 my-sm-0" type="button" onclick="uploadFile()">
                                     <i class="fas fa-plus-circle" style="margin-right:5px"></i>選擇檔案
                                 </button>
+                                <div style="height:50px; margin-top:10px">
+                                    <span style="margin:0px 20px" class="my_text_blacktea_fifty">最多上傳三張圖片</span>
+                                </div>
                             </div>
+                            <div class="pre_pic col-lg-3">
                                 <?php
                                 $a = json_decode($row['mb_pic']);
                                 // var_dump($a);
                                 for ($i = 0; $i < count($a); $i++) :
                                     // var_dump($a[$i]);
                                 ?>
-                                <div style="height: 230px;width: 230px;border: 1px solid #ddd">
-                                    <img style="object-fit: contain;width: 100%;height: 100%" src="./mb_images/<?= $a[$i] ?>" id="demo" />
+                                    <img style="object-fit: contain;width: 100%;height: 100%; margin-right:5px" src="./mb_images/<?= $a[$i] ?>" />
+                                    <?php endfor; ?>
                                 </div>
-                            <?php endfor; ?>
+
                         </div>
 
                         <div class="form-group" style="margin: -50px -20px 10px 0px; padding: 20px 50px 20px 30px;">
@@ -187,7 +204,7 @@ $totalPages = ceil($totalRows / $per_page);
                             <label for="mb_remarks" class="update_label">備註</label>
                             <span style="margin:0px 20px" class="my_text_blacktea_fifty"></span>
                             <span style="margin:0px -10px;color:red" id="introductionHelp"></span>
-                            <textarea class="update form-control" name="mb_remarks" id="mb_remarks" rows="5" style="width:700px;height:90px;resize:none"><?= htmlentities($row['mb_remarks']) ?>
+                            <textarea class="update form-control" name="mb_remarks" id="mb_remarks" rows="5" style="width:650px;height:90px;resize:none"><?= htmlentities($row['mb_remarks']) ?>
                             </textarea>
                         </div>
                     </section>
@@ -217,18 +234,29 @@ $totalPages = ceil($totalRows / $per_page);
     //檔案上傳
     function uploadFile() {
         document.querySelector('#mb_pic').click();
-
     }
-
     $('#mb_pic').change(function() {
-        var file = $('#mb_pic')[0].files[0];
-        var reader = new FileReader;
-        reader.onload = function(e) {
-            $('#demo').attr('src', e.target.result);
+        $('.pre_pic').find("img").remove();
+        let input_file = document.getElementById('mb_pic')
+        let files_len = input_file.files.length
+        // console.log(files_len);
+        if (files_len <= 3) {
+            for (let i = 0; i < files_len; i++) {
+                var file = input_file.files[i];
+                console.log(file);
+                var reader = new FileReader;
+                reader.readAsDataURL(file);
+                reader.onload = function(e) {
+                    // $('#demo').attr('src', e.target.result);
+                    let img = $("<img>").addClass("pre_img").attr('src', e.target.result)
+                    $('.pre_pic').append(img)
+                }
+            }
+        } else {
+            alert('最多只能三張')
         }
-        reader.readAsDataURL(file);
-    })
 
+    })
     //驗證欄位
     const require_fields = [{
             id: 'mb_isbn',

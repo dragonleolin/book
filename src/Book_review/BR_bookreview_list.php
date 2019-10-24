@@ -32,7 +32,7 @@ $row = $stmt->fetchAll();
     <div class="container">
         <nav class="navbar justify-content-between" style="padding: 0px;width: 80vw;">
             <div>
-                <h4>書評人總表</h4>
+                <h4>書評總表</h4>
                 <div class="title_line"></div>
             </div>
             <ul class="nav justify-content-between">
@@ -60,6 +60,7 @@ $row = $stmt->fetchAll();
                     <tr>
                         <th scope="col">#</th>
                         <th scope="col">書評標題</th>
+                        <th scope="col">書名</th>
                         <th scope="col">書評內容</th>
                         <th scope="col">書評圖片</th>
                         <th scope="col">書評發表時間</th>
@@ -72,6 +73,7 @@ $row = $stmt->fetchAll();
                         <tr>
                             <td><?= $value['BR_sid'] ?></td>
                             <td><?= htmlentities($value['BR_title']) ?></td>
+                            <td><?= htmlentities($value['BR_book_name']) ?></td>
                             <td><?= htmlentities($value['BR_data']) ?></td>
                             <td><?= $value['BR_image'] ?></td>
                             <td><?= $value['BR_release_time'] ?></td>

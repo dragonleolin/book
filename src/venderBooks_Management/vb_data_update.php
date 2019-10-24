@@ -30,9 +30,13 @@ foreach ($row as $r => $s) {
     }
 }
 
+$status_sql = "SELECT * FROM `vb_status`";
+$status = $pdo->query($status_sql)->fetchAll();
+
 ?>
 
 <?php include __DIR__ . '/../../pbook_index/__html_head.php' ?>
+
 
 <style>
     body {
@@ -61,7 +65,7 @@ foreach ($row as $r => $s) {
     </nav>
 
     <!-- 每個人填資料的區塊 -->
-    <div class="container2" style="margin:15px 0px 0px 0px">
+    <div class="container2 mt-3">
         <form name="form1" method="post" enctype="multipart/form-data" onsubmit="return checkForm()">
             <input type="hidden" name="sid" value="<?= $update_row['sid'] ?>">
             <div class="d-flex">
@@ -76,7 +80,7 @@ foreach ($row as $r => $s) {
                     <div class="form-group">
                         <label for="name" class="update_label">・書籍名稱</label>
                         <span style="margin:0px 20px;color:red" id="nameHelp"></span>
-                        <input type="text" class="update form-control" id="name" name="name" value="<?= htmlentities($update_row['name']) ?>">
+                        <input style="text-overflow:ellipsis;" type="text" class="update form-control" id="name" name="name" value="<?= htmlentities($update_row['name']) ?>">
                     </div>
 
                     <div class="form-group">
@@ -110,15 +114,13 @@ foreach ($row as $r => $s) {
                         <span style="margin:0px -10px;color:red" id="fixed_priceHelp"></span>
                         <input type="text" class="update form-control" id="fixed_price" name="fixed_price" value="<?= htmlentities($update_row['fixed_price']) ?>">
                     </div>
+
                     <div class="form-group">
                         <label for="page" class="update_label">・頁數</label>
                         <span style="margin:0px 20px" class="my_text_blacktea_fifty">請填寫阿拉伯數字</span>
                         <span style="margin:0px -10px;color:red" id="pageHelp"></span>
                         <input type="text" class="update form-control" id="page" name="page" value="<?= htmlentities($update_row['page']) ?>">
                     </div>
-                </div>
-
-                <div style="min-width:700px;margin:0px 30px">
 
                     <div class="form-group">
                         <label for="stock" class="update_label">・庫存</label>
@@ -127,16 +129,25 @@ foreach ($row as $r => $s) {
                         <input type="text" class="update form-control" id="stock" name="stock" value="<?= htmlentities($update_row['stock']) ?>">
                     </div>
 
+                    <div class="form-group">
+                        <label for="stock" class="update_label">・狀態</label>
+                        <select name="status" class="custom-select">
+                            <option value="1" <?= $update_row['status'] == 1 ? "selected" : "" ?>><?= $status[0]['name'] ?></option>
+                            <option value="2" <?= $update_row['status'] == 2 ? "selected" : "" ?>><?= $status[1]['name'] ?></option>
+                            <option value="3" <?= $update_row['status'] == 3 ? "selected" : "" ?>><?= $status[2]['name'] ?></option>
+                        </select>
+                    </div>
+
                     <div class="form-group d-flex">
                         <div class="col-lg-5">
-                            <label for="pic" style="font-size: 20px">・請選擇書籍封面照片</label>
+                            <label for="pic" style="font-size: 20px;margin-left:-14px">・請選擇書籍封面照片</label>
                             <input type="file" class="form-control-file" id="pic" name="pic" style="display:none">
                             <br>
                             <button class="btn btn-outline-primary my-2 my-sm-0" type="button" onclick="selUpload()">
                                 <i class="fas fa-plus-circle" style="margin-right:5px"></i>選擇檔案
                             </button>
                         </div>
-                        <div style="height: 230px;width: 230px;border: 1px solid #ddd">
+                        <div style="height: 230px;width: 230px;border: 1px solid #ddd;margin-top:10px">
                             <img style="object-fit: contain;width: 100%;height: 100%" src="./vb_images/<?= htmlentities($update_row['pic']) ?>" id="demo" />
                         </div>
                     </div>
@@ -152,21 +163,27 @@ foreach ($row as $r => $s) {
                             <?php endforeach; ?>
                         </div>
                     </div>
+                </div>
 
+                <div style="min-width:700px;margin:0px 30px">
                     <div class="form-group">
                         <label for="introduction" class="update_label">・書籍簡介</label>
                         <span style="margin:0px 20px" class="my_text_blacktea_fifty">限制200字以內</span>
                         <span style="margin:0px -10px;color:red" id="introductionHelp"></span>
-                        <textarea class="update form-control" id="introduction" rows="3" style="width:700px;height:200px;resize:none" name="introduction" placeholder="<?= htmlentities($update_row['introduction']) ?>"></textarea>
+                        <textarea class="update form-control" id="introduction" rows="3" style="width:700px;height:200px;resize:none" name="introduction"><?= htmlentities($update_row['introduction']) ?></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="introduction" class="update_label">・書籍詳細內容</label>
+                        <textarea cols="80" id="editor1" name="editor1" rows="10" data-sample-short><?= htmlentities($update_row['detailData']) ?></textarea>
+                        <input type="text" name="detailData" id="detailData" value="<?= htmlentities($update_row['detailData']) ?>" style="display:none">
                     </div>
 
-
-                    <div>
-                        <button style="margin:5px 0px 0px -80px" type="submit" class="btn btn-warning" id="submit_btn">
-                            &nbsp;確&nbsp;認&nbsp;修&nbsp;改&nbsp;
-                        </button>
-                    </div>
                 </div>
+            </div>
+            <div class="text-center" style="width:1550px">
+                <button type="submit" class="btn btn-warning" id="submit_btn">
+                    &nbsp;確&nbsp;認&nbsp;修&nbsp;改&nbsp;
+                </button>
             </div>
         </form>
     </div>
@@ -180,7 +197,6 @@ foreach ($row as $r => $s) {
             </div>
         </div>
     </div>
-
     <!-- 以下為修改失敗才會跳出來的顯示框 -->
     <div style="padding:150px 100px 170px 180px;display:none" id="my_false">
         <div class="success update card" style="box-shadow:0px 0px 10px red">
@@ -190,12 +206,18 @@ foreach ($row as $r => $s) {
             </div>
         </div>
     </div>
-
 </div>
 
-
-
 </div>
+<!-- html編輯器 -->
+<script src="https://cdn.ckeditor.com/4.12.1/basic/ckeditor.js"></script>
+<script>
+    CKEDITOR.replace('editor1', {
+        height: 950,
+        resize_enabled: false,
+    });
+
+</script>
 <script>
     function selUpload() {
         document.querySelector('#pic').click();
@@ -214,7 +236,12 @@ foreach ($row as $r => $s) {
         reader.readAsDataURL(file);
     });
 
+
     function checkForm() {
+        let editor = CKEDITOR.instances.editor1;
+        editor.setData(editor.getData());
+        $("#detailData").val(editor.getData());
+
         // 判斷書籍名稱,作者,出版社,版次是否有填寫
         let name = document.querySelector('#name');
         let publishing = document.querySelector('#publishing');
@@ -322,6 +349,7 @@ foreach ($row as $r => $s) {
             };
         };
 
+
         // 全部都正確送出表單到後台
         let container2 = document.querySelector('.container2');
         let success = document.querySelector('#success');
@@ -361,5 +389,4 @@ foreach ($row as $r => $s) {
         return false;
     }
 </script>
-
 <?php include __DIR__ . '/../../pbook_index/__html_foot.php' ?>
