@@ -48,6 +48,7 @@ $books_sql = "SELECT `vb_books`.*, `cp_data_list`.`cp_name` publishing
                     $orderby LIMIT " . (($page - 1) * $per_page) . "," . $per_page;
 
 $books_stmt = $pdo->query($books_sql);
+$row = $books_stmt->fetchAll();
 
 
 $cat_sql = "SELECT * FROM `vb_categories`";
@@ -58,7 +59,11 @@ foreach ($cates as $r) {
 }
 
 $status_sql = "SELECT * FROM `vb_status`";
-$status_sql = $pdo->query($status_sql)->fetchAll();
+$status = $pdo->query($status_sql)->fetchAll();
+
+$setStock_sql = "UPDATE `vb_books` SET `status`= 3 WHERE `stock`= 0";
+$setStock = $pdo->query($setStock_sql);
+
 
 ?>
 
@@ -177,21 +182,6 @@ $status_sql = $pdo->query($status_sql)->fetchAll();
                 <li class="nav-item">
                     <div id="btnGroupDrop1" class="position-relative" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <button type="button" class="btn btn-outline-dark">
-                            <i class="fas fa-sort"></i>&nbsp;&nbsp;&nbsp;依狀態
-                        </button>
-                        <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-                            <a class="dropdown-item" href="#" onclick="goto_orderby('<?php $params['col'] = 'status';
-                                                                                        $params['ord'] = 'ASC';
-                                                                                        echo http_build_query($params) ?>')">上架中</a>
-                            <a class="dropdown-item" href="#" onclick="goto_orderby('<?php $params['col'] = 'status';
-                                                                                        $params['ord'] = 'DESC';
-                                                                                        echo http_build_query($params) ?>')">下架中</a>
-                        </div>
-                    </div>
-                </li>
-                <li class="nav-item">
-                    <div id="btnGroupDrop1" class="position-relative" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <button type="button" class="btn btn-outline-dark">
                             <i class="fas fa-sort"></i>&nbsp;&nbsp;&nbsp;依庫存
                         </button>
                         <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
@@ -242,13 +232,13 @@ $status_sql = $pdo->query($status_sql)->fetchAll();
                                 <i class="fas fa-sort-amount-down" style="<?= ($col == 'sid' && $ord == 'DESC') ? 'display:inline-block;color:#ffc408' : 'display:none;' ?>"></i>
                                 SID</th>
                             <th scope="col">ISBN</th>
-                            <th scope="col">書籍名稱</th>
+                            <th scope="col" style="max-width:300px">書籍名稱</th>
                             <th scope="col">詳細內容</th>
                             <th scope="col">
                                 <i class="fas fa-sort-amount-down-alt" style="<?= ($col == 'categories' &&  $ord == 'ASC') ? 'display:inline-block;;color:#ffc408' : 'display:none;' ?>"></i>
                                 <i class="fas fa-sort-amount-down" style="<?= ($col == 'categories' && $ord == 'DESC') ? 'display:inline-block;color:#ffc408' : 'display:none;' ?>"></i>
                                 分類</th>
-                            <th scope="col">作者</th>
+                            <th scope="col" style="max-width:100px;">作者</th>
                             <th scope="col">
                                 <i class="fas fa-sort-amount-down-alt" style="<?= ($col == 'publishing' &&  $ord == 'ASC') ? 'display:inline-block;color:#ffc408' : 'display:none;' ?>"></i>
                                 <i class="fas fa-sort-amount-down" style="<?= ($col == 'publishing' && $ord == 'DESC') ? 'display:inline-block;color:#ffc408' : 'display:none;' ?>"></i>
@@ -261,10 +251,7 @@ $status_sql = $pdo->query($status_sql)->fetchAll();
                                 <i class="fas fa-sort-amount-down-alt" style="<?= ($col == 'fixed_price' &&  $ord == 'ASC') ? 'display:inline-block;color:#ffc408' : 'display:none;' ?>"></i>
                                 <i class="fas fa-sort-amount-down" style="<?= ($col == 'fixed_price' && $ord == 'DESC') ? 'display:inline-block;color:#ffc408' : 'display:none;' ?>"></i>
                                 定價</th>
-                            <th scope="col">
-                                <i class="fas fa-sort-amount-down-alt" style="<?= ($col == 'status' &&  $ord == 'ASC') ? 'display:inline-block;color:#ffc408' : 'display:none;' ?>"></i>
-                                <i class="fas fa-sort-amount-down" style="<?= ($col == 'status' && $ord == 'DESC') ? 'display:inline-block;color:#ffc408' : 'display:none;' ?>"></i>
-                                狀態</th>
+                            <th scope="col">狀態</th>
                             <th scope="col">
                                 <i class="fas fa-sort-amount-down-alt" style="<?= ($col == 'stock' &&  $ord == 'ASC') ? 'display:inline-block;color:#ffc408' : 'display:none;' ?>"></i>
                                 <i class="fas fa-sort-amount-down" style="<?= ($col == 'stock' && $ord == 'DESC') ? 'display:inline-block;color:#ffc408' : 'display:none;' ?>"></i>
@@ -274,16 +261,13 @@ $status_sql = $pdo->query($status_sql)->fetchAll();
                         </tr>
                     </thead>
                     <tbody>
-                        <?php
-                        $row = $books_stmt->fetchAll();
-                        for ($i = 0; $i < count($row); $i++) : ?>
-
+                        <?php for ($i = 0; $i < count($row); $i++) : ?>
                             <tr>
                                 <td style="vertical-align:middle;"><input class="checkbox" type="checkbox" name="check[]" id="check<?= $row[$i]['sid'] ?>" value="<?= $row[$i]['sid'] ?>"></td>
                                 <td style="vertical-align:middle;"><?= (($page - 1) * $per_page) + ($i + 1) ?></td>
-                                <td style="vertical-align:middle;"><?= $row[$i]['sid']; ?></td>
+                                <td style="vertical-align:middle;" class="mySid"><?= $row[$i]['sid']; ?></td>
                                 <td style="vertical-align:middle;"><?= $row[$i]['isbn']; ?></td>
-                                <td style="vertical-align:middle;"><?= $row[$i]['name']; ?></td>
+                                <td style="vertical-align:middle;max-width:300px;text-overflow:ellipsis;overflow:hidden;white-space:nowrap;"><?= $row[$i]['name']; ?></td>
                                 <td style="vertical-align:middle;">
                                     <button type="button" class="btn btn-outline-primary" data-toggle="modal" data-target="#<?= 'book' . $row[$i]['sid']; ?>">
                                         <i class="fas fa-plus-circle"></i>
@@ -299,7 +283,7 @@ $status_sql = $pdo->query($status_sql)->fetchAll();
                                                     </button>
                                                 </div>
                                                 <div class="d-flex" style="padding:20px">
-                                                    <div style="width:350px">
+                                                    <div style="width:350px;height:350px">
                                                         <img style="object-fit: contain;width: 100%;height: 100%;" src="<?= 'vb_images/' . $row[$i]['pic']; ?>" alt="">
                                                     </div>
                                                     <div style="text-align:left;width:300px">
@@ -329,14 +313,12 @@ $status_sql = $pdo->query($status_sql)->fetchAll();
                                     </div>
                                 </td>
                                 <td style="vertical-align:middle;"><?= $cate_dict[$row[$i]['categories']]; ?></td>
-                                <td style="vertical-align:middle;"><?= $row[$i]['author']; ?></td>
+                                <td style="vertical-align:middle;max-width:100px;"><?= $row[$i]['author']; ?></td>
                                 <td style="vertical-align:middle;"><?= $row[$i]['publishing']; ?></td>
                                 <td style="vertical-align:middle;"><?= $row[$i]['publish_date']; ?></td>
                                 <td style="vertical-align:middle;"><?= $row[$i]['fixed_price']; ?></td>
-                                <td style="vertical-align:middle;">
-                                <?= ($row[$i]['status'] == $status_sql[0]['sid']) && ($row[$i]['stock'] != 0) ?  $status_sql[0]['name']  :  $status_sql[1]['name'] ; ?>           
-                                </td>
-                                <td style="vertical-align:middle;"><?= $row[$i]['stock']; ?></td>
+                                <td style="vertical-align:middle;"><?= $status[$row[$i]['status'] - 1]['name']; ?></td>
+                                <td style="vertical-align:middle;" class="stockZero"><?= $row[$i]['stock']; ?></td>
                                 <td style="vertical-align:middle;"><a href="vb_data_update.php?sid=<?= $row[$i]['sid'] ?>"><i class="fas fa-edit"></i></a></td>
                                 <td style="vertical-align:middle;"><a href="#" onclick="delete_one(<?= $row[$i]['sid'] ?>)" id="btn_delete"><i class="fas fa-trash-alt"></i></a></td>
                             </tr>

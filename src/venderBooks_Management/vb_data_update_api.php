@@ -46,11 +46,7 @@ if (!empty($_FILES['pic'])) { //檔案有沒有上傳
     }
 }
 
-if (empty($_POST['introduction'])) {
-    $introduction_sql = sprintf("SELECT `introduction` FROM `vb_books` WHERE `sid` = %s", $_POST['sid']);
-    $introduction_stmt = $pdo->query($introduction_sql);
-    $_POST['introduction'] = $introduction_stmt->fetch()['introduction'];
-}
+
 
 $sql = "UPDATE `vb_books` 
         SET `isbn`=?,
@@ -65,6 +61,8 @@ $sql = "UPDATE `vb_books`
             `pic`=?,
             `categories`=?,
             `introduction`=?,
+            `detailData`=?,
+            `status`=?,
             `created_at`= NOW()
         WHERE `sid`=?";
 
@@ -83,9 +81,13 @@ $stmt->execute([
     $new_filename . $new_ext,
     $_POST['categories'],
     $_POST['introduction'],
+    $_POST['detailData'],
+    $_POST['status'],
     $_POST['sid'],
 ]);
 
+$setStock_sql = "UPDATE `vb_books` SET `status`= 3 WHERE `stock`= 0";
+$setStock = $pdo->query($setStock_sql);
 
 if ($stmt->rowCount() == 1) {
     $result['success'] = true;

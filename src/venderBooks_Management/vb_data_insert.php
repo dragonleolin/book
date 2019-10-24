@@ -25,6 +25,8 @@ $t_sql = "SELECT COUNT(1) FROM `vb_books` ";
 $totalRows = $pdo->query($t_sql)->fetch(PDO::FETCH_NUM)[0]; // 拿到總筆數
 $totalPages = ceil($totalRows / $per_page); //取得總頁數
 
+$status_sql = "SELECT * FROM `vb_status`";
+$status = $pdo->query($status_sql)->fetchAll();
 
 ?>
 
@@ -57,7 +59,7 @@ $totalPages = ceil($totalRows / $per_page); //取得總頁數
     </nav>
 
     <!-- 每個人填資料的區塊 -->
-    <div class="container2" style="margin:15px 0px 0px 0px">
+    <div class="container2 mt-3">
         <form name="form1" method="post" enctype="multipart/form-data" onsubmit="return checkForm()">
             <div class="d-flex">
                 <div style="min-width:700px;margin:0px 30px">
@@ -105,15 +107,13 @@ $totalPages = ceil($totalRows / $per_page); //取得總頁數
                         <span style="margin:0px -10px;color:red" id="fixed_priceHelp"></span>
                         <input type="text" class="update form-control" id="fixed_price" name="fixed_price">
                     </div>
+
                     <div class="form-group">
                         <label for="page" class="update_label">・頁數</label>
                         <span style="margin:0px 20px" class="my_text_blacktea_fifty">請填寫阿拉伯數字</span>
                         <span style="margin:0px -10px;color:red" id="pageHelp"></span>
                         <input type="text" class="update form-control" id="page" name="page">
                     </div>
-                </div>
-
-                <div style="min-width:700px;margin:0px 30px">
 
                     <div class="form-group">
                         <label for="stock" class="update_label">・庫存</label>
@@ -122,16 +122,25 @@ $totalPages = ceil($totalRows / $per_page); //取得總頁數
                         <input type="text" class="update form-control" id="stock" name="stock">
                     </div>
 
+                    <div class="form-group">
+                        <label for="stock" class="update_label">・狀態</label>
+                        <select name="status" class="custom-select">
+                            <option value="1" selected><?= $status[0]['name'] ?></option>
+                            <option value="2"><?= $status[1]['name'] ?></option>
+                            <option value="3"><?= $status[2]['name'] ?></option>
+                        </select>
+                    </div>
+
                     <div class="form-group d-flex">
                         <div class="col-lg-5">
-                            <label for="pic" style="font-size: 20px">・請選擇書籍封面照片</label>
+                            <label for="pic" style="font-size: 20px;margin-left:-14px">・請選擇書籍封面照片</label>
                             <input type="file" class="form-control-file" id="pic" name="pic" style="display:none">
                             <br>
                             <button class="btn btn-outline-primary my-2 my-sm-0" type="button" onclick="selUpload()">
                                 <i class="fas fa-plus-circle" style="margin-right:5px"></i>選擇檔案
                             </button>
                         </div>
-                        <div style="height: 230px;width: 230px;border: 1px solid #ddd">
+                        <div style="height: 230px;width: 230px;border: 1px solid #ddd;margin-top:10px">
                             <img style="object-fit: contain;width: 100%;height: 100%" id="demo" />
                         </div>
                     </div>
@@ -147,44 +156,59 @@ $totalPages = ceil($totalRows / $per_page); //取得總頁數
                             <?php endforeach; ?>
                         </div>
                     </div>
+                </div>
 
+                <div style="min-width:700px;margin:0px 30px">
                     <div class="form-group">
                         <label for="introduction" class="update_label">・書籍簡介</label>
                         <span style="margin:0px 20px" class="my_text_blacktea_fifty">限制200字以內</span>
                         <span style="margin:0px -10px;color:red" id="introductionHelp"></span>
                         <textarea class="update form-control" id="introduction" rows="3" style="width:700px;height:200px;resize:none" name="introduction"></textarea>
                     </div>
-
-                    <div>
-                        <button style="margin:5px 0px 0px -80px" type="submit" class="btn btn-warning" id="submit_btn">
-                            &nbsp;確&nbsp;認&nbsp;新&nbsp;增&nbsp;
-                        </button>
+                    <div class="form-group">
+                        <label for="introduction" class="update_label">・書籍詳細內容</label>
+                        <textarea cols="80" id="editor1" name="editor1" rows="10" data-sample-short></textarea>
+                        <input type="text" name="detailData" id="detailData" value="" style="display:none">
                     </div>
                 </div>
+            </div>
+            <div class="text-center" style="width:1550px">
+                <button type="submit" class="btn btn-warning" id="submit_btn">
+                    &nbsp;確&nbsp;認&nbsp;新&nbsp;增&nbsp;
+                </button>
+            </div>
         </form>
     </div>
-</div>
 
-<!-- 以下為新增成功才會跳出來的顯示框 -->
-<div style="padding:150px 100px 170px 180px;display:none" id="success">
-    <div class="success update card">
-        <div class="success card-body">
-            <label class="success_text" style="background:transparent">新增成功</label>
-            <div><img class="success_img" src="../../images/icon_checked.svg"></div>
+    <!-- 以下為新增成功才會跳出來的顯示框 -->
+    <div style="padding:150px 100px 170px 180px;display:none" id="success">
+        <div class="success update card">
+            <div class="success card-body">
+                <label class="success_text" style="background:transparent">新增成功</label>
+                <div><img class="success_img" src="../../images/icon_checked.svg"></div>
+            </div>
+        </div>
+    </div>
+    <!-- 以下為新增失敗才會跳出來的顯示框 -->
+    <div style="padding:150px 100px 170px 180px;display:none" id="my_false">
+        <div class="success update card" style="box-shadow:0px 0px 10px red">
+            <div class="success card-body">
+                <label class="success_text" style="background:transparent;color:rgb(228, 63, 63)">新增失敗,不可以偷偷來喔!</label>
+                <div><img class="success_img" src="../../images/icon_false.svg"></div>
+            </div>
         </div>
     </div>
 </div>
 
-<!-- 以下為新增失敗才會跳出來的顯示框 -->
-<div style="padding:150px 100px 170px 180px;display:none" id="my_false">
-    <div class="success update card" style="box-shadow:0px 0px 10px red">
-        <div class="success card-body">
-            <label class="success_text" style="background:transparent;color:rgb(228, 63, 63)">新增失敗,不可以偷偷來喔!</label>
-            <div><img class="success_img" src="../../images/icon_false.svg"></div>
-        </div>
-    </div>
 </div>
-</div>
+<!-- html編輯器 -->
+<script src="https://cdn.ckeditor.com/4.12.1/basic/ckeditor.js"></script>
+<script>
+    CKEDITOR.replace('editor1', {
+        height: 950,
+        resize_enabled: false,
+    });
+</script>
 <script>
     function selUpload() {
         document.querySelector('#pic').click();
@@ -235,7 +259,6 @@ $totalPages = ceil($totalRows / $per_page); //取得總頁數
         } else {
             console.log('格式錯誤');
         }
-        console.log(isPass);
 
         var isbn_border = document.querySelector('#isbn');
         if (!isPass) {
@@ -251,6 +274,10 @@ $totalPages = ceil($totalRows / $per_page); //取得總頁數
     }
 
     function checkForm() {
+        let editor = CKEDITOR.instances.editor1;
+        editor.setData(editor.getData());
+        $("#detailData").val(editor.getData());
+
         // 判斷書籍名稱,作者,出版社,版次是否有填寫
         let name = document.querySelector('#name');
         let publishing = document.querySelector('#publishing');
@@ -364,6 +391,7 @@ $totalPages = ceil($totalRows / $per_page); //取得總頁數
         let success = document.querySelector('#success');
         let my_false = document.querySelector('#my_false');
 
+
         if (isPass) {
             let fd = new FormData(document.form1);
             fetch('vb_data_insert_api.php', {
@@ -398,5 +426,4 @@ $totalPages = ceil($totalRows / $per_page); //取得總頁數
         return false;
     }
 </script>
-
 <?php include __DIR__ . '/../../pbook_index/__html_foot.php' ?>
