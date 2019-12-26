@@ -442,7 +442,7 @@ $mr_no = $mrNo_s->fetchAll();
                         info_bar.innerHTML = json.info;
                         if (json.success) {
                             setTimeout(function() {
-                                location.href = 'MB_data_list.php?page=<?= $totalPages ?>';
+                                location.href = 'MB_data_list_dataTable.php?page=<?= $totalPages ?>';
                             }, 1000);
                         } else {
                             success_bar.style.display = 'none'

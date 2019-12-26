@@ -26,10 +26,10 @@
 </nav>
 <div style="height:60px;width:100%"></div>
 
-<div class="d-flex flex-row my_content">
+<div class="d-flex flex-row my_content col-lg-12">
     <!-- 左邊aside選單欄位 -->
 
-    <aside class="d-flex aside_heigh" style="position:fixed;left:0px;height:100%">
+    <aside class="d-flex aside_heigh " style="position:fixed;left:0px;height:100%;z-index:5;width:260px">
         <div id="accordion">
             <div class="aside card">
                 <button type="button" class="aside card-header btn btn-info" id="headingOne">

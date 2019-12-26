@@ -34,7 +34,7 @@ $totalPages = ceil($totalRows / $per_page);
 
 
 
-$page_sql = "SELECT `mb_books`.*, `vb_categories`.`name` categories_name 
+$page_sql = "SELECT `mb_books`.*, `vb_categories`.`categoriesName` categoriesName 
 FROM `mb_books`  LEFT JOIN `vb_categories` ON `mb_books`.`mb_categories` = `vb_categories`.`sid` $where ORDER BY `mb_sid`";
 
 $t_stmt = $pdo->query($page_sql);
@@ -66,7 +66,7 @@ $row = $t_stmt->fetchAll();
 
 <!-- 右邊section資料欄位 -->
 <section class="position-relative">
-    <div class="container">
+    <div class="container ">
         <nav class="navbar justify-content-between" style="padding: 0px;width: 80vw;">
             <div>
                 <h4>會員書籍總表</h4>
@@ -99,7 +99,6 @@ $row = $t_stmt->fetchAll();
                             <th scope="col" data-sort="number">ISBN</th>
                             <th scope="col" data-sort="name">書籍名稱</th>
                             <th scope="col">書籍圖片</th>
-                            <th scope="col">分類</th>
                             <th scope="col" data-sort="name">作者</th>
                             <th scope="col" data-sort="name">出版社</th>
                             <th scope="col" data-sort="date">出版日期</th>
@@ -156,7 +155,6 @@ $row = $t_stmt->fetchAll();
                                     </div>
                                 </td>
 
-                                <td class="textHidden"><?= htmlentities($r['categories_name']) ?></td>
                                 <td class="textHidden"><?= htmlentities($r['mb_author']) ?></td>
                                 <td class="textHidden"><?= htmlentities($r['mb_publishing']) ?></td>
                                 <td class="textHidden"><?= htmlentities($r['mb_publishDate']) ?></td>

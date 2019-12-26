@@ -41,7 +41,7 @@ if ($page > $totalPages) {
 }
 
 
-$page_sql = "SELECT `mb_books`.*, `vb_categories`.`name` categories_name 
+$page_sql = "SELECT `mb_books`.*, `vb_categories`.`categoriesName` categoriesName 
 FROM `mb_books`  LEFT JOIN `vb_categories` ON `mb_books`.`mb_categories` = `vb_categories`.`sid` $where ORDER BY `mb_sid` ASC LIMIT " . (($page - 1) * $per_page) . "," . $per_page;
 
 $t_stmt = $pdo->query($page_sql);
@@ -173,7 +173,7 @@ $row = $t_stmt->fetchAll();
                                     </div>
                                 </td>
 
-                                <td class="textHidden"><?= htmlentities($r['categories_name']) ?></td>
+                                <td class="textHidden"><?= htmlentities($r['categoriesName']) ?></td>
                                 <td class="textHidden"><?= htmlentities($r['mb_author']) ?></td>
                                 <td class="textHidden"><?= htmlentities($r['mb_publishing']) ?></td>
                                 <td class="textHidden"><?= htmlentities($r['mb_publishDate']) ?></td>
